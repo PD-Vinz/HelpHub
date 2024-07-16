@@ -1,0 +1,97 @@
+<?php
+session_start();
+
+include_once("connection/conn.php");
+$pdoConnect = connection();
+
+if (isset($_POST['login'])) {
+    try {
+        $pdoConnect->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+        $username = $_POST["username"];
+        $pass = $_POST["password"];
+
+        // Check in student_user table
+        $pdoUserQuery = "SELECT * FROM student_user WHERE student_number = :username AND password = :pass";
+        $pdoResult = $pdoConnect->prepare($pdoUserQuery);
+        $pdoResult->bindParam(':username', $username);
+        $pdoResult->bindParam(':pass', $pass);
+        $pdoResult->execute();
+
+        if ($pdoResult->rowCount() > 0) {
+            $_SESSION["student_number"] = $username;
+            header("Location: User/dashboard.php");
+            exit(); // Prevent further execution after redirection
+        }
+
+        // Check in mis_employees table
+        $pdoAdminQuery = "SELECT * FROM mis_employees WHERE employee_number = :username AND password = :pass";
+        $pdoResult = $pdoConnect->prepare($pdoAdminQuery);
+        $pdoResult->bindParam(':username', $username);
+        $pdoResult->bindParam(':pass', $pass);
+        $pdoResult->execute();
+
+        if ($pdoResult->rowCount() > 0) {
+            $_SESSION["admin_number"] = $username;
+            header("Location: Admin/index.php");
+            exit(); // Prevent further execution after redirection
+        }
+
+        // If no match found in both tables
+        $errorMessage = "Wrong Username or Password";
+        echo "<script type='text/javascript'>
+            window.onload = function() {
+                alert('$errorMessage');
+                window.location.href = 'index.php';
+            };
+        </script>";
+    } catch (PDOException $error) {
+        $message = '<label>Error: ' . $error->getMessage() . '</label>';
+    }
+}
+?>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DHVSU MIS - HelpHub</title>
+    <link rel="icon" href="img/Logo.png" type="image/png">
+    <link  rel="stylesheet" href="index.css">
+</head>
+<body>
+    <img class="logo" src="img/MIS logo.png" alt="Image">
+
+    <div class="login">
+    <form method="post">
+        <h3>Log In</h3>
+        <div class="form-group">
+            <input type="text" name="username" required placeholder="Username">
+        </div>
+        <div class="form-group">
+            <input type="password" name="password" id="myInput" required placeholder="Password">
+        </div>
+        <div class="form-group">
+            <input type="checkbox" id="savePassword" name="savePassword" onclick="myFunction()">
+            <label for="savePassword">Show Password</label>
+            <script>
+                            function myFunction() {
+                                var x = document.getElementById("myInput");
+                                if (x.type === "password") {
+                                    x.type = "text";
+                                } else {
+                                    x.type = "password";
+                                }
+                            }
+                        </script>
+        </div>
+
+        <input type="submit" name="login" value="Log In"  ><br>
+    
+        
+    </form>
+    <a href="forgot_password.php" class="forgot">Forgot Password?</a>
+    </div> 
+</body>
+</html>

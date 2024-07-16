@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Code Verification</title>
+<style>
+    body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background-color: #f0f0f0;
+}
+
+.container {
+    background: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+.code-inputs {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
+.code-input {
+    width: 40px;
+    height: 40px;
+    font-size: 24px;
+    text-align: center;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+button {
+    padding: 10px 20px;
+    font-size: 16px;
+    color: #fff;
+    background-color: #007bff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
+
+</style>
+</head>
+<body>
+    <div class="container">
+        <h2>Enter Verification Code</h2>
+        <form id="verification-form">
+            <div class="code-inputs">
+                <input type="text" maxlength="1" class="code-input" id="digit-1" autofocus>
+                <input type="text" maxlength="1" class="code-input" id="digit-2">
+                <input type="text" maxlength="1" class="code-input" id="digit-3">
+                <input type="text" maxlength="1" class="code-input" id="digit-4">
+                <input type="text" maxlength="1" class="code-input" id="digit-5">
+                <input type="text" maxlength="1" class="code-input" id="digit-6">
+            </div>
+            <button type="submit">Verify</button>
+        </form>
+    </div>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+    const inputs = document.querySelectorAll('.code-input');
+
+    inputs.forEach((input, index) => {
+        input.addEventListener('input', () => {
+            if (input.value.length === 1) {
+                if (index < inputs.length - 1) {
+                    inputs[index + 1].focus();
+                }
+            }
+        });
+
+        input.addEventListener('keydown', (event) => {
+            if (event.key === "Backspace" && input.value.length === 0 && index > 0) {
+                inputs[index - 1].focus();
+            }
+        });
+    });
+
+    document.getElementById('verification-form').addEventListener('submit', (event) => {
+        event.preventDefault();
+        let code = '';
+        inputs.forEach(input => {
+            code += input.value;
+        });
+        alert('Entered Code: ' + code);
+        // Here you can add code to verify the code, e.g., send it to a server
+    });
+});
+
+    </script>
+</body>
+</html>

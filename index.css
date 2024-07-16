@@ -1,0 +1,165 @@
+@import url(https://fonts.googleapis.com/css?family=Poppins);
+*   {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+    }
+
+body {
+    align-items: center;
+    background-image: url(img/background.png);
+    background-size: 100% 100%;
+    background-position: center;
+    background-repeat: no-repeat;
+    height: 95vh; /* Set the height to cover the entire viewport */
+    margin: 0;
+    overflow-y: hidden;
+}
+
+.logo {
+    margin-top: 40px;
+    max-width: 300px;
+    height: auto;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+@media (max-width: 600px) {
+    .logo {
+        width: 100%;
+    }
+}
+
+@media (min-width: 601px) and (max-width: 1200px) {
+    .logo {
+        width: 75%;
+    }
+}
+
+@media (min-width: 1201px) {
+    .logo {
+        width: 50%;
+    }
+}
+
+h3 {
+    color: #ffffff;
+    font-size: 30px;
+    margin-bottom: 10px;
+}
+
+h5 {
+    color: #FFCC00;
+}
+
+h6 {
+    margin-bottom: 5px;
+}
+
+.login {
+    text-align: center;
+    margin: 20px auto;
+    padding: 30px;
+    border-radius: 50px;
+    background-color: #9C0507;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    max-width: 400px;
+    height: auto;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+input[type="text"],
+input[type="number"],
+input[type="email"],
+input[type="password"] {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 5px;
+    border: 1px solid #ccc;
+    border-radius: 20px;
+    box-sizing: border-box;
+    cursor: text;
+}
+
+input[type="checkbox"] {
+    margin-bottom: 5px;
+}
+
+input[type="submit"] {
+    width: 75%;
+    background-color: #E4A001;
+    color: #fff;
+    padding: 10px;
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 16px;
+    margin-bottom: 10px;
+}
+
+input[type="submit"]:hover {
+    background-color: #0056b3;
+}
+
+/* Additional media query for very small screens */
+@media (max-width: 420px) {
+    h3 {
+        font-size: 24px;
+    }
+
+    .login {
+
+        margin-left: 10px;
+        margin-right: 10px;
+    }
+
+
+}
+
+
+.forgot {
+    color: #0866ff;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    text-decoration: none;                                  
+}
+
+/*
+    input[type="text"],
+    input[type="number"] {
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 10px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        box-sizing: border-box; /* Ensure that padding and border are included in the width 
+    }
+
+    input[type="submit"] {
+        width: 100%;
+        padding: 10px;
+        background-color: #4CAF50;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 16px;
+    }
+
+    input[type="submit"]:hover {
+        background-color: #45a049;
+    }
+
+    input[type="submit"]:focus {
+        outline: none; /* Remove outline when button is focused 
+    }
+*/
