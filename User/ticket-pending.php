@@ -82,6 +82,7 @@ if(isset($_GET['error']) && $_GET['error'] == 1) {
 </head>
 
 <body>
+    <p>tite</p>
     <div id="wrapper">
         <nav class="navbar navbar-default navbar-cls-top " role="navigation" style="margin-bottom: 0">
             <div class="navbar-header">
