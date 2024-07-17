@@ -95,6 +95,7 @@ if(isset($_GET['error']) && $_GET['error'] == 1) {
                 </button>
                 <a class="navbar-brand" href="dashboard.php">USER</a>
             </div>
+            <p>tite</p>
             <div style="color: white;
             padding: 15px 50px 5px 50px;
             float: right;
