@@ -120,13 +120,21 @@
                     <form class="issue-form">
                         <div class="form-group">
                             <label for="category">ISSUE</label>
-                            <select id="category" name="category" class="form-control">
+                            <select id="category" name="category" class="form-control" required>
                                 <option value="">SELECT PROBLEM</option>
                                 <option value="DHVSU EMAIL">DHVSU EMAIL</option>
                                 <option value="DHVSU PORTAL">DHVSU PORTAL</option>
                                 <option value="DHVSU SMS">DHVSU SMS</option>
                             </select>
                         </div>
+                        <label for="category">ISSUE</label>
+                        <select id="category" name="category" required>
+                            <option value="">SELECT PROBLEM</option>
+                            <option value="DHVSU EMAIL">DHVSU EMAIL</option>
+                            <option value="DHVSU PORTAL">DHVSU PORTAL</option>
+                            <option value="DHVSU SMS">DHVSU SMS</option>
+                        </select>
+
                         <div class="form-group">
                             <label for="issue-description">Issue Description</label>
                             <textarea id="issue-description" name="issue-description" class="form-control"></textarea>

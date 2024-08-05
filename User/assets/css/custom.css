@@ -1137,7 +1137,7 @@ body {
 
 .issue-form .form-control {
     width: 100%;
-    padding: 20px;
+    padding: auto;
     border: 1px solid #ccc;
     border-radius: 4px;
     box-sizing: border-box;
@@ -1279,8 +1279,11 @@ textarea {
     padding: 10px;
     border: 1px solid #ccc;
     border-radius: 5px;
-    resize: none;
+    resize: none; /* Prevent manual resizing; remove if you want to allow it */
+    box-sizing: border-box; /* Ensures padding and border are included in the element's width and height */
+    overflow: hidden; /* Hide scrollbars */
 }
+
 
 .buttons {
     display: flex;

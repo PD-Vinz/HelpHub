@@ -1,3 +1,73 @@
+<?php
+include_once("../connection/conn.php");
+$pdoConnect = connection();
+
+session_start(); // Start the session
+
+// Check if the session variable is set
+if (!isset($_SESSION["admin_number"])) {
+    header("Location: ../index.php");
+    exit(); // Prevent further execution after redirection
+} else {
+    $id = $_SESSION["admin_number"];
+
+    $pdoUserQuery = "SELECT * FROM mis_employees WHERE admin_number = :number";
+    $pdoResult = $pdoConnect->prepare($pdoUserQuery);
+    $pdoResult->bindParam(':number', $id);
+    $pdoResult->execute();
+
+    $Data = $pdoResult->fetch(PDO::FETCH_ASSOC);
+
+    if ($Data) {
+        $Name = $Data['f_name'];
+        $Position = $Data['position'];
+        $U_T = $Data['user_type'];
+
+        $nameParts = explode(' ', $Name);
+        $firstName = $nameParts[0];
+    } else {
+        // Handle the case where no results are found
+        echo "No student found with the given student number.";
+    }
+
+try {
+
+    $pdoCountQuery = "SELECT * FROM tb_tickets";
+    $pdoResult = $pdoConnect->prepare($pdoCountQuery);
+    $pdoResult->execute();
+    $allTickets = $pdoResult->rowCount();
+
+    $pdoCountQuery = "SELECT * FROM tb_tickets WHERE status = 'Pending'";
+    $pdoResult = $pdoConnect->prepare($pdoCountQuery);
+    $pdoResult->execute();
+    $pendingTickets = $pdoResult->rowCount();
+
+    $pdoCountQuery = "SELECT * FROM tb_tickets WHERE status = 'Returned'";
+    $pdoResult = $pdoConnect->prepare($pdoCountQuery);
+    $pdoResult->execute();
+    $returnedTickets = $pdoResult->rowCount();
+
+    $pdoCountQuery = "SELECT * FROM tb_tickets WHERE status = 'Completed'";
+    $pdoResult = $pdoConnect->prepare($pdoCountQuery);
+    $pdoResult->execute();
+    $completedTickets = $pdoResult->rowCount();
+
+    $pdoCountQuery = "SELECT * FROM tb_tickets WHERE status = 'Due'";
+    $pdoResult = $pdoConnect->prepare($pdoCountQuery);
+    $pdoResult->execute();
+    $dueTickets = $pdoResult->rowCount();
+
+} catch (PDOException $e) {
+    echo "Error: " . $e->getMessage();
+}
+
+}
+
+
+
+
+?>
+
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -32,7 +102,7 @@
 
                     
                 </div>
-                <div class="col-md-8">
+<div class="col-md-8">
   <div class="panel panel-default">
     <div class="panel-heading">
       Top Comments
@@ -85,8 +155,172 @@
       </div> 
   </div>
 </div>
-                
+<br>
 
+<div class="col-md-12">
+                    <!-- Advanced Tables -->
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h3>Feedback List</h3>
+                        </div>
+                        <div class="panel-body-ticket">
+                            <div class="table-responsive">
+
+<?php
+$pdoQuery = "SELECT * FROM tb_survey_feedback";
+$pdoResult = $pdoConnect->prepare($pdoQuery);
+$pdoExec = $pdoResult->execute();
+
+?>
+                                <table class="table table-striped table-bordered table-hover" id="dataTables-example">
+                                    <thead>
+                                        <tr class="btn-primary">
+                                        <th>Survey ID</th>
+                                        <th>User ID</th>
+                                        <th>Date & Time</th>
+                                        <th>Details</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+            <?php
+                while ($row = $pdoResult->fetch(PDO::FETCH_ASSOC)){
+                    extract($row);
+            ?>
+                    <tr class='odd gradeX'>
+                    <td><?php echo htmlspecialchars($survey_id); ?></td>
+                    <td><?php echo htmlspecialchars($user_id); ?></td>
+                    <td><?php echo htmlspecialchars($date_time); ?></td>
+                    <td>
+                      <div class='panel-body-ticket'>
+                            <button class='btn btn-primary btn-xs' data-toggle='modal' data-target='#myModal<?php echo $survey_id; ?>'>
+                                View Details
+                            </button>
+                      </div>
+                    </td>
+
+
+<div class="modal fade" id="myModal<?php echo $survey_id; ?>" >
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            </div>
+            <div class="container"></div>
+            <div class="modal-body">
+                                          <div class="row">
+                                <div class="col-md-6">
+                                    <h3>Survey Details</h3>
+                                    <form role="form">
+                                       
+                                      
+                                        <div class="form-group">
+                                            <label>Survey ID‎ ‎ ‎ ‎ ‎ </label>
+                                            <input class="form-control" value="<?php echo htmlspecialchars($survey_id); ?>" disabled/>
+                                            <br><br>
+                                        </div>
+                                      
+                                        <div class="form-group">
+                                            <label>User ID‎ ‎ ‎ </label>
+                                            <input class="form-control" value="<?php echo htmlspecialchars($user_id); ?>" disabled/>
+                                         <br><br>
+                                        </div>
+                                       
+                                        <div class="form-group">
+                                            <label>Date & Time ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ </label>
+                                            <input class="form-control" value="<?php echo htmlspecialchars($date_time); ?>" disabled/>
+                                         <br><br>
+                                        </div>
+                                        
+                                        <div class="form-group">
+                                            <label>Ticket ID‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ </label>
+                                            <input class="form-control" value="<?php echo htmlspecialchars($ticket_id); ?>" disabled/>
+                                            <br><br>
+                                        </div>
+                                        
+                                        <?php  
+                                        if ($taken == 'before'){
+                                              $whenistaken = "After Submitting Ticket";
+                                        } elseif ($taken == 'after'){
+                                              $whenistaken = "After Ticket was Completed";
+                                        }
+                                        ?>
+
+                                        <div class="form-group">
+                                            <label>Survey Taken ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ </label>
+                                            <input class="form-control" value="<?php  echo htmlspecialchars($whenistaken) ?>" disabled/>
+                                            <br><br>
+                                        </div>
+
+                                        
+                                    </form>      
+                                </div>
+                                
+                                <div class="col-md-6">
+                                    <h3>Ratings And Comments</h3>
+                                    
+                                    <form role="form">
+                                        <div class="form-group">
+                                            <label>Overall Satisfaction‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ </label>
+                                            <input class="form-control" value="<?php echo htmlspecialchars($overall_satisfaction); ?>" disabled/>
+                                            <br><br>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label>How would you rate our service?  ‎ ‎ ‎ ‎ ‎ ‎ ‎ </label>
+                                            <input class="form-control" value="<?php echo htmlspecialchars($service_rating); ?>" disabled/>
+                                            <br><br>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label>Did our service meet your expectations? ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ </label>
+                                            <input class="form-control" value="<?php echo htmlspecialchars($service_expectations); ?>" disabled/>                                            <br><br>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label>What did you like most about our service? </label>
+                                            <textarea rows="4" class="form-control" style="height:148px; resize:none; overflow:auto;" disabled><?php echo htmlspecialchars($like_service); ?></textarea>
+                                            <br><br>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label>What areas do you think need improvement?‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ </label>
+                                            <textarea rows="4" class="form-control" style="height:148px; resize:none; overflow:auto;" disabled><?php echo htmlspecialchars($improvement); ?></textarea>
+                                         <br><br>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label>Any additional comments or suggestions?‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ </label>
+                                            <textarea rows="4" class="form-control" style="height:148px; resize:none; overflow:auto;" disabled><?php echo htmlspecialchars($comments); ?></textarea>
+                                         <br><br>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                          
+        </div>
+        
+    </div>
+</div>
+                              </div>
+        
+        
+
+                          </div>
+        <?php
+        }
+        ?>
+                                        
+
+                                        
+                                    </tbody>
+                                </table>
+                            </div>
+                            
+                        </div>
+                    </div>
+</div>           
+            </div>
+        </div>
 
 
 

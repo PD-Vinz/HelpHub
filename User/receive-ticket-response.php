@@ -44,7 +44,9 @@
           <div class="dropdown-menu" role="menu">
             <a class="dropdown-item" href="profile.php"><span class="fa fa-user"></span> MY ACCOUNT</a>
             <hr style="margin-top: 5px; margin-bottom: 5px;">
-            <a class="dropdown-item" href="http://localhost/sms//classes/Login.php?f=logout"><span class="fa fa-sign-out"></span> LOG OUT </a>
+            <a class="dropdown-item" href="settings.php"><span class="fa fa-gear"></span> SETTINGS</a>
+            <hr style="margin-top: 5px; margin-bottom: 5px;">
+            <a class="dropdown-item" href="logout.php"><span class="fa fa-sign-out"></span> LOG OUT </a>
           </div>
         </nav>
         <!-- /. NAV TOP  -->
@@ -112,6 +114,7 @@
                     <div class="modal-header">
                         <img src="assets/pic/head.png" alt="Technical support for DHVSU students">  
                     <div class="container-survey">
+                    <!-- Make this message be editable by the admin-->
                     <div class="message">
                         <p>Hi, Good Day!</p>
                         <p>We appreciate you addressing your problem with us. Please wait for a response from our MIS Employee.</p>
@@ -121,8 +124,8 @@
                         <p>P.S. To further improve our services, we would like to invite you to answer our short Customer Satisfaction Survey (<a href="survey.php">bit.ly/MISCSSF2024</a>) when you are able. Thank you.</p>
                     </div>
                     <div class="modal-footer">	
-                        <a href="dashboard.php"> <button onclick="handleOkay()">OKAY</button></a>
-                        
+                        <a href="dashboard.php"> <button onclick="handleOkay()">Home</button></a>
+                        <a href="survey.php?id=<?php echo $_GET['id']?>&taken=before"> <button>Take Survey</button></a>
                     </div>
                 </div>
                 <!-- /. ROW  -->

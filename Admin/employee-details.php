@@ -1,3 +1,73 @@
+<?php
+include_once("../connection/conn.php");
+$pdoConnect = connection();
+
+session_start(); // Start the session
+
+// Check if the session variable is set
+if (!isset($_SESSION["admin_number"])) {
+    header("Location: ../index.php");
+    exit(); // Prevent further execution after redirection
+} else {
+    $id = $_SESSION["admin_number"];
+
+    $pdoUserQuery = "SELECT * FROM mis_employees WHERE admin_number = :number";
+    $pdoResult = $pdoConnect->prepare($pdoUserQuery);
+    $pdoResult->bindParam(':number', $id);
+    $pdoResult->execute();
+
+    $Data = $pdoResult->fetch(PDO::FETCH_ASSOC);
+
+    if ($Data) {
+        $Name = $Data['f_name'];
+        $Position = $Data['position'];
+        $U_T = $Data['user_type'];
+
+        $nameParts = explode(' ', $Name);
+        $firstName = $nameParts[0];
+    } else {
+        // Handle the case where no results are found
+        echo "No student found with the given student number.";
+    }
+
+try {
+
+    $pdoCountQuery = "SELECT * FROM tb_tickets";
+    $pdoResult = $pdoConnect->prepare($pdoCountQuery);
+    $pdoResult->execute();
+    $allTickets = $pdoResult->rowCount();
+
+    $pdoCountQuery = "SELECT * FROM tb_tickets WHERE status = 'Pending'";
+    $pdoResult = $pdoConnect->prepare($pdoCountQuery);
+    $pdoResult->execute();
+    $pendingTickets = $pdoResult->rowCount();
+
+    $pdoCountQuery = "SELECT * FROM tb_tickets WHERE status = 'Returned'";
+    $pdoResult = $pdoConnect->prepare($pdoCountQuery);
+    $pdoResult->execute();
+    $returnedTickets = $pdoResult->rowCount();
+
+    $pdoCountQuery = "SELECT * FROM tb_tickets WHERE status = 'Completed'";
+    $pdoResult = $pdoConnect->prepare($pdoCountQuery);
+    $pdoResult->execute();
+    $completedTickets = $pdoResult->rowCount();
+
+    $pdoCountQuery = "SELECT * FROM tb_tickets WHERE status = 'Due'";
+    $pdoResult = $pdoConnect->prepare($pdoCountQuery);
+    $pdoResult->execute();
+    $dueTickets = $pdoResult->rowCount();
+
+} catch (PDOException $e) {
+    echo "Error: " . $e->getMessage();
+}
+
+}
+
+
+
+
+?>
+
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -35,32 +105,39 @@
 	<div class="card-body">
 		<div class="container-fluid col-md-6">
 			<div id="msg"></div>
+
+<?php
+$pdoQuery = $pdoConnect->prepare("SELECT * FROM mis_employees WHERE admin_number = :id");
+$pdoQuery->execute(array(':id' => $_GET["id"]));
+$pdoResult = $pdoQuery->fetchAll();
+$pdoConnect = null;
+?>
 			<form action="" id="manage-user">	
-				<input type="hidden" name="id" value="<?php echo isset($meta['id']) ? $meta['id']: '' ?>">
+				<input type="hidden" name="id" value="<?php echo $pdoResult[0]['admin_number']; ?>">
 				<div class="form-group col-6">
 					<label for="name">First Name</label>
-					<input type="text" name="firstname" id="firstname" class="form-control" value="<?php echo isset($meta['firstname']) ? $meta['firstname']: '' ?>" required>
+					<input type="text" name="firstname" id="firstname" class="form-control" value="<?php echo $pdoResult[0]['f_name'];  ?>" required>
 				</div>
 				<div class="form-group col-6">
 					<label for="name">Last Name</label>
-					<input type="text" name="lastname" id="lastname" class="form-control" value="<?php echo isset($meta['lastname']) ? $meta['lastname']: '' ?>" required>
+					<input type="text" name="lastname" id="lastname" class="form-control" value="<?php echo $pdoResult[0]['l_name'];  ?>" required>
 				</div>
 				<div class="form-group col-6">
 					<label for="username">Username</label>
-					<input type="text" name="username" id="username" class="form-control" value="<?php echo isset($meta['username']) ? $meta['username']: '' ?>" required  autocomplete="off">
+					<input type="text" name="username" id="username" class="form-control" value="<?php echo $pdoResult[0]['admin_number'];  ?>" required  autocomplete="off">
 				</div>
 				<div class="form-group col-6">
 					<label for="password">Password</label>
-					<input type="password" name="password" id="password" class="form-control" value="" autocomplete="off" <?php echo isset($meta['id']) ? "": 'required' ?>>
+					<input type="password" name="password" id="password" class="form-control" value="" autocomplete="off" >
                   
 					<small class="text-info"><i>Leave this blank if you dont want to change the password.</i></small>
                  
 				</div>
 				<div class="form-group col-6">
 					<label for="type">User Type</label>
-					<select name="type" id="type" class="custom-select form-control" value="<?php echo isset($meta['type']) ? $meta['type']: '' ?>" required>
-						<option value="1" <?php echo isset($type) && $type == 1 ? 'selected': '' ?>>Administrator</option>
-						<option value="2"> <?php echo isset($type) && $type == 2 ? 'selected': '' ?>Staff</option>
+					<select name="type" id="type" class="custom-select form-control" required>
+						<option value="Administrator" <?php echo ($pdoResult[0]['user_type'] == 'Administrator') ? 'selected' : ''; ?>>Administrator</option>
+						<option value="Staff" <?php echo ($pdoResult[0]['user_type'] == 'Staff') ? 'selected' : ''; ?>>Staff</option>
 					</select>
 				</div>
 				<div class="form-group col-6">
@@ -73,7 +150,7 @@
 				<div class="form-group col-6 d-flex justify-content-center">
 					<img src="http://localhost/sms/uploads/avatar-11.png?v=1635920566" alt="" id="cimg" class="img-fluid img-thumbnail">
 				</div>
-			</form>
+			
 		</div>
 	</div>
 	<div class="card-footer">
@@ -84,6 +161,7 @@
 				</div>
 			</div>
 		</div>
+    </form>
 </div>
 <style>
     .img-thumbnail {

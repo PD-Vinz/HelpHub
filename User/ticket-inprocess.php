@@ -1,3 +1,42 @@
+<?php
+include_once("../connection/conn.php");
+$pdoConnect = connection();
+
+session_start(); // Start the session
+
+// Check if the session variable is set
+if (!isset($_SESSION["user_id"])) {
+    header("Location: ../index.php");
+    exit(); // Prevent further execution after redirection
+} else {
+    $id = $_SESSION["user_id"];
+
+    $pdoUserQuery = "SELECT * FROM tb_user WHERE user_id = :number";
+    $pdoResult = $pdoConnect->prepare($pdoUserQuery);
+    $pdoResult->bindParam(':number', $id);
+    $pdoResult->execute();
+
+    $Data = $pdoResult->fetch(PDO::FETCH_ASSOC);
+
+    if ($Data) {
+        $Email_Add = $Data['email_address'];
+        $Name = $Data['name'];
+        $Department = $Data['department'];
+        $Course = $Data['course'];
+        $Y_S = $Data['year_section'];
+        $P_P = $Data['profile_picture'];
+        $Sex = $Data['sex'];
+
+        $nameParts = explode(' ', $Name);
+        $firstName = $nameParts[0];
+    } else {
+        // Handle the case where no results are found
+        echo "No student found with the given student number.";
+    }
+}
+
+?>
+
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -33,18 +72,19 @@
             <div style="color: white;
             padding: 15px 50px 5px 50px;
             float: right;
-            font-size: 16px;"> Last access : 30 May 2014 &nbsp; 
+            font-size: 16px;"> Last access : <?php echo date('d F Y')?> &nbsp; 
             <div class="btn-group nav-link">
               <button type="button" class="btn btn-rounded badge badge-light dropdown-toggle dropdown-icon" data-toggle="dropdown">
-                <span class="ml-3">LOREM IPSUN</span>
+                <span class="ml-3"><?php echo $Name?></span>
             <span class="fa fa-caret-down">
             <span class="sr-only">Toggle Dropdown</span>
           </button>
           <div class="dropdown-menu" role="menu">
             <a class="dropdown-item" href="profile.php"><span class="fa fa-user"></span> MY ACCOUNT</a>
             <hr style="margin-top: 5px; margin-bottom: 5px;">
-            <a class="dropdown-item" href="http://localhost/sms//classes/Login.php?f=logout"><span class="fa fa-sign-out"></span> LOG OUT </a>
-          </div>
+            <a class="dropdown-item" href="settings.php"><span class="fa fa-gear"></span> SETTINGS</a>
+            <hr style="margin-top: 5px; margin-bottom: 5px;">
+            <a class="dropdown-item" href="logout.php"><span class="fa fa-sign-out"></span> LOG OUT </a>          </div>
         </nav>
         <!-- /. NAV TOP  -->
         <nav class="navbar-default navbar-side" role="navigation">
@@ -116,27 +156,55 @@
                             </div>
                             <div class="panel-body-ticket">
                                 <div class="table-responsive">
+<?php
+    $status = "Processing";
+
+    $pdoQuery = "SELECT * FROM tb_tickets WHERE status = :status && user_number = :usernumber";
+    $pdoResult = $pdoConnect->prepare($pdoQuery);
+    $pdoResult->bindParam(':status', $status);
+    $pdoResult->bindParam(':usernumber', $id, PDO::PARAM_STR);
+    $pdoExec = $pdoResult->execute();
+
+?> 
                                     <table class="table table-striped table-bordered table-hover" id="dataTables-example">
                                         <thead>
-                                            <tr>
-                                                <th>ALL TICKET</th>
-                                                <th>TICKET NUMBER</th>
-                                                <th>PROBLEM</th>
+                                            <tr class="btn-primary">
+                                                <th>TICKET ID</th>
+                                                <th>DATE SUBMITTED</th>
                                                 <th>MIS STAFF</th>
+                                                <th>ISSUE</th>
+                                                <th>DESCRIPTION</th>
                                                 <th>STATUS</th>
-                                                <th>DURATION</th>
                                                 <th>ACTION</th>
                                             </tr>
                                         </thead>
                                         <tbody>
+        <?php
+        while ($row = $pdoResult->fetch(PDO::FETCH_ASSOC)) {
+            extract($row);
+            $screenshotBase64 = base64_encode($screenshot);
+        ?>
                                             <tr class="odd gradeX">
-                                                <td class="center">--</td>                                           
-                                                <td class="center">--</td>
-                                                <td class="center">--</td>
-                                                <td class="center">NONE</td>
-                                                <td class="center">--</td>
-                                                <td>--</td>
+                                                <td class="center"><?php echo htmlspecialchars($ticket_id); ?></td>                                           
+                                                <td class="center"><?php echo htmlspecialchars($created_date); ?></td>
+                                                <td class="center"><?php echo htmlspecialchars($employee); ?></td>
+                                                <td class="center"><?php echo htmlspecialchars($issue); ?></td>
+                                                <td class="center"><?php 
+    $max_length = 25;
+    if (strlen($description) > $max_length) {
+        echo htmlspecialchars(substr($description, 0, $max_length)) . '...';
+    } else {
+        echo htmlspecialchars($description);
+    }
+    ?></td>
+                                                <td><?php echo htmlspecialchars($status); ?></td>
                                                 <td>
+                                                        <a href="ticket-view.php?ticket_id=<?php echo $ticket_id; ?>">
+                                                            <button class='btn btn-primary btn-xs'>
+                                                            VIEW TICKET
+                                                            </button>
+                                                        </a>
+<!--
                                                     <div class="panel-body-ticket">
                                                         <button class="btn btn-primary btn-xs" data-toggle="modal" data-target="#myModal">VIEW TICKET</button>
                                                         <div class="modal fade" id="myModal">
@@ -161,7 +229,7 @@
                                                                                         <th class="center">DURATION</th>
                                                                                     </tr>
                                                                                 </thead>
-                                                                                <!-- Add table body if needed -->
+                                                                                
                                                                             </table>
                                                                         </div>
                                                                         <div class="modal-footer">
@@ -172,9 +240,13 @@
                                                             </div>
                                                         </div>
                                                     </div>
+-->
                                                 </td>
                                             </tr>
                                             <!-- Add more rows if needed -->
+        <?php
+        }
+        ?>
                                         </tbody>
                                     </table>
                                 </div>

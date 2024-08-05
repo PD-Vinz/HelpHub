@@ -6,9 +6,9 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
         </button>
-        <a class="navbar-brand" href="index.php">Binary admin</a> 
+        <a class="navbar-brand" href="index.php">MIS Office</a> 
     </div>
-<div style="color: white; padding: 15px 50px 5px 50px; float: right;"> Last access : 30 May 2014 &nbsp; 
+<div style="color: white; padding: 15px 50px 5px 50px; float: right;"> Last access : <?php echo date('d F Y')?> &nbsp; 
 <div class="btn-group nav-link">
           <button type="button" class="btn btn-rounded badge badge-light dropdown-toggle dropdown-icon" data-toggle="dropdown">
          
@@ -39,38 +39,74 @@
             <li>
             
             <a href="#" class="dropdown-toggle" data-toggle="dropdown" onclick="handleTicketDropdownToggle(event)">
-        <i class="fa fa-list fa-3x"></i> Tickets <span class="fa arrow"></span>
+        <i class="fa fa-list fa-3x"></i> Student Tickets <span class="fa arrow"></span>
     </a>
     <ul class="nav nav-second-level ticket-dropdown-menu">
               <!--fix the icons-->
               
               <li>
-                  <a href="ticketdash.php"> &nbsp;&nbsp;<i class="fa fa-ticket " aria-hidden="true"></i>All Tickets</a>
+                  <a href="ticketdash.php?id=1"> &nbsp;&nbsp;<i class="fa fa-ticket " aria-hidden="true"></i>All Tickets</a>
                   </li>
                   <li>
-                      <a href="ticket-pending.php">&nbsp;&nbsp;<i class="fa fa-hourglass-half " aria-hidden="true"></i>Pending Tickets</a>
+                      <a href="ticket-pending.php?id=1">&nbsp;&nbsp;<i class="fa fa-hourglass-half " aria-hidden="true"></i>Pending Tickets</a>
                   </li>
                   <li>
-                      <a href="ticket-opened.php">&nbsp;&nbsp;<i class="fa fa-envelope-open" aria-hidden="true"></i>Opened Tickets</a>
+                      <a href="ticket-opened.php?id=1">&nbsp;&nbsp;<i class="fa fa-envelope-open" aria-hidden="true"></i>Opened Tickets</a>
                   </li>
                   <li>
-                    <a href="ticket-closed.php">&nbsp;&nbsp;<i class="fa-solid fa-check-to-slot"></i>Closed Tickets</a>
+                    <a href="ticket-closed.php?id=1">&nbsp;&nbsp;<i class="fa-solid fa-check-to-slot"></i>Closed Tickets</a>
                 </li>
                 <li>
-                  <a href="ticket-returned.php">&nbsp;&nbsp;<i class="fa fa-undo" aria-hidden="true"></i>Returned Tickets</a>
+                  <a href="ticket-returned.php?id=1">&nbsp;&nbsp;<i class="fa fa-undo" aria-hidden="true"></i>Returned Tickets</a>
                 </li>
                 
               </ul>
-            </li> 
-            <li>
-                <a href="employee.php"><i class="fa-solid fa-user-tie fa-3x"></i> Employees</a>
             </li>
+            <li>
+            
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown" onclick="handleTicketDropdownToggle(event)">
+        <i class="fa fa-list fa-3x"></i> Employeee Tickets <span class="fa arrow"></span>
+    </a>
+    <ul class="nav nav-second-level ticket-dropdown-menu">
+              <!--fix the icons-->
+              
+              <li>
+                  <a href="ticketdash.php?id=2"> &nbsp;&nbsp;<i class="fa fa-ticket " aria-hidden="true"></i>All Tickets</a>
+                  </li>
+                  <li>
+                      <a href="ticket-pending.php?id=2">&nbsp;&nbsp;<i class="fa fa-hourglass-half " aria-hidden="true"></i>Pending Tickets</a>
+                  </li>
+                  <li>
+                      <a href="ticket-opened.php?id=2">&nbsp;&nbsp;<i class="fa fa-envelope-open" aria-hidden="true"></i>Opened Tickets</a>
+                  </li>
+                  <li>
+                    <a href="ticket-closed.php?id=2">&nbsp;&nbsp;<i class="fa-solid fa-check-to-slot"></i>Closed Tickets</a>
+                </li>
+                <li>
+                  <a href="ticket-returned.php?id=2">&nbsp;&nbsp;<i class="fa fa-undo" aria-hidden="true"></i>Returned Tickets</a>
+                </li>
+                
+              </ul>
+            </li>
+            <li>
+            <a href="history-log.php"><i class="fa-regular fa-clock fa-3x"></i> Log History</a>
+
+            </li>
+
+            <?php if (isset($U_T) && $U_T === 'Administrator'): ?>
             <li>
                 <a href="feedback-analysis.php" ><i class="fa-regular fa-comment-dots fa-3x"></i>Feedbacks</a>
             </li>
             <li>
-                <a href="settings.php"><i class="fa fa-gear fa-3x"></i> Settings</a>
+                <a href="employee.php"><i class="fa-solid fa-user-tie fa-3x"></i> Employees</a>
             </li>
+            <li>
+                <a href="user-list.php"><i class="fa-regular fa-user fa-3x"></i> User list</a>
+            </li>
+            <li>
+                <a href="settings.php"><i class="fa fa-gear fa-3x"></i>System Settings</a>
+            </li>
+            <?php endif; ?>
         </ul>
        
     </div>

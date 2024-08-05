@@ -44,8 +44,9 @@
           <div class="dropdown-menu" role="menu">
             <a class="dropdown-item" href="profile.php"><span class="fa fa-user"></span> MY ACCOUNT</a>
             <hr style="margin-top: 5px; margin-bottom: 5px;">
-            <a class="dropdown-item" href="http://localhost/sms//classes/Login.php?f=logout"><span class="fa fa-sign-out"></span> LOG OUT </a>
-          </div>
+            <a class="dropdown-item" href="settings.php"><span class="fa fa-gear"></span> SETTINGS</a>
+            <hr style="margin-top: 5px; margin-bottom: 5px;">
+            <a class="dropdown-item" href="logout.php"><span class="fa fa-sign-out"></span> LOG OUT </a>          </div>
         </nav>
         <!-- /. NAV TOP  -->
         <nav class="navbar-default navbar-side" role="navigation">
@@ -114,22 +115,29 @@
                         <img src="assets/pic/head.png" alt="Technical support for DHVSU students">  
                 <div class="container-survey">
                     <h1>Thank you for choosing our services. We highly value your feedback as it helps us improve and better serve you in the future. Please take a moment to share your thoughts with us.</h1>
-                    <form action="#" method="post">
+                    <form action="php/survey-finished.php?id=<?php echo $_GET['id']?>&taken=<?php echo $_GET['taken']?>" method="post">
+                        <input type="text" name="overall_satisfaction" value="<?php echo $_POST['overall_satisfaction']?>" hidden>
+                        <input type="text" name="service_rating" value="<?php echo $_POST['service_rating']?>" hidden>
+                        <input type="text" name="service_expectations" value="<?php echo $_POST['service_expectations']?>" hidden>
+
                         <div class="question">
                             <p><strong>PLEASE ANSWER THE FOLLOWING QUESTION:</strong></p>
                             <label for="like">What did you like most about our service?</label>
-                            <textarea id="like" name="like" rows="4"></textarea>
+                            <textarea id="like" name="like" rows="4" maxlength="255" oninput="likeRemainingCharacters()" required></textarea>
+                            <small id="like-remaining-characters" class="form-text text-muted">255 characters remaining</small>
                         </div>
                         <div class="question">
                             <label for="improve">What areas do you think need improvement?</label>
-                            <textarea id="improve" name="improve" rows="4"></textarea>
+                            <textarea id="improve" name="improve" rows="4" maxlength="255" oninput="improveRemainingCharacters()" required></textarea>
+                            <small id="improve-remaining-characters" class="form-text text-muted">255 characters remaining</small>
                         </div>
                         <div class="question">
                             <label for="comments">Any additional comments or suggestions?</label>
-                            <textarea id="comments" name="comments" rows="4"></textarea>
+                            <textarea id="comments" name="comments" rows="4" maxlength="255" oninput="commentsRemainingCharacters()" required></textarea>
+                            <small id="comments-remaining-characters" class="form-text text-muted">255 characters remaining</small>
                         </div>
                         <div class="buttons">
-                            <a href="survey.php"><button type="button" class="btn btn-primary">BACK</button></a>
+                            <a onclick="history.back()"><button type="button" >BACK</button></a>
                             <button type="submit">SUBMIT</button>
                         </div>
                     </form>
@@ -153,6 +161,44 @@
     <script src="assets/js/morris/morris.js"></script>
     <!-- CUSTOM SCRIPTS -->
     <script src="assets/js/custom.js"></script>
+
+    <script>
+
+    function likeRemainingCharacters() {
+        const textarea = document.getElementById('like');
+        const remainingChars = 255 - textarea.value.length;
+        document.getElementById('like-remaining-characters').textContent = `${remainingChars} characters remaining`;
+    }
+
+    function improveRemainingCharacters() {
+        const textarea = document.getElementById('improve');
+        const remainingChars = 255 - textarea.value.length;
+        document.getElementById('improve-remaining-characters').textContent = `${remainingChars} characters remaining`;
+    }
+
+    function commentsRemainingCharacters() {
+        const textarea = document.getElementById('comments');
+        const remainingChars = 255 - textarea.value.length;
+        document.getElementById('comments-remaining-characters').textContent = `${remainingChars} characters remaining`;
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+        const textarea = document.getElementById('like');
+        textarea.addEventListener('input', function() {
+            adjustHeight();
+            likeRemainingCharacters();
+            improveRemainingCharacters();
+            commentsRemainingCharacters();
+        });
+
+        // Initial adjustment in case there's already content
+        adjustHeight();
+        likeRemainingCharacters();
+        improveRemainingCharacters();
+        commentsRemainingCharacters();
+    });
+
+    </script>
 </body>
 
 </html>

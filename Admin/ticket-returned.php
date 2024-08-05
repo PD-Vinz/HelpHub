@@ -11,7 +11,7 @@ if (!isset($_SESSION["admin_number"])) {
 } else {
     $id = $_SESSION["admin_number"];
 
-    $pdoUserQuery = "SELECT * FROM mis_employees WHERE employee_number = :number";
+    $pdoUserQuery = "SELECT * FROM mis_employees WHERE admin_number = :number";
     $pdoResult = $pdoConnect->prepare($pdoUserQuery);
     $pdoResult->bindParam(':number', $id);
     $pdoResult->execute();
@@ -19,15 +19,21 @@ if (!isset($_SESSION["admin_number"])) {
     $Data = $pdoResult->fetch(PDO::FETCH_ASSOC);
 
     if ($Data) {
-        $Name = $Data['name'];
-        $Department = $Data['position'];
-        $Y_S = $Data['specialization'];
+        $Name = $Data['f_name'];
+        $Position = $Data['position'];
+        $U_T = $Data['user_type'];
 
         $nameParts = explode(' ', $Name);
         $firstName = $nameParts[0];
     } else {
         // Handle the case where no results are found
         echo "No student found with the given student number.";
+    }
+
+    if (isset($_GET["id"]) && $_GET["id"] == 1) {
+        $ticket_user = "Student";
+    } elseif (isset($_GET["id"]) && $_GET["id"] == 2) {
+        $ticket_user = "Employee";
     }
 
 try {
@@ -82,6 +88,14 @@ try {
     <link href="assets/css/custom.css" rel="stylesheet" />
      <!-- GOOGLE FONTS-->
    <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css' />
+
+   <Style>
+    img {
+            max-width: 100%;
+            max-height: 100%;
+            border-radius: 5px;
+        }
+   </Style>
 </head>
 <body>
     <div id="wrapper">
@@ -106,6 +120,16 @@ try {
                              Advanced Tables
                         </div>
                         <div class="panel-body-ticket">
+<?php
+$status = "Returned";
+
+$pdoQuery = "SELECT * FROM tb_tickets WHERE status = :status && user_type = :user";
+$pdoResult = $pdoConnect->prepare($pdoQuery);
+$pdoResult->bindParam(':status', $status);
+$pdoResult->bindParam(':user', $ticket_user, PDO::PARAM_STR);
+$pdoExec = $pdoResult->execute();
+
+?> 
                             <div class="table-responsive">
                                 <table class="table table-striped table-bordered table-hover" id="dataTables-example">
                                     <thead>
@@ -119,29 +143,32 @@ try {
                                     </thead>
                                     <tbody>
             <?php
-                $status = "Returned";
 
-                $pdoQuery = "SELECT * FROM tb_tickets WHERE status = :status";
-                $pdoResult = $pdoConnect->prepare($pdoQuery);
-                $pdoResult->bindParam(':status', $status);
-                $pdoExec = $pdoResult->execute();
                 while ($row = $pdoResult->fetch(PDO::FETCH_ASSOC)){
                     extract($row);
-                    echo "<tr>";
-                    echo "<td>$ticket_id</td>";
-                    echo "<td>$full_name</td>";
-                    echo "<td>$issue</td>";
-                    echo "<td>$description</td>";
-                    echo "<td><div class='panel-body-ticket'>
-                                            
-                              <button class='btn btn-primary btn-xs' data-toggle='modal' data-target='#myModal'>
-                                View Details
-                              </button></td>";
-                    echo "</tr>";
-                }
-            ?>
+                    $screenshotBase64 = base64_encode($screenshot)
+?>
 
-                                        <tr class="odd gradeX">
+                    <tr>
+                    <td><?php echo htmlspecialchars($ticket_id); ?></td>
+                    <td><?php echo htmlspecialchars($full_name); ?></td>
+                    <td><?php echo htmlspecialchars($issue); ?></td>
+                    <td><?php 
+    $max_length = 25;
+    if (strlen($description) > $max_length) {
+        echo htmlspecialchars(substr($description, 0, $max_length)) . '...';
+    } else {
+        echo htmlspecialchars($description);
+    }
+    ?></td>                    <td><div class='panel-body-ticket'>
+                                            
+                              <button class='btn btn-primary btn-xs' data-toggle='modal' data-target='#myModal<?php echo $ticket_id; ?>'>
+                                View Details
+                              </button></td>
+                    </tr>
+                    
+
+                                        <!--<tr class="odd gradeX">
                                             <td>123441</td>
                                             <td>Jhon Felix Pascual</td>
                                             <td>dhvsu email</td>
@@ -150,8 +177,8 @@ try {
                                             
                               <button class="btn btn-primary btn-xs" data-toggle="modal" data-target="#myModal">
                                 View Details
-                              </button>
-                              <div class="modal fade" id="myModal">
+                              </button>-->
+<div class="modal fade" id="myModal<?php echo $ticket_id; ?>">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -169,37 +196,53 @@ try {
                                       
                                         <div class="form-group">
                                             <label>Full Name‎ ‎ ‎ ‎ ‎ </label>
-                                            <input class="form-control" />
+                                            <input class="form-control" value="<?php echo htmlspecialchars($full_name); ?>" disabled/>
                                             <br><br>
                                         </div>
                                       
                                         <div class="form-group">
-                                            <label>Student ID‎ ‎ ‎ </label>
-                                            <input class="form-control" />
+                                            <label>User ID‎ ‎ ‎ </label>
+                                            <input class="form-control" value="<?php echo htmlspecialchars($user_number); ?>" disabled/>
                                          <br><br>
                                         </div>
                                        
                                         <div class="form-group">
                                             <label>College‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ </label>
-                                            <input class="form-control" />
+                                            <input class="form-control" value="<?php echo htmlspecialchars($department); ?>" disabled/>
                                          <br><br>
                                         </div>
                                        
                                         <div class="form-group">
                                             <label>Course‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ </label>
                                             
-                                            <input class="form-control" />
+                                            <input class="form-control" value="<?php echo htmlspecialchars($course); ?>" disabled/>
                                             <br><br>
                                         </div>
                                         
                                         <div class="form-group">
                                             <label>Year‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ </label>
-                                            <input class="form-control" />
+                                            <input class="form-control" value="<?php echo htmlspecialchars($year_section); ?>" disabled/>
                                             <br><br>
                                             
                                         </div>
                                         
-                                         
+                                        <div class="form-group">
+                                            <label>Campus ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ </label>
+                                            <input class="form-control" value="<?php  echo htmlspecialchars($campus) ?>" disabled/>
+                                            <br><br>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label>Gender ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ </label>
+                                            <input class="form-control" value="<?php echo htmlspecialchars($sex) ?>" disabled/>
+                                            <br><br>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label>Age ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ </label>
+                                            <input class="form-control" value="<?php echo htmlspecialchars($age) ?>" disabled/>
+                                            <br><br>
+                                        </div>
                                 </div>
                                 
                                 <div class="col-md-6">
@@ -208,22 +251,24 @@ try {
                                     <form role="form">
                                     <div class="form-group">
                                             <label>Ticket ID‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ </label>
-                                            <input class="form-control" />
+                                            <input class="form-control" value="<?php echo htmlspecialchars($ticket_id); ?>" disabled/>
                                             <br><br>
                                         </div>
                                     <div class="form-group">
                                             <label>Issue/Problem  ‎ ‎ ‎ ‎ ‎ ‎ ‎ </label>
-                                            <input class="form-control" />
+                                            <input class="form-control" value="<?php echo htmlspecialchars($issue); ?>" disabled/>
                                             <br><br>
                                         </div>
                                         <div class="form-group">
                                             <label>Description ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ </label>
-                                            <input class="form-control" />
+                                            <textarea class="form-control" disabled style="height:148px; resize:none; overflow:auto;"><?php echo htmlspecialchars($description); ?></textarea>
                                             <br><br>
                                         </div>
                                         <div class="form-group">
                                             <label>Screenshot ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ </label>
-                                            <input class="form-control" />
+                                            <a href="view_image.php?id=<?php echo htmlspecialchars($ticket_id); ?>" target="_blank">
+                                                <img src="data:image/jpeg;base64,<?php echo $screenshotBase64; ?>" alt="Screenshot" class="img-fluid">
+                                            </a>
                                             <br><br>
                                         </div>
                                     </form>
@@ -231,8 +276,8 @@ try {
                                         </div>
                                 </div>
                                 <h3>Return Reason</h3>
-                                            <input class="form-controla" />
-                                            <br><br>
+                                <textarea class="form-control" disabled style="height:148px; resize:none; overflow:auto;"><?php echo htmlspecialchars($resolution); ?></textarea>
+                                <br><br>
                             </div>
             </div>
         </div>
@@ -260,7 +305,9 @@ try {
                           </div></td>
                                         </tr>
 
-                                        
+            <?php 
+                }
+            ?>
                                     </tbody>
                                 </table>
                             </div>

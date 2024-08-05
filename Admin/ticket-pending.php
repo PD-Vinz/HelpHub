@@ -11,7 +11,7 @@ if (!isset($_SESSION["admin_number"])) {
 } else {
     $id = $_SESSION["admin_number"];
 
-    $pdoUserQuery = "SELECT * FROM mis_employees WHERE employee_number = :number";
+    $pdoUserQuery = "SELECT * FROM mis_employees WHERE admin_number = :number";
     $pdoResult = $pdoConnect->prepare($pdoUserQuery);
     $pdoResult->bindParam(':number', $id);
     $pdoResult->execute();
@@ -19,15 +19,21 @@ if (!isset($_SESSION["admin_number"])) {
     $Data = $pdoResult->fetch(PDO::FETCH_ASSOC);
 
     if ($Data) {
-        $Name = $Data['name'];
-        $Department = $Data['position'];
-        $Y_S = $Data['specialization'];
+        $Name = $Data['f_name'];
+        $Position = $Data['position'];
+        $U_T = $Data['user_type'];
 
         $nameParts = explode(' ', $Name);
         $firstName = $nameParts[0];
     } else {
         // Handle the case where no results are found
         echo "No student found with the given student number.";
+    }
+
+    if (isset($_GET["id"]) && $_GET["id"] == 1) {
+        $ticket_user = "Student";
+    } elseif (isset($_GET["id"]) && $_GET["id"] == 2) {
+        $ticket_user = "Employee";
     }
 
 try {
@@ -68,7 +74,7 @@ try {
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-      <meta charset="utf-8" />
+    <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>DHVSU MIS - HelpHub</title>
   
@@ -126,9 +132,10 @@ try {
 <?php
 $status = "Pending";
 
-$pdoQuery = "SELECT * FROM tb_tickets WHERE status = :status";
+$pdoQuery = "SELECT * FROM tb_tickets WHERE status = :status  && user_type = :user";
 $pdoResult = $pdoConnect->prepare($pdoQuery);
 $pdoResult->bindParam(':status', $status, PDO::PARAM_STR);
+$pdoResult->bindParam(':user', $ticket_user, PDO::PARAM_STR);
 $pdoExec = $pdoResult->execute();
 
 ?>
@@ -155,7 +162,14 @@ $pdoExec = $pdoResult->execute();
                     <td><?php echo htmlspecialchars($created_date); ?></td>
                     <td><?php echo htmlspecialchars($full_name); ?></td>
                     <td><?php echo htmlspecialchars($issue); ?></td>
-                    <td><?php echo htmlspecialchars($description); ?></td>
+                    <td><?php 
+    $max_length = 25;
+    if (strlen($description) > $max_length) {
+        echo htmlspecialchars(substr($description, 0, $max_length)) . '...';
+    } else {
+        echo htmlspecialchars($description);
+    }
+    ?></td>
                     <td><?php echo htmlspecialchars($status); ?></td>    
                     <td>
 
@@ -167,7 +181,7 @@ $pdoExec = $pdoResult->execute();
                         
                         </td>
 
-                    </tr>
+                    
             
                                     <!--    <tr class="odd gradeX">
                                             <td>123441</td>
@@ -180,7 +194,7 @@ $pdoExec = $pdoResult->execute();
                                 View Details
                               </button>-->
 
-<div class="modal fade" id="myModal<?php echo $ticket_id; ?>">
+<div class="modal fade" id="myModal<?php echo $ticket_id; ?>" >
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -198,35 +212,52 @@ $pdoExec = $pdoResult->execute();
                                       
                                         <div class="form-group">
                                             <label>Full Name‎ ‎ ‎ ‎ ‎ </label>
-                                            <input class="form-control" value="<?php echo htmlspecialchars($full_name); ?>"/>
+                                            <input class="form-control" value="<?php echo htmlspecialchars($full_name); ?>" disabled/>
                                             <br><br>
                                         </div>
                                       
                                         <div class="form-group">
                                             <label>User ID‎ ‎ ‎ </label>
-                                            <input class="form-control" value="<?php echo htmlspecialchars($user_number); ?>"/>
+                                            <input class="form-control" value="<?php echo htmlspecialchars($user_number); ?>" disabled/>
                                          <br><br>
                                         </div>
                                        
                                         <div class="form-group">
                                             <label>College‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ </label>
-                                            <input class="form-control" value="<?php echo htmlspecialchars($department); ?>"/>
+                                            <input class="form-control" value="<?php echo htmlspecialchars($department); ?>" disabled/>
                                          <br><br>
                                         </div>
                                        
                                         <div class="form-group">
                                             <label>Course‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ </label>
                                             
-                                            <input class="form-control" value="<?php echo htmlspecialchars($course); ?>"/>
+                                            <input class="form-control" value="<?php echo htmlspecialchars($course); ?>" disabled/>
                                             <br><br>
                                         </div>
                                         
                                         <div class="form-group">
-                                            <label>Year‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ </label>
-                                            <input class="form-control" value="<?php echo htmlspecialchars($year_section); ?>"/>
+                                            <label>Year & Section‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ </label>
+                                            <input class="form-control" value="<?php echo htmlspecialchars($year_section); ?>" disabled/>
                                             <br><br>
                                         </div>
                                         
+                                        <div class="form-group">
+                                            <label>Campus ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ </label>
+                                            <input class="form-control" value="<?php  echo htmlspecialchars($campus) ?>" disabled/>
+                                            <br><br>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label>Gender ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ </label>
+                                            <input class="form-control" value="<?php echo htmlspecialchars($sex) ?>" disabled/>
+                                            <br><br>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label>Age ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ </label>
+                                            <input class="form-control" value="<?php echo htmlspecialchars($age) ?>" disabled/>
+                                            <br><br>
+                                        </div>
                                     </form>      
                                 </div>
                                 
@@ -236,29 +267,35 @@ $pdoExec = $pdoResult->execute();
                                     <form role="form">
                                     <div class="form-group">
                                             <label>Ticket ID‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ </label>
-                                            <input class="form-control" value="<?php echo htmlspecialchars($ticket_id); ?>"/>
+                                            <input class="form-control" value="<?php echo htmlspecialchars($ticket_id); ?>" disabled/>
                                             <br><br>
                                         </div>
                                     <div class="form-group">
                                             <label>Issue/Problem  ‎ ‎ ‎ ‎ ‎ ‎ ‎ </label>
-                                            <input class="form-control" value="<?php echo htmlspecialchars($issue); ?>"/>
+                                            <input class="form-control" value="<?php echo htmlspecialchars($issue); ?>" disabled/>
                                             <br><br>
                                         </div>
                                         <div class="form-group">
                                             <label>Description ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ </label>
-                                            <input class="form-control" value="<?php echo htmlspecialchars($description); ?>"/>
+                                            <textarea class="form-control" disabled style="height:148px; resize:none; overflow:auto;"><?php echo htmlspecialchars($description); ?></textarea>
+                                            <!--<input class="form-control" value="<?php // echo htmlspecialchars($description); ?>" disabled style=""/> -->
                                             <br><br>
                                         </div>
                                         <div class="form-group">
                                             <label>Screenshot ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ </label>
-                                            <img src="data:image/jpeg;base64,<?php echo $screenshotBase64; ?>" alt="Screenshot" class="img-fluid">
+                                            <a href="view_image.php?id=<?php echo htmlspecialchars($ticket_id); ?>" target="_blank">
+                                                <img src="data:image/jpeg;base64,<?php echo $screenshotBase64; ?>" alt="Screenshot" class="img-fluid">
+                                            </a>
+
+
                                             <br><br>
                                         </div>
                                     </form>
                                 </div>
                             </div>
-                            <div class="modal-footer">	<a href="#" data-dismiss="modal" class="btn">Back</a>
-                            <a data-toggle="modal" href="#myModal4" class="btn btn-primary">Open Ticket</a>
+                            <div class="modal-footer">	
+                                <a href="#" data-dismiss="modal" class="btn">Back</a>
+                                <a data-toggle="modal" href="#myModal4<?php echo $ticket_id; ?>" class="btn btn-primary">Open Ticket</a>
 
             </div>
         </div>
@@ -266,11 +303,9 @@ $pdoExec = $pdoResult->execute();
     </div>
 </div>
                               </div>
-
-        <?php
-        }
-        ?>
-                              <div class="modal fade" id="myModal4">
+        
+        
+<div class="modal fade" id="myModal4<?php echo $ticket_id; ?>">
     <div class="modal-dialog3">
         <div class="modal-content">
             <div class="modal-header">
@@ -280,15 +315,18 @@ $pdoExec = $pdoResult->execute();
             </div>
             <div class="container"></div>
             <div class="modal-body">Confirm opening ticket</div>
-            <div class="modal-footer">	<a href="#" data-dismiss="modal" class="btn">Cancel</a>
-	<a href="#" class="btn btn-primary">Confirm</a>
-
+            <div class="modal-footer">	
+                <a href="#" data-dismiss="modal" class="btn">Cancel</a>
+	            <a href="ticket-pending-update.php?id=<?php echo $ticket_id; ?>" class="btn btn-primary">Confirm</a>
             </div>
         </div>
     </div>
 </div>
-                          </div></td>
-                                        </tr>
+                          </div>
+        <?php
+        }
+        ?>
+                                        
 
                                         
                                     </tbody>
@@ -326,6 +364,7 @@ $pdoExec = $pdoResult->execute();
     </script>
       <!-- CUSTOM SCRIPTS -->
     <script src="assets/js/custom.js"></script>
+    
     
    
 </body>

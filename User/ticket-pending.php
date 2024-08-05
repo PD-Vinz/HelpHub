@@ -5,13 +5,13 @@ $pdoConnect = connection();
 session_start(); // Start the session
 
 // Check if the session variable is set
-if (!isset($_SESSION["student_number"])) {
+if (!isset($_SESSION["user_id"])) {
     header("Location: ../index.php");
     exit(); // Prevent further execution after redirection
 } else {
-    $id = $_SESSION["student_number"];
+    $id = $_SESSION["user_id"];
 
-    $pdoUserQuery = "SELECT * FROM student_user WHERE student_number = :number";
+    $pdoUserQuery = "SELECT * FROM tb_user WHERE user_id = :number";
     $pdoResult = $pdoConnect->prepare($pdoUserQuery);
     $pdoResult->bindParam(':number', $id);
     $pdoResult->execute();
@@ -33,17 +33,6 @@ if (!isset($_SESSION["student_number"])) {
         // Handle the case where no results are found
         echo "No student found with the given student number.";
     }
-}
-
-if(isset($_GET['error']) && $_GET['error'] == 1) {
-    // Set your error message here
-    $errorMessage = "Cannot proceed with your request. Please check your submission carefully.";
-    echo "<script type='text/javascript'>
-        window.onload = function() {
-            alert('$errorMessage');
-            window.location.href = 'reports.php';
-        };
-    </script>";
 }
 ?>
 
@@ -97,18 +86,19 @@ if(isset($_GET['error']) && $_GET['error'] == 1) {
             <div style="color: white;
             padding: 15px 50px 5px 50px;
             float: right;
-            font-size: 16px;"> Last access : 30 May 2014 &nbsp; 
+            font-size: 16px;"> Last access : <?php echo date('d F Y')?> &nbsp; 
             <div class="btn-group nav-link">
               <button type="button" class="btn btn-rounded badge badge-light dropdown-toggle dropdown-icon" data-toggle="dropdown">
-                <span class="ml-3">LOREM IPSUN</span>
+                <span class="ml-3"><?php echo $Name?></span>
             <span class="fa fa-caret-down">
             <span class="sr-only">Toggle Dropdown</span>
           </button>
           <div class="dropdown-menu" role="menu">
             <a class="dropdown-item" href="profile.php"><span class="fa fa-user"></span> MY ACCOUNT</a>
             <hr style="margin-top: 5px; margin-bottom: 5px;">
-            <a class="dropdown-item" href="http://localhost/sms//classes/Login.php?f=logout"><span class="fa fa-sign-out"></span> LOG OUT </a>
-          </div>
+            <a class="dropdown-item" href="settings.php"><span class="fa fa-gear"></span> SETTINGS</a>
+            <hr style="margin-top: 5px; margin-bottom: 5px;">
+            <a class="dropdown-item" href="logout.php"><span class="fa fa-sign-out"></span> LOG OUT </a>          </div>
         </nav>
         <!-- /. NAV TOP  -->
         <nav class="navbar-default navbar-side" role="navigation">
@@ -201,7 +191,7 @@ $pdoExec = $pdoResult->execute();
 <table class="table table-bordered table-striped table-hover" id="dataTables-example">
     <thead>
         <tr class="btn-primary">
-            <th>TICKET NUMBER</th>
+            <th>TICKET ID</th>
             <th>DATE SUBMITTED</th>
             <th>ISSUE</th>
             <th>DESCRIPTION</th>
@@ -219,15 +209,28 @@ $pdoExec = $pdoResult->execute();
             <td><?php echo htmlspecialchars($ticket_id); ?></td>
             <td><?php echo htmlspecialchars($created_date); ?></td>
             <td><?php echo htmlspecialchars($issue); ?></td>
-            <td><?php echo htmlspecialchars($description); ?></td>
+            <td><?php 
+    $max_length = 25;
+    if (strlen($description) > $max_length) {
+        echo htmlspecialchars(substr($description, 0, $max_length)) . '...';
+    } else {
+        echo htmlspecialchars($description);
+    }
+    ?></td>
             <td><?php echo htmlspecialchars($status); ?></td>
             <td>
-                <!-- Button to open the modal popup -->
+<a href="ticket-view.php?ticket_id=<?php echo $ticket_id; ?>">
+<button class='btn btn-primary btn-xs'>
+VIEW TICKET
+</button>
+</a>
+
+                <!-- Button to open the modal popup 
                 <div class='panel-body-ticket'>
                     <button class='btn btn-primary btn-xs' data-toggle='modal' data-target='#myModal<?php echo $ticket_id; ?>'>
                         View Ticket
                     </button>
-                </div>
+                </div>-->
             </td>
         </tr>
 
@@ -239,6 +242,8 @@ $pdoExec = $pdoResult->execute();
                         <button type='button' class='close' data-dismiss='modal'>&times;</button>
                         <h4 class='modal-title'>Ticket Details</h4>
                     </div>
+
+                    <!-- Ticket Description -->
                     <div class='modal-body'>
                         <h3>Ticket ID: <?php echo htmlspecialchars($ticket_id); ?></h3>
                         <h3>Created Date: <?php echo htmlspecialchars($created_date); ?></h3>
@@ -247,6 +252,8 @@ $pdoExec = $pdoResult->execute();
                         <h3>Status: <?php echo htmlspecialchars($status); ?></h3>
                         <img src="data:image/jpeg;base64,<?php echo $screenshotBase64; ?>" alt="Screenshot" class="img-fluid">
                     </div>
+
+                    <!-- History Table -->
                 </div>
             </div>
         </div>

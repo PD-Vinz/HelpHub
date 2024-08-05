@@ -1,3 +1,73 @@
+<?php
+include_once("../connection/conn.php");
+$pdoConnect = connection();
+
+session_start(); // Start the session
+
+// Check if the session variable is set
+if (!isset($_SESSION["admin_number"])) {
+    header("Location: ../index.php");
+    exit(); // Prevent further execution after redirection
+} else {
+    $id = $_SESSION["admin_number"];
+
+    $pdoUserQuery = "SELECT * FROM mis_employees WHERE admin_number = :number";
+    $pdoResult = $pdoConnect->prepare($pdoUserQuery);
+    $pdoResult->bindParam(':number', $id);
+    $pdoResult->execute();
+
+    $Data = $pdoResult->fetch(PDO::FETCH_ASSOC);
+
+    if ($Data) {
+        $Name = $Data['f_name'];
+        $Position = $Data['position'];
+        $U_T = $Data['user_type'];
+
+        $nameParts = explode(' ', $Name);
+        $firstName = $nameParts[0];
+    } else {
+        // Handle the case where no results are found
+        echo "No student found with the given student number.";
+    }
+
+try {
+
+    $pdoCountQuery = "SELECT * FROM tb_tickets";
+    $pdoResult = $pdoConnect->prepare($pdoCountQuery);
+    $pdoResult->execute();
+    $allTickets = $pdoResult->rowCount();
+
+    $pdoCountQuery = "SELECT * FROM tb_tickets WHERE status = 'Pending'";
+    $pdoResult = $pdoConnect->prepare($pdoCountQuery);
+    $pdoResult->execute();
+    $pendingTickets = $pdoResult->rowCount();
+
+    $pdoCountQuery = "SELECT * FROM tb_tickets WHERE status = 'Returned'";
+    $pdoResult = $pdoConnect->prepare($pdoCountQuery);
+    $pdoResult->execute();
+    $returnedTickets = $pdoResult->rowCount();
+
+    $pdoCountQuery = "SELECT * FROM tb_tickets WHERE status = 'Completed'";
+    $pdoResult = $pdoConnect->prepare($pdoCountQuery);
+    $pdoResult->execute();
+    $completedTickets = $pdoResult->rowCount();
+
+    $pdoCountQuery = "SELECT * FROM tb_tickets WHERE status = 'Due'";
+    $pdoResult = $pdoConnect->prepare($pdoCountQuery);
+    $pdoResult->execute();
+    $dueTickets = $pdoResult->rowCount();
+
+} catch (PDOException $e) {
+    echo "Error: " . $e->getMessage();
+}
+
+}
+
+
+
+
+?>
+
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>

@@ -5,13 +5,13 @@ $pdoConnect = connection();
 session_start(); // Start the session
 
 // Check if the session variable is set
-if (!isset($_SESSION["student_number"])) {
+if (!isset($_SESSION["user_id"])) {
     header("Location: ../index.php");
     exit(); // Prevent further execution after redirection
 } else {
-    $id = $_SESSION["student_number"];
+    $id = $_SESSION["user_id"];
 
-    $pdoUserQuery = "SELECT * FROM student_user WHERE student_number = :number";
+    $pdoUserQuery = "SELECT * FROM tb_user WHERE user_id = :number";
     $pdoResult = $pdoConnect->prepare($pdoUserQuery);
     $pdoResult->bindParam(':number', $id);
     $pdoResult->execute();
@@ -70,14 +70,16 @@ if(isset($_GET['error']) && $_GET['error'] == 1) {
             align-items: center;
             justify-content: center;
             margin-top: 10px;
-            overflow: auto;
+            overflow: hidden; /* Ensure that the container handles overflow */
             border: 1px solid #ddd;
-            max-width: 100%;
-            max-height: 100%;
+            max-width: 100%; /* Full width of the container */
+            max-height: 720px; /* Set a max height for the preview area */
         }
         #imagePreview img {
             max-width: 100%;
             max-height: 100%;
+            width: auto; /* Let the image maintain its aspect ratio */
+            height: auto; /* Let the image maintain its aspect ratio */
         }
         .error {
             color: red;
@@ -168,7 +170,9 @@ input[type="file"]::file-selector-button {
           <div class="dropdown-menu" role="menu">
             <a class="dropdown-item" href="profile.php"><span class="fa fa-user"></span> MY ACCOUNT</a>
             <hr style="margin-top: 5px; margin-bottom: 5px;">
-            <a class="dropdown-item" href="http://localhost/sms//classes/Login.php?f=logout"><span class="fa fa-sign-out"></span> LOG OUT </a>
+            <a class="dropdown-item" href="settings.php"><span class="fa fa-gear"></span> SETTINGS</a>
+            <hr style="margin-top: 5px; margin-bottom: 5px;">
+            <a class="dropdown-item" href="logout.php"><span class="fa fa-sign-out"></span> LOG OUT </a>
           </div>
         </nav>
         <!-- /. NAV TOP  -->
@@ -246,26 +250,32 @@ input[type="file"]::file-selector-button {
 <form class="issue-form" action="ticket-submit.php" method="POST" enctype="multipart/form-data">
 
                         <div class="form-group">
-                            <label for="category">Issue</label>
-                            <select id="category" name="category" class="form-control" required>
+                            <label for="category">ISSUE</label>
+                            <select id="category" name="category" class="form-control dropdown" required>
                                 <option value="">SELECT PROBLEM</option>
                                 <option value="DHVSU EMAIL">DHVSU EMAIL</option>
                                 <option value="DHVSU PORTAL">DHVSU PORTAL</option>
                                 <option value="DHVSU SMS">DHVSU SMS</option>
                             </select>
                         </div>
+
                         <div class="form-group">
-                            <label for="issue-description">Issue Description</label>
-                            <textarea id="issue-description" name="issue-description" class="form-control" required></textarea>
-                        </div>
+                                    <label for="issue-description">Issue Description</label>
+                                    <textarea id="issue-description" name="issue-description" class="form-control" maxlength="255" oninput="updateRemainingCharacters()" required></textarea>
+                                    <small id="remaining-characters" class="form-text text-muted">255 characters remaining</small>
+                                </div>
+
+
                         <div class="form-group">
                             <label for="" class="control-label">Upload Screenshot</label>
                         <div class="form-group" id="imagePreview">
                             <img src="assets/pic/pics.jpg" alt="" id="cimg2" class="img-thumbnail">
                         </div>
+                        
                         <div class="custom-file">
-                            <input type="file" id="imageInput" name="image" accept="image/*">       
+                            <input type="file" id="imageInput" name="image" accept="image/*" required>       
                             <p id="sizeError" class="error"></p>
+                            <p id="typeError" class="error"></p>
                         </div>
                         </div>
                 
@@ -277,7 +287,7 @@ input[type="file"]::file-selector-button {
                             specifically the Management Information Systems Office, to gather, store, and handle the information 
                             I provide regarding my SMS/LMS/@dhvsu Google account concerns.</p>
 
-                            <label>
+                    <label>
                         <input type="radio" name="consent" value="yes" required> Yes, I consent
                     </label>
                     <label>
@@ -319,15 +329,24 @@ input[type="file"]::file-selector-button {
     <script>
         document.getElementById('imageInput').addEventListener('change', function(event) {
             const file = event.target.files[0];
-            const maxSize = 2 * 1024 * 1024; // 6MB in bytes
+            const maxSize = 6 * 1024 * 1024; // 6MB in bytes
+            const allowedTypes = ['image/png', 'image/jpeg', 'image/jpg'];
 
             if (file) {
                 if (file.size > maxSize) {
-                    document.getElementById('sizeError').textContent = 'File size exceeds 2MB limit.';
+                    document.getElementById('sizeError').textContent = 'File size exceeds 6MB limit.';
                     event.target.value = ''; // Reset the file input
                     return;
                 } else {
                     document.getElementById('sizeError').textContent = '';
+                }
+
+                if (!allowedTypes.includes(file.type)) {
+                    document.getElementById('typeError').textContent = 'Only PNG, JPG, and JPEG files are allowed.';
+                    event.target.value = ''; // Reset the file input
+                    return;
+                } else {
+                    document.getElementById('typeError').textContent = '';
                 }
 
                 const reader = new FileReader();
@@ -345,10 +364,36 @@ input[type="file"]::file-selector-button {
                 };
                 reader.readAsDataURL(file);
             } else {
-                
+                document.getElementById('imagePreview').innerHTML = '<img src="assets/pic/pics.jpg" alt="" id="cimg2" class="img-thumbnail">';
             }
         });
+
+        function adjustHeight() {
+        const textarea = document.getElementById('issue-description');
+        textarea.style.height = 'auto'; // Reset height to auto to shrink if needed
+        textarea.style.height = textarea.scrollHeight + 'px'; // Adjust height to fit the content
+    }
+
+    function updateRemainingCharacters() {
+        const textarea = document.getElementById('issue-description');
+        const remainingChars = 255 - textarea.value.length;
+        document.getElementById('remaining-characters').textContent = `${remainingChars} characters remaining`;
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+        const textarea = document.getElementById('issue-description');
+        textarea.addEventListener('input', function() {
+            adjustHeight();
+            updateRemainingCharacters();
+        });
+
+        // Initial adjustment in case there's already content
+        adjustHeight();
+        updateRemainingCharacters();
+    });
+
     </script>
 
 </body>
 </html>
+

@@ -5,28 +5,55 @@ $pdoConnect = connection();
 session_start(); // Start the session
 
 //Updates the Balance Sheet
-if (!isset($_SESSION["student_number"])) {
+if (!isset($_SESSION["user_id"])) {
     header("Location: ../index.php");
     exit(); // Prevent further execution after redirection
 } else {
-    $id = $_SESSION["student_number"];
+    $id = $_SESSION["user_id"];
 
 if (isset($_POST['update'])) {
+
+    if (isset($_FILES['image']) && $_FILES['image']['error'] == 0) {
+        $image = $_FILES['image'];
+        
+        // Validate file size (6MB)
+        $maxSize = 6 * 1024 * 1024; // 6MB in bytes
+        if ($image['size'] > $maxSize) {
+            echo "File size exceeds 6MB limit.";
+            exit;
+        }
+
+        // Validate file type
+        $allowedTypes = ['image/png', 'image/jpeg', 'image/jpg'];
+        $fileType = mime_content_type($image['tmp_name']);
+        if (!in_array($fileType, $allowedTypes)) {
+            echo "Only PNG, JPG, and JPEG files are allowed.";
+            exit;
+        }
+
+        $imgContent = file_get_contents($image['tmp_name']);
 
     try{
     $NewName = $_POST['name'];
     $NewSex = $_POST['sex'];
+    $NewBday = $_POST['bday'];
+    $NewAge = $_POST['age'];
+    $NewCampus = $_POST['campus'];
     $NewDept = $_POST['dept'];
     $NewCourse = $_POST['course'];
     $NewYS = $_POST['ys'];
 
-    $pdoUserQuery = "UPDATE student_user SET name = :name, department = :department, course = :course, year_section = :year_section, sex = :sex WHERE student_number = :number";
+    $pdoUserQuery = "UPDATE tb_user SET name = :name, birthday = :birthday, age = :age, campus = :campus, department = :department, course = :course, year_section = :year_section, profile_picture = :P_P, sex = :sex WHERE user_id = :number";
     $pdoResult = $pdoConnect->prepare($pdoUserQuery);
     $pdoResult->bindParam(':number', $id);
     $pdoResult->bindParam(':name', $NewName);
+    $pdoResult->bindParam(':birthday', $NewBday);
+    $pdoResult->bindParam(':age', $NewAge);
+    $pdoResult->bindParam(':campus', $NewCampus);
     $pdoResult->bindParam(':department', $NewDept);
     $pdoResult->bindParam(':course', $NewCourse);
     $pdoResult->bindParam(':year_section', $NewYS);
+    $pdoResult->bindParam(':P_P', $imgContent);
     $pdoResult->bindParam(':sex', $NewSex);
     $pdoResult->execute();
 
@@ -43,6 +70,10 @@ if (isset($_POST['update'])) {
         echo "Error: " . $e->getMessage();
         exit(); // Exit after handling the error
     }
+
+} else {
+    echo "Error: No Image";
+}
 
 }
 }

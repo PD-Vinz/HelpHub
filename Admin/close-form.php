@@ -1,3 +1,70 @@
+<?php
+include_once("../connection/conn.php");
+$pdoConnect = connection();
+
+session_start(); // Start the session
+
+// Check if the session variable is set
+if (!isset($_SESSION["admin_number"])) {
+    header("Location: ../index.php");
+    exit(); // Prevent further execution after redirection
+} else {
+    $id = $_SESSION["admin_number"];
+
+    $pdoUserQuery = "SELECT * FROM mis_employees WHERE admin_number = :number";
+    $pdoResult = $pdoConnect->prepare($pdoUserQuery);
+    $pdoResult->bindParam(':number', $id);
+    $pdoResult->execute();
+
+    $Data = $pdoResult->fetch(PDO::FETCH_ASSOC);
+
+    if ($Data) {
+        $Name = $Data['f_name'];
+        $Position = $Data['position'];
+        $U_T = $Data['user_type'];
+
+        $nameParts = explode(' ', $Name);
+        $firstName = $nameParts[0];
+    } else {
+        // Handle the case where no results are found
+        echo "No student found with the given student number.";
+    }
+
+try {
+
+    $pdoCountQuery = "SELECT * FROM tb_tickets";
+    $pdoResult = $pdoConnect->prepare($pdoCountQuery);
+    $pdoResult->execute();
+    $allTickets = $pdoResult->rowCount();
+
+    $pdoCountQuery = "SELECT * FROM tb_tickets WHERE status = 'Pending'";
+    $pdoResult = $pdoConnect->prepare($pdoCountQuery);
+    $pdoResult->execute();
+    $pendingTickets = $pdoResult->rowCount();
+
+    $pdoCountQuery = "SELECT * FROM tb_tickets WHERE status = 'Returned'";
+    $pdoResult = $pdoConnect->prepare($pdoCountQuery);
+    $pdoResult->execute();
+    $returnedTickets = $pdoResult->rowCount();
+
+    $pdoCountQuery = "SELECT * FROM tb_tickets WHERE status = 'Completed'";
+    $pdoResult = $pdoConnect->prepare($pdoCountQuery);
+    $pdoResult->execute();
+    $completedTickets = $pdoResult->rowCount();
+
+    $pdoCountQuery = "SELECT * FROM tb_tickets WHERE status = 'Due'";
+    $pdoResult = $pdoConnect->prepare($pdoCountQuery);
+    $pdoResult->execute();
+    $dueTickets = $pdoResult->rowCount();
+
+} catch (PDOException $e) {
+    echo "Error: " . $e->getMessage();
+}
+
+}
+
+?>
+
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -15,6 +82,16 @@
     <link href="assets/css/custom.css" rel="stylesheet" />
      <!-- GOOGLE FONTS-->
    <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css' />
+
+   <style>
+        .form-controlb {
+            width: 100%;
+            resize: none;
+        }
+        .modal-dialog3 {
+            max-width: 500px;
+        }
+    </style>
 </head>
 <body>
     <div id="wrapper">
@@ -26,34 +103,128 @@
                 <div class="row">
                     <div class="col-md-12">
                      <h2>Close Ticket</h2>   
-                        <h5>Welcome Jhon Deo , Love to see you back. </h5>
+                        <!---<h5>Welcome <?php //echo $Name?> , Love to see you back. </h5>-->
                     </div>
                 </div>              
                  <!-- /. ROW  -->
                   <hr />
                   <div class="row">
                                 <div class="col-md-12">
-                                    
+    <form role="form" method="post" action="ticket-resolution.php?id=<?php echo $_GET['id']?>&form=close">
+        <div class="form-group row">
+
+
+            <label class="col-md-2 col-form-label">Details:</label>
+            <div class="col-md-8">
+                <textarea name="resolution" id="detailsTextarea" class="form-controlb" rows="5" required></textarea>
+                <br>
+                <select id="fileSelector" class="form-control">
+                    <option value="">Select a file</option>
+
+                </select>
+                <br>
+                <!--<button type="button" id="loadFileButton" class="btn btn-secondary">Load File</button>-->
+                <!--<input type="file" id="fileInput" accept=".txt" class="form-control-file">-->
+                <br>
+            </div>
+        </div>
+        <div class="form-group row">
+            <div class="col-md-2 offset-md-10">
+                <a data-toggle="modal" href="#myModalTransfer" class="btn btn-primary">Close</a>
+                <div class="modal fade" id="myModalTransfer">
+                    <div class="modal-dialog modal-dialog3">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                                <h4 class="modal-title">Close Ticket</h4>
+                            </div>
+                            <div class="modal-body">
+                                Confirm Closing ticket
+                            </div>
+                            <div class="modal-footer">
+                                <button data-dismiss="modal" class="btn">Cancel</button>
+                                <button class="btn btn-primary">Confirm</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+    <script>
+    // Function to populate the dropdown with files
+    function populateDropdown() {
+        fetch('http://localhost/HelpHub/list_files.php')
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(fileList => {
+                const dropdown = document.getElementById('fileSelector');
+                fileList.forEach(fileName => {
+                    const option = document.createElement('option');
+                    option.value = `http://localhost/HelpHub/Templates/${fileName}`;
+                    option.textContent = fileName;
+                    dropdown.appendChild(option);
+                });
+            })
+            .catch(error => {
+                console.error('There was a problem with the fetch operation:', error);
+            });
+    }
+
+    // Call the function to populate the dropdown on page load
+    window.onload = populateDropdown;
+
+    document.getElementById('fileSelector').addEventListener('change', function() {
+        const selectedUrl = this.value;
+
+        if (selectedUrl) {
+            // Fetch the file content from the selected URL
+            fetch(selectedUrl)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.text();
+                })
+                .then(data => {
+                    document.getElementById('detailsTextarea').value = data;
+                })
+                .catch(error => {
+                    console.error('There was a problem with the fetch operation:', error);
+                    document.getElementById('detailsTextarea').value = "Failed to load content. Please try again.";
+                });
+        } else {
+            // Clear the textarea if no file is selected
+            document.getElementById('detailsTextarea').value = '';
+        }
+    });
+</script>
+<!--                                    
                                     <form role="form">
                                        
-                                      
+
                                         <br>
-                                      <br>
-                                      <br>
+                                            <br>
+                                                <br>
                                      
-                                        <div class="form-group">
+                                    <div class="form-group">
                                         <div class="col-md-2">
                                             <label>Details:‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ </label>
                                         </div>
                                         <div class="col-md-8">
                                         <textarea class="form-controlb" rows="5"></textarea>
                                             <br><br></div>
-                                        </div>
-                                        <div class="col-md-9">
-                                        </div>
-                                        <div class="col-md-2">
-                                        <a data-toggle="modal" href="#myModalTransfer" class="btn btn-primary">Close</a>
-                                        <div class="modal fade" id="myModalTransfer">
+                                    </div>
+                                    <div class="col-md-9">
+
+                                    </div>
+                <div class="col-md-2">
+                    <a data-toggle="modal" href="#myModalTransfer" class="btn btn-primary">Close</a>
+                        <div class="modal fade" id="myModalTransfer">
                             <div class="modal-dialog3">
                             <div class="modal-content">
                             <div class="modal-header">
@@ -69,9 +240,10 @@
                             </div>
                             </div>
                             </div>
-                            </div>
-                                        </div>
-                                    </form>      
+                        </div>
+                </div>
+                                    </form>
+-->   
                                 </div>
                                 
                                 
