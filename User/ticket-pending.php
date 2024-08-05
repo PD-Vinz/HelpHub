@@ -71,6 +71,7 @@ if (!isset($_SESSION["user_id"])) {
 </head>
 
 <body>
+    <p>helloooooo</p>
     <div id="wrapper">
         <nav class="navbar navbar-default navbar-cls-top " role="navigation" style="margin-bottom: 0">
             <div class="navbar-header">
@@ -83,6 +84,7 @@ if (!isset($_SESSION["user_id"])) {
                 </button>
                 <a class="navbar-brand" href="dashboard.php">USER</a>
             </div>
+            <p>tite</p>
             <div style="color: white;
             padding: 15px 50px 5px 50px;
             float: right;
