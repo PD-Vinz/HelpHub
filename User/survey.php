@@ -122,8 +122,8 @@
                                 <li><input type="radio" name="overall_satisfaction" value="Very Satisfied" required> Very Satisfied</li>
                                 <li><input type="radio" name="overall_satisfaction" value="Satisfied" required> Satisfied</li>
                                 <li><input type="radio" name="overall_satisfaction" value="Neutral" required> Neutral</li>
-                                <li><input type="radio" name="overall_satisfaction" value="Disappointed" required> Disappointed</li>
-                                <li><input type="radio" name="overall_satisfaction" value="Very Disappointed" required> Very Disappointed</li>
+                                <li><input type="radio" name="overall_satisfaction" value="Dissatisfied" required> Dissatisfied</li>
+                                <li><input type="radio" name="overall_satisfaction" value="Very Dissatisfied" required> Very Dissatisfied</li>
                             </ul>
                         </div>
                         <div class="question">
@@ -132,16 +132,18 @@
                                 <li><input type="radio" name="service_rating" value="Very Satisfied" required> Very Satisfied</li>
                                 <li><input type="radio" name="service_rating" value="Satisfied" required> Satisfied</li>
                                 <li><input type="radio" name="service_rating" value="Neutral" required> Neutral</li>
-                                <li><input type="radio" name="service_rating" value="Disappointed" required> Disappointed</li>
-                                <li><input type="radio" name="service_rating" value="Very Disappointed" required> Very Disappointed</li>
+                                <li><input type="radio" name="service_rating" value="Dissatisfied" required> Dissatisfied</li>
+                                <li><input type="radio" name="service_rating" value="Very Dissatisfied" required> Very Dissatisfied</li>
                             </ul>
                         </div>
                         <div class="question">
                             <label>Did our service meet your expectations?</label>
                             <ul>
-                                <li><input type="radio" name="service_expectations" value="Yes, exceeded expectations" required> Yes, exceeded expectations</li>
-                                <li><input type="radio" name="service_expectations" value="Yes, met expectations" required> Yes, met expectations</li>
-                                <li><input type="radio" name="service_expectations" value="No, fell short of expectations" required> No, fell short of expectations</li>
+                                <li><input type="radio" name="service_expectations" value="Very Satisfied" required> Very Satisfied</li>
+                                <li><input type="radio" name="service_expectations" value="Satisfied" required> Satisfied</li>
+                                <li><input type="radio" name="service_expectations" value="Neutral" required> Neutral</li>
+                                <li><input type="radio" name="service_expectations" value="Dissatisfied" required> Dissatisfied</li>
+                                <li><input type="radio" name="service_expectations" value="Very Dissatisfied" required> Very Dissatisfied</li>
                             </ul>
                         </div>
                         <div class="modal-footer">

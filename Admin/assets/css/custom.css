@@ -700,3 +700,36 @@ body {
     font-size: 24px; /* Adjust size as needed */
     margin-right: 10px;
   }
+
+
+  .rating-bar {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+.rating-label {
+    width: 150px;
+}
+.progress-container {
+    flex: 1;
+    background: #f0f0f0;
+    margin: 0 10px;
+    position: relative;
+    height: 20px;
+}
+.progress-bar {
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+.rating-count {
+    width: 50px;
+}
+
+
+
+.scrollable-panel {
+    height: 350px;
+    overflow-y: auto;
+}
