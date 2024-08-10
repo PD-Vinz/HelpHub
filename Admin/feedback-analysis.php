@@ -57,6 +57,201 @@ try {
     $pdoResult->execute();
     $dueTickets = $pdoResult->rowCount();
 
+
+    //feedback analysis
+
+    //overall satisfaction
+
+    $sql = "SELECT overall_satisfaction FROM tb_survey_feedback";
+$stmt = $pdoConnect->prepare($sql);
+$stmt->execute();
+$results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+$counts = [
+    'very satisfied' => 0,
+    'satisfied' => 0,
+    'neutral' => 0,
+    'dissatisfied' => 0,
+    'very dissatisfied' => 0
+];
+
+foreach ($results as $row) {
+    $satisfaction = strtolower($row['overall_satisfaction']);
+    if (array_key_exists($satisfaction, $counts)) {
+        $counts[$satisfaction]++;
+    }
+}
+
+$totalEntries = array_sum($counts);
+$percentages = [];
+foreach ($counts as $satisfaction => $count) {
+    $percentages[$satisfaction] = ($totalEntries > 0) ? ($count / $totalEntries) * 100 : 0;
+}
+$overallSatisfactionPercentage = $percentages['very satisfied'] + $percentages['satisfied'];
+
+// Service rating
+$sql = "SELECT service_rating FROM tb_survey_feedback";
+$stmt = $pdoConnect->prepare($sql);
+$stmt->execute();
+$results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+$service_counts = [
+    'very satisfied' => 0,
+    'satisfied' => 0,
+    'neutral' => 0,
+    'dissatisfied' => 0,
+    'very dissatisfied' => 0
+];
+
+foreach ($results as $row) {
+    $service = strtolower($row['service_rating']);
+    if (array_key_exists($service, $service_counts)) {
+        $service_counts[$service]++;
+    }
+}
+
+$service_totalEntries = array_sum($service_counts);
+$service_percentages = [];
+foreach ($service_counts as $service => $service_count) {
+    $service_percentages[$service] = ($service_totalEntries > 0) ? ($service_count / $service_totalEntries) * 100 : 0;
+}
+$overallServiceRating = $service_percentages['very satisfied'] + $service_percentages['satisfied'];
+
+// Service expectations
+$sql = "SELECT service_expectations FROM tb_survey_feedback";
+$stmt = $pdoConnect->prepare($sql);
+$stmt->execute();
+$expectationResults = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+$expectation_counts = [
+    'very satisfied' => 0,
+    'satisfied' => 0,
+    'neutral' => 0,
+    'dissatisfied' => 0,
+    'very dissatisfied' => 0
+];
+
+foreach ($expectationResults as $row) {
+    $expectation = strtolower($row['service_expectations']);
+    if (array_key_exists($expectation, $expectation_counts)) {
+        $expectation_counts[$expectation]++;
+    }
+}
+
+$expectation_totalEntries = array_sum($expectation_counts);
+$expectation_percentages = [];
+foreach ($expectation_counts as $expectation => $count) {
+    $expectation_percentages[$expectation] = ($expectation_totalEntries > 0) ? ($count / $expectation_totalEntries) * 100 : 0;
+}
+
+$overallExpectationPercentage = $expectation_percentages['very satisfied'] + $expectation_percentages['satisfied'];
+
+
+// Pass data to JavaScript
+$ratingData = [
+    ['label' => 'Very Satisfied', 'count' => $counts['very satisfied'], 'color' => '#4caf50'],
+    ['label' => 'Satisfied', 'count' => $counts['satisfied'], 'color' => '#8bc34a'],
+    ['label' => 'Neutral', 'count' => $counts['neutral'], 'color' => '#ffeb3b'],
+    ['label' => 'Dissatisfied', 'count' => $counts['dissatisfied'], 'color' => '#ff9800'],
+    ['label' => 'Very Dissatisfied', 'count' => $counts['very dissatisfied'], 'color' => '#f44336']
+];
+
+$service_ratingData = [
+    ['label' => 'Very Satisfied', 'count' => $service_counts['very satisfied'], 'color' => '#4caf50'],
+    ['label' => 'Satisfied', 'count' => $service_counts['satisfied'], 'color' => '#8bc34a'],
+    ['label' => 'Neutral', 'count' => $service_counts['neutral'], 'color' => '#ffeb3b'],
+    ['label' => 'Dissatisfied', 'count' => $service_counts['dissatisfied'], 'color' => '#ff9800'],
+    ['label' => 'Very Dissatisfied', 'count' => $service_counts['very dissatisfied'], 'color' => '#f44336']
+];
+
+$expectation_ratingData = [
+    ['label' => 'Very Satisfied', 'count' => $expectation_counts['very satisfied'], 'color' => '#4caf50'],
+    ['label' => 'Satisfied', 'count' => $expectation_counts['satisfied'], 'color' => '#8bc34a'],
+    ['label' => 'Neutral', 'count' => $expectation_counts['neutral'], 'color' => '#ffeb3b'],
+    ['label' => 'Dissatisfied', 'count' => $expectation_counts['dissatisfied'], 'color' => '#ff9800'],
+    ['label' => 'Very Dissatisfied', 'count' => $expectation_counts['very dissatisfied'], 'color' => '#f44336']
+];
+
+echo "<script>
+    var ratingData = " . json_encode($ratingData) . ";
+    var totalResponses = $totalEntries;
+    var serviceRatingData = " . json_encode($service_ratingData) . ";
+    var serviceTotalResponses = $service_totalEntries;
+    var expectationRatingData = " . json_encode($expectation_ratingData) . ";
+    var expectationTotalResponses = $expectation_totalEntries;
+</script>";
+
+
+//bayes analysis
+
+$sql = "SELECT bayes_rating_like, bayes_rating_improve, bayes_rating_comment FROM tb_survey_feedback";
+$stmt = $pdoConnect->prepare($sql);
+$stmt->execute();
+$feedbackResults = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+
+$bayesCounts = [
+  'like' => ['positive' => 0, 'neutral' => 0, 'negative' => 0],
+  'improve' => ['positive' => 0, 'neutral' => 0, 'negative' => 0],
+  'comment' => ['positive' => 0, 'neutral' => 0, 'negative' => 0]
+];
+
+foreach ($feedbackResults as $row) {
+  foreach (['like', 'improve', 'comment'] as $key) {
+      $rating = strtolower($row["bayes_rating_$key"]);
+      if (isset($bayesCounts[$key][$rating])) {
+          $bayesCounts[$key][$rating]++;
+      }
+  }
+}
+
+// Calculate total counts and percentages
+$bayesPercentages = [];
+foreach ($bayesCounts as $key => $counts) {
+  $total = array_sum($counts);
+  $percentages = [];
+  foreach ($counts as $rating => $count) {
+      $percentages[$rating] = ($total > 0) ? ($count / $total) * 100 : 0;
+  }
+  $bayesPercentages[$key] = $percentages;
+}
+echo "<script>
+    var bayesData = {
+        like: " . json_encode($bayesPercentages['like']) . ",
+        improve: " . json_encode($bayesPercentages['improve']) . ",
+        comment: " . json_encode($bayesPercentages['comment']) . "
+    };
+</script>";
+
+// Initialize variables for total responses and positive responses
+$totalResponses = 0;
+$totalPositiveResponses = 0;
+
+foreach ($feedbackResults as $row) {
+    foreach (['like', 'improve', 'comment'] as $key) {
+        $rating = strtolower($row["bayes_rating_$key"]);
+        
+        // Increment the total responses counter
+        $totalResponses++;
+        
+        // Increment the total positive responses counter if the rating is positive
+        if ($rating === 'positive') {
+            $totalPositiveResponses++;
+        }
+    }
+}
+
+// Calculate the overall percentage of positive responses
+$overallPositivePercentage = ($totalResponses > 0) ? ($totalPositiveResponses / $totalResponses) * 100 : 0;
+
+// Output the overall positive percentage
+echo "<script>
+    var overallPositivePercentage = " . json_encode($overallPositivePercentage) . ";
+    console.log('Overall Positive Percentage: ' + overallPositivePercentage + '%');
+</script>";
+
+//feedback analysis end
+
 } catch (PDOException $e) {
     echo "Error: " . $e->getMessage();
 }
@@ -96,74 +291,31 @@ try {
                 <div class="row">
                     <div class="col-md-12">
                      <h2>Feedback Analysis</h2>   
-                        <h5>Welcome Jhon Deo , Love to see you back. </h5>
-                 
-                    </div>
-
-                    
-                </div>
-<div class="col-md-8">
-  <div class="panel panel-default">
-    <div class="panel-heading">
-      Top Comments
-    </div>
-    <div class="panel-body" >
-      <ul>
-      <li><h4> The response time was quick. i was able to see the progress of my ticket</h4></li>
-      <li><h4> fast and reliable</h4></li>
-      <li><h4> yes</h4></li>
-      <li><h4> Admins are good looking</h4></li>
-  </ul>
-      </div> 
-  </div>
-</div>
-                <div class="col-md-4">
+                     <div class="col-md-4"> 
   <div class="panel panel-default">
     <div class="panel-heading">
       Customer Satisfaction (CSAT)
     </div>
-    <div class="panel-body">
+    <div class="panel-body" >
       <div class="csat-container">
         <span class="csat-label">Monthly +43% &#9650;</span> 
         <div class="csat-percentage">
-          70%
+          <?php echo number_format($overallPositivePercentage, 2); ?>%
         </div>
+ 
+        <h4>Total number of responses: 9999</h4>
       </div>
     </div>
+    
   </div>
 </div>
-
-
-
-<div class="col-md-6">
-    <div class="panel panel-default">
-        <div class="panel-heading">
-            Ratings Distribution (4748 Responses)
-        </div>
-        <div class="panel-body" id="ratingBarsContainer"> 
-        </div> 
-    </div>
-</div>
-
-<div class="col-md-6">
-  <div class="panel panel-default">
-    <div class="panel-heading">
-      User Feedback
-    </div>
-    <div class="panel-body" id="npsContainer">
-      <br>
-      </div> 
-  </div>
-</div>
-<br>
-
-<div class="col-md-12">
+                     <div class="col-md-8" >
                     <!-- Advanced Tables -->
-                    <div class="panel panel-default">
+                    <div class="panel panel-default" style="height:440">
                         <div class="panel-heading">
                             <h3>Feedback List</h3>
                         </div>
-                        <div class="panel-body-ticket">
+                        <div class="panel-body-ticket scrollable-panel" >
                             <div class="table-responsive">
 
 <?php
@@ -318,6 +470,87 @@ $pdoExec = $pdoResult->execute();
                             
                         </div>
                     </div>
+                    </div>
+                </div>
+              
+              
+                <div class="col-md-4"> 
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      Customer Satisfaction (CSAT)
+    </div>
+    <div class="panel-body" id="ratingBarsContainer">
+      <div class="csat-container">
+        <span class="csat-label">Monthly +43% &#9650;</span> 
+        <div class="csat-percentage">
+          <?php echo number_format($overallSatisfactionPercentage, 2); ?>%
+        </div>
+ 
+        <h4>Overall Satisfaction Breakdown</h4>
+      </div>
+    </div>
+    
+  </div>
+</div>
+
+<div class="col-md-4"> 
+  <div class="panel panel-default">
+    <div class="panel-heading">
+     Service Rating
+    </div>
+    <div class="panel-body" id="serviceRatingBarsContainer">
+      <div class="csat-container">
+        <span class="csat-label">Monthly +43% &#9650;</span> 
+        <div class="csat-percentage">
+          <?php echo number_format($overallServiceRating, 2); ?>%
+        </div>
+        <h4>Service Rating Breakdown</h4>
+
+      </div>
+    </div>
+    
+  </div>
+</div>
+<div class="col-md-4"> 
+  <div class="panel panel-default">
+    <div class="panel-heading">
+     Service Expectations
+    </div>
+    <div class="panel-body" id="expectationRatingBarsContainer">
+      <div class="csat-container">
+        <span class="csat-label">Monthly +43% &#9650;</span> 
+        <div class="csat-percentage">
+          <?php echo number_format($overallExpectationPercentage, 2); ?>%
+        </div>
+        <h4>Service Expectation Breakdown</h4>
+
+      </div>
+    </div>
+    
+  </div>
+</div>
+<div class="col-md-4">
+    <div class="panel panel-default">
+        <div class="panel-heading">Bayes Rating Like</div>
+        <div class="panel-body" id="likeContainer"></div>
+    </div>
+</div>
+
+<div class="col-md-4">
+    <div class="panel panel-default">
+        <div class="panel-heading">Bayes Rating Improve</div>
+        <div class="panel-body" id="improveContainer"></div>
+    </div>
+</div>
+
+<div class="col-md-4">
+    <div class="panel panel-default">
+        <div class="panel-heading">Bayes Rating Comment</div>
+        <div class="panel-body" id="commentContainer"></div>
+    </div>
+</div>
+<br>
+
 </div>           
             </div>
         </div>
@@ -336,37 +569,27 @@ $pdoExec = $pdoResult->execute();
      <!-- /. WRAPPER  -->
     <!-- SCRIPTS -AT THE BOTOM TO REDUCE THE LOAD TIME-->
     
-    <script>
-const ratingData = [
-    { stars: 5, count: 1084, color: '#ff9900' },
-    { stars: 4, count: 2801, color: '#ffb300' },
-    { stars: 3, count: 341, color: '#ffc200' },
-    { stars: 2, count: 402, color: '#ffd100' },
-    { stars: 1, count: 120, color: '#ffdc00' },
-];
+    <script> 
+    const ratingBarsContainer = document.getElementById('ratingBarsContainer');
 
-const totalResponses = ratingData.reduce((sum, rating) => sum + rating.count, 0);
-
-const ratingBarsContainer = document.getElementById('ratingBarsContainer');
-
-ratingData.forEach(rating => {
+    ratingData.forEach(rating => {
     const percentage = (rating.count / totalResponses) * 100;
 
     const ratingBar = document.createElement('div');
-    ratingBar.classList.add('rating-bar', 'mb-2');
+    ratingBar.classList.add('rating-bar');
 
     const ratingLabel = document.createElement('span');
     ratingLabel.classList.add('rating-label');
-    ratingLabel.textContent = `${rating.stars} ★`;
+    ratingLabel.textContent = rating.label;
 
     const progressContainer = document.createElement('div');
     progressContainer.classList.add('progress-container');
 
     const progressBar = document.createElement('div');
     progressBar.classList.add('progress-bar');
-    progressBar.style.width = `${percentage}%`;
+    progressBar.style.width = `${percentage.toFixed(2)}%`;
     progressBar.style.backgroundColor = rating.color;
-    progressBar.setAttribute('aria-valuenow', percentage);
+    progressBar.setAttribute('aria-valuenow', percentage.toFixed(2));
 
     const ratingCount = document.createElement('span');
     ratingCount.classList.add('rating-count');
@@ -379,45 +602,127 @@ ratingData.forEach(rating => {
     ratingBarsContainer.appendChild(ratingBar);
 });
 
-const npsData = [
-  { label: 'Positive', emoji: '😍', percentage: 55, color: '#5cb85c' },
-  { label: 'Neutral', emoji: '😐', percentage: 23, color: '#ffb300' },
-  { label: 'Negative', emoji: '☹️', percentage: 22, color: '#d9534f' }
-];
 
-const npsContainer = document.getElementById('npsContainer');
+const serviceRatingBarsContainer = document.getElementById('serviceRatingBarsContainer');
 
-npsData.forEach(item => {
-  const row = document.createElement('div');
-  row.classList.add('nps-row');
+serviceRatingData.forEach(rating => {
+    const percentage = (rating.count / serviceTotalResponses) * 100;
 
-  const emoji = document.createElement('span');
-  emoji.classList.add('nps-emoji');
-  emoji.textContent = item.emoji;
+    const ratingBar = document.createElement('div');
+    ratingBar.classList.add('rating-bar');
 
-  const label = document.createElement('span');
-  label.classList.add('nps-label');
-  label.textContent = item.label;
+    const ratingLabel = document.createElement('span');
+    ratingLabel.classList.add('rating-label');
+    ratingLabel.textContent = rating.label;
 
-  const progressContainer = document.createElement('div');
-  progressContainer.classList.add('nps-progress-container');
+    const progressContainer = document.createElement('div');
+    progressContainer.classList.add('progress-container');
 
-  const progressBar = document.createElement('div');
-  progressBar.classList.add('nps-progress-bar');
-  progressBar.style.width = `${item.percentage}%`;
-  progressBar.style.backgroundColor = item.color;
+    const progressBar = document.createElement('div');
+    progressBar.classList.add('progress-bar');
+    progressBar.style.width = `${percentage.toFixed(2)}%`;
+    progressBar.style.backgroundColor = rating.color;
+    progressBar.setAttribute('aria-valuenow', percentage.toFixed(2));
 
-  const percentage = document.createElement('span');
-  percentage.textContent = `${item.percentage}%`;
+    const ratingCount = document.createElement('span');
+    ratingCount.classList.add('rating-count');
+    ratingCount.textContent = rating.count;
 
-  progressContainer.appendChild(progressBar);
-  row.appendChild(emoji); 
-  row.appendChild(label);
-  row.appendChild(progressContainer);
-  row.appendChild(percentage); 
-
-  npsContainer.appendChild(row);
+    progressContainer.appendChild(progressBar);
+    ratingBar.appendChild(ratingLabel);
+    ratingBar.appendChild(progressContainer);
+    ratingBar.appendChild(ratingCount);
+    serviceRatingBarsContainer.appendChild(ratingBar);
 });
+
+const expectationRatingBarsContainer = document.getElementById('expectationRatingBarsContainer');
+
+expectationRatingData.forEach(rating => {
+    const percentage = (rating.count / expectationTotalResponses) * 100;
+
+    const ratingBar = document.createElement('div');
+    ratingBar.classList.add('rating-bar');
+
+    const ratingLabel = document.createElement('span');
+    ratingLabel.classList.add('rating-label');
+    ratingLabel.textContent = rating.label;
+
+    const progressContainer = document.createElement('div');
+    progressContainer.classList.add('progress-container');
+
+    const progressBar = document.createElement('div');
+    progressBar.classList.add('progress-bar');
+    progressBar.style.width = `${percentage.toFixed(2)}%`;
+    progressBar.style.backgroundColor = rating.color;
+    progressBar.setAttribute('aria-valuenow', percentage.toFixed(2));
+
+    const ratingCount = document.createElement('span');
+    ratingCount.classList.add('rating-count');
+    ratingCount.textContent = rating.count;
+
+    progressContainer.appendChild(progressBar);
+    ratingBar.appendChild(ratingLabel);
+    ratingBar.appendChild(progressContainer);
+    ratingBar.appendChild(ratingCount);
+    expectationRatingBarsContainer.appendChild(ratingBar);
+});
+
+const bayesContainers = {
+    like: document.getElementById('likeContainer'),
+    improve: document.getElementById('improveContainer'),
+    comment: document.getElementById('commentContainer')
+};
+
+function createBayesRow(container, label, percentage, color) {
+    const row = document.createElement('div');
+    row.classList.add('nps-row');
+
+    const emoji = document.createElement('span');
+    emoji.classList.add('nps-emoji');
+    emoji.textContent = label;
+
+    const progressContainer = document.createElement('div');
+    progressContainer.classList.add('nps-progress-container');
+
+    const progressBar = document.createElement('div');
+    progressBar.classList.add('nps-progress-bar');
+    progressBar.style.width = `${percentage.toFixed(2)}%`;
+    progressBar.style.backgroundColor = color;
+
+    const percentageText = document.createElement('span');
+    percentageText.textContent = `${percentage.toFixed(2)}%`;
+
+    progressContainer.appendChild(progressBar);
+    row.appendChild(emoji);
+    row.appendChild(progressContainer);
+    row.appendChild(percentageText);
+
+    container.appendChild(row);
+}
+
+function displayBayesData(key, data) {
+    const container = bayesContainers[key];
+    container.innerHTML = ''; // Clear previous content
+
+    const labels = {
+        positive: '😍',
+        neutral: '😐',
+        negative: '☹️'
+    };
+    const colors = {
+        positive: '#5cb85c',
+        neutral: '#ffb300',
+        negative: '#d9534f'
+    };
+
+    for (const [rating, percentage] of Object.entries(data)) {
+        createBayesRow(container, labels[rating], percentage, colors[rating]);
+    }
+}
+
+displayBayesData('like', bayesData.like);
+displayBayesData('improve', bayesData.improve);
+displayBayesData('comment', bayesData.comment);
 
 </script>
 
