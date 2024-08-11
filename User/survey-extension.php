@@ -16,6 +16,7 @@
     <!-- GOOGLE FONTS-->
     <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css' />
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <script src="bayes.js"></script>
 </head>
 
 <body>
@@ -115,32 +116,63 @@
                         <img src="assets/pic/head.png" alt="Technical support for DHVSU students">  
                 <div class="container-survey">
                     <h1>Thank you for choosing our services. We highly value your feedback as it helps us improve and better serve you in the future. Please take a moment to share your thoughts with us.</h1>
-                    <form action="php/survey-finished.php?id=<?php echo $_GET['id']?>&taken=<?php echo $_GET['taken']?>" method="post">
-                        <input type="text" name="overall_satisfaction" value="<?php echo $_POST['overall_satisfaction']?>" hidden>
-                        <input type="text" name="service_rating" value="<?php echo $_POST['service_rating']?>" hidden>
-                        <input type="text" name="service_expectations" value="<?php echo $_POST['service_expectations']?>" hidden>
+                    <script>
+    function classifyText(text) {
+        var scores = Bayes.guess(text);
+        var winner = Bayes.extractWinner(scores);
+        return winner.label;
+    }
 
-                        <div class="question">
-                            <p><strong>PLEASE ANSWER THE FOLLOWING QUESTION:</strong></p>
-                            <label for="like">What did you like most about our service?</label>
-                            <textarea id="like" name="like" rows="4" maxlength="255" oninput="likeRemainingCharacters()" required></textarea>
-                            <small id="like-remaining-characters" class="form-text text-muted">255 characters remaining</small>
-                        </div>
-                        <div class="question">
-                            <label for="improve">What areas do you think need improvement?</label>
-                            <textarea id="improve" name="improve" rows="4" maxlength="255" oninput="improveRemainingCharacters()" required></textarea>
-                            <small id="improve-remaining-characters" class="form-text text-muted">255 characters remaining</small>
-                        </div>
-                        <div class="question">
-                            <label for="comments">Any additional comments or suggestions?</label>
-                            <textarea id="comments" name="comments" rows="4" maxlength="255" oninput="commentsRemainingCharacters()" required></textarea>
-                            <small id="comments-remaining-characters" class="form-text text-muted">255 characters remaining</small>
-                        </div>
-                        <div class="buttons">
-                            <a onclick="history.back()"><button type="button" >BACK</button></a>
-                            <button type="submit">SUBMIT</button>
-                        </div>
-                    </form>
+    function processForm(event) {
+        event.preventDefault();
+
+        const like = document.getElementById('like').value;
+        const improve = document.getElementById('improve').value;
+        const comments = document.getElementById('comments').value;
+
+        const likeRating = classifyText(like);
+        const improveRating = classifyText(improve);
+        const commentsRating = classifyText(comments);
+
+        document.getElementById('likeRating').value = likeRating;
+        document.getElementById('improveRating').value = improveRating;
+        document.getElementById('commentsRating').value = commentsRating;
+
+        document.getElementById('surveyForm').submit();
+    }
+</script>
+
+<form id="surveyForm" action="php/survey-finished.php?id=<?php echo $_GET['id']?>&taken=<?php echo $_GET['taken']?>" method="post" onsubmit="processForm(event)">
+    <input type="text" name="overall_satisfaction" value="<?php echo $_POST['overall_satisfaction']?>" hidden>
+    <input type="text" name="service_rating" value="<?php echo $_POST['service_rating']?>" hidden>
+    <input type="text" name="service_expectations" value="<?php echo $_POST['service_expectations']?>" hidden>
+    <input type="hidden" id="likeRating" name="likeRating">
+    <input type="hidden" id="improveRating" name="improveRating">
+    <input type="hidden" id="commentsRating" name="commentsRating">
+
+    <div class="question">
+        <p><strong>PLEASE ANSWER THE FOLLOWING QUESTION:</strong></p>
+        <label for="like">What did you like most about our service?</label>
+        <textarea id="like" name="like" rows="4" maxlength="255" oninput="likeRemainingCharacters()" required></textarea>
+        <small id="like-remaining-characters" class="form-text text-muted">255 characters remaining</small>
+    </div>
+    <div class="question">
+        <label for="improve">What areas do you think need improvement?</label>
+        <textarea id="improve" name="improve" rows="4" maxlength="255" oninput="improveRemainingCharacters()" required></textarea>
+        <small id="improve-remaining-characters" class="form-text text-muted">255 characters remaining</small>
+    </div>
+    <div class="question">
+        <label for="comments">Any additional comments or suggestions?</label>
+        <textarea id="comments" name="comments" rows="4" maxlength="255" oninput="commentsRemainingCharacters()" required></textarea>
+        <small id="comments-remaining-characters" class="form-text text-muted">255 characters remaining</small>
+    </div>
+    <div class="buttons">
+        <a onclick="history.back()"><button type="button">BACK</button></a>
+        <button type="submit">SUBMIT</button>
+    </div>
+</form>
+
+
                 </div>
                 <!-- /. ROW  -->
             </div>
