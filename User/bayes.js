@@ -183,12 +183,15 @@ var go = function go() {
     document.getElementById("test_probability").innerHTML = winner.score;
     console.log(scores);
 };
+// neutral Training
+Bayes.train(" , default", 'neutral');
+Bayes.train("its fine i guess. neutral", 'neutral');
+
 
 // positive Training
 Bayes.train("malaki nice positive ", 'positive');
 
-// neutral Training
-Bayes.train("its fine i guess. neutral", 'neutral');
+
 
 // negative Training
 Bayes.train("bulok negative ", 'negative');

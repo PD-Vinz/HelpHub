@@ -289,8 +289,8 @@ echo "<script>
         <div id="page-wrapper" >
             <div id="page-inner">
                 <div class="row">
-                    <div class="col-md-12">
-                     <h2>Feedback Analysis</h2>   
+                    <div  class="col-md-12" style="margin-top: 5px; margin-bottom:5px;">
+                     <h2 >Feedback Analysis</h2>   
                      <div class="col-md-4"> 
   <div class="panel panel-default">
     <div class="panel-heading">
@@ -313,7 +313,7 @@ echo "<script>
                     <!-- Advanced Tables -->
                     <div class="panel panel-default" style="height:440">
                         <div class="panel-heading">
-                            <h3>Feedback List</h3>
+                            <h3 style="margin-top: 5px; margin-bottom:0px;">Feedback List</h3>
                         </div>
                         <div class="panel-body-ticket scrollable-panel" >
                             <div class="table-responsive">
@@ -733,8 +733,14 @@ displayBayesData('comment', bayesData.comment);
     <!-- METISMENU SCRIPTS -->
     <script src="assets/js/jquery.metisMenu.js"></script>
       <!-- CUSTOM SCRIPTS -->
-    <script src="assets/js/custom.js"></script>
-    
-   
+
+    <script src="assets/js/dataTables/jquery.dataTables.js"></script>
+    <script src="assets/js/dataTables/dataTables.bootstrap.js"></script>
+    <script>
+            $(document).ready(function () {
+                $('#dataTables-example').dataTable();
+            });
+    </script> 
+       <script src="assets/js/custom.js"></script>
 </body>
 </html>
