@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 05, 2024 at 05:01 AM
+-- Generation Time: Aug 06, 2024 at 12:21 PM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.2.4
 
@@ -28,50 +28,46 @@ SET time_zone = "+00:00";
 --
 
 CREATE TABLE `mis_employees` (
-  `employee_number` int(15) NOT NULL,
-  `name` varchar(255) NOT NULL,
+  `admin_number` int(15) NOT NULL,
   `password` varchar(50) NOT NULL,
+  `f_name` varchar(255) NOT NULL,
+  `l_name` varchar(255) NOT NULL,
   `position` text NOT NULL,
-  `specialization` text NOT NULL
+  `user_type` text NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `mis_employees`
---
-
-INSERT INTO `mis_employees` (`employee_number`, `name`, `password`, `position`, `specialization`) VALUES
-(1000000000, 'John Felix Pascual', '1234567890', 'MIS Staff', 'Account Management');
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `student_user`
+-- Table structure for table `mis_history_logs`
 --
 
-CREATE TABLE `student_user` (
-  `student_number` int(15) NOT NULL,
-  `email_address` varchar(255) NOT NULL,
-  `name` varchar(255) NOT NULL,
-  `password` varchar(50) NOT NULL,
-  `department` text NOT NULL,
-  `course` text NOT NULL,
-  `year_section` varchar(5) NOT NULL,
-  `profile_picture` varchar(255) NOT NULL,
-  `sex` text NOT NULL,
-  `user_type` text NOT NULL
+CREATE TABLE `mis_history_logs` (
+  `history_id` int(255) NOT NULL,
+  `admin_number` int(10) NOT NULL,
+  `date_time` datetime NOT NULL,
+  `description` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+-- --------------------------------------------------------
+
 --
--- Dumping data for table `student_user`
+-- Table structure for table `tb_survey_feedback`
 --
 
-INSERT INTO `student_user` (`student_number`, `email_address`, `name`, `password`, `department`, `course`, `year_section`, `profile_picture`, `sex`, `user_type`) VALUES
-(2021306790, '2021306790@dhvsu.edu.ph', 'Alvin Nebres Jr.', '2021306790', 'College Of Computing Studies', 'Bachelor Of Science In Information Technology', '3G', '2021306790.jpg', 'Male', 'Student'),
-(2021306781, '2021306781@dhvsu.edu.ph', 'Earvin John Miranda', '2021306781', 'College Of Computing Studies', 'Bachelor Of Science In Information Technology', '3G', '2021306781.jpg', 'Male', 'Student'),
-(2021304903, '2021304903@dhvsu.edu.ph', 'Ricayelle Medina', '2021304903', 'College Of Computing Studies', 'Bachelor Of Science In Information Technology', '3G', '2021304903.jpg', 'Female', 'Student'),
-(2021305564, '2021305564@dhvsu.edu.ph', 'Maria Angela Mungcal', '2021305564', 'College Of Computing Studies', 'Bachelor Of Science In Information Technology', '3G', '2021305564.jpg', 'Female', 'Student'),
-(2021304882, '2021304882@dhvsu.edu.ph', 'Jhon Felix Pascual', '2021304882', 'College Of Computing Studies', 'Bachelor Of Science In Information Technology', '3G', '2021304882.jpg', 'Male', 'Student'),
-(2021305272, '2021305272@dhvsu.edu.ph', 'Jean Nerilot Palayar', '2021305272', 'College Of Computing Studies', 'Bachelor Of Science In Information Technology', '3G', '2021305272.jpg', 'Female', 'Student');
+CREATE TABLE `tb_survey_feedback` (
+  `survey_id` int(10) NOT NULL,
+  `overall_satisfaction` varchar(50) NOT NULL,
+  `service_rating` varchar(50) NOT NULL,
+  `service_expectations` varchar(50) NOT NULL,
+  `like_service` varchar(255) NOT NULL,
+  `improvement` varchar(255) NOT NULL,
+  `comments` varchar(255) NOT NULL,
+  `user_id` int(15) NOT NULL,
+  `ticket_id` int(10) NOT NULL,
+  `taken` text NOT NULL,
+  `date_time` datetime NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -81,25 +77,156 @@ INSERT INTO `student_user` (`student_number`, `email_address`, `name`, `password
 
 CREATE TABLE `tb_tickets` (
   `ticket_id` int(10) NOT NULL,
+  `created_date` datetime NOT NULL,
+  `full_name` varchar(255) NOT NULL,
   `user_number` int(15) NOT NULL,
+  `campus` text NOT NULL,
+  `department` text NOT NULL,
+  `course` text NOT NULL,
+  `year_section` varchar(5) NOT NULL,
+  `sex` text NOT NULL,
+  `age` int(3) NOT NULL,
+  `user_type` text NOT NULL,
   `issue` varchar(255) NOT NULL,
   `description` varchar(255) NOT NULL,
   `screenshot` mediumblob NOT NULL,
   `consent` varchar(10) NOT NULL,
+  `status` text NOT NULL,
+  `employee` varchar(50) NOT NULL,
+  `opened_date` datetime DEFAULT NULL,
+  `finished_date` datetime DEFAULT NULL,
+  `duration` varchar(50) NOT NULL,
+  `resolution` varchar(1000) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `tb_user`
+--
+
+CREATE TABLE `tb_user` (
+  `user_id` int(15) NOT NULL,
+  `email_address` varchar(255) NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `password` varchar(50) NOT NULL,
+  `campus` text NOT NULL,
+  `department` text NOT NULL,
+  `course` text NOT NULL,
+  `year_section` varchar(5) NOT NULL,
+  `profile_picture` mediumblob NOT NULL,
+  `sex` text NOT NULL,
+  `birthday` date DEFAULT NULL,
+  `age` int(3) NOT NULL,
+  `user_type` text NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `ticket_logs`
+--
+
+CREATE TABLE `ticket_logs` (
+  `history_id` int(255) NOT NULL,
+  `ticket_id` int(10) NOT NULL,
+  `date_time` datetime NOT NULL,
+  `description` varchar(255) NOT NULL,
   `status` text NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+-- --------------------------------------------------------
+
 --
--- Dumping data for table `tb_tickets`
+-- Table structure for table `user_history_logs`
 --
 
-INSERT INTO `tb_tickets` (`ticket_id`, `user_number`, `issue`, `description`, `screenshot`, `consent`, `status`) VALUES
-(1, 2021306790, 'sms account', '', '', '', 'Due'),
-(2, 2021306790, 'google account', '', '', '', 'Completed'),
-(3, 2021306790, 'SMS Account', '', '', '', 'Returned'),
-(4, 2021306790, 'Google Account', '', '', '', 'Returned'),
-(5, 2021306790, 'SMS Account', '', '', '', 'Pending'),
-(6, 2021306790, 'Google Account', '', '', '', 'Pending');
+CREATE TABLE `user_history_logs` (
+  `history_id` int(255) NOT NULL,
+  `user_id` int(10) NOT NULL,
+  `date_time` datetime NOT NULL,
+  `description` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Indexes for dumped tables
+--
+
+--
+-- Indexes for table `mis_employees`
+--
+ALTER TABLE `mis_employees`
+  ADD PRIMARY KEY (`f_name`);
+
+--
+-- Indexes for table `mis_history_logs`
+--
+ALTER TABLE `mis_history_logs`
+  ADD PRIMARY KEY (`history_id`);
+
+--
+-- Indexes for table `tb_survey_feedback`
+--
+ALTER TABLE `tb_survey_feedback`
+  ADD PRIMARY KEY (`survey_id`);
+
+--
+-- Indexes for table `tb_tickets`
+--
+ALTER TABLE `tb_tickets`
+  ADD PRIMARY KEY (`ticket_id`);
+
+--
+-- Indexes for table `tb_user`
+--
+ALTER TABLE `tb_user`
+  ADD PRIMARY KEY (`user_id`);
+
+--
+-- Indexes for table `ticket_logs`
+--
+ALTER TABLE `ticket_logs`
+  ADD PRIMARY KEY (`history_id`);
+
+--
+-- Indexes for table `user_history_logs`
+--
+ALTER TABLE `user_history_logs`
+  ADD PRIMARY KEY (`history_id`);
+
+--
+-- AUTO_INCREMENT for dumped tables
+--
+
+--
+-- AUTO_INCREMENT for table `mis_history_logs`
+--
+ALTER TABLE `mis_history_logs`
+  MODIFY `history_id` int(255) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `tb_survey_feedback`
+--
+ALTER TABLE `tb_survey_feedback`
+  MODIFY `survey_id` int(10) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `tb_tickets`
+--
+ALTER TABLE `tb_tickets`
+  MODIFY `ticket_id` int(10) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `ticket_logs`
+--
+ALTER TABLE `ticket_logs`
+  MODIFY `history_id` int(255) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `user_history_logs`
+--
+ALTER TABLE `user_history_logs`
+  MODIFY `history_id` int(255) NOT NULL AUTO_INCREMENT;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
