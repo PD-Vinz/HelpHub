@@ -303,7 +303,7 @@ echo "<script>
           <?php echo number_format($overallPositivePercentage, 2); ?>%
         </div>
  
-        <h4>Total number of responses: 9999</h4>
+        <h4>Total number of responses:<?php echo number_format($allTickets); ?></h4>
       </div>
     </div>
     

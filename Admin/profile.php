@@ -20,6 +20,7 @@ if (!isset($_SESSION["admin_number"])) {
 
     if ($Data) {
         $Email_Add = $Data['email_address'];
+        $Position = $Data['position'];
         $Name = $Data['f_name'];
         $lname = $Data['l_name'];
         $P_P = $Data['profile_picture'];
@@ -27,7 +28,7 @@ if (!isset($_SESSION["admin_number"])) {
         $Age = $Data['age'];
         $Bday = $Data['birthday'];
         $UserType = $Data['user_type'];
-
+        $U_T = $Data['user_type'];
     
 
         $P_PBase64 = base64_encode($P_P);
@@ -71,14 +72,9 @@ if (!isset($_SESSION["admin_number"])) {
 
                         <div class="container">
                             <h1 class="text-primary"></h1>
-                            <hr>
+                            
                             <div class="row">
-                                <nav aria-label="breadcrumb" class="main-breadcrumb">
-                                    <ol class="breadcrumb">
-                                      <li class="breadcruMB"><a href="dashboard.php">HOME</a></li>
-                                      <li class="breadcrumb-item active" aria-current="page">PROFILE</li>
-                                    </ol>
-                                  </nav>
+                                
                                 <!-- left column -->
                                 <div class="col-md-3">
                                     <div class="text-center">
@@ -94,7 +90,7 @@ if (!isset($_SESSION["admin_number"])) {
                                     </div>
                                     <form class="form-horizontal" role="form">
                                         <div class="form-group">
-                                            <label class="col-lg-3 control-label">STUDENT NUMBER</label>
+                                            <label class="col-lg-3 control-label">ADMIN NUMBER</label>
                                             <div class="col-lg-8">
                                                 <input class="form-control" type="text" value="<?php echo $id?>" disabled>
                                             </div>

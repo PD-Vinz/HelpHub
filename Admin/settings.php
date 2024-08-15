@@ -57,6 +57,18 @@ try {
     $pdoResult->execute();
     $dueTickets = $pdoResult->rowCount();
 
+
+    date_default_timezone_set('Asia/Manila');
+
+
+    $sql = "SELECT id, event_date, event_description, event_title FROM tb_calendar";
+    $req = $pdoConnect->prepare($sql);
+    $req->execute();
+    $events = $req->fetchAll(PDO::FETCH_ASSOC);
+
+
+
+
 } catch (PDOException $e) {
     echo "Error: " . $e->getMessage();
 }
@@ -67,6 +79,7 @@ try {
 
 
 ?>
+
 
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -96,95 +109,92 @@ try {
             <div id="page-inner">
                 <div class="row">
                   <div class="col-md-12">
-                    <div class="col-md-6">
+                    <div >
                      <h2>Settings</h2>   
-                        <h5>Welcome Jhon Deo , Love to see you back. </h5>
+                     <hr>
                         <form action="" id="system-frm">
-			<div id="msg" class="form-group"></div>
-			<div class="form-group">
+			<div class="col-md-6">
+			<div class="form-group" >
 				<label for="name" class="control-label">System Name</label>
-				<input type="text" class="form-control form-control-sm" name="name" id="name" value="Banana is Yellow!">
+				<input type="text" class="form-control form-control-sm" name="name" id="system_name" value="DHVSU MIS HelpHub">
 			</div>
 			<div class="form-group">
 				<label for="short_name" class="control-label">System Short Name</label>
-				<input type="text" class="form-control form-control-sm" name="short_name" id="short_name" value="Banana ">
+				<input type="text" class="form-control form-control-sm" name="short_name" id="short_name" value="HelpHub ">
 			</div>
 			<!-- <div class="form-group">
 				<label for="content[about_us]" class="control-label">About Us</label>
 				<textarea type="text" class="form-control form-control-sm summernote" name="content[about_us]" id="about_us"></textarea>
 			</div> -->
 			<div class="form-group">
-    <label for="" class="control-label">System Logo</label>
-    <div class="custom-file">
-        <input type="file" class="custom-file-input rounded-circle" id="customFile" name="img" onchange="displayImg(this,$(this))">
-        <label class="custom-file-label" for="customFile">Choose file</label>
-    </div>
+    <label for="" class="control-label">System Logo</label><br>
+   
+<img src="../img/Logo.png" class="avatar img-circle img-thumbnail" alt="avatar" style="height: 150px; width: 150px; "><br><br>
+ <a href=".."><button type="button" class="btn btn-primary">Choose file</button></a><br>
+</div>  
 </div>
-<div class="form-group d-flex justify-content-center">
-    <img src="http://localhost/sms/uploads/logo-1635816671.png" alt="" id="cimg" class="img-fluid img-thumbnail">
-</div>
-
+<div class="col-md-6">
 <div class="form-group">
-    <label for="" class="control-label">Cover</label>
-    <div class="custom-file">
-        <input type="file" class="custom-file-input" id="coverFile" name="img" onchange="displayImg2(this,$(this))">
-        <label class="custom-file-label" for="coverFile">Choose file</label>
-    </div>
+    <label for="" class="control-label">Cover Photo</label>
 </div>
 <div class="form-group d-flex justify-content-center">
-    <img src="http://localhost/sms/uploads/logo-1635816671.png" alt="" id="cimg2" class="img-fluid img-thumbnail">
+    <img src="../img/background.png " alt="" id="cimg2" class="img-fluid img-thumbnail"> <a href=".."><br><button type="button" class="btn btn-primary">Choose file</button></a>
 </div>
-
-
-             
-			</form>
+</div> 
+</form>
            
                     </div>
-                    <div class="wrapper col-md-12">
-        
-            <div class="col-md-6">
-                <h1>Dynamic Calendar</h1>
-                <div id="event-section" >
-                    <h3>Add Event</h3>
-                    <input type="date" id="eventDate">
-                    <input type="text"
-                        id="eventTitle"
-                        placeholder="Event Title">
-                    <input type="text"
-                        id="eventDescription"
-                        placeholder="Event Description">
-                    <button id="addEvent" onclick="addEvent()">
-                        Add
-                    </button>
-                </div>
+
+
+                 <br>
+                   
+                    <div class="wrapper col-md-4">
+        <h1>Calendar</h1>
+            <div>
+                 
+            <div id="event-section">
+    <h3>Add Event</h3>
+    <input type="date" id="eventDate">
+    <input type="text" id="eventTitle" placeholder="Event Title">
+    <input type="text" id="eventDescription" placeholder="Event Description">
+    <button id="addEvent" onclick="addEvent()">Add</button>
+</div>
                 <div id="reminder-section">
                     <h3>Reminders</h3>
                     <!-- List to display reminders -->
-                    <ul id="reminderList">
-                        <li data-event-id="1">
-                            <strong>Event Title</strong>
-                            - Event Description on Event Date
-                            <button class="delete-event"
+
+
+                    <ul>
+        <?php foreach ($events as $event): ?>
+            <li>
+                <strong><?php echo htmlspecialchars($event['event_title']); ?>: </strong>
+                <?php echo htmlspecialchars($event['event_description']); ?> on
+                <em><?php echo htmlspecialchars($event['event_date']); ?></em>
+                 <button class="delete-event"
                                 onclick="deleteEvent(1)">
                                 Delete
                             </button>
-                        </li>
-                    </ul>
+            </li>
+        <?php endforeach; ?>
+    </ul>
                 </div>
             </div>
+                    </div>
             <!-- /. Calendar  -->   
-            <div class="col-md-12">
+          
+            <div class="col-md-8">
+            <br><br>
                  <div class="wrapper">
 		
 			<div id="right">
-				 <h3 id="monthAndYear"></h3>
+				
 				<div class="button-container-calendar">
-					<button id="previous"
+					<button id="previous" class="col-md-1"
 							onclick="previous()">
 						‹
 					</button>
-         
-					<button id="next"
+          <h3 id="monthAndYear" class="col-md-10"></h3>
+					<button id="next" class="col-md-1"
 							onclick="next()">
 						›
 					</button>
@@ -193,7 +203,7 @@ try {
 					id="calendar"
 					data-lang="en">
 					<thead id="thead-month"></thead>
-					<!-- Table body for displaying the calendar -->
+					
 					<tbody id="calendar-body"></tbody>
 				</table>
 				<div class="footer-container-calendar">
@@ -297,6 +307,145 @@ document.addEventListener("DOMContentLoaded", function() {
             });
 //--------------------DATEPICKER---------------------     
           </script>
-      
+          <script>
+            function addEvent() {
+    const eventDate = document.getElementById('eventDate').value;
+    const eventTitle = document.getElementById('eventTitle').value;
+    const eventDescription = document.getElementById('eventDescription').value;
+
+    const xhr = new XMLHttpRequest();
+    xhr.open('POST', 'save_event.php', true);
+    xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+    
+    xhr.onload = function() {
+        if (this.status === 200) {
+            alert(this.responseText);
+            // Optionally, refresh the event list here
+        }
+    };
+
+    xhr.send(`eventDate=${eventDate}&eventTitle=${eventTitle}&eventDescription=${eventDescription}`);
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    fetchReminders();
+});
+
+function fetchReminders() {
+    const xhr = new XMLHttpRequest();
+    xhr.open('GET', 'fetch_reminders.php', true);
+
+    xhr.onload = function() {
+        if (this.status === 200) {
+            const reminders = JSON.parse(this.responseText);
+            const reminderList = document.getElementById('reminderList');
+            reminderList.innerHTML = ''; // Clear the list before adding new items
+
+            reminders.forEach(reminder => {
+                const li = document.createElement('li');
+                li.dataset.eventId = reminder.id;
+                li.innerHTML = `
+                    <strong>${reminder.event_title}</strong>
+                    - ${reminder.event_description} on ${reminder.event_date}
+                    <button class="delete-event" onclick="deleteEvent(${reminder.id})">Delete</button>
+                `;
+                reminderList.appendChild(li);
+            });
+        }
+    };
+
+    xhr.send();
+}
+
+document.addEventListener("DOMContentLoaded", function() {
+    const events = <?php echo json_encode($events); ?>;
+
+    events.forEach(event => {
+        const eventDate = new Date(event.event_date);
+        const formattedDate = eventDate.toISOString().split('T')[0];
+        const dayCell = document.querySelector(`[data-date="${formattedDate}"]`);
+
+        if (dayCell) {
+            const eventElement = document.createElement('div');
+            eventElement.className = 'event';
+            eventElement.innerHTML = `
+                <strong>${event.event_title}</strong>
+                <p>${event.event_description}</p>
+            `;
+            dayCell.appendChild(eventElement);
+        }
+    });
+});
+
+          </script>
+          
+          
+          <script src="js/jquery.js"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="js/bootstrap.min.js"></script>
+
+    <!-- FullCalendar -->
+    <script src="js/moment.min.js"></script>
+    <script src="js/fullcalendar.min.js"></script>
+
+    <!-- Custom Script -->
+    <script>
+        $(document).ready(function() {
+            $('#calendar').fullCalendar({
+                header: {
+                    left: 'prev,next today',
+                    center: 'title',
+                    right: 'month,basicWeek,basicDay'
+                },
+                defaultDate: '2024-01-12', // Update to a relevant default date
+                editable: true,
+                eventLimit: true,
+                selectable: true,
+                selectHelper: true,
+                select: function(start, end) {
+                    $('#ModalAdd #start').val(moment(start).format('YYYY-MM-DD HH:mm:ss'));
+                    $('#ModalAdd #end').val(moment(end).format('YYYY-MM-DD HH:mm:ss'));
+                    $('#ModalAdd').modal('show');
+                },
+                eventRender: function(event, element) {
+                    element.bind('dblclick', function() {
+                        $('#ModalEdit #id').val(event.id);
+                        $('#ModalEdit #title').val(event.title);
+                        $('#ModalEdit #color').val(event.color);
+                        $('#ModalEdit').modal('show');
+                    });
+                },
+                eventDrop: function(event, delta, revertFunc) {
+                    edit(event);
+                },
+                eventResize: function(event,dayDelta,minuteDelta,revertFunc) {
+                    edit(event);
+                },
+                events: 'fetch_events.php' // Update to the correct URL for fetching events
+            });
+
+            function edit(event) {
+                var start = event.start.format('YYYY-MM-DD HH:mm:ss');
+                var end = event.end ? event.end.format('YYYY-MM-DD HH:mm:ss') : start;
+                var id = event.id;
+
+                $.ajax({
+                    url: 'editEventDate.php',
+                    type: 'POST',
+                    data: {
+                        Event: [id, start, end]
+                    },
+                    success: function(rep) {
+                        if (rep == 'OK') {
+                            alert('Saved');
+                        } else {
+                            alert('Could not be saved. Try again.');
+                        }
+                    }
+                });
+            }
+        });
+    </script>
 </body>
 </html>
