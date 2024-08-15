@@ -32,41 +32,39 @@ if (!isset($_SESSION["admin_number"])) {
 
 try {
 
-    $pdoCountQuery = "SELECT * FROM tb_tickets";
-    $pdoResult = $pdoConnect->prepare($pdoCountQuery);
-    $pdoResult->execute();
-    $allTickets = $pdoResult->rowCount();
-
-    $pdoCountQuery = "SELECT * FROM tb_tickets WHERE status = 'Pending'";
-    $pdoResult = $pdoConnect->prepare($pdoCountQuery);
-    $pdoResult->execute();
-    $pendingTickets = $pdoResult->rowCount();
-
-    $pdoCountQuery = "SELECT * FROM tb_tickets WHERE status = 'Returned'";
-    $pdoResult = $pdoConnect->prepare($pdoCountQuery);
-    $pdoResult->execute();
-    $returnedTickets = $pdoResult->rowCount();
-
-    $pdoCountQuery = "SELECT * FROM tb_tickets WHERE status = 'Completed'";
-    $pdoResult = $pdoConnect->prepare($pdoCountQuery);
-    $pdoResult->execute();
-    $completedTickets = $pdoResult->rowCount();
-
-    $pdoCountQuery = "SELECT * FROM tb_tickets WHERE status = 'Due'";
-    $pdoResult = $pdoConnect->prepare($pdoCountQuery);
-    $pdoResult->execute();
-    $dueTickets = $pdoResult->rowCount();
-
-
-    date_default_timezone_set('Asia/Manila');
-
 
     $sql = "SELECT id, event_date, event_description, event_title FROM tb_calendar";
     $req = $pdoConnect->prepare($sql);
     $req->execute();
     $events = $req->fetchAll(PDO::FETCH_ASSOC);
 
-
+    
+    $query = $pdoConnect->prepare("SELECT system_name, short_name, system_logo, system_cover FROM settings WHERE id = :id");
+    $query->execute(['id' => 1]);
+    $Datas = $query->fetch(PDO::FETCH_ASSOC);
+    $sysName = $Datas['system_name'] ?? '';
+    $shortName = $Datas['short_name'] ?? '';
+    $systemLogo = $Datas['system_logo'];
+    $systemCover = $Datas['system_cover'];
+    
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        $newSysName = $_POST['name'];
+        $newShortName = $_POST['short_name'];
+    
+        try {
+            $updateQuery = $pdoConnect->prepare("UPDATE settings SET system_name = :system_name, short_name = :short_name WHERE id = :id");
+            $updateQuery->execute([
+                'system_name' => $newSysName,
+                'short_name' => $newShortName,
+                'id' => 1 
+            ]);
+    
+            header('Location: settings.php');
+        } catch (PDOException $e) {
+            // Error handling
+            echo "Error updating data: " . $e->getMessage();
+        }
+    }
 
 
 } catch (PDOException $e) {
@@ -86,7 +84,7 @@ try {
 <head>
       <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>DHVSU MIS - HelpHub</title>
+    <title><?php echo $sysName?></title>
   
 	<!-- BOOTSTRAP STYLES-->
     <link href="assets/css/bootstrap.css" rel="stylesheet" />
@@ -112,15 +110,15 @@ try {
                     <div >
                      <h2>Settings</h2>   
                      <hr>
-                        <form action="" id="system-frm">
+                        <form method="post" id="system-frm">
 			<div class="col-md-6">
 			<div class="form-group" >
 				<label for="name" class="control-label">System Name</label>
-				<input type="text" class="form-control form-control-sm" name="name" id="system_name" value="DHVSU MIS HelpHub">
+				<input type="text" class="form-control form-control-sm" name="name" id="system_name" value="<?php echo htmlspecialchars($sysName); ?>">
 			</div>
 			<div class="form-group">
 				<label for="short_name" class="control-label">System Short Name</label>
-				<input type="text" class="form-control form-control-sm" name="short_name" id="short_name" value="HelpHub ">
+				<input type="text" class="form-control form-control-sm" name="short_name" id="short_name" value="<?php echo htmlspecialchars($shortName); ?>">
 			</div>
 			<!-- <div class="form-group">
 				<label for="content[about_us]" class="control-label">About Us</label>
@@ -140,11 +138,12 @@ try {
 <div class="form-group d-flex justify-content-center">
     <img src="../img/background.png " alt="" id="cimg2" class="img-fluid img-thumbnail"> <a href=".."><br><button type="button" class="btn btn-primary">Choose file</button></a>
 </div>
+
 </div> 
 </form>
            
                     </div>
-
+                    <button class="btn btn-sm btn-primary" form="system-frm">Update</button>
 
                  <br>
                    
@@ -242,7 +241,7 @@ try {
       <hr />
 				<div class="row" style=" padding-left: 15px; padding-bottom: 15px;">
           
-					<button class="btn btn-sm btn-primary" form="system-frm">Update</button>
+				
 				</div>
 			</div>
 		</div> 
@@ -377,75 +376,13 @@ document.addEventListener("DOMContentLoaded", function() {
     });
 });
 
+
           </script>
           
           
-          <script src="js/jquery.js"></script>
+   
 
-    <!-- Bootstrap Core JavaScript -->
-    <script src="js/bootstrap.min.js"></script>
 
-    <!-- FullCalendar -->
-    <script src="js/moment.min.js"></script>
-    <script src="js/fullcalendar.min.js"></script>
 
-    <!-- Custom Script -->
-    <script>
-        $(document).ready(function() {
-            $('#calendar').fullCalendar({
-                header: {
-                    left: 'prev,next today',
-                    center: 'title',
-                    right: 'month,basicWeek,basicDay'
-                },
-                defaultDate: '2024-01-12', // Update to a relevant default date
-                editable: true,
-                eventLimit: true,
-                selectable: true,
-                selectHelper: true,
-                select: function(start, end) {
-                    $('#ModalAdd #start').val(moment(start).format('YYYY-MM-DD HH:mm:ss'));
-                    $('#ModalAdd #end').val(moment(end).format('YYYY-MM-DD HH:mm:ss'));
-                    $('#ModalAdd').modal('show');
-                },
-                eventRender: function(event, element) {
-                    element.bind('dblclick', function() {
-                        $('#ModalEdit #id').val(event.id);
-                        $('#ModalEdit #title').val(event.title);
-                        $('#ModalEdit #color').val(event.color);
-                        $('#ModalEdit').modal('show');
-                    });
-                },
-                eventDrop: function(event, delta, revertFunc) {
-                    edit(event);
-                },
-                eventResize: function(event,dayDelta,minuteDelta,revertFunc) {
-                    edit(event);
-                },
-                events: 'fetch_events.php' // Update to the correct URL for fetching events
-            });
-
-            function edit(event) {
-                var start = event.start.format('YYYY-MM-DD HH:mm:ss');
-                var end = event.end ? event.end.format('YYYY-MM-DD HH:mm:ss') : start;
-                var id = event.id;
-
-                $.ajax({
-                    url: 'editEventDate.php',
-                    type: 'POST',
-                    data: {
-                        Event: [id, start, end]
-                    },
-                    success: function(rep) {
-                        if (rep == 'OK') {
-                            alert('Saved');
-                        } else {
-                            alert('Could not be saved. Try again.');
-                        }
-                    }
-                });
-            }
-        });
-    </script>
 </body>
 </html>
