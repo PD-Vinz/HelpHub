@@ -314,12 +314,12 @@ echo "<script>
                      <div class="col-md-4"> 
   <div class="panel panel-default">
     <div class="panel-heading">
-      Customer Satisfaction (CSAT)
+     <h3 style="margin-top: 5px; margin-bottom:0px;"> Customer Satisfaction (CSAT)</h3>
     </div>
     <div class="panel-body" >
       <div class="csat-container">
       <br> <br> <br>
-        <span class="csat-label">Monthly +43% &#9650;</span> 
+        <span class="csat-label">Monthly --% &#9650;</span> 
         <div class="csat-percentage">
           <?php echo number_format($overallPositivePercentage, 2); ?>%
         </div>
@@ -494,11 +494,11 @@ $pdoExec = $pdoResult->execute();
                     </div>
                 </div>
               
-              
+                <div  class="col-md-12" style="margin-top: 5px; margin-bottom:5px;">
                 <div class="col-md-4"> 
   <div class="panel panel-default">
     <div class="panel-heading">
-      Customer Satisfaction (CSAT)
+    <h3 style="margin-top: 5px; margin-bottom:0px;"> Overall Satisfaction</h3>
     </div>
     <div class="panel-body" id="ratingBarsContainer">
       <div class="csat-container">
@@ -517,7 +517,7 @@ $pdoExec = $pdoResult->execute();
 <div class="col-md-4"> 
   <div class="panel panel-default">
     <div class="panel-heading">
-     Service Rating
+    <h3 style="margin-top: 5px; margin-bottom:0px;"> Service Rating</h3>
     </div>
     <div class="panel-body" id="serviceRatingBarsContainer">
       <div class="csat-container">
@@ -535,7 +535,7 @@ $pdoExec = $pdoResult->execute();
 <div class="col-md-4"> 
   <div class="panel panel-default">
     <div class="panel-heading">
-     Service Expectations
+    <h3 style="margin-top: 5px; margin-bottom:0px;">Service Expectations</h3> 
     </div>
     <div class="panel-body" id="expectationRatingBarsContainer">
       <div class="csat-container">
@@ -552,24 +552,27 @@ $pdoExec = $pdoResult->execute();
 </div>
 <div class="col-md-4">
     <div class="panel panel-default">
-        <div class="panel-heading">Bayes Rating Like</div>
+        <div class="panel-heading"><h3 style="margin-top: 5px; margin-bottom:0px;">Bayes Rating Like</h3></div>
         <div class="panel-body" id="likeContainer"></div>
     </div>
 </div>
 
 <div class="col-md-4">
     <div class="panel panel-default">
-        <div class="panel-heading">Bayes Rating Improve</div>
+        <div class="panel-heading"><h3 style="margin-top: 5px; margin-bottom:0px;">Bayes Rating Improve</h3></div>
         <div class="panel-body" id="improveContainer"></div>
     </div>
 </div>
 
 <div class="col-md-4">
     <div class="panel panel-default">
-        <div class="panel-heading">Bayes Rating Comment</div>
+        <div class="panel-heading"><h3 style="margin-top: 5px; margin-bottom:0px;">Bayes Rating Comment</h3></div>
         <div class="panel-body" id="commentContainer"></div>
+        
     </div>
 </div>
+</div>
+
 <br>
 
 </div>           
@@ -711,6 +714,8 @@ function createBayesRow(container, label, percentage, color) {
     progressBar.style.backgroundColor = color;
 
     const percentageText = document.createElement('span');
+    percentageText.classList.add('rating-count')
+
     percentageText.textContent = `${percentage.toFixed(2)}%`;
 
     progressContainer.appendChild(progressBar);
