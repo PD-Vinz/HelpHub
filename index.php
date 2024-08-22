@@ -32,6 +32,20 @@ if (isset($_POST['login'])) {
 
         if ($pdoResult->rowCount() > 0) {
             $_SESSION["user_id"] = $username;
+            $_SESSION["user_identity"] = "Student";
+            header("Location: User/dashboard.php");
+            exit(); // Prevent further execution after redirection
+        }
+
+        $pdoUserQuery = "SELECT * FROM employee_user WHERE user_id = :username AND password = :pass";
+        $pdoResult = $pdoConnect->prepare($pdoUserQuery);
+        $pdoResult->bindParam(':username', $username);
+        $pdoResult->bindParam(':pass', $pass);
+        $pdoResult->execute();
+
+        if ($pdoResult->rowCount() > 0) {
+            $_SESSION["user_id"] = $username;
+            $_SESSION["user_identity"] = "Employee";
             header("Location: User/dashboard.php");
             exit(); // Prevent further execution after redirection
         }

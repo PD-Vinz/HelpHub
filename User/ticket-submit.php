@@ -13,36 +13,65 @@ if (!isset($_SESSION["user_id"])) {
 try {
 
     $id = $_SESSION["user_id"];
+    $identity = $_SESSION["user_identity"];
     $status = 'Pending';
     $category = $_POST['category'];
     $issue_description = $_POST['issue-description'];
     $consent = $_POST['consent'];
     $datetime = date('Y-m-d H:i:s');
 
-    $pdoUserQuery = "SELECT * FROM tb_user WHERE user_id = :number";
-    $pdoResult = $pdoConnect->prepare($pdoUserQuery);
-    $pdoResult->bindParam(':number', $id);
-    $pdoResult->execute();
+    if ($identity == "Student"){
+        $pdoUserQuery = "SELECT * FROM tb_user WHERE user_id = :number";
+        $pdoResult = $pdoConnect->prepare($pdoUserQuery);
+        $pdoResult->bindParam(':number', $id);
+        $pdoResult->execute();
+    
+        $Data = $pdoResult->fetch(PDO::FETCH_ASSOC);
+    
+        if ($Data) {
+            $Email_Add = $Data['email_address'];
+            $Name = $Data['name'];
+            $Campus = $Data['campus'];
+            $Department = $Data['department'];
+            $Course = $Data['course'];
+            $Y_S = $Data['year_section'];
+            $P_P = $Data['profile_picture'];
+            $Sex = $Data['sex'];
+            $Age = $Data['age'];
+            $UserType = $Data['user_type'];
 
-    $Data = $pdoResult->fetch(PDO::FETCH_ASSOC);
+            $nameParts = explode(' ', $Name);
+            $firstName = $nameParts[0];
+        } else {
+            // Handle the case where no results are found
+            echo "No student found with the given student number.";
+        }
+    } elseif ($identity == "Employee") {
+        $pdoUserQuery = "SELECT * FROM employee_user WHERE user_id = :number";
+        $pdoResult = $pdoConnect->prepare($pdoUserQuery);
+        $pdoResult->bindParam(':number', $id);
+        $pdoResult->execute();
+    
+        $Data = $pdoResult->fetch(PDO::FETCH_ASSOC);
+    
+        if ($Data) {
+            $Email_Add = $Data['email_address'];
+            $Name = $Data['name'];
+            $Campus = $Data['campus'];
+            $Department = $Data['department'];
+            $Course = $Data['course'];
+            $Y_S = $Data['year_section'];
+            $P_P = $Data['profile_picture'];
+            $Sex = $Data['sex'];
+            $Age = $Data['age'];
+            $UserType = $Data['user_type'];
 
-    if ($Data) {
-        $Email_Add = $Data['email_address'];
-        $Name = $Data['name'];
-        $Campus = $Data['campus'];
-        $Department = $Data['department'];
-        $Course = $Data['course'];
-        $Y_S = $Data['year_section'];
-        $P_P = $Data['profile_picture'];
-        $Sex = $Data['sex'];
-        $Age = $Data['age'];
-        $UserType = $Data['user_type'];
-
-        $nameParts = explode(' ', $Name);
-        $firstName = $nameParts[0];
-    } else {
-        // Handle the case where no results are found
-        echo "No student found with the given student number.";
+            $nameParts = explode(' ', $Name);
+            $firstName = $nameParts[0];
+        } else {
+            // Handle the case where no results are found
+            echo "No student found with the given student number.";
+        }
     }
 
     if ($_SERVER['REQUEST_METHOD'] == 'POST') {
@@ -97,6 +126,19 @@ try {
 
                     // Commit the transaction
                     $pdoConnect->commit();
+
+                    $ticket_desc = "Ticket Created";
+
+                    $pdoUpdateQuery="INSERT ticket_logs 
+                                    SET ticket_id = :id, date_time = :OD, description = :desc, status = :status";
+                    $pdoResult = $pdoConnect->prepare($pdoUpdateQuery);
+                    $pdoResult->bindParam(':id', $lastInsertId, PDO::PARAM_STR);
+                    $pdoResult->bindParam(':OD', $datetime, PDO::PARAM_STR);
+                    $pdoResult->bindParam(':desc', $ticket_desc, PDO::PARAM_STR);
+                    $pdoResult->bindParam(':status', $status, PDO::PARAM_STR);
+                    if (!$pdoResult->execute()) {
+                        throw new PDOException("Failed to execute the second query");
+                    }
 
                 header("Location: receive-ticket-response.php?id=" . $lastInsertId);
                 exit();

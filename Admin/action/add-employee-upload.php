@@ -34,7 +34,7 @@ if (isset($_POST['csv_data'])) {
         // Prepare the SQL query dynamically
         $placeholders = array_fill(0, count($columns), '?');
         $sql = sprintf(
-            "INSERT INTO tb_user (%s) VALUES (%s)",
+            "INSERT INTO employee_user (%s) VALUES (%s)",
             implode(', ', $columns),
             implode(', ', $placeholders)
         );

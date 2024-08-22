@@ -26,7 +26,7 @@ if (!isset($_SESSION["admin_number"])) {
         $Sex = $Data['sex'];
         $Age = $Data['age'];
         $Bday = $Data['birthday'];
-        $UserType = $Data['user_type'];
+        $U_T = $Data['user_type'];
 
     
 
@@ -75,7 +75,7 @@ if (!isset($_SESSION["admin_number"])) {
                             <div class="row">
                                 <nav aria-label="breadcrumb" class="main-breadcrumb">
                                     <ol class="breadcrumb">
-                                      <li class="breadcruMB"><a href="dashboard.php">HOME</a></li>
+                                      <li class="breadcruMB"><a href="index.php">HOME</a></li>
                                       <li class="breadcrumb-item active" aria-current="page">PROFILE</li>
                                     </ol>
                                   </nav>
@@ -84,7 +84,7 @@ if (!isset($_SESSION["admin_number"])) {
                                     <div class="text-center">
                                         <img src="data:image/jpeg;base64,<?php echo $P_PBase64?>" class="avatar img-circle img-thumbnail" alt="avatar">
                                         <h3><?php echo $Name,  " ", $lname?></h3>
-                                        <h5 style="text-transform: uppercase;"><?php echo $UserType?></h5>
+                                        <h5 style="text-transform: uppercase;"><?php echo $U_T?></h5>
                                     </div>
                                 </div>
         
