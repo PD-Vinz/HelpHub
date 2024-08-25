@@ -177,7 +177,18 @@ try {
                 <a href="employee.php"><i class="fa-solid fa-user-tie fa-3x"></i> Employees</a>
             </li>
             <li>
-                <a href="user-list.php"><i class="fa-regular fa-user fa-3x"></i> User list</a>
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown" onclick="handleTicketDropdownToggle(event)">
+        <i class="fa-regular fa-user fa-3x"></i> User list <span class="fa arrow"></span>
+    </a>
+    <ul class="nav nav-second-level ticket-dropdown-menu">
+              <!--fix the icons-->
+              <li>
+                  <a href="user-student-list.php"> &nbsp;&nbsp;<i class="fa-solid fa-graduation-cap" aria-hidden="true"></i>Student's Accounts</a>
+                  </li>
+                  <li>
+                      <a href="user-employee-list.php">&nbsp;&nbsp;<i class="fa-solid fa-briefcase" aria-hidden="true"></i>Employee's Account</a>
+                  </li>
+              </ul>
             </li>
             <li>
                 <a href="settings.php"><i class="fa fa-gear fa-3x"></i>System Settings</a>

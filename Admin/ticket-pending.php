@@ -227,7 +227,7 @@ $pdoExec = $pdoResult->execute();
                                             <input class="form-control" value="<?php echo htmlspecialchars($department); ?>" disabled/>
                                          <br><br>
                                         </div>
-                                       
+                                        <?php if ( $ticket_user === 'Student'): ?>
                                         <div class="form-group">
                                             <label>Course‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ </label>
                                             
@@ -240,7 +240,7 @@ $pdoExec = $pdoResult->execute();
                                             <input class="form-control" value="<?php echo htmlspecialchars($year_section); ?>" disabled/>
                                             <br><br>
                                         </div>
-                                        
+                                        <?php endif; ?>
                                         <div class="form-group">
                                             <label>Campus ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ </label>
                                             <input class="form-control" value="<?php  echo htmlspecialchars($campus) ?>" disabled/>

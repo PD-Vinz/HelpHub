@@ -10,36 +10,70 @@ if (!isset($_SESSION["user_id"])) {
     exit(); // Prevent further execution after redirection
 } else {
     $id = $_SESSION["user_id"];
+    $identity = $_SESSION["user_identity"];
 
-    $pdoUserQuery = "SELECT * FROM tb_user WHERE user_id = :number";
-    $pdoResult = $pdoConnect->prepare($pdoUserQuery);
-    $pdoResult->bindParam(':number', $id);
-    $pdoResult->execute();
-
-    $Data = $pdoResult->fetch(PDO::FETCH_ASSOC);
-
-    if ($Data) {
-        $Email_Add = $Data['email_address'];
-        $Name = $Data['name'];
-        $Campus = $Data['campus'];
-        $Department = $Data['department'];
-        $Course = $Data['course'];
-        $Y_S = $Data['year_section'];
-        $P_P = $Data['profile_picture'];
-        $Sex = $Data['sex'];
-        $Age = $Data['age'];
-        $Bday = $Data['birthday'];
-        $UserType = $Data['user_type'];
-
-        $nameParts = explode(' ', $Name);
-        $firstName = $nameParts[0];
-
-        $P_PBase64 = base64_encode($P_P);
-        $date = new DateTime($Bday);
-        $formattedDate = $date->format('F j, Y'); // This will give "July 22, 1990"
-    } else {
-        // Handle the case where no results are found
-        echo "No student found with the given student number.";
+    if ($identity == "Student"){
+        $pdoUserQuery = "SELECT * FROM tb_user WHERE user_id = :number";
+        $pdoResult = $pdoConnect->prepare($pdoUserQuery);
+        $pdoResult->bindParam(':number', $id);
+        $pdoResult->execute();
+    
+        $Data = $pdoResult->fetch(PDO::FETCH_ASSOC);
+    
+        if ($Data) {
+            $Email_Add = $Data['email_address'];
+            $Name = $Data['name'];
+            $Campus = $Data['campus'];
+            $Department = $Data['department'];
+            $Course = $Data['course'];
+            $Y_S = $Data['year_section'];
+            $P_P = $Data['profile_picture'];
+            $Sex = $Data['sex'];
+            $Age = $Data['age'];
+            $Bday = $Data['birthday'];
+            $UserType = $Data['user_type'];
+    
+            $nameParts = explode(' ', $Name);
+            $firstName = $nameParts[0];
+    
+            $P_PBase64 = base64_encode($P_P);
+            $date = new DateTime($Bday);
+            $formattedDate = $date->format('F j, Y'); // This will give "July 22, 1990"
+        } else {
+            // Handle the case where no results are found
+            echo "No student found with the given student number.";
+        }
+    } elseif ($identity == "Employee") {
+        $pdoUserQuery = "SELECT * FROM employee_user WHERE user_id = :number";
+        $pdoResult = $pdoConnect->prepare($pdoUserQuery);
+        $pdoResult->bindParam(':number', $id);
+        $pdoResult->execute();
+    
+        $Data = $pdoResult->fetch(PDO::FETCH_ASSOC);
+    
+        if ($Data) {
+            $Email_Add = $Data['email_address'];
+            $Name = $Data['name'];
+            $Campus = $Data['campus'];
+            $Department = $Data['department'];
+            $Course = $Data['course'];
+            $Y_S = $Data['year_section'];
+            $P_P = $Data['profile_picture'];
+            $Sex = $Data['sex'];
+            $Age = $Data['age'];
+            $Bday = $Data['birthday'];
+            $UserType = $Data['user_type'];
+    
+            $nameParts = explode(' ', $Name);
+            $firstName = $nameParts[0];
+    
+            $P_PBase64 = base64_encode($P_P);
+            $date = new DateTime($Bday);
+            $formattedDate = $date->format('F j, Y'); // This will give "July 22, 1990"
+        } else {
+            // Handle the case where no results are found
+            echo "No student found with the given student number.";
+        }
     }
 }
 ?>
@@ -223,13 +257,13 @@ if (!isset($_SESSION["user_id"])) {
                                     </div>
                                     <div class="avatar_upload">
                                         <label class="upload_label">Choose
-                                            <input type="file" id="upload" name="image" accept="image/*" required>
+                                            <input type="file" id="upload" name="image" accept="image/*">
                                         </label>
                                     </div>
                                   </div>
-        
+
                                   <div class="nickname">
-                                    <span id="name" tabindex="4" data-key="1" contenteditable="true" onkeyup="changeAvatarName(event, this.dataset.key, this.textContent)" onblur="changeAvatarName('blur', this.dataset.key, this.textContent)"></span>
+                                    <span id="name" tabindex="4" data-key="1" contenteditable="true" onkeyup="changeAvatarName(event, this.dataset.key, this.textContent)" onblur="changeAvatarName('blur', this.dataset.key, this.textContent)" hidden></span>
                                   </div>
                                 <!-- edit form column -->
                                 <div class="col-md-9 personal-info">
@@ -244,13 +278,13 @@ if (!isset($_SESSION["user_id"])) {
                                         <div class="form-group">
                                             <label class="col-lg-3 control-label">STUDENT NUMBER</label>
                                             <div class="col-lg-8">
-                                                <input class="form-control" name="id" type="text" value="<?php echo $id?>" disabled>
+                                                <input class="form-control" name="id" type="text" value="<?php echo $id?>" readonly>
                                             </div>
                                         </div>
                                         <div class="form-group">
                                             <label class="col-lg-3 control-label">STUDENT EMAIL</label>
                                             <div class="col-lg-8">
-                                                <input class="form-control" name="emailadd" type="text" value="<?php echo $Email_Add?>" disabled>
+                                                <input class="form-control" name="emailadd" type="text" value="<?php echo $Email_Add?>" readonly>
                                             </div>
                                         </div>
                                         <div class="form-group">
@@ -271,30 +305,33 @@ if (!isset($_SESSION["user_id"])) {
                                                 <input class="form-control" name="age" type="text" value="<?php echo $Age?>" required>
                                             </div>
                                         </div>
+
                                         <div class="form-group">
                                             <label class="col-lg-3 control-label">CAMPUS </label>
                                             <div class="col-lg-8">
-                                                <input class="form-control" name="campus" type="text" value="<?php echo $Campus?>" disabled>
+                                                <input class="form-control" name="campus" type="text" value="<?php echo $Campus?>" readonly >
                                             </div>
                                         </div>
                                         <div class="form-group">
                                             <label class="col-lg-3 control-label">DEPARTMENT </label>
                                             <div class="col-lg-8">
-                                                <input class="form-control" name="dept" type="text" value="<?php echo $Department?>" disabled>
+                                                <input class="form-control" name="dept" type="text" value="<?php echo $Department?>" readonly >
                                             </div>
                                         </div>
+                                        <?php if ( $identity === 'Student'): ?>
                                         <div class="form-group">
                                             <label class="col-lg-3 control-label">COURSE </label>
                                             <div class="col-lg-8">
-                                                <input class="form-control" name="course" type="text" value="<?php echo $Course?>" disabled>
+                                                <input class="form-control" name="course" type="text" value="<?php echo $Course?>" readonly >
                                             </div>
                                         </div>
                                         <div class="form-group">
                                             <label class="col-lg-3 control-label">YEAR AND SECTION </label>
                                             <div class="col-lg-8">
-                                                <input class="form-control" name="ys" type="text" value="<?php echo $Y_S?>" disabled>
+                                                <input class="form-control" name="ys" type="text" value="<?php echo $Y_S?>" readonly >
                                             </div>
                                         </div>
+                                        <?php endif; ?>
                                         <div class="modal-footer">	
                                             <input type="submit" class="btn btn-primary" name="update" value="UPDATE PROFILE"  >
                                             <a href="profile.php"><button type="button" class="btn btn-primary">BACK</button></a>
@@ -310,7 +347,7 @@ if (!isset($_SESSION["user_id"])) {
                                     </form>
                                     <script>
 function confirmSubmit() {
-    return confirm("Are you sure you want to proceed?");}
+    return confirm("Please make sure that the data you are submitting are true. Are you sure you want to proceed?");}
 </script>                                    
                                 </div>
                             </div>

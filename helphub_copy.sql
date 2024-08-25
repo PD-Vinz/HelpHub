@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Aug 06, 2024 at 12:21 PM
+-- Generation Time: Aug 11, 2024 at 09:08 AM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.2.4
 
@@ -18,7 +18,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `helphub`
+-- Database: `helphub_copy`
 --
 
 -- --------------------------------------------------------
@@ -33,7 +33,12 @@ CREATE TABLE `mis_employees` (
   `f_name` varchar(255) NOT NULL,
   `l_name` varchar(255) NOT NULL,
   `position` text NOT NULL,
-  `user_type` text NOT NULL
+  `user_type` text NOT NULL,
+  `email_address` varchar(45) NOT NULL,
+  `birthday` varchar(45) NOT NULL,
+  `age` int(10) NOT NULL,
+  `sex` varchar(10) NOT NULL,
+  `profile_picture` mediumblob NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -66,7 +71,10 @@ CREATE TABLE `tb_survey_feedback` (
   `user_id` int(15) NOT NULL,
   `ticket_id` int(10) NOT NULL,
   `taken` text NOT NULL,
-  `date_time` datetime NOT NULL
+  `date_time` datetime NOT NULL,
+  `bayes_rating_like` varchar(10) NOT NULL,
+  `bayes_rating_improve` varchar(10) NOT NULL,
+  `bayes_rating_comment` varchar(10) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -138,6 +146,19 @@ CREATE TABLE `ticket_logs` (
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `timeset`
+--
+
+CREATE TABLE `timeset` (
+  `open_time` varchar(10) NOT NULL,
+  `close_time` varchar(10) NOT NULL,
+  `purpose` varchar(45) NOT NULL,
+  `time_id` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `user_history_logs`
 --
 
@@ -189,6 +210,12 @@ ALTER TABLE `ticket_logs`
   ADD PRIMARY KEY (`history_id`);
 
 --
+-- Indexes for table `timeset`
+--
+ALTER TABLE `timeset`
+  ADD PRIMARY KEY (`time_id`);
+
+--
 -- Indexes for table `user_history_logs`
 --
 ALTER TABLE `user_history_logs`
@@ -202,25 +229,31 @@ ALTER TABLE `user_history_logs`
 -- AUTO_INCREMENT for table `mis_history_logs`
 --
 ALTER TABLE `mis_history_logs`
-  MODIFY `history_id` int(255) NOT NULL AUTO_INCREMENT;
+  MODIFY `history_id` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
 
 --
 -- AUTO_INCREMENT for table `tb_survey_feedback`
 --
 ALTER TABLE `tb_survey_feedback`
-  MODIFY `survey_id` int(10) NOT NULL AUTO_INCREMENT;
+  MODIFY `survey_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=33;
 
 --
 -- AUTO_INCREMENT for table `tb_tickets`
 --
 ALTER TABLE `tb_tickets`
-  MODIFY `ticket_id` int(10) NOT NULL AUTO_INCREMENT;
+  MODIFY `ticket_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
 
 --
 -- AUTO_INCREMENT for table `ticket_logs`
 --
 ALTER TABLE `ticket_logs`
-  MODIFY `history_id` int(255) NOT NULL AUTO_INCREMENT;
+  MODIFY `history_id` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
+
+--
+-- AUTO_INCREMENT for table `timeset`
+--
+ALTER TABLE `timeset`
+  MODIFY `time_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `user_history_logs`

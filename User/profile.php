@@ -10,36 +10,70 @@ if (!isset($_SESSION["user_id"])) {
     exit(); // Prevent further execution after redirection
 } else {
     $id = $_SESSION["user_id"];
+    $identity = $_SESSION["user_identity"];
 
-    $pdoUserQuery = "SELECT * FROM tb_user WHERE user_id = :number";
-    $pdoResult = $pdoConnect->prepare($pdoUserQuery);
-    $pdoResult->bindParam(':number', $id);
-    $pdoResult->execute();
-
-    $Data = $pdoResult->fetch(PDO::FETCH_ASSOC);
-
-    if ($Data) {
-        $Email_Add = $Data['email_address'];
-        $Name = $Data['name'];
-        $Campus = $Data['campus'];
-        $Department = $Data['department'];
-        $Course = $Data['course'];
-        $Y_S = $Data['year_section'];
-        $P_P = $Data['profile_picture'];
-        $Sex = $Data['sex'];
-        $Age = $Data['age'];
-        $Bday = $Data['birthday'];
-        $UserType = $Data['user_type'];
-
-        $nameParts = explode(' ', $Name);
-        $firstName = $nameParts[0];
-
-        $P_PBase64 = base64_encode($P_P);
-        $date = new DateTime($Bday);
-        $formattedDate = $date->format('F j, Y'); // This will give "July 22, 1990"
-    } else {
-        // Handle the case where no results are found
-        echo "No student found with the given student number.";
+    if ($identity == "Student"){
+        $pdoUserQuery = "SELECT * FROM tb_user WHERE user_id = :number";
+        $pdoResult = $pdoConnect->prepare($pdoUserQuery);
+        $pdoResult->bindParam(':number', $id);
+        $pdoResult->execute();
+    
+        $Data = $pdoResult->fetch(PDO::FETCH_ASSOC);
+    
+        if ($Data) {
+            $Email_Add = $Data['email_address'];
+            $Name = $Data['name'];
+            $Campus = $Data['campus'];
+            $Department = $Data['department'];
+            $Course = $Data['course'];
+            $Y_S = $Data['year_section'];
+            $P_P = $Data['profile_picture'];
+            $Sex = $Data['sex'];
+            $Age = $Data['age'];
+            $Bday = $Data['birthday'];
+            $UserType = $Data['user_type'];
+    
+            $nameParts = explode(' ', $Name);
+            $firstName = $nameParts[0];
+    
+            $P_PBase64 = base64_encode($P_P);
+            $date = new DateTime($Bday);
+            $formattedDate = $date->format('F j, Y'); // This will give "July 22, 1990"
+        } else {
+            // Handle the case where no results are found
+            echo "No student found with the given student number.";
+        }
+    } elseif ($identity == "Employee") {
+        $pdoUserQuery = "SELECT * FROM employee_user WHERE user_id = :number";
+        $pdoResult = $pdoConnect->prepare($pdoUserQuery);
+        $pdoResult->bindParam(':number', $id);
+        $pdoResult->execute();
+    
+        $Data = $pdoResult->fetch(PDO::FETCH_ASSOC);
+    
+        if ($Data) {
+            $Email_Add = $Data['email_address'];
+            $Name = $Data['name'];
+            $Campus = $Data['campus'];
+            $Department = $Data['department'];
+            $Course = $Data['course'];
+            $Y_S = $Data['year_section'];
+            $P_P = $Data['profile_picture'];
+            $Sex = $Data['sex'];
+            $Age = $Data['age'];
+            $Bday = $Data['birthday'];
+            $UserType = $Data['user_type'];
+    
+            $nameParts = explode(' ', $Name);
+            $firstName = $nameParts[0];
+    
+            $P_PBase64 = base64_encode($P_P);
+            $date = new DateTime($Bday);
+            $formattedDate = $date->format('F j, Y'); // This will give "July 22, 1990"
+        } else {
+            // Handle the case where no results are found
+            echo "No student found with the given student number.";
+        }
     }
 }
 ?>
@@ -219,6 +253,7 @@ if (!isset($_SESSION["user_id"])) {
                                                 <input class="form-control" type="text" value="<?php echo $Department?>" disabled>
                                             </div>
                                         </div>
+                                        <?php if ( $identity === 'Student'): ?>
                                         <div class="form-group">
                                             <label class="col-lg-3 control-label">COURSE </label>
                                             <div class="col-lg-8">
@@ -231,6 +266,7 @@ if (!isset($_SESSION["user_id"])) {
                                                 <input class="form-control" type="text" value="<?php echo $Y_S?>" disabled>
                                             </div>
                                         </div>
+                                        <?php endif; ?>
                                         <div class="modal-footer">	
                                             <a href="edit-profile-picture.php"><button type="button" class="btn btn-primary">CHANGE PROFILE</button></a>
                                             <a href="edit-profile.php"><button type="button" class="btn btn-primary">UPDATE INFORMATION</button></a>

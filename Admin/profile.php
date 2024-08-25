@@ -29,6 +29,8 @@ if (!isset($_SESSION["admin_number"])) {
         $Bday = $Data['birthday'];
         $UserType = $Data['user_type'];
         $U_T = $Data['user_type'];
+
+
     
 
         $P_PBase64 = base64_encode($P_P);
@@ -74,13 +76,13 @@ if (!isset($_SESSION["admin_number"])) {
                             <h1 class="text-primary"></h1>
                             
                             <div class="row">
-                                
+
                                 <!-- left column -->
                                 <div class="col-md-3">
                                     <div class="text-center">
                                         <img src="data:image/jpeg;base64,<?php echo $P_PBase64?>" class="avatar img-circle img-thumbnail" alt="avatar">
                                         <h3><?php echo $Name,  " ", $lname?></h3>
-                                        <h5 style="text-transform: uppercase;"><?php echo $UserType?></h5>
+                                        <h5 style="text-transform: uppercase;"><?php echo $U_T?></h5>
                                     </div>
                                 </div>
         

@@ -207,7 +207,7 @@ h3{
 </div>
 </nav>   
    <!-- /. NAV TOP  -->
-        <nav class="navbar-default navbar-side" role="navigation">
+<nav class="navbar-default navbar-side" role="navigation">
     <div class="sidebar-collapse">
         <ul class="nav" id="main-menu">
         <li class="text-center">
@@ -362,7 +362,7 @@ window.addEventListener("load", function () { // Attach listener on 'load'
                 <div id="page-inner">
                     <div class="row">
                         <div class="col-md-9">
-                            <h2>Upload New Student Account/s</h2>
+                            <h2>Upload New DHVSU Employee Account/s</h2>
                             <h5>This page allows the administrator to add new user accounts into the system.</h5>             
                         </div>
                         <div class="card-tools col-md-3">
@@ -405,7 +405,7 @@ window.addEventListener("load", function () { // Attach listener on 'load'
                 // Open and read the CSV file
                 if (($handle = fopen($filePath, "r")) !== FALSE) {
                         ?>
-                        <form action='add-user-upload.php' method='post'>
+                        <form action='add-employee-upload.php' method='post'>
                         <div class="card-tools col-md-2">
                         <h3>Preview Data</h3>
                         </div>
