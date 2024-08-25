@@ -1,3 +1,79 @@
+<?php
+
+// Check if the session variable is set
+if (!isset($_SESSION["admin_number"])) {
+    header("Location: ../index.php");
+    exit(); // Prevent further execution after redirection
+} else {
+    $id = $_SESSION["admin_number"];
+
+    $pdoUserQuery = "SELECT * FROM mis_employees WHERE admin_number = :number";
+    $pdoResult = $pdoConnect->prepare($pdoUserQuery);
+    $pdoResult->bindParam(':number', $id);
+    $pdoResult->execute();
+
+    $Data = $pdoResult->fetch(PDO::FETCH_ASSOC);
+
+    if ($Data) {
+        $Name = $Data['f_name'];
+        $Position = $Data['position'];
+        $U_T = $Data['user_type'];
+
+        $nameParts = explode(' ', $Name);
+        $firstName = $nameParts[0];
+    } else {
+        // Handle the case where no results are found
+        echo "No student found with the given student number.";
+    }
+
+try {
+
+
+    $sql = "SELECT id, event_date, event_description, event_title FROM tb_calendar";
+    $req = $pdoConnect->prepare($sql);
+    $req->execute();
+    $events = $req->fetchAll(PDO::FETCH_ASSOC);
+
+    
+    $query = $pdoConnect->prepare("SELECT system_name, short_name, system_logo, system_cover FROM settings WHERE id = :id");
+    $query->execute(['id' => 1]);
+    $Datas = $query->fetch(PDO::FETCH_ASSOC);
+    $sysName = $Datas['system_name'] ?? '';
+    $shortName = $Datas['short_name'] ?? '';
+    $systemLogo = $Datas['system_logo'];
+    $systemCover = $Datas['system_cover'];
+    
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        $newSysName = $_POST['name'];
+        $newShortName = $_POST['short_name'];
+    
+        try {
+            $updateQuery = $pdoConnect->prepare("UPDATE settings SET system_name = :system_name, short_name = :short_name WHERE id = :id");
+            $updateQuery->execute([
+                'system_name' => $newSysName,
+                'short_name' => $newShortName,
+                'id' => 1 
+            ]);
+    
+           header('Location: settings.php'); 
+        } catch (PDOException $e) {
+            // Error handling
+            echo "Error updating data: " . $e->getMessage();
+        }
+    }
+
+
+} catch (PDOException $e) {
+    echo "Error: " . $e->getMessage();
+}
+
+}
+
+
+
+
+?>
+
 <nav class="navbar navbar-default navbar-cls-top " role="navigation" style="margin-bottom: 0">
     <div class="navbar-header">
         <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".sidebar-collapse">
@@ -6,7 +82,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
         </button>
-        <a class="navbar-brand" href="index.php">MIS Office</a> 
+        <a class="navbar-brand" href="index.php"><?php echo $shortName?></a> 
     </div>
 <div style="color: white; padding: 15px 50px 5px 50px; float: right;"> Last access : <?php echo date('d F Y')?> &nbsp; 
 <div class="btn-group nav-link">
