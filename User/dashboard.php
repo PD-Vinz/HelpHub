@@ -5,30 +5,59 @@ $pdoConnect = connection();
 session_start(); // Start the session
 
 // Check if the session variable is set
-if (!isset($_SESSION["student_number"])) {
+if (!isset($_SESSION["user_id"])) {
     header("Location: ../index.php");
     exit(); // Prevent further execution after redirection
 } else {
-    $id = $_SESSION["student_number"];
+    $id = $_SESSION["user_id"];
+    $identity = $_SESSION["user_identity"];
 
-    $pdoUserQuery = "SELECT * FROM student_user WHERE student_number = :number";
-    $pdoResult = $pdoConnect->prepare($pdoUserQuery);
-    $pdoResult->bindParam(':number', $id);
-    $pdoResult->execute();
-
-    $Data = $pdoResult->fetch(PDO::FETCH_ASSOC);
-
-    if ($Data) {
-        $Name = $Data['name'];
-        $Department = $Data['department'];
-        $Y_S = $Data['year_section'];
-
-        $nameParts = explode(' ', $Name);
-        $firstName = $nameParts[0];
-    } else {
-        // Handle the case where no results are found
-        echo "No student found with the given student number.";
+    if ($identity == "Student"){
+        $pdoUserQuery = "SELECT * FROM tb_user WHERE user_id = :number";
+        $pdoResult = $pdoConnect->prepare($pdoUserQuery);
+        $pdoResult->bindParam(':number', $id);
+        $pdoResult->execute();
+    
+        $Data = $pdoResult->fetch(PDO::FETCH_ASSOC);
+    
+        if ($Data) {
+            $Name = $Data['name'];
+            $Department = $Data['department'];
+            $Y_S = $Data['year_section'];
+            $P_P = $Data['profile_picture'];
+    
+            $nameParts = explode(' ', $Name);
+            $firstName = $nameParts[0];
+    
+            $P_PBase64 = base64_encode($P_P);
+        } else {
+            // Handle the case where no results are found
+            echo "No student found with the given student number.";
+        }
+    } elseif ($identity == "Employee") {
+        $pdoUserQuery = "SELECT * FROM employee_user WHERE user_id = :number";
+        $pdoResult = $pdoConnect->prepare($pdoUserQuery);
+        $pdoResult->bindParam(':number', $id);
+        $pdoResult->execute();
+    
+        $Data = $pdoResult->fetch(PDO::FETCH_ASSOC);
+    
+        if ($Data) {
+            $Name = $Data['name'];
+            $Department = $Data['department'];
+            $Y_S = $Data['year_section'];
+            $P_P = $Data['profile_picture'];
+    
+            $nameParts = explode(' ', $Name);
+            $firstName = $nameParts[0];
+    
+            $P_PBase64 = base64_encode($P_P);
+        } else {
+            // Handle the case where no results are found
+            echo "No student found with the given student number.";
+        }
     }
+    
 
 try {
 
@@ -90,6 +119,7 @@ try {
     <link href='https://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css' />
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
 </head>
 
 <body>
@@ -118,6 +148,8 @@ try {
           <div class="dropdown-menu" role="menu">
             <a class="dropdown-item" href="profile.php"><span class="fa fa-user"></span> MY ACCOUNT</a>
             <hr style="margin-top: 5px; margin-bottom: 5px;">
+            <a class="dropdown-item" href="settings.php"><span class="fa fa-gear"></span> SETTINGS</a>
+            <hr style="margin-top: 5px; margin-bottom: 5px;">
             <a class="dropdown-item" href="logout.php"><span class="fa fa-sign-out"></span> LOG OUT </a>
           </div>
         </nav>
@@ -126,7 +158,8 @@ try {
             <div class="sidebar-collapse">
                 <ul class="nav" id="main-menu">
                     <li class="text-center">
-                        <img src="assets/img/find_user.png" class="user-image img-responsive" />
+                        <!--<img src="data:image/jpeg;base64,<?php //echo $P_PBase64?>" class="user-image img-responsive" />-->
+                        <img src="data:image/jpeg;base64,<?php echo $P_PBase64?>" class="user-image img-responsive" />
                     </li>
 
 
@@ -177,7 +210,7 @@ try {
                 <div class="row">
                     <div class="col-md-12">
                         <h2>DASHBOARD</h2>
-                        <h5>Welcome back <?php echo $firstName?></h5>
+                        <h5>Welcome back, <?php echo $firstName?>!</h5>
                     </div>
                 </div>
                 <!-- /. ROW  -->

@@ -11,7 +11,7 @@ if (!isset($_SESSION["admin_number"])) {
 } else {
     $id = $_SESSION["admin_number"];
 
-    $pdoUserQuery = "SELECT * FROM mis_employees WHERE employee_number = :number";
+    $pdoUserQuery = "SELECT * FROM mis_employees WHERE admin_number = :number";
     $pdoResult = $pdoConnect->prepare($pdoUserQuery);
     $pdoResult->bindParam(':number', $id);
     $pdoResult->execute();
@@ -19,9 +19,9 @@ if (!isset($_SESSION["admin_number"])) {
     $Data = $pdoResult->fetch(PDO::FETCH_ASSOC);
 
     if ($Data) {
-        $Name = $Data['name'];
-        $Department = $Data['position'];
-        $Y_S = $Data['specialization'];
+        $Name = $Data['f_name'];
+        $Position = $Data['position'];
+        $U_T = $Data['user_type'];
 
         $nameParts = explode(' ', $Name);
         $firstName = $nameParts[0];
@@ -30,6 +30,14 @@ if (!isset($_SESSION["admin_number"])) {
         echo "No student found with the given student number.";
     }
 
+    if (isset($_GET["id"]) && $_GET["id"] == 1) {
+        $ticket_user = "Student";
+    } elseif (isset($_GET["id"]) && $_GET["id"] == 2) {
+        $ticket_user = "Employee";
+    }
+    
+
+
     try {
 
         $pdoCountQuery = "SELECT * FROM tb_tickets";
@@ -37,23 +45,33 @@ if (!isset($_SESSION["admin_number"])) {
         $pdoResult->execute();
         $allTickets = $pdoResult->rowCount();
     
-        $pdoCountQuery = "SELECT * FROM tb_tickets WHERE status = 'Pending'";
+        $pdoCountQuery = "SELECT * FROM tb_tickets WHERE status = 'Pending' && user_type = :user";
         $pdoResult = $pdoConnect->prepare($pdoCountQuery);
+        $pdoResult->bindParam(':user', $ticket_user, PDO::PARAM_STR);
         $pdoResult->execute();
         $pendingTickets = $pdoResult->rowCount();
-    
-        $pdoCountQuery = "SELECT * FROM tb_tickets WHERE status = 'Returned'";
+
+        $pdoCountQuery = "SELECT * FROM tb_tickets WHERE status = 'Processing' && user_type = :user";
         $pdoResult = $pdoConnect->prepare($pdoCountQuery);
+        $pdoResult->bindParam(':user', $ticket_user, PDO::PARAM_STR);
+        $pdoResult->execute();
+        $openedTickets = $pdoResult->rowCount();
+    
+        $pdoCountQuery = "SELECT * FROM tb_tickets WHERE status = 'Returned' && user_type = :user";
+        $pdoResult = $pdoConnect->prepare($pdoCountQuery);
+        $pdoResult->bindParam(':user', $ticket_user, PDO::PARAM_STR);
         $pdoResult->execute();
         $returnedTickets = $pdoResult->rowCount();
     
-        $pdoCountQuery = "SELECT * FROM tb_tickets WHERE status = 'Completed'";
+        $pdoCountQuery = "SELECT * FROM tb_tickets WHERE status = 'Completed' && user_type = :user";
         $pdoResult = $pdoConnect->prepare($pdoCountQuery);
+        $pdoResult->bindParam(':user', $ticket_user, PDO::PARAM_STR);
         $pdoResult->execute();
         $completedTickets = $pdoResult->rowCount();
     
-        $pdoCountQuery = "SELECT * FROM tb_tickets WHERE status = 'Due'";
+        $pdoCountQuery = "SELECT * FROM tb_tickets WHERE status = 'Due' && user_type = :user";
         $pdoResult = $pdoConnect->prepare($pdoCountQuery);
+        $pdoResult->bindParam(':user', $ticket_user, PDO::PARAM_STR);
         $pdoResult->execute();
         $dueTickets = $pdoResult->rowCount();
     
@@ -114,7 +132,7 @@ if (!isset($_SESSION["admin_number"])) {
                 <i class="fa fa-envelope-open" aria-hidden="true"></i>
                 </span>
                 <div class="text-box" >
-                    <p class="main-text">0 Opened </p>
+                    <p class="main-text"><?php echo $openedTickets?> Opened </p>
                     <p class="text-muted">Tickets</p>
                 </div>
              </div>
@@ -192,14 +210,15 @@ if (!isset($_SESSION["admin_number"])) {
                                     <tbody>
             <?php
 
-                $pdoQuery = "SELECT * FROM tb_tickets";
+                $pdoQuery = "SELECT * FROM tb_tickets WHERE user_type = :user";
                 $pdoResult = $pdoConnect->prepare($pdoQuery);
+                $pdoResult->bindParam(':user', $ticket_user, PDO::PARAM_STR);
                 $pdoExec = $pdoResult->execute();
                 while ($row = $pdoResult->fetch(PDO::FETCH_ASSOC)){
                     extract($row);
                     echo "<tr class='odd gradeX'>";
                     echo "<td>$ticket_id</td>";
-                    echo "<td></td>";
+                    echo "<td>$employee</td>";
                     echo "<td>$created_date</td>";
                     echo "<td>$full_name</td>";
                     echo "<td>$issue</td>";
@@ -513,38 +532,31 @@ if (!isset($_SESSION["admin_number"])) {
     <!-- MORRIS CHART SCRIPTS -->
     <script src="assets/js/morris/raphael-2.1.0.min.js"></script>
     <script src="assets/js/morris/morris.js"></script>
-    <script>$(document).ready(function() {
-  Morris.Donut({
-    element: 'morris-donut-chart',
-    data: [
-      { label: "18- below", value: 12 },
-      { label: "18-24", value: 30 },
-      { label: "24+", value: 20 }
-    ]
-  });
-});</script>
- <script>$(document).ready(function() {
-  Morris.Donut({
-    element: 'morris-donut-chart2',
-    data: [
-      { label: "Male", value: 12 },
-      { label: "Female", value: 30 },
-      { label: "Others", value: 20 }
-    ]
-  });
-}); 
-  </script>
 
-  <script>$(document).ready(function() {
-  Morris.Donut({
-    element: 'morris-donut-chart3',
-    data: [
-      { label: "Main", value: 12 },
-      { label: "Porac", value: 30 },
-      { label: "Others", value: 20 }
-    ]
-  });
-});</script>
+<script>
+    $(document).ready(function() {
+      // Function to create a donut chart
+      function createDonutChart(elementId, dataUrl) {
+        $.getJSON(dataUrl, function(data) {
+          if (data.error) {
+            console.error('Error fetching data:', data.error);
+          } else {
+            Morris.Donut({
+              element: elementId,
+              data: data
+            });
+          }
+        }).fail(function(jqxhr, textStatus, error) {
+          console.error('Request Failed: ' + textStatus + ', ' + error);
+        });
+      }
+
+      // Create charts with dynamic data
+      createDonutChart('morris-donut-chart', 'action/data.php?chart=age-groups&id=<?php echo $_GET['id']?>');
+      createDonutChart('morris-donut-chart2', 'action/data.php?chart=genders&id=<?php echo $_GET['id']?>');
+      createDonutChart('morris-donut-chart3', 'action/data.php?chart=locations&id=<?php echo $_GET['id']?>');
+    });
+</script>
 
  <!-- DATA TABLE SCRIPTS -->
 <script> </script>

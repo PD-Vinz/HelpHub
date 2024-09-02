@@ -11,7 +11,7 @@ if (!isset($_SESSION["admin_number"])) {
 } else {
     $id = $_SESSION["admin_number"];
 
-    $pdoUserQuery = "SELECT * FROM mis_employees WHERE employee_number = :number";
+    $pdoUserQuery = "SELECT * FROM mis_employees WHERE admin_number = :number";
     $pdoResult = $pdoConnect->prepare($pdoUserQuery);
     $pdoResult->bindParam(':number', $id);
     $pdoResult->execute();
@@ -19,9 +19,9 @@ if (!isset($_SESSION["admin_number"])) {
     $Data = $pdoResult->fetch(PDO::FETCH_ASSOC);
 
     if ($Data) {
-        $Name = $Data['name'];
-        $Department = $Data['position'];
-        $Y_S = $Data['specialization'];
+        $Name = $Data['f_name'];
+        $Position = $Data['position'];
+        $U_T = $Data['user_type'];
 
         $nameParts = explode(' ', $Name);
         $firstName = $nameParts[0];
@@ -41,6 +41,11 @@ try {
     $pdoResult = $pdoConnect->prepare($pdoCountQuery);
     $pdoResult->execute();
     $pendingTickets = $pdoResult->rowCount();
+
+    $pdoCountQuery = "SELECT * FROM tb_tickets WHERE status = 'Processing'";
+    $pdoResult = $pdoConnect->prepare($pdoCountQuery);
+    $pdoResult->execute();
+    $openedTickets = $pdoResult->rowCount();
 
     $pdoCountQuery = "SELECT * FROM tb_tickets WHERE status = 'Returned'";
     $pdoResult = $pdoConnect->prepare($pdoCountQuery);
@@ -83,6 +88,12 @@ try {
     <link href="assets/css/custom.css" rel="stylesheet" />
      <!-- GOOGLE FONTS-->
    <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css' />
+
+   <style>
+    a {
+        color: black;
+    }
+   </style>
 </head>
 <body>
     <div id="wrapper">
@@ -101,28 +112,35 @@ try {
                  <!-- /. ROW  -->
                   <hr />
                   <div class="row">
-                    <div class="col-md-4 col-sm-6 col-xs-6">           
+
+<!--<a href="ticket-pending.php">  -->            
+            <div class="col-md-4 col-sm-6 col-xs-6">           
             <div class="panel panel-back noti-box">
                 <span class="icon-box bg-color-yellow set-icon">
                 <i class="fa fa-hourglass-half " aria-hidden="true"></i>
                 </span>
+
                 <div class="text-box" >
                     <p class="main-text"><?php echo $pendingTickets?> Pending</p>
                     <p class="text-muted">Tickets</p>
                 </div>
-             </div>
             </div>
+            </div>
+<!--</a>-->
+<!--<a href="ticket-opened.php">-->
                     <div class="col-md-4 col-sm-6 col-xs-6">           
             <div class="panel panel-back noti-box">
                 <span class="icon-box bg-color-green set-icon">
                 <i class="fa fa-envelope-open" aria-hidden="true"></i>
                 </span>
                 <div class="text-box" >
-                    <p class="main-text">0 Opened </p>
+                    <p class="main-text"><?php echo $openedTickets?> Opened </p>
                     <p class="text-muted">Tickets</p>
                 </div>
              </div>
             </div>
+<!--</a>-->
+<!--<a href="ticket-closed.php">-->
                     <div class="col-md-4 col-sm-6 col-xs-6">           
             <div class="panel panel-back noti-box">
                 <span class="icon-box bg-color-brown set-icon">
@@ -134,8 +152,10 @@ try {
                 </div>
              </div>
             </div>
-            </div>
+            </div> 
+<!--</a>            -->
                   <div class="row">
+<!--<a href="ticket-pending.php">-->
                     <div class="col-md-4 col-sm-6 col-xs-6">           
 			<div class="panel panel-back noti-box">
                 <span class="icon-box bg-color-orange set-icon">
@@ -147,6 +167,8 @@ try {
                 </div>
              </div>
 		     </div>
+<!--</a>-->
+<!--<a href="ticket-returned.php">     -->        
                     <div class="col-md-4 col-sm-6 col-xs-6">           
 			<div class="panel panel-back noti-box">
                 <span class="icon-box bg-color-black set-icon">
@@ -158,6 +180,8 @@ try {
                 </div>
              </div>
 		     </div>
+<!--</a>-->
+<!--<a href="#">-->
                     <div class="col-md-4 col-sm-6 col-xs-6">           
 			<div class="panel panel-back noti-box">
                 <span class="icon-box bg-color-blue set-icon">
@@ -169,6 +193,7 @@ try {
                 </div>
              </div>
 		     </div>
+<!--</a>-->
 			</div>  
       
                  <!-- /. Calendar  -->   
@@ -267,7 +292,7 @@ try {
     <script src="assets/js/jquery.metisMenu.js"></script>
      <!-- MORRIS CHART SCRIPTS -->
      
-     <script src="assets/js/morris/raphael-2.1.0.min.js"></script>
+    <script src="assets/js/morris/raphael-2.1.0.min.js"></script>
     <script src="assets/js/morris/morris.js"></script>
     <script>Morris.Line({
                 element: 'morris-line-chart',

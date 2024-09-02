@@ -5,34 +5,75 @@ $pdoConnect = connection();
 session_start(); // Start the session
 
 // Check if the session variable is set
-if (!isset($_SESSION["student_number"])) {
+if (!isset($_SESSION["user_id"])) {
     header("Location: ../index.php");
     exit(); // Prevent further execution after redirection
 } else {
-    $id = $_SESSION["student_number"];
+    $id = $_SESSION["user_id"];
+    $identity = $_SESSION["user_identity"];
 
-    $pdoUserQuery = "SELECT * FROM student_user WHERE student_number = :number";
-    $pdoResult = $pdoConnect->prepare($pdoUserQuery);
-    $pdoResult->bindParam(':number', $id);
-    $pdoResult->execute();
-
-    $Data = $pdoResult->fetch(PDO::FETCH_ASSOC);
-
-    if ($Data) {
-        $Email_Add = $Data['email_address'];
-        $Name = $Data['name'];
-        $Department = $Data['department'];
-        $Course = $Data['course'];
-        $Y_S = $Data['year_section'];
-        $P_P = $Data['profile_picture'];
-        $Sex = $Data['sex'];
-        $UserType = $Data['user_type'];
-
-        $nameParts = explode(' ', $Name);
-        $firstName = $nameParts[0];
-    } else {
-        // Handle the case where no results are found
-        echo "No student found with the given student number.";
+    if ($identity == "Student"){
+        $pdoUserQuery = "SELECT * FROM tb_user WHERE user_id = :number";
+        $pdoResult = $pdoConnect->prepare($pdoUserQuery);
+        $pdoResult->bindParam(':number', $id);
+        $pdoResult->execute();
+    
+        $Data = $pdoResult->fetch(PDO::FETCH_ASSOC);
+    
+        if ($Data) {
+            $Email_Add = $Data['email_address'];
+            $Name = $Data['name'];
+            $Campus = $Data['campus'];
+            $Department = $Data['department'];
+            $Course = $Data['course'];
+            $Y_S = $Data['year_section'];
+            $P_P = $Data['profile_picture'];
+            $Sex = $Data['sex'];
+            $Age = $Data['age'];
+            $Bday = $Data['birthday'];
+            $UserType = $Data['user_type'];
+    
+            $nameParts = explode(' ', $Name);
+            $firstName = $nameParts[0];
+    
+            $P_PBase64 = base64_encode($P_P);
+            $date = new DateTime($Bday);
+            $formattedDate = $date->format('F j, Y'); // This will give "July 22, 1990"
+        } else {
+            // Handle the case where no results are found
+            echo "No student found with the given student number.";
+        }
+    } elseif ($identity == "Employee") {
+        $pdoUserQuery = "SELECT * FROM employee_user WHERE user_id = :number";
+        $pdoResult = $pdoConnect->prepare($pdoUserQuery);
+        $pdoResult->bindParam(':number', $id);
+        $pdoResult->execute();
+    
+        $Data = $pdoResult->fetch(PDO::FETCH_ASSOC);
+    
+        if ($Data) {
+            $Email_Add = $Data['email_address'];
+            $Name = $Data['name'];
+            $Campus = $Data['campus'];
+            $Department = $Data['department'];
+            $Course = $Data['course'];
+            $Y_S = $Data['year_section'];
+            $P_P = $Data['profile_picture'];
+            $Sex = $Data['sex'];
+            $Age = $Data['age'];
+            $Bday = $Data['birthday'];
+            $UserType = $Data['user_type'];
+    
+            $nameParts = explode(' ', $Name);
+            $firstName = $nameParts[0];
+    
+            $P_PBase64 = base64_encode($P_P);
+            $date = new DateTime($Bday);
+            $formattedDate = $date->format('F j, Y'); // This will give "July 22, 1990"
+        } else {
+            // Handle the case where no results are found
+            echo "No student found with the given student number.";
+        }
     }
 }
 ?>
@@ -81,6 +122,8 @@ if (!isset($_SESSION["student_number"])) {
           </button>
           <div class="dropdown-menu" role="menu">
             <a class="dropdown-item" href="profile.php"><span class="fa fa-user"></span> MY ACCOUNT</a>
+            <hr style="margin-top: 5px; margin-bottom: 5px;">
+            <a class="dropdown-item" href="settings.php"><span class="fa fa-gear"></span> SETTINGS</a>
             <hr style="margin-top: 5px; margin-bottom: 5px;">
             <a class="dropdown-item" href="logout.php"><span class="fa fa-sign-out"></span> LOG OUT </a>
           </div>
@@ -151,13 +194,13 @@ if (!isset($_SESSION["student_number"])) {
                                 <nav aria-label="breadcrumb" class="main-breadcrumb">
                                     <ol class="breadcrumb">
                                       <li class="breadcruMB"><a href="dashboard.php">HOME</a></li>
-                                      <li class="breadcrumb-item active" aria-current="page">PROFILE SETTINGS</li>
+                                      <li class="breadcrumb-item active" aria-current="page">PROFILE</li>
                                     </ol>
                                   </nav>
                                 <!-- left column -->
                                 <div class="col-md-3">
                                     <div class="text-center">
-                                        <img src="assets/Profile-pictures/<?php echo $P_P?>" class="avatar img-circle img-thumbnail" alt="avatar">
+                                        <img src="data:image/jpeg;base64,<?php echo $P_PBase64?>" class="avatar img-circle img-thumbnail" alt="avatar">
                                         <h3><?php echo $Name?></h3>
                                         <h5 style="text-transform: uppercase;"><?php echo $UserType?></h5>
                                     </div>
@@ -187,11 +230,30 @@ if (!isset($_SESSION["student_number"])) {
                                             </div>
                                         </div>
                                         <div class="form-group">
+                                            <label class="col-lg-3 control-label">BIRTHDAY</label>
+                                            <div class="col-lg-8">
+                                                <input class="form-control" type="text" value="<?php echo $formattedDate?>" disabled>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-lg-3 control-label">AGE</label>
+                                            <div class="col-lg-8">
+                                                <input class="form-control" type="text" value="<?php echo $Age?>" disabled>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-lg-3 control-label">CAMPUS </label>
+                                            <div class="col-lg-8">
+                                                <input class="form-control" type="text" value="<?php echo $Campus?>" disabled>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
                                             <label class="col-lg-3 control-label">DEPARTMENT </label>
                                             <div class="col-lg-8">
                                                 <input class="form-control" type="text" value="<?php echo $Department?>" disabled>
                                             </div>
                                         </div>
+                                        <?php if ( $identity === 'Student'): ?>
                                         <div class="form-group">
                                             <label class="col-lg-3 control-label">COURSE </label>
                                             <div class="col-lg-8">
@@ -204,9 +266,10 @@ if (!isset($_SESSION["student_number"])) {
                                                 <input class="form-control" type="text" value="<?php echo $Y_S?>" disabled>
                                             </div>
                                         </div>
+                                        <?php endif; ?>
                                         <div class="modal-footer">	
-                                            <a href="edit-profile.php"><button type="button" class="btn btn-primary">EDIT PROFILE</button></a>
-                                            <a href="dashboard.php"><button type="button" class="btn btn-primary">BACK</button></a>
+                                            <a href="edit-profile-picture.php"><button type="button" class="btn btn-primary">CHANGE PROFILE</button></a>
+                                            <a href="edit-profile.php"><button type="button" class="btn btn-primary">UPDATE INFORMATION</button></a>
                                         </div>
                                         
 

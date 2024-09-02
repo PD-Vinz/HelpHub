@@ -1,4 +1,42 @@
-﻿<!DOCTYPE html>
+﻿<?php
+include_once("../connection/conn.php");
+$pdoConnect = connection();
+
+session_start(); // Start the session
+
+// Check if the session variable is set
+if (!isset($_SESSION["user_id"])) {
+    header("Location: ../index.php");
+    exit(); // Prevent further execution after redirection
+} else {
+    $id = $_SESSION["user_id"];
+
+    $pdoUserQuery = "SELECT * FROM tb_user WHERE user_id = :number";
+    $pdoResult = $pdoConnect->prepare($pdoUserQuery);
+    $pdoResult->bindParam(':number', $id);
+    $pdoResult->execute();
+
+    $Data = $pdoResult->fetch(PDO::FETCH_ASSOC);
+
+    if ($Data) {
+        $Email_Add = $Data['email_address'];
+        $Name = $Data['name'];
+        $Department = $Data['department'];
+        $Course = $Data['course'];
+        $Y_S = $Data['year_section'];
+        $P_P = $Data['profile_picture'];
+        $Sex = $Data['sex'];
+
+        $nameParts = explode(' ', $Name);
+        $firstName = $nameParts[0];
+    } else {
+        // Handle the case where no results are found
+        echo "No student found with the given student number.";
+    }
+}
+?>
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -6,8 +44,8 @@
     <title>USER</title>
     <!-- BOOTSTRAP STYLES -->
     <link href="assets/css/bootstrap.css" rel="stylesheet">
-  <!-- FONTAWESOME STYLES-->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <!-- FONTAWESOME STYLES-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
     <!-- CUSTOM STYLES -->
     <link href="assets/css/custom.css" rel="stylesheet">
     <!-- GOOGLE FONTS -->
@@ -15,9 +53,45 @@
     <!-- TABLE STYLES -->
     <link href="assets/css/dataTables.bootstrap.css" rel="stylesheet">
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+
+    <style>
+    /* Styles for the loading screen */
+#loading-screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(255, 255, 255, 0.8);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    z-index: 9999;
+}
+
+.spinner {
+    border: 16px solid #FFD700; /* Light grey */
+    border-top: 16px solid #800000; /* Blue */
+    border-radius: 50%;
+    width: 120px;
+    height: 120px;
+    animation: spin 2s linear infinite;
+}
+
+/* Animation for the spinner */
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+   </style>
 </head>
 
 <body>
+    <div id="loading-screen">
+        <div class="spinner"></div>
+        <p>Loading...</p>
+    </div>
     <div id="wrapper">
         <nav class="navbar navbar-default navbar-cls-top " role="navigation" style="margin-bottom: 0">
             <div class="navbar-header">
@@ -33,18 +107,19 @@
             <div style="color: white;
             padding: 15px 50px 5px 50px;
             float: right;
-            font-size: 16px;"> Last access : 30 May 2014 &nbsp; 
+            font-size: 16px;"> Last access : <?php echo date('d F Y')?> &nbsp; 
             <div class="btn-group nav-link">
               <button type="button" class="btn btn-rounded badge badge-light dropdown-toggle dropdown-icon" data-toggle="dropdown">
-                <span class="ml-3">LOREM IPSUN</span>
+                <span class="ml-3"><?php echo $Name?></span>
             <span class="fa fa-caret-down">
             <span class="sr-only">Toggle Dropdown</span>
           </button>
           <div class="dropdown-menu" role="menu">
             <a class="dropdown-item" href="profile.php"><span class="fa fa-user"></span> MY ACCOUNT</a>
             <hr style="margin-top: 5px; margin-bottom: 5px;">
-            <a class="dropdown-item" href="http://localhost/sms//classes/Login.php?f=logout"><span class="fa fa-sign-out"></span> LOG OUT </a>
-          </div>
+            <a class="dropdown-item" href="settings.php"><span class="fa fa-gear"></span> SETTINGS</a>
+            <hr style="margin-top: 5px; margin-bottom: 5px;">
+            <a class="dropdown-item" href="logout.php"><span class="fa fa-sign-out"></span> LOG OUT </a>          </div>
         </nav>
         <!-- /. NAV TOP  -->
         <nav class="navbar-default navbar-side" role="navigation">
@@ -53,9 +128,6 @@
                     <li class="text-center">
                         <img src="assets/img/find_user.png" class="user-image img-responsive" />
                     </li>
-
-
-
                     <li>
                         <a href="dashboard.php"><i class="bx bxs-dashboard fa" style="font-size:36px;color:rgb(255, 255, 255)"></i> DASHBOARD </a>
                     </li>
@@ -65,7 +137,6 @@
                     <li>
                         <a href="#"><i class="fa fa-ticket" style="font-size:36px;color:rgb(255, 255, 255)"></i> TICKET <span class="fa arrow"></span></a>
                         <ul class="nav nav-second-level">
-
                             <li>
                                 <a href="create-ticket.php"><i class="fa fa-plus"></i>CREATE NEW TICKET</a>
                             </li>
@@ -77,11 +148,9 @@
                             </li>
                             <li>
                                 <a href="ticket-returned.php"><i class="fa fa-undo"></i> RETURNED TICKET</a>
-                                </a>
                             </li>
                             <li>
                                 <a href="ticket-finished.php"><i class="fa fa-check"></i> COMPLETE TICKET</a>
-                                </a>
                             </li>
                         </ul>
                     </li>
@@ -104,226 +173,119 @@
                     <div class="col-md-12">
                         <h2>HISTORY</h2>
                         <!-- /. ROW -->
-                 <div class="row">
-                    <div class="col-md-12">
-                        <!-- Advanced Tables -->
-                        <div class="panel panel-default">
-                            <div class="panel-heading">
-                                 LAST ACTIVITY
-                            </div>
-                            <div class="panel-body-ticket">
-                                <div class="table-responsive">
-                                    <table class="table table-striped table-bordered table-hover" id="dataTables-example">
-                                        <thead>
-                                            <tr>
-                                            <th>ALL TICKET</th>
-                                            <th>TICKET NUMBER</th>
-                                            <th>PROBLEM</th>
-                                            <th>MIS STAFF</th>
-                                            <th>STATUS</th>
-                                            <th>DURATION</th>
-                                            <th>ACTION</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr class="odd gradeX">
-                                            <td class="center">MARCH 16, 2021</td>                                           
-                                            <td class="center">111</td>
-                                            <td class="center">DHVSU SMS</td>
-                                            <td class="center">LOREM IPSUN</td>
-                                            <td class="center">CLOSED</td>
-                                            <td >4 HOURS</td>
-                                            <td><div class="panel-body-ticket">
+                        <div id="content" class="row">
+                            <div class="col-md-12">
+                                <!-- Advanced Tables -->
+                                <div class="panel panel-default">
+                                    <div class="panel-heading">
+                                        LAST ACTIVITY
+                                    </div>
+                                    <div class="panel-body">
+                                        <div class="table-responsive">
+                                            <table class="table table-striped table-bordered table-hover" id="dataTables-example">
+                                                <thead>
+                                                    <tr class="btn-primary">
+                                                        <th>TICKET NUMBER</th>
+                                                        <th>DATE</th>
+                                                        <th>PROBLEM</th>
+                                                        <th>MIS STAFF</th>
+                                                        <th>STATUS</th>
+                                                        <th>DURATION</th>
+                                                        <th>ACTION</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+<?php
+$pdoQuery = "SELECT * FROM tb_tickets WHERE user_number = :usernumber";
+$pdoResult = $pdoConnect->prepare($pdoQuery);
+$pdoResult->bindParam(':usernumber', $id, PDO::PARAM_INT);
+$pdoExec = $pdoResult->execute();
+
+while ($row = $pdoResult->fetch(PDO::FETCH_ASSOC)) {
+    extract($row);
+    $screenshotBase64 = base64_encode($screenshot);
+?>
+                                                    <tr class="odd gradeX">
+                                                        <td class="center"><?php echo htmlspecialchars($ticket_id); ?></td>
+                                                        <td class="center"><?php echo htmlspecialchars($created_date); ?></td>
+                                                        <td class="center"><?php echo htmlspecialchars($issue); ?></td>
+                                                        <td class="center"><?php echo htmlspecialchars($employee); ?></td>
+                                                        <td class="center"><?php echo htmlspecialchars($status); ?></td>
+                                                        <td><?php echo htmlspecialchars($duration); ?></td>
+                                                        <td>
+<?php
+
+if ($status == 'Completed') {
+    // Display the button that triggers the modal
+    echo '<button class="btn btn-primary btn-xs" data-toggle="modal" data-target="#myModal' . htmlspecialchars($ticket_id) . '">
+            VIEW TICKET
+          </button>';
+    
+} else {
+    // Display the link with the button
+    echo '<a href="ticket-view.php?ticket_id=' . htmlspecialchars($ticket_id) . '">
+            <button class="btn btn-primary btn-xs">
+                VIEW TICKET
+            </button>
+          </a>';
+}
+?>
+
+                                                    <div class="modal fade" id="myModal<?php echo $ticket_id; ?>">
+                                                        <div class="modal-dialog">
+                                                            <div class="modal-content">
+                                                                <div class="modal-header">
+                                                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                                                                    <img src="assets/pic/head.png" alt="Technical support for DHVSU students">  
+                                                                </div>
+                                                                <div class="modal-body" style="background-color: white;"> 
+                                                                    <h4 class="modal-title">TICKET STATUS</h4>
+                                                                    <div class="letter">
+                                                                        <main>
+                                                                            <style>
+                                                                                p {
+                                                                                    line-height: 1.5; 
+                                                                                    margin-bottom: 20px; 
+                                                                                }
+                                                                        
+                                                                                h1 {
+                                                                                    line-height: 1.2; 
+                                                                                    margin-bottom: 10px; 
+                                                                                }
+                                                                            </style>
+                                                                            <?php echo nl2br(htmlspecialchars($resolution)); ?>
+                                                                        </main>
+                                                                    
+                                                                        <div class="modal-footer">
+                                                                            <a href="survey.php?id=<?php echo $ticket_id; ?>&taken=after"><button type="button" class="btn btn-primary">TAKE SURVEY</button></a>
+                                                                            <a href="ticket-view.php?ticket_id=<?php echo $ticket_id; ?>"><button class='btn btn-primary'>VIEW TICKET</button></a>                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
                                                 
-                                  <button class="btn btn-primary btn-xs" data-toggle="modal" data-target="#myModal">
-                                    VIEW TICKET
-                                  </button>
-                                  <div class="modal fade" id="myModal">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                        <h4 class="modal-title">TICKET STATUS</h4>
-                </div>
-                
-                <div class="panel-body-ticket">
-                    <div class="table-responsive">
-                        <table class="table table-striped table-bordered table-hover" id="dataTables-example">
-                            <thead>
-                                <tr>
-                                <th class="center">TIME</th>
-                                <th class="center">DESCRIPTION</th>
-                                <th class="center">STATUS</th>
-                                <th class="center">PRIORITY</th>
-                                <th class="center">MIS STAFF</th>
-                                <th class="center">DURATION</th>
-                                </tr>
-                            </thead>
 
-
-                            <tr class="odd gradeX">
-                                <td class="center">08:22 AM</td>
-                                <td class="center">YOU MADE A TICKET</td>
-                                <td class="center">PENDING</td>
-                                <td class="center">LOW</td>
-                                <td class="center">NONE</td>
-                                <td class="center">--</td>
-                            </tr>
-                            <!-- Additional rows -->
-                            <tr class="odd gradeX">
-                                <td class="center">08:26 AM</td>
-                                <td class="center">TICKET RECEIVED</td>
-                                <td class="center">PENDING</td>
-                                <td class="center">LOW</td>
-                                <td class="center">NONE</td>
-                                <td class="center">--</td>
-                            </tr>
-                            <!-- Additional rows -->
-                            <tr class="odd gradeX">
-                                <td class="center">09:34 AM</td>
-                                <td class="center">YOUR TICKET IS PROCESSING</td>
-                                <td class="center">PROCESSING</td>
-                                <td class="center">LOW</td>
-                                <td class="center">LOREN IPSUN</td>
-                                <td class="center">4 HOURS</td>
-                            </tr>
-                            <!-- Additional rows -->
-                                   
-                            <tr class="odd gradeX">
-                                <td class="center">10:23 AM</td>
-                                <td class="center">YOUR TICKET IS PROCESSING</td>
-                                <td class="center">PROCESSING</td>
-                                <td class="center">LOW</td>
-                                <td class="center">LOREN IPSUN</td>
-                                <td class="center">4 HOURS</td>
-                            </tr>
-                            <!-- Additional rows -->  
-                                        
-                            <tr class="odd gradeX">
-                                <td class="center">10:57 AM</td>
-                                <td class="center">YOUR TICKET IS PROCESSING</td>
-                                <td class="center">CLOSED</td>
-                                <td class="center">LOW</td>
-                                <td class="center">LOREN IPSUN</td>
-                                <td class="center">4 HOURS</td>
-                            </tr>
-                            <!-- Additional rows -->
-                        </table>
-                    </div> 
-                                            <div class="modal-footer">	<a href="#" data-dismiss="modal" class="btn">Back</a>
-                                            </div>
+                                                        </td>
+                                                    </tr>
+<?php
+}
+?>
+                                                </tbody>
+                                            </table>
                                         </div>
                                     </div>
                                 </div>
-                        </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
-
-
-<tr class="odd gradeX">
-    <td class="center">MAY 15, 2022</td>
-    <td class="center">305</td>
-    <td class="center">DHVSU PORTAL</td>
-    <td class="center">LOREM IPSUN</td>
-    <td class="center">CLOSED</td>
-    <td>2 HOURS</td>
-    <td>
-        <div class="panel-body-ticket">
-            <button class="btn btn-primary btn-xs" data-toggle="modal" data-target="#myModal1">VIEW TICKET</button>
-            <div class="modal fade" id="myModal1">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                            <h4 class="modal-title">TICKET STATUS</h4>
-                        </div>
-                        <div class="panel-body-ticket">
-                            <div class="table-responsive">
-                                <table class="table table-striped table-bordered table-hover" id="dataTables-example1">
-                                    <thead>
-                                        <tr>
-                                            <th class="center">TIME</th>
-                                            <th class="center">DESCRIPTION</th>
-                                            <th class="center">STATUS</th>
-                                            <th class="center">PRIORITY</th>
-                                            <th class="center">MIS STAFF</th>
-                                            <th class="center">DURATION</th>
-                                        </tr>
-                                    </thead>
-                                    <tr class="odd gradeX">
-                                        <td class="center">09:20 AM</td>
-                                        <td class="center">YOU MADE A TICKET</td>
-                                        <td class="center">PENDING</td>
-                                        <td class="center">LOW</td>
-                                        <td class="center">NONE</td>
-                                        <td class="center">--</td>
-                                    </tr>
-                                    <!-- Additional rows -->
-                                    <tr class="odd gradeX">
-                                        <td class="center">09:25 AM</td>
-                                        <td class="center">TICKET RECEIVED</td>
-                                        <td class="center">PENDING</td>
-                                        <td class="center">LOW</td>
-                                        <td class="center">NONE</td>
-                                        <td class="center">--</td>
-                                    </tr>
-                                    <!-- Additional rows -->
-                                    <tr class="odd gradeX">
-                                        <td class="center">09:46 AM</td>
-                                        <td class="center">YOUR TICKET IS PROCESSING</td>
-                                        <td class="center">PROCESSING</td>
-                                        <td class="center">LOW</td>
-                                        <td class="center">LOREN IPSUN</td>
-                                        <td class="center">2 HOURS</td>
-                                    </tr>
-                                    <!-- Additional rows -->
-                                    <tr class="odd gradeX">
-                                        <td class="center">10:19 AM</td>
-                                        <td class="center">YOUR TICKET IS PROCESSING</td>
-                                        <td class="center">PROCESSING</td>
-                                        <td class="center">LOW</td>
-                                        <td class="center">LOREN IPSUN</td>
-                                        <td class="center">2 HOURS</td>
-                                    </tr>
-                                    <!-- Additional rows -->
-                                    <tr class="odd gradeX">
-                                        <td class="center">10:43 AM</td>
-                                        <td class="center">YOUR TICKET IS PROCESSING</td>
-                                        <td class="center">CLOSED</td>
-                                        <td class="center">LOW</td>
-                                        <td class="center">LOREN IPSUN</td>
-                                        <td class="center">2 HOURS</td>
-                                    </tr>
-                                    <!-- Additional rows -->
-                                </table>
-                            </div>
-                            <div class="modal-footer">
-                                <a href="#" data-dismiss="modal" class="btn">Back</a>
+                                <!-- /. Advanced Tables -->
                             </div>
                         </div>
+                        <!-- /. ROW -->
                     </div>
+                    <!-- /. PAGE INNER -->
                 </div>
+                <!-- /. PAGE WRAPPER -->
             </div>
+            <!-- /. WRAPPER -->
         </div>
-    </td>
-</tr>
-
-
-                <!-- /. ROW -->
-            </div>
-            <!-- /. PAGE INNER -->
-        </div>
-        <!-- /. PAGE WRAPPER -->
-    </div>
-
-    
-    <!-- /. WRAPPER -->
     <!-- SCRIPTS - AT THE BOTTOM TO REDUCE THE LOAD TIME -->
     <!-- JQUERY SCRIPTS -->
     <script src="assets/js/jquery-1.10.2.js"></script>
@@ -339,6 +301,28 @@
             $('#dataTables-example').dataTable();
         });
     </script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+    // Simulate data fetching
+    fetchData().then(() => {
+        // Hide loading screen and show content
+        document.getElementById('loading-screen').style.display = 'none';
+        document.getElementById('content').style.display = 'block';
+    });
+});
+
+function fetchData() {
+    return new Promise((resolve) => {
+        // Simulate a delay for data fetching (e.g., 2 seconds)
+        setTimeout(() => {
+            resolve();
+        }, 2000);
+    });
+}
+
+</script>
+
     <!-- CUSTOM SCRIPTS -->
     <script src="assets/js/custom.js"></script>
 </body>

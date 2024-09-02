@@ -1,3 +1,42 @@
+<?php
+include_once("../connection/conn.php");
+$pdoConnect = connection();
+
+session_start(); // Start the session
+
+// Check if the session variable is set
+if (!isset($_SESSION["user_id"])) {
+    header("Location: ../index.php");
+    exit(); // Prevent further execution after redirection
+} else {
+    $id = $_SESSION["user_id"];
+
+    $pdoUserQuery = "SELECT * FROM tb_user WHERE user_id = :number";
+    $pdoResult = $pdoConnect->prepare($pdoUserQuery);
+    $pdoResult->bindParam(':number', $id);
+    $pdoResult->execute();
+
+    $Data = $pdoResult->fetch(PDO::FETCH_ASSOC);
+
+    if ($Data) {
+        $Email_Add = $Data['email_address'];
+        $Name = $Data['name'];
+        $Department = $Data['department'];
+        $Course = $Data['course'];
+        $Y_S = $Data['year_section'];
+        $P_P = $Data['profile_picture'];
+        $Sex = $Data['sex'];
+
+        $nameParts = explode(' ', $Name);
+        $firstName = $nameParts[0];
+    } else {
+        // Handle the case where no results are found
+        echo "No student found with the given student number.";
+    }
+}
+
+?>
+
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -15,9 +54,12 @@
      <!-- GOOGLE FONTS-->
    <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css' />
    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+
+   
 </head>
 
 <body>
+
     <div id="wrapper">
         <nav class="navbar navbar-default navbar-cls-top " role="navigation" style="margin-bottom: 0">
             <div class="navbar-header">
@@ -33,18 +75,19 @@
             <div style="color: white;
             padding: 15px 50px 5px 50px;
             float: right;
-            font-size: 16px;"> Last access : 30 May 2014 &nbsp; 
+            font-size: 16px;"> Last access : <?php echo date('d F Y')?> &nbsp; 
             <div class="btn-group nav-link">
               <button type="button" class="btn btn-rounded badge badge-light dropdown-toggle dropdown-icon" data-toggle="dropdown">
-                <span class="ml-3">LOREM IPSUN</span>
+                <span class="ml-3"><?php echo $Name?></span>
             <span class="fa fa-caret-down">
             <span class="sr-only">Toggle Dropdown</span>
           </button>
           <div class="dropdown-menu" role="menu">
             <a class="dropdown-item" href="profile.php"><span class="fa fa-user"></span> MY ACCOUNT</a>
             <hr style="margin-top: 5px; margin-bottom: 5px;">
-            <a class="dropdown-item" href="http://localhost/sms//classes/Login.php?f=logout"><span class="fa fa-sign-out"></span> LOG OUT </a>
-          </div>
+            <a class="dropdown-item" href="settings.php"><span class="fa fa-gear"></span> SETTINGS</a>
+            <hr style="margin-top: 5px; margin-bottom: 5px;">
+            <a class="dropdown-item" href="logout.php"><span class="fa fa-sign-out"></span> LOG OUT </a>          </div>
         </nav>
         <!-- /. NAV TOP  -->
         <nav class="navbar-default navbar-side" role="navigation">
@@ -122,37 +165,80 @@
                         </div>
                         <div class="panel-body-ticket">
                             <div class="table-responsive">
+<?php
+    $status = "Completed";
+
+    $pdoQuery = "SELECT * FROM tb_tickets WHERE status = :status && user_number = :usernumber";
+    $pdoResult = $pdoConnect->prepare($pdoQuery);
+    $pdoResult->bindParam(':status', $status);
+    $pdoResult->bindParam(':usernumber', $id, PDO::PARAM_STR);
+    $pdoExec = $pdoResult->execute();
+
+?> 
                                 <table class="table table-striped table-bordered table-hover" id="dataTables-example">
                                     <thead>
-                                        <tr>
-                                            <th>ALL TICKET</th>
-                                            <th>TICKET NUMBER</th>
-                                            <th>PROBLEM</th>
+                                        <tr class="btn-primary">
+                                            <th>TICKET ID</th>
+                                            <th>DATE SUBMITTED</th>
                                             <th>MIS STAFF</th>
+                                            <th>ISSUE</th>
                                             <th>STATUS</th>
-                                            <th>DURATION</th>
+                                            <th>DETAILS</th>
                                             <!-- Removed redundant <tr> tag here -->
                                         </tr>
                                     </thead>
                                     <tbody>
+                                    <?php
+        while ($row = $pdoResult->fetch(PDO::FETCH_ASSOC)) {
+            extract($row);
+            $screenshotBase64 = base64_encode($screenshot);
+        ?>
                                         <tr class="odd gradeX">
-                                            <td class="center">MARCH 16, 2022</td>
-                                            <td class="center">111</td>
-                                            <td class="center">DHVSU SMS</td>
-                                            <td class="center">LOREM IPSUN</td>
-                                            <td class="center">CLOSED</td>
-                                            <td class="center">4 HOURS</td>
-                                            <!-- Removed unnecessary closing tag here -->
+                                            <td class="center"><?php echo htmlspecialchars($ticket_id); ?></td>
+                                            <td class="center"><?php echo htmlspecialchars($created_date); ?></td>
+                                            <td class="center"><?php echo htmlspecialchars($employee); ?></td>
+                                            <td class="center"><?php echo htmlspecialchars($issue); ?></td>
+                                            <td class="center"><?php echo htmlspecialchars($status); ?></td>
+                                            <td>
+                                                    <button class="btn btn-primary btn-xs" data-toggle="modal" data-target="#myModal<?php echo $ticket_id; ?>">VIEW TICKET</button>
+                                                    <div class="modal fade" id="myModal<?php echo $ticket_id; ?>">
+                                                        <div class="modal-dialog">
+                                                            <div class="modal-content">
+                                                                <div class="modal-header">
+                                                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                                                                    <img src="assets/pic/head.png" alt="Technical support for DHVSU students">  
+                                                                </div>
+                                                                <div class="modal-body" style="background-color: white;"> 
+                                                                    <h4 class="modal-title">TICKET STATUS</h4>
+                                                                    <div class="letter">
+                                                                        <main>
+                                                                            <style>
+                                                                                p {
+                                                                                    line-height: 1.5; 
+                                                                                    margin-bottom: 20px; 
+                                                                                }
+                                                                        
+                                                                                h1 {
+                                                                                    line-height: 1.2; 
+                                                                                    margin-bottom: 10px; 
+                                                                                }
+                                                                            </style>
+                                                                            <?php echo nl2br(htmlspecialchars($resolution)); ?>
+                                                                        </main>
+                                                                    
+                                                                        <div class="modal-footer">
+                                                                            <a href="survey.php?id=<?php echo $ticket_id; ?>&taken=after"><button type="button" class="btn btn-primary">TAKE SURVEY</button></a>
+                                                                            <a href="ticket-view.php?ticket_id=<?php echo $ticket_id; ?>"><button class='btn btn-primary'>VIEW TICKET</button></a>                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </td>
                                         </tr>
-                                        <tr class="odd gradeX">
-                                            <td class="center">MAY 15, 2022</td>
-                                            <td class="center">305</td>
-                                            <td class="center">ID PROBLEM</td>
-                                            <td class="center">LOREM IPSUN</td>
-                                            <td class="center">CLOSED</td>
-                                            <td class="center">2 HOURS</td>
-                                            <!-- Removed unnecessary closing tag here -->
-                                        </tr>
+        
+        <?php
+        }
+        ?>
                                     </tbody>
                                 </table>
                             </div>
@@ -178,6 +264,9 @@
             $('#dataTables-example').dataTable();
         });
     </script>
+
+
+    
     <!-- CUSTOM SCRIPTS -->
     <script src="assets/js/custom.js"></script>
 </body>

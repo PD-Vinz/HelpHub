@@ -44,8 +44,9 @@
           <div class="dropdown-menu" role="menu">
             <a class="dropdown-item" href="profile.php"><span class="fa fa-user"></span> MY ACCOUNT</a>
             <hr style="margin-top: 5px; margin-bottom: 5px;">
-            <a class="dropdown-item" href="http://localhost/sms//classes/Login.php?f=logout"><span class="fa fa-sign-out"></span> LOG OUT </a>
-          </div>
+            <a class="dropdown-item" href="settings.php"><span class="fa fa-gear"></span> SETTINGS</a>
+            <hr style="margin-top: 5px; margin-bottom: 5px;">
+            <a class="dropdown-item" href="logout.php"><span class="fa fa-sign-out"></span> LOG OUT </a>          </div>
         </nav>
         <!-- /. NAV TOP  -->
         <nav class="navbar-default navbar-side" role="navigation">
@@ -113,39 +114,40 @@
                     <img src="assets/pic/head.png" alt="Technical support for DHVSU students">  
                 <div class="container-survey">
                     <h1>Thank you for choosing our services. We highly value your feedback as it helps us improve and better serve you in the future. Please take a moment to share your thoughts with us.</h1>
-                    <form action="#" method="post">
+                    <form action="survey-extension.php?id=<?php echo $_GET['id']?>&taken=<?php echo $_GET['taken']?>" method="post">
                         <div class="question">
                             <p><strong>PLEASE ANSWER THE FOLLOWING QUESTION:</strong></p>
                             <label>Overall Satisfaction</label>
                             <ul>
-                                <li><input type="radio" name="overall_satisfaction" value="very_satisfied"> Very Satisfied</li>
-                                <li><input type="radio" name="overall_satisfaction" value="satisfied"> Satisfied</li>
-                                <li><input type="radio" name="overall_satisfaction" value="neutral"> Neutral</li>
-                                <li><input type="radio" name="overall_satisfaction" value="disappointed"> Disappointed</li>
-                                <li><input type="radio" name="overall_satisfaction" value="very_disappointed"> Very Disappointed</li>
+                                <li><input type="radio" name="overall_satisfaction" value="Very Satisfied" required> Very Satisfied</li>
+                                <li><input type="radio" name="overall_satisfaction" value="Satisfied" required> Satisfied</li>
+                                <li><input type="radio" name="overall_satisfaction" value="Neutral" required> Neutral</li>
+                                <li><input type="radio" name="overall_satisfaction" value="Dissatisfied" required> Dissatisfied</li>
+                                <li><input type="radio" name="overall_satisfaction" value="Very Dissatisfied" required> Very Dissatisfied</li>
                             </ul>
                         </div>
                         <div class="question">
                             <label>How would you rate our service?</label>
                             <ul>
-                                <li><input type="radio" name="service_rating" value="very_satisfied"> Very Satisfied</li>
-                                <li><input type="radio" name="service_rating" value="satisfied"> Satisfied</li>
-                                <li><input type="radio" name="service_rating" value="neutral"> Neutral</li>
-                                <li><input type="radio" name="service_rating" value="disappointed"> Disappointed</li>
-                                <li><input type="radio" name="service_rating" value="very_disappointed"> Very Disappointed</li>
+                                <li><input type="radio" name="service_rating" value="Very Satisfied" required> Very Satisfied</li>
+                                <li><input type="radio" name="service_rating" value="Satisfied" required> Satisfied</li>
+                                <li><input type="radio" name="service_rating" value="Neutral" required> Neutral</li>
+                                <li><input type="radio" name="service_rating" value="Dissatisfied" required> Dissatisfied</li>
+                                <li><input type="radio" name="service_rating" value="Very Dissatisfied" required> Very Dissatisfied</li>
                             </ul>
                         </div>
                         <div class="question">
                             <label>Did our service meet your expectations?</label>
                             <ul>
-                                <li><input type="radio" name="service_expectations" value="exceeded"> Yes, exceeded expectations</li>
-                                <li><input type="radio" name="service_expectations" value="met"> Yes, met expectations</li>
-                                <li><input type="radio" name="service_expectations" value="fell_short"> No, fell short of expectations</li>
+                                <li><input type="radio" name="service_expectations" value="Very Satisfied" required> Very Satisfied</li>
+                                <li><input type="radio" name="service_expectations" value="Satisfied" required> Satisfied</li>
+                                <li><input type="radio" name="service_expectations" value="Neutral" required> Neutral</li>
+                                <li><input type="radio" name="service_expectations" value="Dissatisfied" required> Dissatisfied</li>
+                                <li><input type="radio" name="service_expectations" value="Very Dissatisfied" required> Very Dissatisfied</li>
                             </ul>
                         </div>
                         <div class="modal-footer">
-                            <a href="#"><button type="button" class="btn btn-primary">BACK</button></a>
-                            <a href="survey-extension.php"><button type="button" class="btn btn-primary">NEXT</button></a>
+                            <button type="submit">NEXT</button>
                         </div>
                     </form>
                 </div>

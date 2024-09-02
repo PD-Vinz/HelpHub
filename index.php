@@ -4,6 +4,18 @@ session_start();
 include_once("connection/conn.php");
 $pdoConnect = connection();
 
+// Redirect to student dashboard if student session exists
+if (isset($_SESSION["user_id"])) {
+    header("Location: User/dashboard.php");
+    exit(); // Prevent further execution after redirection
+}
+
+// Redirect to admin index if admin session exists
+if (isset($_SESSION["admin_number"])) {
+    header("Location: Admin/index.php");
+    exit(); // Prevent further execution after redirection
+}
+
 if (isset($_POST['login'])) {
     try {
         $pdoConnect->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
@@ -12,20 +24,34 @@ if (isset($_POST['login'])) {
         $pass = $_POST["password"];
 
         // Check in student_user table
-        $pdoUserQuery = "SELECT * FROM student_user WHERE student_number = :username AND password = :pass";
+        $pdoUserQuery = "SELECT * FROM tb_user WHERE user_id = :username AND password = :pass";
         $pdoResult = $pdoConnect->prepare($pdoUserQuery);
         $pdoResult->bindParam(':username', $username);
         $pdoResult->bindParam(':pass', $pass);
         $pdoResult->execute();
 
         if ($pdoResult->rowCount() > 0) {
-            $_SESSION["student_number"] = $username;
+            $_SESSION["user_id"] = $username;
+            $_SESSION["user_identity"] = "Student";
+            header("Location: User/dashboard.php");
+            exit(); // Prevent further execution after redirection
+        }
+
+        $pdoUserQuery = "SELECT * FROM employee_user WHERE user_id = :username AND password = :pass";
+        $pdoResult = $pdoConnect->prepare($pdoUserQuery);
+        $pdoResult->bindParam(':username', $username);
+        $pdoResult->bindParam(':pass', $pass);
+        $pdoResult->execute();
+
+        if ($pdoResult->rowCount() > 0) {
+            $_SESSION["user_id"] = $username;
+            $_SESSION["user_identity"] = "Employee";
             header("Location: User/dashboard.php");
             exit(); // Prevent further execution after redirection
         }
 
         // Check in mis_employees table
-        $pdoAdminQuery = "SELECT * FROM mis_employees WHERE employee_number = :username AND password = :pass";
+        $pdoAdminQuery = "SELECT * FROM mis_employees WHERE admin_number = :username AND password = :pass";
         $pdoResult = $pdoConnect->prepare($pdoAdminQuery);
         $pdoResult->bindParam(':username', $username);
         $pdoResult->bindParam(':pass', $pass);
@@ -70,7 +96,7 @@ if (isset($_POST['login'])) {
             <input type="text" name="username" required placeholder="Username">
         </div>
         <div class="form-group">
-            <input type="password" name="password" id="myInput" required placeholder="Password">
+            <input type="password" name="password" id="myInput" required placeholder="Password" autocomplete="off">
         </div>
         <div class="form-group">
             <input type="checkbox" id="savePassword" name="savePassword" onclick="myFunction()">

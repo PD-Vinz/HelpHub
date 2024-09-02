@@ -1,3 +1,79 @@
+<?php
+
+// Check if the session variable is set
+if (!isset($_SESSION["admin_number"])) {
+    header("Location: ../index.php");
+    exit(); // Prevent further execution after redirection
+} else {
+    $id = $_SESSION["admin_number"];
+
+    $pdoUserQuery = "SELECT * FROM mis_employees WHERE admin_number = :number";
+    $pdoResult = $pdoConnect->prepare($pdoUserQuery);
+    $pdoResult->bindParam(':number', $id);
+    $pdoResult->execute();
+
+    $Data = $pdoResult->fetch(PDO::FETCH_ASSOC);
+
+    if ($Data) {
+        $Name = $Data['f_name'];
+        $Position = $Data['position'];
+        $U_T = $Data['user_type'];
+
+        $nameParts = explode(' ', $Name);
+        $firstName = $nameParts[0];
+    } else {
+        // Handle the case where no results are found
+        echo "No student found with the given student number.";
+    }
+
+try {
+
+
+    $sql = "SELECT id, event_date, event_description, event_title FROM tb_calendar";
+    $req = $pdoConnect->prepare($sql);
+    $req->execute();
+    $events = $req->fetchAll(PDO::FETCH_ASSOC);
+
+    
+    $query = $pdoConnect->prepare("SELECT system_name, short_name, system_logo, system_cover FROM settings WHERE id = :id");
+    $query->execute(['id' => 1]);
+    $Datas = $query->fetch(PDO::FETCH_ASSOC);
+    $sysName = $Datas['system_name'] ?? '';
+    $shortName = $Datas['short_name'] ?? '';
+    $systemLogo = $Datas['system_logo'];
+    $systemCover = $Datas['system_cover'];
+    
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        $newSysName = $_POST['name'];
+        $newShortName = $_POST['short_name'];
+    
+        try {
+            $updateQuery = $pdoConnect->prepare("UPDATE settings SET system_name = :system_name, short_name = :short_name WHERE id = :id");
+            $updateQuery->execute([
+                'system_name' => $newSysName,
+                'short_name' => $newShortName,
+                'id' => 1 
+            ]);
+    
+           header('Location: settings.php'); 
+        } catch (PDOException $e) {
+            // Error handling
+            echo "Error updating data: " . $e->getMessage();
+        }
+    }
+
+
+} catch (PDOException $e) {
+    echo "Error: " . $e->getMessage();
+}
+
+}
+
+
+
+
+?>
+
 <nav class="navbar navbar-default navbar-cls-top " role="navigation" style="margin-bottom: 0">
     <div class="navbar-header">
         <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".sidebar-collapse">
@@ -6,9 +82,9 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
         </button>
-        <a class="navbar-brand" href="index.php">Binary admin</a> 
+        <a class="navbar-brand" href="index.php"><?php echo $shortName?></a> 
     </div>
-<div style="color: white; padding: 15px 50px 5px 50px; float: right;"> Last access : 30 May 2014 &nbsp; 
+<div style="color: white; padding: 15px 50px 5px 50px; float: right;"> Last access : <?php echo date('d F Y')?> &nbsp; 
 <div class="btn-group nav-link">
           <button type="button" class="btn btn-rounded badge badge-light dropdown-toggle dropdown-icon" data-toggle="dropdown">
          
@@ -17,7 +93,7 @@
             <span class="sr-only">Toggle Dropdown</span>
           </button>
           <div class="dropdown-menu" role="menu">
-            <a class="dropdown-item" href="http://localhost/sms/admin/?page=user"><span class="fa fa-user"></span> My Account</a>
+            <a class="dropdown-item" href="profile.php"><span class="fa fa-user"></span> My Account</a>
             <hr style="margin-top: 5px; margin-bottom: 5px;">
             <a class="dropdown-item" href="logout.php"><span class="fas fa-sign-out-alt"></span> Logout</a>
           </div>
@@ -39,44 +115,91 @@
             <li>
             
             <a href="#" class="dropdown-toggle" data-toggle="dropdown" onclick="handleTicketDropdownToggle(event)">
-        <i class="fa fa-list fa-3x"></i> Tickets <span class="fa arrow"></span>
+        <i class="fa fa-list fa-3x"></i> Student Tickets <span class="fa arrow"></span>
     </a>
     <ul class="nav nav-second-level ticket-dropdown-menu">
               <!--fix the icons-->
               
               <li>
-                  <a href="ticketdash.php"> &nbsp;&nbsp;<i class="fa fa-ticket " aria-hidden="true"></i>All Tickets</a>
+                  <a href="ticketdash.php?id=1"> &nbsp;&nbsp;<i class="fa fa-ticket " aria-hidden="true"></i>All Tickets</a>
                   </li>
                   <li>
-                      <a href="ticket-pending.php">&nbsp;&nbsp;<i class="fa fa-hourglass-half " aria-hidden="true"></i>Pending Tickets</a>
+                      <a href="ticket-pending.php?id=1">&nbsp;&nbsp;<i class="fa fa-hourglass-half " aria-hidden="true"></i>Pending Tickets</a>
                   </li>
                   <li>
-                      <a href="ticket-opened.php">&nbsp;&nbsp;<i class="fa fa-envelope-open" aria-hidden="true"></i>Opened Tickets</a>
+                      <a href="ticket-opened.php?id=1">&nbsp;&nbsp;<i class="fa fa-envelope-open" aria-hidden="true"></i>Opened Tickets</a>
                   </li>
                   <li>
-                    <a href="ticket-closed.php">&nbsp;&nbsp;<i class="fa-solid fa-check-to-slot"></i>Closed Tickets</a>
+                    <a href="ticket-closed.php?id=1">&nbsp;&nbsp;<i class="fa-solid fa-check-to-slot"></i>Closed Tickets</a>
                 </li>
                 <li>
-                  <a href="ticket-returned.php">&nbsp;&nbsp;<i class="fa fa-undo" aria-hidden="true"></i>Returned Tickets</a>
+                  <a href="ticket-returned.php?id=1">&nbsp;&nbsp;<i class="fa fa-undo" aria-hidden="true"></i>Returned Tickets</a>
                 </li>
                 
               </ul>
-            </li> 
-            <li>
-                <a href="employee.php"><i class="fa-solid fa-user-tie fa-3x"></i> Employees</a>
             </li>
+            <li>
+            
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown" onclick="handleTicketDropdownToggle(event)">
+        <i class="fa fa-list fa-3x"></i> Employeee Tickets <span class="fa arrow"></span>
+    </a>
+    <ul class="nav nav-second-level ticket-dropdown-menu">
+              <!--fix the icons-->
+              
+              <li>
+                  <a href="ticketdash.php?id=2"> &nbsp;&nbsp;<i class="fa fa-ticket " aria-hidden="true"></i>All Tickets</a>
+                  </li>
+                  <li>
+                      <a href="ticket-pending.php?id=2">&nbsp;&nbsp;<i class="fa fa-hourglass-half " aria-hidden="true"></i>Pending Tickets</a>
+                  </li>
+                  <li>
+                      <a href="ticket-opened.php?id=2">&nbsp;&nbsp;<i class="fa fa-envelope-open" aria-hidden="true"></i>Opened Tickets</a>
+                  </li>
+                  <li>
+                    <a href="ticket-closed.php?id=2">&nbsp;&nbsp;<i class="fa-solid fa-check-to-slot"></i>Closed Tickets</a>
+                </li>
+                <li>
+                  <a href="ticket-returned.php?id=2">&nbsp;&nbsp;<i class="fa fa-undo" aria-hidden="true"></i>Returned Tickets</a>
+                </li>
+                
+              </ul>
+            </li>
+            <li>
+            <a href="history-log.php"><i class="fa-regular fa-clock fa-3x"></i> Log History</a>
+
+            </li>
+
+            <?php if (isset($U_T) && $U_T === 'Administrator'): ?>
             <li>
                 <a href="feedback-analysis.php" ><i class="fa-regular fa-comment-dots fa-3x"></i>Feedbacks</a>
             </li>
             <li>
-                <a href="settings.php"><i class="fa fa-gear fa-3x"></i> Settings</a>
+                <a href="employee.php"><i class="fa-solid fa-user-tie fa-3x"></i> Employees</a>
             </li>
+            <li>
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown" onclick="handleTicketDropdownToggle(event)">
+        <i class="fa-regular fa-user fa-3x"></i> User list <span class="fa arrow"></span>
+    </a>
+    <ul class="nav nav-second-level ticket-dropdown-menu">
+              <!--fix the icons-->
+              <li>
+                  <a href="user-student-list.php"> &nbsp;&nbsp;<i class="fa-solid fa-graduation-cap" aria-hidden="true"></i>Student's Accounts</a>
+                  </li>
+                  <li>
+                      <a href="user-employee-list.php">&nbsp;&nbsp;<i class="fa-solid fa-briefcase" aria-hidden="true"></i>Employee's Account</a>
+                  </li>
+              </ul>
+            </li>
+            <li>
+                <a href="settings.php"><i class="fa fa-gear fa-3x"></i>System Settings</a>
+            </li>
+            <?php endif; ?>
         </ul>
        
     </div>
     
 </nav>  
-
+<!--
 <script>
 // Get elements
 const dropdown = document.querySelector('.ticket-dropdown-menu');
@@ -125,9 +248,8 @@ window.addEventListener("load", function () { // Attach listener on 'load'
 });
 
 
-</script>
-
-
+</script> 
+            -->
 
 
 

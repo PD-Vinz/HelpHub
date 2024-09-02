@@ -572,7 +572,7 @@ body {
 	/* Sunday */
 }
 
-.date-picker:nth-child(6) {
+.date-picker:nth-child(7) {
 	color: red;
 	/* Friday */
 }
@@ -635,8 +635,8 @@ body {
 }
 
 .rating-label {
-    width: 40px;
-    margin-right: 10px;
+  
+    margin-right: -30px;
 }
 
 .rating-count {
@@ -645,12 +645,14 @@ body {
 
 .progress-container {
     flex-grow: 1; 
+    border-radius: 10px;
 }
 
 .progress-bar {
     width: 22.8%; /* Adjust based on rating */
     background-color: #ff9900;
     height: 20px; /* Adjust height as needed */
+    border-radius: 10px;
 }
 
 .csat-container {
@@ -682,21 +684,80 @@ body {
   }
   
   .nps-label {
-    width: 100px; /* Adjust width as needed */
+    width: 100px; 
     margin-right: 10px;
   }
   
   .nps-progress-container {
     flex-grow: 1;
+    margin-right: 30px;
+    background-color: #f2f2f2;
+    border-radius: 10px;
+    
   }
   
   .nps-progress-bar {
-    height: 10px; /* Adjust height as needed */
-    border-radius: 5px; /* Add rounded corners */
+    height: 15px;
+    border-radius: 10px;
+    flex: 1;
+    background: #f0f0f0;
+    position: relative;
+
+    
   }
   
   /* Emojis (you might use image icons instead) */
   .nps-emoji {
-    font-size: 24px; /* Adjust size as needed */
-    margin-right: 10px;
+    font-size: 30px; /* Adjust size as needed */
+    margin-right: 20px;
   }
+
+  .nps-rating-count {
+    width: 50px;
+}
+
+
+  .rating-bar {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+    margin-right: 0px;
+}
+.rating-label {
+    width: 150px;
+    margin-left: 15px;
+}
+.progress-container {
+    flex: 1;
+    background: #f0f0f0;
+    margin: 0 10px;
+    position: relative;
+    height: 15px;
+    
+}
+.progress-bar {
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+.rating-count {
+    width: 50px;
+}
+
+
+
+.scrollable-panel {
+    height: 350px;
+    overflow-y:scroll;
+    overflow-x:hidden;
+}
+
+
+.event {
+    background-color: #ffd700;
+    padding: 2px;
+    border-radius: 3px;
+    margin-top: 2px;
+    font-size: 0.8em;
+}
