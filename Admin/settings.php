@@ -145,8 +145,8 @@ try {
                     </div>
                     <button class="btn btn-sm btn-primary" form="system-frm">Update</button>
 
-                 <br>
-                   
+                    <br> <br> <br>      
+                 <hr>
                     <div class="wrapper col-md-4">
         <h1>Calendar</h1>
             <div>

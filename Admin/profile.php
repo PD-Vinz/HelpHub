@@ -110,7 +110,7 @@ if (!isset($_SESSION["admin_number"])) {
                                             </div>
                                         </div>
                                         <div class="form-group">
-                                            <label class="col-lg-3 control-label">BIRTHDAY</label>
+                                            <label class="col-lg-3 control-label">BIRTHDATE</label>
                                             <div class="col-lg-8">
                                                 <input class="form-control" type="text" value="<?php echo $formattedDate?>" disabled>
                                             </div>

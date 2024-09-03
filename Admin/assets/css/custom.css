@@ -33,6 +33,7 @@ body {
     background-color:#fff!important;
     padding:10px;
     min-height:1200px;
+    border-radius: 10px;
 }
 
 .text-center {
@@ -68,25 +69,26 @@ p {
 }
    .noti-box {
 min-height: 100px;
-padding: 20px;
+padding: 15px;
+line-height: 50px;
 }
 
     .noti-box .icon-box {
 display: block;
 float: left;
-margin: 0 15px 10px 0;
-width: 70px;
-height: 70px;
-line-height: 75px;
+margin: 0 10px 10px 0;
+width: 45px;
+height: 45px;
+line-height: 50px;
 vertical-align: middle;
 text-align: center;
 font-size: 40px;
 }
 .text-box p{
-    margin: 0 0 3px;
+    margin: 0 0 0px;
 }
 .main-text {
-    font-size: 35px;
+    font-size: 18px;
     font-weight:600;
 }
 .set-icon {
@@ -195,8 +197,8 @@ max-width:170px;
 
 .navbar-cls-top .navbar-brand {
 	color: #fff;
-background: #C90000;
-width: 260px;
+background: #A70303;
+width: 160px;
 text-align: center;
 height: 60px;
 font-size: 30px;
@@ -324,7 +326,7 @@ border:0px solid black;
 
 
 .navbar-default .navbar-toggle:hover, .navbar-default .navbar-toggle:focus {
-background-color: #B40101;
+background-color: #C90000;
 }
 .navbar-default .navbar-toggle {
 border-color: #fff;
@@ -357,7 +359,7 @@ line-height: 1.428571429;
  
  @media(min-width:768px) {
      #page-wrapper{
-               margin: 0 0 0 260px;
+               margin: 0 0 0 210px;
         padding: 15px 30px;
         min-height: 1200px;
 		
@@ -367,7 +369,7 @@ line-height: 1.428571429;
     .navbar-side {
         z-index: 1;
         position: absolute;
-        width: 260px;
+        width: 210px;
     }
 
    .navbar {
@@ -663,8 +665,8 @@ body {
   
   .csat-label {
     color: #5cb85c; /* Light green color for the label */
-    font-size: 28px;
-    margin-bottom: 10px;
+    font-size: 23px;
+    margin-bottom: 6px;
   }
   
   .csat-percentage {

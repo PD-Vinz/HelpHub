@@ -319,7 +319,7 @@ echo "<script>
     <div class="panel-body" >
       <div class="csat-container">
       <br> <br> <br>
-        <span class="csat-label">Monthly --% &#9650;</span> 
+        <span class="csat-label">Overall positive responses:</span> 
         <div class="csat-percentage">
           <?php echo number_format($overallPositivePercentage, 2); ?>%
         </div>
@@ -337,7 +337,7 @@ echo "<script>
                             <h3 style="margin-top: 5px; margin-bottom:0px;">Feedback List</h3>
                         </div>
                         <div class="panel-body-ticket scrollable-panel" >
-                            <div class="table-responsive">
+                            <div class="table-responsive col-md-12">
 
 <?php
 $pdoQuery = "SELECT * FROM tb_survey_feedback";
@@ -498,7 +498,7 @@ $pdoExec = $pdoResult->execute();
                 <div class="col-md-4"> 
   <div class="panel panel-default">
     <div class="panel-heading">
-    <h3 style="margin-top: 5px; margin-bottom:0px;"> Overall Satisfaction</h3>
+    <h3 style="margin-top: 5px; margin-bottom:0px;">"Overall Satisfaction"</h3>
     </div>
     <div class="panel-body" id="ratingBarsContainer">
       <div class="csat-container">
