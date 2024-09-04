@@ -939,7 +939,7 @@ pre code {
     width: 91.66666667%;
   }
   .col-sm-10 {
-    width: 83.33333333%;
+    width: 79%;
   }
   .col-sm-9 {
     width: 75%;
@@ -963,7 +963,7 @@ pre code {
     width: 25%;
   }
   .col-sm-2 {
-    width: 16.66666667%;
+    width: 21%;
   }
   .col-sm-1 {
     width: 8.33333333%;
@@ -1122,7 +1122,7 @@ pre code {
     width: 25%;
   }
   .col-md-2 {
-    width: 16.66666667%;
+    width: 20%;
   }
   .col-md-1 {
     width: 8.33333333%;
@@ -1811,10 +1811,11 @@ fieldset[disabled] .checkbox-inline {
 }
 .input-sm {
   height: 30px;
-  padding: 5px 10px;
+  padding: 5px 0px;
   font-size: 12px;
   line-height: 1.5;
   border-radius: 3px;
+
 }
 select.input-sm {
   height: 30px;
@@ -2025,13 +2026,7 @@ select[multiple].input-lg {
   border: 1px solid transparent;
   border-radius: 4px;
 }
-.btn:focus,
-.btn:active:focus,
-.btn.active:focus {
-  outline: thin dotted;
-  outline: 5px auto -webkit-focus-ring-color;
-  outline-offset: -2px;
-}
+
 .btn:hover,
 .btn:focus {
   color: #333;
@@ -3772,13 +3767,15 @@ select[multiple].input-group-sm > .input-group-btn > .btn {
 .navbar-toggle {
   position: relative;
   float: right;
-  padding: 9px 10px;
+  width: 40px;
+  padding: 5px 5px;
   margin-top: 8px;
-  margin-right: 15px;
+  margin-right: 5px;
+  margin-left: 5px;
   margin-bottom: 8px;
   background-color: transparent;
   background-image: none;
-  border: 1px solid transparent;
+
   border-radius: 4px;
 }
 .navbar-toggle:focus {
@@ -3793,11 +3790,7 @@ select[multiple].input-group-sm > .input-group-btn > .btn {
 .navbar-toggle .icon-bar + .icon-bar {
   margin-top: 4px;
 }
-@media (min-width: 768px) {
-  .navbar-toggle {
-    display: none;
-  }
-}
+
 .navbar-nav {
   margin: 7.5px -15px;
 }
@@ -4145,8 +4138,8 @@ select[multiple].input-group-sm > .input-group-btn > .btn {
 }
 .pagination {
   display: inline-block;
-  padding-left: 0;
-  margin: 20px 0;
+  padding-left: 10;
+  margin:  0px 0  20px 0;
   border-radius: 4px;
 }
 .pagination > li {

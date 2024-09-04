@@ -76,13 +76,10 @@ try {
 
 <nav class="navbar navbar-default navbar-cls-top " role="navigation" style="margin-bottom: 0">
     <div class="navbar-header">
-        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".sidebar-collapse">
-            <span class="sr-only">Toggle navigation</span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".sidebar-collapse">
+         <div ><i class="fa-solid fa-bars fa-2x"></i></div>
         </button>
-        <a class="navbar-brand" href="index.php"><?php echo $shortName?></a> 
+        <a class="navbar-brand" href="index.php"><?php echo $shortName?></a>
     </div>
 <div style="color: white; padding: 15px 50px 5px 50px; float: right;"> Last access : <?php echo date('d F Y')?> &nbsp; 
 <div class="btn-group nav-link">
@@ -110,30 +107,30 @@ try {
         
             
             <li>
-                <a class="active-menu"  href="index.php"><i class="fa fa-dashboard fa-3x"></i> Dashboard</a>
+                <a class="active-menu"  href="index.php"><i class="fa fa-dashboard fa-xl"></i> Dashboard</a>
             </li>
             <li>
             
             <a href="#" class="dropdown-toggle" data-toggle="dropdown" onclick="handleTicketDropdownToggle(event)">
-        <i class="fa fa-list fa-3x"></i> Student Tickets <span class="fa arrow"></span>
+        <i class="fa fa-list fa-xl"></i> Student Tickets <span class="fa arrow"></span>
     </a>
     <ul class="nav nav-second-level ticket-dropdown-menu">
               <!--fix the icons-->
               
               <li>
-                  <a href="ticketdash.php?id=1"> &nbsp;&nbsp;<i class="fa fa-ticket " aria-hidden="true"></i>All Tickets</a>
+                  <a href="ticketdash.php?id=1"> &nbsp;&nbsp;<i class="fa fa-ticket fa-xl" aria-hidden="true"></i>All Tickets</a>
                   </li>
                   <li>
-                      <a href="ticket-pending.php?id=1">&nbsp;&nbsp;<i class="fa fa-hourglass-half " aria-hidden="true"></i>Pending Tickets</a>
+                      <a href="ticket-pending.php?id=1">&nbsp;&nbsp;<i class="fa fa-hourglass-half fa-xl" aria-hidden="true"></i>Pending Tickets</a>
                   </li>
                   <li>
-                      <a href="ticket-opened.php?id=1">&nbsp;&nbsp;<i class="fa fa-envelope-open" aria-hidden="true"></i>Opened Tickets</a>
+                      <a href="ticket-opened.php?id=1">&nbsp;&nbsp;<i class="fa fa-envelope-open fa-xl" aria-hidden="true"></i>Opened Tickets</a>
                   </li>
                   <li>
-                    <a href="ticket-closed.php?id=1">&nbsp;&nbsp;<i class="fa-solid fa-check-to-slot"></i>Closed Tickets</a>
+                    <a href="ticket-closed.php?id=1">&nbsp;&nbsp;<i class="fa-solid fa-check-to-slot fa-xl"></i>Closed Tickets</a>
                 </li>
                 <li>
-                  <a href="ticket-returned.php?id=1">&nbsp;&nbsp;<i class="fa fa-undo" aria-hidden="true"></i>Returned Tickets</a>
+                  <a href="ticket-returned.php?id=1">&nbsp;&nbsp;<i class="fa fa-undo fa-xl" aria-hidden="true"></i>Returned Tickets</a>
                 </li>
                 
               </ul>
@@ -141,57 +138,57 @@ try {
             <li>
             
             <a href="#" class="dropdown-toggle" data-toggle="dropdown" onclick="handleTicketDropdownToggle(event)">
-        <i class="fa fa-list fa-3x"></i> Employeee Tickets <span class="fa arrow"></span>
+        <i class="fa fa-list fa-xl"></i> Employeee Tickets <span class="fa arrow"></span>
     </a>
     <ul class="nav nav-second-level ticket-dropdown-menu">
               <!--fix the icons-->
               
               <li>
-                  <a href="ticketdash.php?id=2"> &nbsp;&nbsp;<i class="fa fa-ticket " aria-hidden="true"></i>All Tickets</a>
+                  <a href="ticketdash.php?id=2"> &nbsp;&nbsp;<i class="fa fa-ticket fa-xl" aria-hidden="true"></i>All Tickets</a>
                   </li>
                   <li>
-                      <a href="ticket-pending.php?id=2">&nbsp;&nbsp;<i class="fa fa-hourglass-half " aria-hidden="true"></i>Pending Tickets</a>
+                      <a href="ticket-pending.php?id=2">&nbsp;&nbsp;<i class="fa fa-hourglass-half fa-xl" aria-hidden="true"></i>Pending Tickets</a>
                   </li>
                   <li>
-                      <a href="ticket-opened.php?id=2">&nbsp;&nbsp;<i class="fa fa-envelope-open" aria-hidden="true"></i>Opened Tickets</a>
+                      <a href="ticket-opened.php?id=2">&nbsp;&nbsp;<i class="fa fa-envelope-open fa-xl" aria-hidden="true"></i>Opened Tickets</a>
                   </li>
                   <li>
-                    <a href="ticket-closed.php?id=2">&nbsp;&nbsp;<i class="fa-solid fa-check-to-slot"></i>Closed Tickets</a>
+                    <a href="ticket-closed.php?id=2">&nbsp;&nbsp;<i class="fa-solid fa-check-to-slot fa-xl"></i>Closed Tickets</a>
                 </li>
                 <li>
-                  <a href="ticket-returned.php?id=2">&nbsp;&nbsp;<i class="fa fa-undo" aria-hidden="true"></i>Returned Tickets</a>
+                  <a href="ticket-returned.php?id=2">&nbsp;&nbsp;<i class="fa fa-undo fa-xl" aria-hidden="true"></i>Returned Tickets</a>
                 </li>
                 
               </ul>
             </li>
             <li>
-            <a href="history-log.php"><i class="fa-regular fa-clock fa-3x"></i> Log History</a>
+            <a href="history-log.php"><i class="fa-regular fa-clock fa-xl"></i> Log History</a>
 
             </li>
 
             <?php if (isset($U_T) && $U_T === 'Administrator'): ?>
             <li>
-                <a href="feedback-analysis.php" ><i class="fa-regular fa-comment-dots fa-3x"></i>Feedbacks</a>
+                <a href="feedback-analysis.php" ><i class="fa-regular fa-comment-dots fa-xl"></i>Feedbacks</a>
             </li>
             <li>
-                <a href="employee.php"><i class="fa-solid fa-user-tie fa-3x"></i> Employees</a>
+                <a href="employee.php"><i class="fa-solid fa-user-tie fa-xl"></i> Employees</a>
             </li>
             <li>
             <a href="#" class="dropdown-toggle" data-toggle="dropdown" onclick="handleTicketDropdownToggle(event)">
-        <i class="fa-regular fa-user fa-3x"></i> User list <span class="fa arrow"></span>
+        <i class="fa-regular fa-user fa-xl"></i> User list <span class="fa arrow "></span>
     </a>
     <ul class="nav nav-second-level ticket-dropdown-menu">
               <!--fix the icons-->
               <li>
-                  <a href="user-student-list.php"> &nbsp;&nbsp;<i class="fa-solid fa-graduation-cap" aria-hidden="true"></i>Student's Accounts</a>
+                  <a href="user-student-list.php"> &nbsp;&nbsp;<i class="fa-solid fa-graduation-cap fa-xl" aria-hidden="true"></i>Student's Accounts</a>
                   </li>
                   <li>
-                      <a href="user-employee-list.php">&nbsp;&nbsp;<i class="fa-solid fa-briefcase" aria-hidden="true"></i>Employee's Account</a>
+                      <a href="user-employee-list.php">&nbsp;&nbsp;<i class="fa-solid fa-briefcase fa-xl" aria-hidden="true"></i>Employee's Account</a>
                   </li>
               </ul>
             </li>
             <li>
-                <a href="settings.php"><i class="fa fa-gear fa-3x"></i>System Settings</a>
+                <a href="settings.php"><i class="fa fa-gear fa-xl"></i>System Settings</a>
             </li>
             <?php endif; ?>
         </ul>
@@ -250,6 +247,3 @@ window.addEventListener("load", function () { // Attach listener on 'load'
 
 </script> 
             -->
-
-
-
