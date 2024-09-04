@@ -236,6 +236,7 @@ try {
                             <div class="modal-body">Confirm Closing ticket</div>
                             <div class="modal-footer">	<a href="#" data-dismiss="modal" class="btn">Cancel</a>
                             <a href="#" data-toggle="modal"  class="btn btn-primary">Confirm</a>
+                            test for github
                             
                             </div>
                             </div>
