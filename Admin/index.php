@@ -29,7 +29,14 @@ if (!isset($_SESSION["admin_number"])) {
         // Handle the case where no results are found
         echo "No student found with the given student number.";
     }
-
+    $query = $pdoConnect->prepare("SELECT system_name, short_name, system_logo, system_cover FROM settings WHERE id = :id");
+    $query->execute(['id' => 1]);
+    $Datas = $query->fetch(PDO::FETCH_ASSOC);
+    $sysName = $Datas['system_name'] ?? '';
+    $shortName = $Datas['short_name'] ?? '';
+    $systemLogo = $Datas['system_logo'];
+    $systemCover = $Datas['system_cover'];
+    
 try {
 
     $pdoCountQuery = "SELECT * FROM tb_tickets";
@@ -75,7 +82,7 @@ try {
 <head>
       <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>DHVSU MIS - HelpHub</title>
+    <title><?php echo $sysName?></title>
     <link rel="icon" href="../img/logo.png" type="image/png">
   
 	<!-- BOOTSTRAP STYLES-->
@@ -103,96 +110,71 @@ try {
         
         <div id="page-wrapper" >
             <div id="page-inner">
-                <div class="row">
                     <div class="col-md-12">
-                     <h2>Admin Dashboard</h2>   
-                        <h5>Welcome <?php echo $Name?>, Love to see you back. </h5>
+                     <h2 style="margin-top:5px;">Admin Dashboard</h2>   
                     </div>
-                </div>              
+                        
                  <!-- /. ROW  -->
                   <hr />
-                  <div class="row">
+      
 
 <!--<a href="ticket-pending.php">  -->            
-            <div class="col-md-4 col-sm-6 col-xs-6">           
+<div class="col-md-2 col-sm-6 col-xs-6">           
             <div class="panel panel-back noti-box">
                 <span class="icon-box bg-color-yellow set-icon">
-                <i class="fa fa-hourglass-half " aria-hidden="true"></i>
+                <i class="fa fa-hourglass-half fa-xs" aria-hidden="true"></i>
                 </span>
-
                 <div class="text-box" >
                     <p class="main-text"><?php echo $pendingTickets?> Pending</p>
-                    <p class="text-muted">Tickets</p>
+                   <!-- <p class="text-muted">Tickets</p> -->
                 </div>
+             </div>
             </div>
-            </div>
-<!--</a>-->
-<!--<a href="ticket-opened.php">-->
-                    <div class="col-md-4 col-sm-6 col-xs-6">           
+                    <div class="col-md-2 col-sm-6 col-xs-6">           
             <div class="panel panel-back noti-box">
                 <span class="icon-box bg-color-green set-icon">
-                <i class="fa fa-envelope-open" aria-hidden="true"></i>
+                <i class="fa fa-envelope-open fa-xs" aria-hidden="true"></i>
                 </span>
                 <div class="text-box" >
                     <p class="main-text"><?php echo $openedTickets?> Opened </p>
-                    <p class="text-muted">Tickets</p>
+                   <!-- <p class="text-muted">Tickets</p> -->
                 </div>
              </div>
             </div>
-<!--</a>-->
-<!--<a href="ticket-closed.php">-->
-                    <div class="col-md-4 col-sm-6 col-xs-6">           
+                    <div class="col-md-2 col-sm-6 col-xs-6">           
             <div class="panel panel-back noti-box">
                 <span class="icon-box bg-color-brown set-icon">
-                <i class="fa fa-check" aria-hidden="true"></i>
+                <i class="fa fa-check fa-xs" aria-hidden="true"></i>
                 </span>
                 <div class="text-box" >
                     <p class="main-text"><?php echo $completedTickets?> Closed</p>
-                    <p class="text-muted">Tickets</p>
+                   <!-- <p class="text-muted">Tickets</p> -->
                 </div>
              </div>
             </div>
-            </div> 
-<!--</a>            -->
-                  <div class="row">
-<!--<a href="ticket-pending.php">-->
-                    <div class="col-md-4 col-sm-6 col-xs-6">           
-			<div class="panel panel-back noti-box">
-                <span class="icon-box bg-color-orange set-icon">
-                <i class="fa fa-exclamation" aria-hidden="true"></i>
-                </span>
-                <div class="text-box" >
-                    <p class="main-text"><?php echo $dueTickets?> Overdue</p>
-                    <p class="text-muted">Tickets</p>
-                </div>
-             </div>
-		     </div>
-<!--</a>-->
-<!--<a href="ticket-returned.php">     -->        
-                    <div class="col-md-4 col-sm-6 col-xs-6">           
+            
+               
+                    <div class="col-md-2 col-sm-6 col-xs-6">           
 			<div class="panel panel-back noti-box">
                 <span class="icon-box bg-color-black set-icon">
-                <i class="fa fa-reply" aria-hidden="true"></i>
+                <i class="fa fa-reply fa-xs" aria-hidden="true"></i>
                 </span>
                 <div class="text-box" >
                     <p class="main-text"><?php echo $returnedTickets?> Returned</p>
-                    <p class="text-muted">Tickets</p>
+                   <!-- <p class="text-muted">Tickets</p> -->
                 </div>
              </div>
 		     </div>
-<!--</a>-->
-<!--<a href="#">-->
-                    <div class="col-md-4 col-sm-6 col-xs-6">           
+                    <div class="col-md-2 col-sm-6 col-xs-6">           
 			<div class="panel panel-back noti-box">
                 <span class="icon-box bg-color-blue set-icon">
-                <i class="fa fa-upload" aria-hidden="true"></i>
+                <i class="fa fa-upload fa-xs" aria-hidden="true"></i>
                 </span>
                 <div class="text-box" >
                     <p class="main-text">0 Transferred</p>
-                    <p class="text-muted">Tickets</p>
+                   <!-- <p class="text-muted">Tickets</p> -->
                 </div>
              </div>
-		     </div>
 <!--</a>-->
 			</div>  
       
@@ -259,8 +241,7 @@ try {
                             <li><a href="#">Weekly Report</a></li>
                             <li><a href="#">Monthly Report</a></li>
                             <li><a href="#">Yearly report</a></li>
-                            <li class="divider"></li>
-                            <li><a href="#">Separated link</a></li>
+                         
                             </ul>
                           </div>
                         </div>

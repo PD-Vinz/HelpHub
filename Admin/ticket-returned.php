@@ -35,7 +35,14 @@ if (!isset($_SESSION["admin_number"])) {
     } elseif (isset($_GET["id"]) && $_GET["id"] == 2) {
         $ticket_user = "Employee";
     }
-
+    $query = $pdoConnect->prepare("SELECT system_name, short_name, system_logo, system_cover FROM settings WHERE id = :id");
+    $query->execute(['id' => 1]);
+    $Datas = $query->fetch(PDO::FETCH_ASSOC);
+    $sysName = $Datas['system_name'] ?? '';
+    $shortName = $Datas['short_name'] ?? '';
+    $systemLogo = $Datas['system_logo'];
+    $systemCover = $Datas['system_cover'];
+    
 try {
 
     $pdoCountQuery = "SELECT * FROM tb_tickets";
@@ -76,7 +83,7 @@ try {
 <head>
       <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>DHVSU MIS - HelpHub</title>
+    <title><?php echo $sysName?></title>
   
 	<!-- BOOTSTRAP STYLES-->
     <link href="assets/css/bootstrap.css" rel="stylesheet" />
