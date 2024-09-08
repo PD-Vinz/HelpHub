@@ -1,16 +1,10 @@
 <?php
-include_once("../connection/conn.php");
+include_once("connection/conn.php");
 $pdoConnect = connection();
 
-session_start(); // Start the session
-
-if (isset($_POST['forgotpass'])) {
+if (isset($_POST['otpcode'])) {
     try {
         $pdoConnect->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-
-        $email = $_POST["email"];
-
-        $email = filter_var($email, FILTER_SANITIZE_EMAIL);
 
         // Check in student_user table
 //        $pdoLedgerQuery = "SELECT * FROM student_user WHERE student_number = :username";
@@ -18,13 +12,9 @@ if (isset($_POST['forgotpass'])) {
 //        $pdoResult->bindParam(':username', $username);
 //        $pdoResult->execute();
 
-        // Build the query string
-        $queryParams = http_build_query([
-            'email' => $email,
-        ]);
-
-        header("Location: otp.php?$queryParams");
-        exit; // Prevent further execution after redirection
+        
+            header("Location: newpass.php");
+            exit(); // Prevent further execution after redirection
         
 
         // If no match found in both tables
@@ -55,17 +45,21 @@ if (isset($_POST['forgotpass'])) {
 
     <div class="login">
     <form method="post">
-        <h3>Forgot Password?</h3>
+        <h3>First-time Log In</h3>
+
+        <h4>We've sent a verification code to <h5><?php echo htmlspecialchars($Address);?></h5></h4>
+
+        <h6>Resend Code?<a href="forgot_password.php">Click Here</a></h6>
 
         <div class="form-group">
-            <input type="email" name="email" required placeholder="Enter Email">
-        </div>
+            <input type="text" name="code" required pattern="\d{6}" placeholder="Enter Code" maxlength="6">
+        </div>     
 
-        <input type="submit" name="forgotpass" value="Send"  ><br>
+        <input type="submit" name="otpcode" value="Verify"  ><br>
     
         
     </form>
-    <a href="index.php" class="forgot">Back</a>
+    <a href="forgot_password.php" class="forgot">Back</a>
     </div> 
 </body>
 </html>

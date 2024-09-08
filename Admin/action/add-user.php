@@ -199,7 +199,7 @@ h3{
             <span class="sr-only">Toggle Dropdown</span>
           </button>
           <div class="dropdown-menu" role="menu">
-            <a class="dropdown-item" href="http://localhost/sms/admin/?page=user"><span class="fa fa-user"></span> My Account</a>
+            <a class="dropdown-item" href="../profile.php"><span class="fa fa-user"></span> My Account</a>
             <hr style="margin-top: 5px; margin-bottom: 5px;">
             <a class="dropdown-item" href="../logout.php"><span class="fas fa-sign-out-alt"></span> Logout</a>
           </div>

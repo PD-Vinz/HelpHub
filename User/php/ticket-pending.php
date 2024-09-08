@@ -58,7 +58,6 @@ if (!isset($_SESSION["user_id"])) {
         }
     }
 }
-
 ?>
 
 <!DOCTYPE html>
@@ -80,6 +79,20 @@ if (!isset($_SESSION["user_id"])) {
    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
 
    <style>
+        .modal-dialog {
+            max-width: 80%; /* Adjust the modal width as needed */
+        }
+        .modal-content {
+            overflow: hidden; /* Ensure the content doesn't overflow */
+        }
+        .modal-body img {
+            width: 100%;
+            height: auto; /* Maintain aspect ratio */
+            max-height: 70vh; /* Adjust the maximum height as needed */
+            object-fit: contain; /* Ensure the image is contained within the modal */
+        }
+    </style>
+    <style>
     /* Styles for the loading screen */
 #loading-screen {
     position: fixed;
@@ -151,7 +164,7 @@ if (!isset($_SESSION["user_id"])) {
             <div class="sidebar-collapse">
                 <ul class="nav" id="main-menu">
                     <li class="text-center">
-                        <img src="assets/img/find_user.png" class="user-image img-responsive" />
+                        <img src="data:image/jpeg;base64,<?php echo $P_PBase64?>" class="user-image img-responsive" />
                     </li>
 				
 					
@@ -182,11 +195,11 @@ if (!isset($_SESSION["user_id"])) {
                           </li>
 
                           <li>
-                            <a href="ticket-returned.php"><i class="fa fa-undo"></i> RETURNED TICKET</a>
+                           <a href="ticket-returned.php"><i class="fa fa-undo"></i> RETURNED TICKET</a>
                             </li>
 
                             <li>
-                            <a href="ticket-finished.php"><i class="fa fa-check"></i> COMPLETE TICKET</a>
+                                <a href="ticket-finished.php"><i class="fa fa-check"></i> COMPLETE TICKET</a>
                             </li>
                       </ul>
                     </li> 
@@ -209,7 +222,7 @@ if (!isset($_SESSION["user_id"])) {
             <div id="page-inner">
                 <div class="row">
                     <div class="col-md-12">
-                     <h2>COMPLETE TICKET</h2>   
+                     <h2>PENDING TICKET</h2>   
                     </div>
                 </div>
                  <!-- /. ROW  -->
@@ -219,88 +232,30 @@ if (!isset($_SESSION["user_id"])) {
                     <div class="panel panel-default">
                         <div class="panel-heading">
                              LAST ACTIVITY
-                        </div>
-                        <div class="panel-body-ticket">
-                            <div class="table-responsive">
-<?php
-    $status = "Completed";
-
-    $pdoQuery = "SELECT * FROM tb_tickets WHERE status = :status && user_number = :usernumber";
-    $pdoResult = $pdoConnect->prepare($pdoQuery);
-    $pdoResult->bindParam(':status', $status);
-    $pdoResult->bindParam(':usernumber', $id, PDO::PARAM_STR);
-    $pdoExec = $pdoResult->execute();
-
-?> 
-                                <table class="table table-striped table-bordered table-hover" id="dataTables-example">
-                                    <thead>
-                                        <tr class="btn-primary">
-                                            <th>TICKET ID</th>
-                                            <th>DATE SUBMITTED</th>
-                                            <th>MIS STAFF</th>
-                                            <th>ISSUE</th>
-                                            <th>STATUS</th>
-                                            <th>DETAILS</th>
-                                            <!-- Removed redundant <tr> tag here -->
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                    <?php
-        while ($row = $pdoResult->fetch(PDO::FETCH_ASSOC)) {
-            extract($row);
-            $screenshotBase64 = base64_encode($screenshot);
-        ?>
-                                        <tr class="odd gradeX">
-                                            <td class="center"><?php echo htmlspecialchars($ticket_id); ?></td>
-                                            <td class="center"><?php echo htmlspecialchars($created_date); ?></td>
-                                            <td class="center"><?php echo htmlspecialchars($employee); ?></td>
-                                            <td class="center"><?php echo htmlspecialchars($issue); ?></td>
-                                            <td class="center"><?php echo htmlspecialchars($status); ?></td>
-                                            <td>
-                                                    <button class="btn btn-primary btn-xs" data-toggle="modal" data-target="#myModal<?php echo $ticket_id; ?>">VIEW TICKET</button>
-                                                    <div class="modal fade" id="myModal<?php echo $ticket_id; ?>">
-                                                        <div class="modal-dialog">
-                                                            <div class="modal-content">
-                                                                <div class="modal-header">
-                                                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                                                                    <img src="assets/pic/head.png" alt="Technical support for DHVSU students">  
-                                                                </div>
-                                                                <div class="modal-body" style="background-color: white;"> 
-                                                                    <h4 class="modal-title">TICKET STATUS</h4>
-                                                                    <div class="letter">
-                                                                        <main>
-                                                                            <style>
-                                                                                p {
-                                                                                    line-height: 1.5; 
-                                                                                    margin-bottom: 20px; 
-                                                                                }
-                                                                        
-                                                                                h1 {
-                                                                                    line-height: 1.2; 
-                                                                                    margin-bottom: 10px; 
-                                                                                }
-                                                                            </style>
-                                                                            <?php echo nl2br(htmlspecialchars($resolution)); ?>
-                                                                        </main>
-                                                                    
-                                                                        <div class="modal-footer">
-                                                                            <a href="survey.php?id=<?php echo $ticket_id; ?>&taken=after"><button type="button" class="btn btn-primary">TAKE SURVEY</button></a>
-                                                                            <a href="ticket-view.php?ticket_id=<?php echo $ticket_id; ?>"><button class='btn btn-primary'>VIEW TICKET</button></a>                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </td>
-                                        </tr>
-        
-        <?php
-        }
-        ?>
-                                    </tbody>
-                                </table>
                             </div>
-                        </div>
-                        
+                            <div class="panel-body-ticket">
+<div id="content" class="table-responsive">
+<table class="table table-bordered table-striped table-hover" id="dataTables-example">
+    <thead>
+        <tr class="btn-primary">
+            <th>TICKET ID</th>
+            <th>DATE SUBMITTED</th>
+            <th>ISSUE</th>
+            <th>DESCRIPTION</th>
+            <th>STATUS</th>
+            <th>ACTION</th>
+        </tr>
+    </thead>
+    <tbody>
+        
+    </tbody>
+</table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>           
              <!-- /. PAGE INNER  -->
             </div>
          <!-- /. PAGE WRAPPER  -->
@@ -321,31 +276,71 @@ if (!isset($_SESSION["user_id"])) {
             $('#dataTables-example').dataTable();
         });
     </script>
+    <!-- CUSTOM SCRIPTS -->
+    <script src="assets/js/custom.js"></script>
 
 <!-- Loading Screen -->    
 <script>
-    document.addEventListener('DOMContentLoaded', () => {
-    // Simulate data fetching
-    fetchData().then(() => {
-        // Hide loading screen and show content
+document.addEventListener('DOMContentLoaded', () => {
+    fetchTickets().then((data) => {
+        // Hide the loading screen after data is fetched
         document.getElementById('loading-screen').style.display = 'none';
-        document.getElementById('content').style.display = 'block';
+
+        // Check if data is received and populate the table
+        if (data && data.length > 0) {
+            document.getElementById('content').style.display = 'block';
+            populateTable(data);
+        } else {
+            alert("No data available.");
+        }
+    }).catch(error => {
+        console.error("Error fetching data:", error);
+        document.getElementById('loading-screen').style.display = 'none';
+        alert("Failed to load data. Please try again later.");
     });
 });
 
-function fetchData() {
-    return new Promise((resolve) => {
-        // Simulate a delay for data fetching (e.g., 2 seconds)
-        setTimeout(() => {
-            resolve();
-        }, 500);
+function fetchTickets() {
+    return new Promise((resolve, reject) => {
+        const usernumber = '<?php echo $id; ?>'; // Pass PHP variable to JavaScript
+        const xhr = new XMLHttpRequest();
+        xhr.open('GET', '../fetch/fetch_tickets.php?usernumber=' + usernumber, true);
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState === 4) {
+                if (xhr.status === 200) {
+                    const data = JSON.parse(xhr.responseText);
+                    resolve(data);
+                } else {
+                    reject(new Error('Failed to fetch data'));
+                }
+            }
+        };
+        xhr.send();
+    });
+}
+
+function populateTable(data) {
+    const tbody = document.querySelector('#dataTables-example tbody');
+    tbody.innerHTML = ''; // Clear existing rows
+    data.forEach(ticket => {
+        const row = document.createElement('tr');
+        row.innerHTML = `
+            <td>${ticket.ticket_id}</td>
+            <td>${ticket.created_date}</td>
+            <td>${ticket.issue}</td>
+            <td>${ticket.description.length > 25 ? ticket.description.substring(0, 25) + '...' : ticket.description}</td>
+            <td>${ticket.status}</td>
+            <td>
+                <a href="ticket-view.php?ticket_id=${ticket.ticket_id}">
+                    <button class='btn btn-primary btn-xs'>VIEW TICKET</button>
+                </a>
+            </td>
+        `;
+        tbody.appendChild(row);
     });
 }
 
 </script>
 
-    
-    <!-- CUSTOM SCRIPTS -->
-    <script src="assets/js/custom.js"></script>
 </body>
 </html>
