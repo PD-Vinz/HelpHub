@@ -142,12 +142,13 @@ $pdoExec = $pdoResult->execute();
                                 <table class="table table-striped table-bordered table-hover" id="dataTables-example">
                                     <thead>
                                         <tr>
-                                            <th>Ticket ID</th>
+                                            <th>Ticket ID</th> 
+                                            <th>Status</th>
                                             <th>Date Submitted</th>
                                             <th>Name</th>
                                             <th>Issue(s)</th>
                                             <th>Descriptions</th>
-                                            <th>Status</th>
+                                           
                                             <th>Details</th>
                                         </tr>
                                     </thead>
@@ -159,6 +160,7 @@ $pdoExec = $pdoResult->execute();
             ?>
                     <tr class='odd gradeX'>
                     <td><?php echo htmlspecialchars($ticket_id); ?></td>
+                    <td><?php echo htmlspecialchars($status); ?></td>    
                     <td><?php echo htmlspecialchars($created_date); ?></td>
                     <td><?php echo htmlspecialchars($full_name); ?></td>
                     <td><?php echo htmlspecialchars($issue); ?></td>
@@ -170,7 +172,7 @@ $pdoExec = $pdoResult->execute();
         echo htmlspecialchars($description);
     }
     ?></td>
-                    <td><?php echo htmlspecialchars($status); ?></td>    
+                    
                     <td>
 
                         <div class='panel-body-ticket'>
@@ -213,50 +215,50 @@ $pdoExec = $pdoResult->execute();
                                         <div class="form-group">
                                             <label>Full Name‎ ‎ ‎ ‎ ‎ </label>
                                             <input class="form-control" value="<?php echo htmlspecialchars($full_name); ?>" disabled/>
-                                            <br><br>
+                                           
                                         </div>
                                       
                                         <div class="form-group">
                                             <label>User ID‎ ‎ ‎ </label>
                                             <input class="form-control" value="<?php echo htmlspecialchars($user_number); ?>" disabled/>
-                                         <br><br>
+                                          
                                         </div>
                                        
                                         <div class="form-group">
                                             <label>College‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ </label>
                                             <input class="form-control" value="<?php echo htmlspecialchars($department); ?>" disabled/>
-                                         <br><br>
+                                          
                                         </div>
                                         <?php if ( $ticket_user === 'Student'): ?>
                                         <div class="form-group">
                                             <label>Course‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ </label>
                                             
                                             <input class="form-control" value="<?php echo htmlspecialchars($course); ?>" disabled/>
-                                            <br><br>
+                                             
                                         </div>
                                         
                                         <div class="form-group">
                                             <label>Year & Section‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ </label>
                                             <input class="form-control" value="<?php echo htmlspecialchars($year_section); ?>" disabled/>
-                                            <br><br>
+                                             
                                         </div>
                                         <?php endif; ?>
                                         <div class="form-group">
                                             <label>Campus ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ </label>
                                             <input class="form-control" value="<?php  echo htmlspecialchars($campus) ?>" disabled/>
-                                            <br><br>
+                                             
                                         </div>
 
                                         <div class="form-group">
                                             <label>Gender ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ </label>
                                             <input class="form-control" value="<?php echo htmlspecialchars($sex) ?>" disabled/>
-                                            <br><br>
+                                             
                                         </div>
 
                                         <div class="form-group">
                                             <label>Age ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ </label>
                                             <input class="form-control" value="<?php echo htmlspecialchars($age) ?>" disabled/>
-                                            <br><br>
+                                             
                                         </div>
                                     </form>      
                                 </div>
@@ -268,18 +270,18 @@ $pdoExec = $pdoResult->execute();
                                     <div class="form-group">
                                             <label>Ticket ID‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ </label>
                                             <input class="form-control" value="<?php echo htmlspecialchars($ticket_id); ?>" disabled/>
-                                            <br><br>
+                                             
                                         </div>
                                     <div class="form-group">
                                             <label>Issue/Problem  ‎ ‎ ‎ ‎ ‎ ‎ ‎ </label>
                                             <input class="form-control" value="<?php echo htmlspecialchars($issue); ?>" disabled/>
-                                            <br><br>
+                                             
                                         </div>
                                         <div class="form-group">
                                             <label>Description ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ </label>
                                             <textarea class="form-control" disabled style="height:148px; resize:none; overflow:auto;"><?php echo htmlspecialchars($description); ?></textarea>
                                             <!--<input class="form-control" value="<?php // echo htmlspecialchars($description); ?>" disabled style=""/> -->
-                                            <br><br>
+                                             
                                         </div>
                                         <div class="form-group">
                                             <label>Screenshot ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ </label>
@@ -287,8 +289,6 @@ $pdoExec = $pdoResult->execute();
                                                 <img src="data:image/jpeg;base64,<?php echo $screenshotBase64; ?>" alt="Screenshot" class="img-fluid">
                                             </a>
 
-
-                                            <br><br>
                                         </div>
                                     </form>
                                 </div>

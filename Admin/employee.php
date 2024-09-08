@@ -206,8 +206,6 @@ while ($row = $pdoResult->fetch(PDO::FETCH_ASSOC)){
     </script>
       <!-- CUSTOM SCRIPTS -->
     <script src="assets/js/custom.js"></script>
-    
-   
 </body>
 </html>
 
