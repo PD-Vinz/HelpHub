@@ -112,15 +112,14 @@ try {
         <!-- /. NAV SIDE  -->
         <div id="page-wrapper" >
             <div id="page-inner">
-                <div class="row">
+                
                     <div class="col-md-12">
                      <h2>Activity Logs</h2>   
                         <h5>Welcome Jhon Deo , Love to see you back. </h5>
                        
                     </div>
-                </div>
-                 <!-- /. ROW  -->
-                 <div class="row">
+             
+               
                 <div class="col-md-12">
                     <!-- Advanced Tables -->
                     <div class="panel panel-default">
@@ -164,13 +163,12 @@ $pdoExec = $pdoResult->execute();
                                 </div>
                             </div>
                             
-                        </div>
+                        
                     </div>
                     <!--End Advanced Tables -->
                 </div>
             </div>
-                 <hr />
-               
+              
     </div>
              <!-- /. PAGE INNER  -->
             </div>

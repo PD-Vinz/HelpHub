@@ -85,6 +85,7 @@ try {
       <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title><?php echo $sysName?></title>
+    <link rel="icon" href="../img/logo.png" type="image/png">
   
 	<!-- BOOTSTRAP STYLES-->
     <link href="assets/css/bootstrap.css" rel="stylesheet" />
@@ -107,9 +108,11 @@ try {
             <div id="page-inner">
                 <div class="row">
                   <div class="col-md-12">
-                    <div >
+                    <div class="col-md-12">
+                        
                      <h2>Settings</h2>   
                      <hr>
+                     </div>
                         <form method="post" id="system-frm">
 			<div class="col-md-6">
 			<div class="form-group" >
@@ -128,6 +131,7 @@ try {
     <label for="" class="control-label">System Logo</label><br>
    
 <img src="../img/Logo.png" class="avatar img-circle img-thumbnail" alt="avatar" style="height: 150px; width: 150px; "><br><br>
+<br><br>
  <a href=".."><button type="button" class="btn btn-primary">Choose file</button></a><br>
 </div>  
 </div>
@@ -136,52 +140,93 @@ try {
     <label for="" class="control-label">Cover Photo</label>
 </div>
 <div class="form-group d-flex justify-content-center">
-    <img src="../img/background.png " alt="" id="cimg2" class="img-fluid img-thumbnail"> <a href=".."><br><button type="button" class="btn btn-primary">Choose file</button></a>
+    <img src="../img/background.png " alt="" id="cimg2" class="img-fluid img-thumbnail"> <a href=".."><br>
+    <br>
+    <button type="button" class="btn btn-primary">Choose file</button></a>
 </div>
-
+</form><button type="button" class="btn btn-sm btn-primary" data-toggle="modal" data-target="#confirmsubmit">Update</button>
+            
 </div> 
-</form>
-           
+ 
+
                     </div>
-                    <button class="btn btn-sm btn-primary" form="system-frm">Update</button>
+                  <!-- Button to trigger the modal -->
+
+<!-- Modal -->
+<div class="modal fade" id="confirmsubmit">
+    <div class="modal-dialog3">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <h4 class="modal-title">Confirmation</h4>
+            </div>
+            <div class="modal-body">
+                Save system settings?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn" data-dismiss="modal">Cancel</button>
+                <!-- Confirm button that submits the form -->
+                <button type="submit" class="btn btn-primary" form="system-frm">Confirm</button>
+            </div>
+        </div>
+    </div>
+</div>
 
                  <br>
                    
-                    <div class="wrapper col-md-4">
+                    <div class="wrapper col-md-5">
         <h1>Calendar</h1>
             <div>
                  
             <div id="event-section">
     <h3>Add Event</h3>
-    <input type="date" id="eventDate">
-    <input type="text" id="eventTitle" placeholder="Event Title">
-    <input type="text" id="eventDescription" placeholder="Event Description">
-    <button id="addEvent" onclick="addEvent()">Add</button>
+ 
+    <input type="date" style="width:100%;" class="form-control form-control-sm" id="eventDate">
+    <input type="text" style="width:100%;" class="form-control form-control-sm" id="eventTitle" placeholder="Event Title">
+    <input type="text" style="width:100%;" class="form-control form-control-sm" id="eventDescription" placeholder="Event Description">
+    <button id="addEvent" class="btn btn-primary"onclick="addEvent()">Add</button>
 </div>
+
+
                 <div id="reminder-section">
-                    <h3>Reminders</h3>
+                    <h3>Reminders</h3><table class="table table-striped table-bordered table-hover" id="dataTables-example">
+                    <thead>
+                                        <tr>
+                                            <th>Date</th> 
+                                            <th>Event</th>
+                                            <th>Description</th>
+                                            <th>Option</th>
+                                    
+                                            
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                    
+                                        <tr>
+                                        <?php foreach ($events as $event): ?>
+                                             <td><?php echo htmlspecialchars($event['event_date']); ?></td>
+                                             <td><?php echo htmlspecialchars($event['event_title']); ?></td>
+                                            <td><?php echo htmlspecialchars($event['event_description']); ?></td>
+                                           
+                                            <td style="width:8%;"> <button class=" btn btn-primary delete-event"
+                                onclick="deleteEvent(1)">
+                                Delete
+                            </button></td>
+                            
+                                        </tr><?php endforeach; ?>
+                                    </tbody>
+
+                    </table>
                     <!-- List to display reminders -->
 
 
-                    <ul>
-        <?php foreach ($events as $event): ?>
-            <li>
-                <strong><?php echo htmlspecialchars($event['event_title']); ?>: </strong>
-                <?php echo htmlspecialchars($event['event_description']); ?> on
-                <em><?php echo htmlspecialchars($event['event_date']); ?></em>
-                 <button class="delete-event"
-                                onclick="deleteEvent(1)">
-                                Delete
-                            </button>
-            </li>
-        <?php endforeach; ?>
-    </ul>
+                  
                 </div>
             </div>
                     </div>
             <!-- /. Calendar  -->   
           
-            <div class="col-md-8">
+            <div class="col-md-7">
             <br><br>
                  <div class="wrapper">
 		
@@ -379,7 +424,25 @@ document.addEventListener("DOMContentLoaded", function() {
 
           </script>
           
-          
+          <script>
+    // Prevent form submission on Enter key press
+    document.getElementById('system-frm').addEventListener('keydown', function(event) {
+        if (event.key === 'Enter') {
+            event.preventDefault(); // Prevent form submission
+            $('#confirmsubmit').modal('show'); // Show the modal
+        }
+    });
+
+    // Prevent form submission on Enter key press in input fields
+    document.querySelectorAll('#system-frm input').forEach(input => {
+        input.addEventListener('keydown', function(event) {
+            if (event.key === 'Enter') {
+                event.preventDefault(); // Prevent form submission
+                $('#confirmsubmit').modal('show'); // Show the modal
+            }
+        });
+    });
+</script>   
    
 
 

@@ -316,7 +316,7 @@ echo "<script>
         <div id="page-wrapper" >
             <div id="page-inner">
                 <div class="row">
-                    <div  class="col-md-12" style="margin-top: 5px; margin-bottom:5px;">
+                    <div  class="col-md-12">
                      <h2 >Feedback Analysis</h2>   
                      <div class="col-md-4"> 
   <div class="panel panel-default">

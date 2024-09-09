@@ -76,10 +76,12 @@ try {
 
 <nav class="navbar navbar-default navbar-cls-top " role="navigation" style="margin-bottom: 0">
     <div class="navbar-header">
-      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".sidebar-collapse">
+      
+        <a class="navbar-brand" href="index.php"><?php echo $shortName?></a><button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".sidebar-collapse">
          <div ><i class="fa-solid fa-bars fa-2x"></i></div>
         </button>
-        <a class="navbar-brand" href="index.php"><?php echo $shortName?></a>
+
+        
     </div>
 <div style="color: white; padding: 15px 50px 5px 50px; float: right;"> Last access : <?php echo date('d F Y')?> &nbsp; 
 <div class="btn-group nav-link">
@@ -98,21 +100,29 @@ try {
 </div>
 </nav>   
    <!-- /. NAV TOP  -->
-        <nav class="navbar-default navbar-side" role="navigation">
+      
+   
+   <nav class="navbar-default navbar-side" role="navigation">
     <div class="sidebar-collapse">
         <ul class="nav" id="main-menu">
+        <div class="asidebar-btn">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+                
         <li class="text-center">
             <img src="assets/img/find_user.png" class="user-image img-responsive"/>
             </li>
         
             
             <li>
-                <a class="active-menu"  href="index.php"><i class="fa fa-dashboard fa-xl"></i> Dashboard</a>
+                <a class="active-menu"  href="index.php"><span class="number"><i class="fa fa-dashboard fa-xl"></i></span class="text"> <span> Dashboard</span></a>
             </li>
             <li>
             
             <a href="#" class="dropdown-toggle" data-toggle="dropdown" onclick="handleTicketDropdownToggle(event)">
-        <i class="fa fa-list fa-xl"></i> Student Tickets <span class="fa arrow"></span>
+        <i class="fa-solid fa-graduation-cap fa-xl"></i> Student Tickets <span class="fa arrow"></span>
     </a>
     <ul class="nav nav-second-level ticket-dropdown-menu">
               <!--fix the icons-->
@@ -138,7 +148,7 @@ try {
             <li>
             
             <a href="#" class="dropdown-toggle" data-toggle="dropdown" onclick="handleTicketDropdownToggle(event)">
-        <i class="fa fa-list fa-xl"></i> Employeee Tickets <span class="fa arrow"></span>
+        <i class="fa-solid fa-briefcase fa-xl"></i> Employeee Tickets <span class="fa arrow"></span>
     </a>
     <ul class="nav nav-second-level ticket-dropdown-menu">
               <!--fix the icons-->
@@ -196,6 +206,14 @@ try {
     </div>
     
 </nav>  
+<script>
+    const buttonside = document.querySelector('.asidebar-btn');
+
+    buttonside.addEventListener('click',()=>{
+        const sidebar = document.querySelector('.asidebar');
+        sidebar.classList.toggle('open');
+    })
+</script>
 <!--
 <script>
 // Get elements

@@ -84,6 +84,7 @@ try {
       <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title><?php echo $sysName?></title>
+    <link rel="icon" href="../img/logo.png" type="image/png">
   
 	<!-- BOOTSTRAP STYLES-->
     <link href="assets/css/bootstrap.css" rel="stylesheet" />
@@ -112,21 +113,20 @@ try {
     </style>
 </head>
 <body>
-    <div id="wrapper">
+<div id="wrapper">
         <!-- NAV SIDE  -->
-         <?php include 'nav.php'; ?>
+         <?php include 'nav.php'; ?> 
         <!-- /. NAV SIDE  -->
         <div id="page-wrapper" >
             <div id="page-inner">
-                <div class="row">
+               
                     <div class="col-md-12">
                      <h2>Opened Tickets</h2>   
-                        <h5>Welcome Jhon Deo , Love to see you back. </h5>
-                       
+  <hr>
                     </div>
-                </div>
+            
                  <!-- /. ROW  -->
-                 <div class="row">
+                 
                 <div class="col-md-12">
                     <!-- Advanced Tables -->
                     <div class="panel panel-default">
@@ -149,12 +149,12 @@ try {
                                 <table class="table table-striped table-bordered table-hover" id="dataTables-example">
                                     <thead>
                                         <tr>
-                                            <th>Ticket ID</th>
-                                            <th>Date Submitted</th>
+                                            <th style="width:10%">Ticket ID</th>
+                                            <th style="width:13%">Date Submitted</th>
                                             <th>Name</th>
                                             <th>Issue(s)</th>
-                                            <th>Descriptions</th>
-                                            <th>Details</th>
+                                            <th style="width:30%">Descriptions</th>
+                                            <th style="width:8%">Details</th>
                                         </tr>
                                     </thead>
                                     <tbody>

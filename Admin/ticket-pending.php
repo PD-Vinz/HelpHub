@@ -84,6 +84,7 @@ try {
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title><?php echo $sysName?></title>
+    <link rel="icon" href="../img/logo.png" type="image/png">
   
 	<!-- BOOTSTRAP STYLES-->
     <link href="assets/css/bootstrap.css" rel="stylesheet" />
@@ -118,15 +119,14 @@ try {
         <!-- /. NAV SIDE  -->
         <div id="page-wrapper" >
             <div id="page-inner">
-                <div class="row">
+               
                     <div class="col-md-12">
                      <h2>Pending Tickets</h2>   
-                        <h5>Welcome Jhon Deo , Love to see you back. </h5>
-                       
+  <hr>
                     </div>
-                </div>
+            
                  <!-- /. ROW  -->
-                 <div class="row">
+                 
                 <div class="col-md-12">
                     <!-- Advanced Tables -->
                     <div class="panel panel-default">

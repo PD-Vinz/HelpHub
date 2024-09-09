@@ -116,15 +116,14 @@ try {
         <!-- /. NAV SIDE  -->
         <div id="page-wrapper" >
             <div id="page-inner">
-                <div class="row">
+                
                     <div class="col-md-12">
                      <h2>Closed Tickets</h2>   
                         <h5>Welcome Jhon Deo , Love to see you back. </h5>
                        
                     </div>
-                </div>
-                 <!-- /. ROW  -->
-                 <div class="row">
+              
+             
                 <div class="col-md-12">
                     <!-- Advanced Tables -->
                     <div class="panel panel-default">
@@ -364,14 +363,13 @@ $pdoExec = $pdoResult->execute();
                                 </table>
                             </div>
                             
-                        </div>
+                       
                     </div>
                     <!--End Advanced Tables -->
                 </div>
             </div>
                  <hr />
-               <!-- /. ROW  -->
-               <div class="row">                     
+                             
                       
   <div class="col-md-4 col-sm-4 col-xs-4">
     <div class="panel panel-default">
@@ -402,8 +400,7 @@ $pdoExec = $pdoResult->execute();
         <div id="morris-donut-chart3" style="height: 250px;"></div>
       </div>
     </div>
-  </div>
-      
+
       
   </div>
     </div>

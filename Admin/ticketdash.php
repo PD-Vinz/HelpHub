@@ -119,6 +119,7 @@ if (!isset($_SESSION["admin_number"])) {
                
                     <div class="col-md-12">
                      <h2>All Tickets</h2>   
+                     <hr>
                     </div>
                
               
@@ -182,7 +183,7 @@ if (!isset($_SESSION["admin_number"])) {
 		
                  <!-- /. ROW  -->
                  <div class="row">
-                <div class="col-md-12">
+                 <div class="col-md-12"> <div class="col-md-12">
                     <!-- Advanced Tables -->
                     <div class="panel panel-default">
                         
@@ -197,7 +198,7 @@ if (!isset($_SESSION["admin_number"])) {
                                             <th>Date Submitted</th>
                                             <th>Name</th>
                                             <th>Issue</th>
-                                            <th>Description</th>
+                                            <th style="width: 25%;">Description</th>
                                       
                                             <th>Details</th>
                                         </tr>
@@ -360,10 +361,10 @@ if (!isset($_SESSION["admin_number"])) {
 
             </div>
         </div>
-        
-    </div>
-</div>
-                              </div>
+        </div>
+        </div>
+        </div>
+        </div>
                   
 <div class="modal fade" id="myModalA">
     <div class="modal-dialog">
@@ -479,9 +480,9 @@ if (!isset($_SESSION["admin_number"])) {
                     <!--End Advanced Tables -->
                 </div>
             </div>
-                 <hr />
+                 
                <!-- /. ROW  -->
-               <div class="row">                     
+               <div class="col-md-12">                     
                       
                <div class="col-md-4 col-sm-4 col-xs-4">                     
            <div class="panel panel-default">

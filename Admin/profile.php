@@ -30,7 +30,14 @@ if (!isset($_SESSION["admin_number"])) {
         $UserType = $Data['user_type'];
         $U_T = $Data['user_type'];
 
-
+        $query = $pdoConnect->prepare("SELECT system_name, short_name, system_logo, system_cover FROM settings WHERE id = :id");
+        $query->execute(['id' => 1]);
+        $Datas = $query->fetch(PDO::FETCH_ASSOC);
+        $sysName = $Datas['system_name'] ?? '';
+        $shortName = $Datas['short_name'] ?? '';
+        $systemLogo = $Datas['system_logo'];
+        $systemCover = $Datas['system_cover'];
+        
     
 
         $P_PBase64 = base64_encode($P_P);
@@ -48,7 +55,9 @@ if (!isset($_SESSION["admin_number"])) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>USER</title>
+    <title><?php echo $sysName?></title>
+    <link rel="icon" href="../img/logo.png" type="image/png">
+  
     <!-- BOOTSTRAP STYLES -->
     <link href="assets/css/bootstrap.css" rel="stylesheet">
   <!-- FONTAWESOME STYLES-->
@@ -63,15 +72,17 @@ if (!isset($_SESSION["admin_number"])) {
 </head>
 
 <body>
-    <div id="wrapper">
+   
+        <div id="wrapper">
+      <!-- NAV SIDE  -->
     <?php include 'nav.php'; ?>
-        <!-- /. NAV SIDE -->
-        <div id="page-wrapper">
+        <!-- /. NAV SIDE  -->
+        
+        <div id="page-wrapper" >
             <div id="page-inner">
-                <div class="row">
                     <div class="col-md-12">
-                        <h2>PROFILE</h2>
-
+                        <h2>Profile</h2>
+<hr>
                         <div class="container">
                             <h1 class="text-primary"></h1>
                             
@@ -88,7 +99,7 @@ if (!isset($_SESSION["admin_number"])) {
         
                                 <!-- edit form column -->
                                 <div class="col-md-9 personal-info">
-                                    <div> <h3>PERSONAL INFORMATION</h3>
+                                    <div> <h3>Personal Information</h3>
                                     </div>
                                     <form class="form-horizontal" role="form">
                                         <div class="form-group">

@@ -111,11 +111,12 @@ try {
         <div id="page-wrapper" >
             <div id="page-inner">
                     <div class="col-md-12">
-                     <h2 style="margin-top:5px;">Admin Dashboard</h2>   
+                     <h2>Admin Dashboard</h2>   
+                     <hr>
                     </div>
                         
                  <!-- /. ROW  -->
-                  <hr />
+            
       
 
 <!--<a href="ticket-pending.php">  -->            
@@ -182,6 +183,7 @@ try {
                  <div class="col-md-8">
                  <div class="wrapper">
 		<div class="container-calendar">
+            <div class="col-md-12">
 			<div id="right">
 				 <h3 id="monthAndYear"></h3>
 				<div class="button-container-calendar">
@@ -229,7 +231,7 @@ try {
 	<script src="./script.js"></script>
   
                  </div>     
-
+                 </div>
 <br>
 <br>
                  <div class="col-md-4">                     
