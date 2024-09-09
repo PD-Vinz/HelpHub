@@ -144,7 +144,7 @@ try {
 <?php
 $user = "Student";
 
-$pdoQuery = "SELECT * FROM tb_user WHERE user_type = :user ORDER BY user_id ASC";
+$pdoQuery = "SELECT * FROM student_user WHERE user_type = :user ORDER BY user_id ASC";
 $pdoResult = $pdoConnect->prepare($pdoQuery);
 $pdoResult->bindParam(':user', $user, PDO::PARAM_STR);
 $pdoExec = $pdoResult->execute();

@@ -75,13 +75,11 @@ try {
 ?>
 
 <nav class="navbar navbar-default navbar-cls-top " role="navigation" style="margin-bottom: 0">
-    <div class="navbar-header">
-      
+    <div class="navbar-header">      
         <a class="navbar-brand" href="index.php"><?php echo $shortName?></a><button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".sidebar-collapse">
          <div ><i class="fa-solid fa-bars fa-2x"></i></div>
         </button>
 
-        
     </div>
 <div style="color: white; padding: 15px 50px 5px 50px; float: right;"> Last access : <?php echo date('d F Y')?> &nbsp; 
 <div class="btn-group nav-link">
@@ -122,6 +120,7 @@ try {
             <li>
             
             <a href="#" class="dropdown-toggle" data-toggle="dropdown" onclick="handleTicketDropdownToggle(event)">
+
         <i class="fa-solid fa-graduation-cap fa-xl"></i> Student Tickets <span class="fa arrow"></span>
     </a>
     <ul class="nav nav-second-level ticket-dropdown-menu">
@@ -148,7 +147,9 @@ try {
             <li>
             
             <a href="#" class="dropdown-toggle" data-toggle="dropdown" onclick="handleTicketDropdownToggle(event)">
+
         <i class="fa-solid fa-briefcase fa-xl"></i> Employeee Tickets <span class="fa arrow"></span>
+
     </a>
     <ul class="nav nav-second-level ticket-dropdown-menu">
               <!--fix the icons-->

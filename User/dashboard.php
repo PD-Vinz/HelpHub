@@ -13,7 +13,7 @@ if (!isset($_SESSION["user_id"])) {
     $identity = $_SESSION["user_identity"];
 
     if ($identity == "Student"){
-        $pdoUserQuery = "SELECT * FROM tb_user WHERE user_id = :number";
+        $pdoUserQuery = "SELECT * FROM student_user WHERE user_id = :number";
         $pdoResult = $pdoConnect->prepare($pdoUserQuery);
         $pdoResult->bindParam(':number', $id);
         $pdoResult->execute();

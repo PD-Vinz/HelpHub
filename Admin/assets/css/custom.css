@@ -68,6 +68,7 @@ p {
 
 }
    .noti-box {
+
 min-height: 75px;
 padding: 15px;
 line-height: 50px;
@@ -753,6 +754,7 @@ body {
     height: 350px;
     overflow-y:scroll;
     overflow-x:hidden;
+
 }
 
 
@@ -835,4 +837,5 @@ body {
 }
 .acontent p{
     font-size: 1rem;
+
 }

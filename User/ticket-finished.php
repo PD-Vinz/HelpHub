@@ -10,28 +10,52 @@ if (!isset($_SESSION["user_id"])) {
     exit(); // Prevent further execution after redirection
 } else {
     $id = $_SESSION["user_id"];
+    $identity = $_SESSION["user_identity"];
 
-    $pdoUserQuery = "SELECT * FROM tb_user WHERE user_id = :number";
-    $pdoResult = $pdoConnect->prepare($pdoUserQuery);
-    $pdoResult->bindParam(':number', $id);
-    $pdoResult->execute();
-
-    $Data = $pdoResult->fetch(PDO::FETCH_ASSOC);
-
-    if ($Data) {
-        $Email_Add = $Data['email_address'];
-        $Name = $Data['name'];
-        $Department = $Data['department'];
-        $Course = $Data['course'];
-        $Y_S = $Data['year_section'];
-        $P_P = $Data['profile_picture'];
-        $Sex = $Data['sex'];
-
-        $nameParts = explode(' ', $Name);
-        $firstName = $nameParts[0];
-    } else {
-        // Handle the case where no results are found
-        echo "No student found with the given student number.";
+    if ($identity == "Student"){
+        $pdoUserQuery = "SELECT * FROM student_user WHERE user_id = :number";
+        $pdoResult = $pdoConnect->prepare($pdoUserQuery);
+        $pdoResult->bindParam(':number', $id);
+        $pdoResult->execute();
+    
+        $Data = $pdoResult->fetch(PDO::FETCH_ASSOC);
+    
+        if ($Data) {
+            $Name = $Data['name'];
+            $Department = $Data['department'];
+            $Y_S = $Data['year_section'];
+            $P_P = $Data['profile_picture'];
+    
+            $nameParts = explode(' ', $Name);
+            $firstName = $nameParts[0];
+    
+            $P_PBase64 = base64_encode($P_P);
+        } else {
+            // Handle the case where no results are found
+            echo "No student found with the given student number.";
+        }
+    } elseif ($identity == "Employee") {
+        $pdoUserQuery = "SELECT * FROM employee_user WHERE user_id = :number";
+        $pdoResult = $pdoConnect->prepare($pdoUserQuery);
+        $pdoResult->bindParam(':number', $id);
+        $pdoResult->execute();
+    
+        $Data = $pdoResult->fetch(PDO::FETCH_ASSOC);
+    
+        if ($Data) {
+            $Name = $Data['name'];
+            $Department = $Data['department'];
+            $Y_S = $Data['year_section'];
+            $P_P = $Data['profile_picture'];
+    
+            $nameParts = explode(' ', $Name);
+            $firstName = $nameParts[0];
+    
+            $P_PBase64 = base64_encode($P_P);
+        } else {
+            // Handle the case where no results are found
+            echo "No student found with the given student number.";
+        }
     }
 }
 
@@ -55,11 +79,44 @@ if (!isset($_SESSION["user_id"])) {
    <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css' />
    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
 
-   
+   <style>
+    /* Styles for the loading screen */
+#loading-screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(255, 255, 255, 0.9);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    z-index: 9999;
+}
+
+.spinner {
+    border: 16px solid #FFD700; /* Light grey */
+    border-top: 16px solid #800000; /* Blue */
+    border-radius: 50%;
+    width: 120px;
+    height: 120px;
+    animation: spin 2s linear infinite;
+}
+
+/* Animation for the spinner */
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+   </style>
 </head>
 
 <body>
-
+    <div id="loading-screen">
+        <div class="spinner"></div>
+        <p>Loading...</p>
+    </div>
     <div id="wrapper">
         <nav class="navbar navbar-default navbar-cls-top " role="navigation" style="margin-bottom: 0">
             <div class="navbar-header">
@@ -265,6 +322,27 @@ if (!isset($_SESSION["user_id"])) {
         });
     </script>
 
+<!-- Loading Screen -->    
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+    // Simulate data fetching
+    fetchData().then(() => {
+        // Hide loading screen and show content
+        document.getElementById('loading-screen').style.display = 'none';
+        document.getElementById('content').style.display = 'block';
+    });
+});
+
+function fetchData() {
+    return new Promise((resolve) => {
+        // Simulate a delay for data fetching (e.g., 2 seconds)
+        setTimeout(() => {
+            resolve();
+        }, 500);
+    });
+}
+
+</script>
 
     
     <!-- CUSTOM SCRIPTS -->

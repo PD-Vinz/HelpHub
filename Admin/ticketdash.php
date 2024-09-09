@@ -119,6 +119,7 @@ if (!isset($_SESSION["admin_number"])) {
                
                     <div class="col-md-12">
                      <h2>All Tickets</h2>   
+
                      <hr>
                     </div>
                

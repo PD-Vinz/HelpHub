@@ -111,13 +111,12 @@ try {
         <div id="page-wrapper" >
             <div id="page-inner">
                     <div class="col-md-12">
+
                      <h2>Admin Dashboard</h2>   
                      <hr>
                     </div>
                         
                  <!-- /. ROW  -->
-            
-      
 
 <!--<a href="ticket-pending.php">  -->            
 <div class="col-md-2 col-sm-6 col-xs-6">           

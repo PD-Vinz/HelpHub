@@ -29,6 +29,7 @@ if (!isset($_SESSION["admin_number"])) {
         // Handle the case where no results are found
         echo "No student found with the given student number.";
     }
+
     $query = $pdoConnect->prepare("SELECT system_name, short_name, system_logo, system_cover FROM settings WHERE id = :id");
     $query->execute(['id' => 1]);
     $Datas = $query->fetch(PDO::FETCH_ASSOC);
@@ -37,40 +38,40 @@ if (!isset($_SESSION["admin_number"])) {
     $systemLogo = $Datas['system_logo'];
     $systemCover = $Datas['system_cover'];
     
-try {
 
-    $pdoCountQuery = "SELECT * FROM tb_tickets";
+   
+}
+
+try {
+     $pdoCountQuery = "SELECT * FROM tb_tickets";
     $pdoResult = $pdoConnect->prepare($pdoCountQuery);
     $pdoResult->execute();
     $allTickets = $pdoResult->rowCount();
 
-    $pdoCountQuery = "SELECT * FROM tb_tickets WHERE status = 'Pending'";
-    $pdoResult = $pdoConnect->prepare($pdoCountQuery);
-    $pdoResult->execute();
-    $pendingTickets = $pdoResult->rowCount();
+    $next_id = "";
+    // SQL to find the smallest unused 10-digit ID
+    $sql = "
+        SELECT MIN(t1.admin_number + 1) AS next_id
+        FROM mis_employees t1
+        LEFT JOIN mis_employees t2 ON t1.admin_number + 1 = t2.admin_number
+        WHERE t2.admin_number IS NULL 
+        AND LENGTH(t1.admin_number) = 10
+        AND LENGTH(t1.admin_number + 1) = 10;
+    ";
 
-    $pdoCountQuery = "SELECT * FROM tb_tickets WHERE status = 'Returned'";
-    $pdoResult = $pdoConnect->prepare($pdoCountQuery);
-    $pdoResult->execute();
-    $returnedTickets = $pdoResult->rowCount();
+    $stmt = $pdoConnect->query($sql);
+    $result = $stmt->fetch(PDO::FETCH_ASSOC);
 
-    $pdoCountQuery = "SELECT * FROM tb_tickets WHERE status = 'Completed'";
-    $pdoResult = $pdoConnect->prepare($pdoCountQuery);
-    $pdoResult->execute();
-    $completedTickets = $pdoResult->rowCount();
-
-    $pdoCountQuery = "SELECT * FROM tb_tickets WHERE status = 'Due'";
-    $pdoResult = $pdoConnect->prepare($pdoCountQuery);
-    $pdoResult->execute();
-    $dueTickets = $pdoResult->rowCount();
+    if ($result && $result['next_id']) {
+        // Check if the next_id has 10 digits
+        $next_id = str_pad($result['next_id'], 10, '0', STR_PAD_LEFT);
+    } else {
+        echo "No unused IDs found or the table is empty.";
+    }
 
 } catch (PDOException $e) {
     echo "Error: " . $e->getMessage();
 }
-
-}
-
-
 
 
 ?>
@@ -92,6 +93,46 @@ try {
     <link href="assets/css/custom.css" rel="stylesheet" />
      <!-- GOOGLE FONTS-->
    <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css' />
+
+   <style>
+    /* Hide the "No file chosen" text*/ 
+input[type="file"]::file-selector-button {
+    visibility: hidden;
+}   
+/* Customize the button appearance (optional) */
+.custom-file {
+    position: relative;
+    overflow: hidden;
+    display: inline-block;
+}
+
+.custom-file input[type="file"] {
+    position: absolute;
+    top: 0;
+    right: 0;
+    margin: 0;
+    padding: 0;
+    font-size: 20px;
+    cursor: pointer;
+    opacity: 0;
+}
+
+.custom-file::before {
+    content: 'Choose file';
+    display: inline-block;
+    /*background-color: #007bff;
+    color: white;*/
+    padding: 5px 10px;
+    border: 1px solid #C70039 ;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.custom-file:hover::before {
+    background-color: #800000;
+    color: white;
+}
+   </style>
 </head>
 <body>
     <div id="wrapper">
@@ -112,22 +153,49 @@ try {
 	<div class="card-body">
 		<div class="container-fluid col-md-6">
 			<div id="msg"></div>
-			<form method="post" action="" id="manage-user">	
+			<form method="post" action="action\mis-employee-insert.php" id="manage-user" enctype="multipart/form-data">
+                <div class="form-group col-6">
+					<label for="name">User ID</label>
+					<input type="number" name="newid" id="newid" class="form-control" value="<?php echo $next_id; ?>" disabled>
+                    <input type="hidden" name="userid" value="<?php echo $next_id; ?>">
+				</div>	
 				<div class="form-group col-6">
 					<label for="name">First Name</label>
-					<input type="text" name="firstname" id="firstname" class="form-control" required>
+					<input type="text" name="firstname" id="firstname" class="form-control" required autocomplete="off">
 				</div>
 				<div class="form-group col-6">
 					<label for="name">Last Name</label>
-					<input type="text" name="lastname" id="lastname" class="form-control" required>
+					<input type="text" name="lastname" id="lastname" class="form-control" required autocomplete="off">
 				</div>
-				<div class="form-group col-6">
-					<label for="username">Username</label>
-					<input type="text" name="username" id="username" class="form-control" required  autocomplete="off">
+                <div class="form-group col-6">
+					<label for="name">Birthday</label>
+					<input type="date" name="birthday" id="birthday" class="form-control" required autocomplete="off">
+				</div>
+                <div class="form-group col-6">
+					<label for="name">Age</label>
+					<input type="text" name="age" id="age" class="form-control" required autocomplete="off">
+				</div>
+                <div class="form-group col-6">
+					<label for="name">Sex</label>
+					<select name="sex" id="type" class="custom-select form-control" required>
+						<option value="Male">Male</option>
+						<option value="Female">Female</option>
+					</select>
+				</div>
+                <div class="form-group col-6">
+					<label for="password">Email Address</label>
+					<input type="email" name="email" id="email" class="form-control" value="" autocomplete="off" >
 				</div>
 				<div class="form-group col-6">
 					<label for="password">Password</label>
 					<input type="password" name="password" id="password" class="form-control" value="" autocomplete="off" >
+				</div>
+                <div class="form-group col-6">
+					<label for="type">Position</label>
+					<select name="position" id="position" class="custom-select form-control" required>
+						<option value="Director">Director</option>
+						<option value="Staff">Staff</option>
+					</select>
 				</div>
 				<div class="form-group col-6">
 					<label for="type">User Type</label>
@@ -138,13 +206,14 @@ try {
 				</div>
 				<div class="form-group col-6">
 					<label for="" class="control-label">Avatar</label>
+                    <br>
 					<div class="custom-file">
-		              <input type="file" class="form-control" id="customFile" name="img" onchange="displayImg(this,$(this))">
+                        <input type="file" class="form-control" id="customFile" name="image" onchange="displayImg(this)">
 		             
 		            </div>
 				</div>
 				<div class="form-group col-6 d-flex justify-content-center">
-					<img src="http://localhost/sms/uploads/avatar-11.png?v=1635920566" alt="" id="cimg" class="img-fluid img-thumbnail">
+					<img src="assets\img\No-Profile.png" alt="" id="cimg" class="img-fluid img-thumbnail">
 				</div>
 			
 		</div>
@@ -152,7 +221,7 @@ try {
 	<div class="card-footer">
 			<div class="col-md-12">
 				<div class="row">
-					<button class="btn btn-sm btn-primary mr-2" form="manage-user">Save</button>
+					<button class="btn btn-sm btn-primary mr-2" form="manage-user">Add Account</button>
 					<a class="btn btn-sm btn-secondary" href="employee.php">Cancel</a>
 				</div>
 			</div>
@@ -243,9 +312,9 @@ try {
 .custom-select {
   display: inline-block;
   width: 100%;
-  height: calc(2.25rem + 2px);
+  /*height: calc(2.25rem + 2px);*/
   padding: 0.375rem 1.75rem 0.375rem 0.75rem;
-  font-size: 1rem;
+  /*font-size: 1rem;*/
   font-weight: 400;
   line-height: 1.5;
   color: #495057;
@@ -294,22 +363,16 @@ try {
 }
 </style>
 <script>
-	$(function(){
-		$('.select2').select2({
-			width:'resolve'
-		})
-	})
-	function displayImg(input,_this) {
-	    if (input.files && input.files[0]) {
-	        var reader = new FileReader();
-	        reader.onload = function (e) {
-	        	$('#cimg').attr('src', e.target.result);
-	        }
+function displayImg(input) {
+    if (input.files && input.files[0]) {
+        var reader = new FileReader();
+        reader.onload = function (e) {
+            $('#cimg').attr('src', e.target.result).show();
+        }
 
-	        reader.readAsDataURL(input.files[0]);
-	    }
-	}
-	
+        reader.readAsDataURL(input.files[0]);
+    }
+}
 
 </script>
     </div>

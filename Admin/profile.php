@@ -103,13 +103,13 @@ if (!isset($_SESSION["admin_number"])) {
                                     </div>
                                     <form class="form-horizontal" role="form">
                                         <div class="form-group">
-                                            <label class="col-lg-3 control-label">ADMIN NUMBER</label>
+                                            <label class="col-lg-3 control-label">STUDENT NUMBER</label>
                                             <div class="col-lg-8">
                                                 <input class="form-control" type="text" value="<?php echo $id?>" disabled>
                                             </div>
                                         </div>
                                         <div class="form-group">
-                                            <label class="col-lg-3 control-label">EMAIL</label>
+                                            <label class="col-lg-3 control-label">EMAIL ADDRESS</label>
                                             <div class="col-lg-8">
                                                 <input class="form-control" type="text" value="<?php echo $Email_Add?>" disabled>
                                             </div>
@@ -121,7 +121,7 @@ if (!isset($_SESSION["admin_number"])) {
                                             </div>
                                         </div>
                                         <div class="form-group">
-                                            <label class="col-lg-3 control-label">BIRTHDAY</label>
+                                            <label class="col-lg-3 control-label">BIRTHDATE</label>
                                             <div class="col-lg-8">
                                                 <input class="form-control" type="text" value="<?php echo $formattedDate?>" disabled>
                                             </div>
@@ -135,8 +135,7 @@ if (!isset($_SESSION["admin_number"])) {
                                        
                         
                                         <div class="modal-footer">	
-                                            <a href="../user/edit-profile-picture.php"><button type="button" class="btn btn-primary">CHANGE PROFILE</button></a>
-                                            <a href="../user/edit-profile.php"><button type="button" class="btn btn-primary">UPDATE INFORMATION</button></a>
+                                            <a href="edit-profile.php"><button type="button" class="btn btn-primary">UPDATE INFORMATION</button></a>
                                         </div>
                                         
 
