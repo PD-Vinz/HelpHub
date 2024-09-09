@@ -29,14 +29,7 @@ if (!isset($_SESSION["admin_number"])) {
         // Handle the case where no results are found
         echo "No student found with the given student number.";
     }
-    $query = $pdoConnect->prepare("SELECT system_name, short_name, system_logo, system_cover FROM settings WHERE id = :id");
-    $query->execute(['id' => 1]);
-    $Datas = $query->fetch(PDO::FETCH_ASSOC);
-    $sysName = $Datas['system_name'] ?? '';
-    $shortName = $Datas['short_name'] ?? '';
-    $systemLogo = $Datas['system_logo'];
-    $systemCover = $Datas['system_cover'];
-    
+
 try {
 
     $pdoCountQuery = "SELECT * FROM tb_tickets";
@@ -77,8 +70,7 @@ try {
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title><?php echo $sysName?></title>
-    <link rel="icon" href="../img/logo.png" type="image/png">
+    <title>DHVSU MIS - HelpHub</title>
   
 	<!-- BOOTSTRAP STYLES-->
     <link href="assets/css/bootstrap.css" rel="stylesheet" />
@@ -289,7 +281,7 @@ $pdoExec = $pdoResult->execute();
                     </div>
                 </div>
             </div>
-                
+                 <hr />
                
     </div>
              <!-- /. PAGE INNER  -->

@@ -20,24 +20,14 @@ if (!isset($_SESSION["admin_number"])) {
 
     if ($Data) {
         $Email_Add = $Data['email_address'];
-        $Position = $Data['position'];
         $Name = $Data['f_name'];
         $lname = $Data['l_name'];
         $P_P = $Data['profile_picture'];
         $Sex = $Data['sex'];
         $Age = $Data['age'];
         $Bday = $Data['birthday'];
-        $UserType = $Data['user_type'];
         $U_T = $Data['user_type'];
 
-        $query = $pdoConnect->prepare("SELECT system_name, short_name, system_logo, system_cover FROM settings WHERE id = :id");
-        $query->execute(['id' => 1]);
-        $Datas = $query->fetch(PDO::FETCH_ASSOC);
-        $sysName = $Datas['system_name'] ?? '';
-        $shortName = $Datas['short_name'] ?? '';
-        $systemLogo = $Datas['system_logo'];
-        $systemCover = $Datas['system_cover'];
-        
     
 
         $P_PBase64 = base64_encode($P_P);
@@ -55,9 +45,7 @@ if (!isset($_SESSION["admin_number"])) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><?php echo $sysName?></title>
-    <link rel="icon" href="../img/logo.png" type="image/png">
-  
+    <title>USER</title>
     <!-- BOOTSTRAP STYLES -->
     <link href="assets/css/bootstrap.css" rel="stylesheet">
   <!-- FONTAWESOME STYLES-->
@@ -72,22 +60,25 @@ if (!isset($_SESSION["admin_number"])) {
 </head>
 
 <body>
-   
-        <div id="wrapper">
-      <!-- NAV SIDE  -->
+    <div id="wrapper">
     <?php include 'nav.php'; ?>
-        <!-- /. NAV SIDE  -->
-        
-        <div id="page-wrapper" >
+        <!-- /. NAV SIDE -->
+        <div id="page-wrapper">
             <div id="page-inner">
+                <div class="row">
                     <div class="col-md-12">
-                        <h2>Profile</h2>
-<hr>
+                        <h2>PROFILE</h2>
+
                         <div class="container">
                             <h1 class="text-primary"></h1>
-                            
+                            <hr>
                             <div class="row">
-
+                                <nav aria-label="breadcrumb" class="main-breadcrumb">
+                                    <ol class="breadcrumb">
+                                      <li class="breadcruMB"><a href="index.php">HOME</a></li>
+                                      <li class="breadcrumb-item active" aria-current="page">PROFILE</li>
+                                    </ol>
+                                  </nav>
                                 <!-- left column -->
                                 <div class="col-md-3">
                                     <div class="text-center">
@@ -99,11 +90,11 @@ if (!isset($_SESSION["admin_number"])) {
         
                                 <!-- edit form column -->
                                 <div class="col-md-9 personal-info">
-                                    <div> <h3>Personal Information</h3>
+                                    <div> <h3>PERSONAL INFORMATION</h3>
                                     </div>
                                     <form class="form-horizontal" role="form">
                                         <div class="form-group">
-                                            <label class="col-lg-3 control-label">STUDENT NUMBER</label>
+                                            <label class="col-lg-3 control-label">USER ID</label>
                                             <div class="col-lg-8">
                                                 <input class="form-control" type="text" value="<?php echo $id?>" disabled>
                                             </div>
@@ -121,7 +112,7 @@ if (!isset($_SESSION["admin_number"])) {
                                             </div>
                                         </div>
                                         <div class="form-group">
-                                            <label class="col-lg-3 control-label">BIRTHDATE</label>
+                                            <label class="col-lg-3 control-label">BIRTHDAY</label>
                                             <div class="col-lg-8">
                                                 <input class="form-control" type="text" value="<?php echo $formattedDate?>" disabled>
                                             </div>

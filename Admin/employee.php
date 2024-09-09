@@ -29,14 +29,7 @@ if (!isset($_SESSION["admin_number"])) {
         // Handle the case where no results are found
         echo "No student found with the given student number.";
     }
-    $query = $pdoConnect->prepare("SELECT system_name, short_name, system_logo, system_cover FROM settings WHERE id = :id");
-    $query->execute(['id' => 1]);
-    $Datas = $query->fetch(PDO::FETCH_ASSOC);
-    $sysName = $Datas['system_name'] ?? '';
-    $shortName = $Datas['short_name'] ?? '';
-    $systemLogo = $Datas['system_logo'];
-    $systemCover = $Datas['system_cover'];
-    
+
 try {
 
     $pdoCountQuery = "SELECT * FROM tb_tickets";
@@ -74,52 +67,51 @@ try {
 
 
 ?>
+
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-    <meta charset="utf-8" />
+      <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title><?php echo $sysName ?></title>
-
-    <!-- BOOTSTRAP STYLES -->
+    <title>DHVSU MIS - HelpHub</title>
+  
+	<!-- BOOTSTRAP STYLES-->
     <link href="assets/css/bootstrap.css" rel="stylesheet" />
-    <!-- FONTAWESOME STYLES -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
-    <!-- MORRIS CHART STYLES -->
+     <!-- FONTAWESOME STYLES-->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+     <!-- MORRIS CHART STYLES-->
     <link href="assets/js/morris/morris-0.4.3.min.css" rel="stylesheet" />
-    <!-- CUSTOM STYLES -->
+        <!-- CUSTOM STYLES-->
     <link href="assets/css/custom.css" rel="stylesheet" />
-    <!-- GOOGLE FONTS -->
-    <link href="http://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet" type="text/css" />
+     <!-- GOOGLE FONTS-->
+   <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css' />
 
-    <style>
-        .img-avatar {
-            width: 45px;
-            height: 45px;
-            object-fit: cover;
-            object-position: center center;
-            border-radius: 100%;
-        }
-    </style>
+   <style>
+    .img-avatar{
+        width:45px;
+        height:45px;
+        object-fit:cover;
+        object-position:center center;
+        border-radius:100%;
+    }
+</style>
 </head>
 <body>
     <div id="wrapper">
-        <!-- NAV SIDE -->
-        <?php include 'nav.php'; ?>
-        <!-- /. NAV SIDE -->
-        <div id="page-wrapper">
+        <!-- NAV SIDE  -->
+         <?php include 'nav.php'; ?> 
+        <!-- /. NAV SIDE  -->
+        <div id="page-wrapper" >
             <div id="page-inner">
                 <div class="row">
                     <div class="col-md-9">
-                        <h2>Employees</h2>
+                     <h2>MIS Employees</h2>   
+                       
                     </div>
-                    <div class="card-tools col-md-3">
-                        <a href="add-employee.php" class="btn btn-flat btn-primary" style="float: right;">
-                            <span class="fas fa-plus"></span> Create New
-                        </a>
-                    </div>
+					<div class="card-tools col-md-3">
+			<a href="add-employee.php" class="btn btn-flat btn-primary" style="float: right;"><span class="fas fa-plus"></span>  Create New</a>
+		</div>
                 </div>
-
                  <!-- /. ROW  -->
                  <div class="row">
                  <div class="col-md-12">
@@ -193,20 +185,29 @@ while ($row = $pdoResult->fetch(PDO::FETCH_ASSOC)){
     </div>
              <!-- /. PAGE INNER  -->
             </div>
+         <!-- /. PAGE WRAPPER  -->
         </div>
-    </div>
-
-    <!-- SCRIPTS -->
+     <!-- /. WRAPPER  -->
+    <!-- SCRIPTS -AT THE BOTOM TO REDUCE THE LOAD TIME-->
+  
+    <!-- JQUERY SCRIPTS -->
     <script src="assets/js/jquery-1.10.2.js"></script>
+      <!-- BOOTSTRAP SCRIPTS -->
     <script src="assets/js/bootstrap.min.js"></script>
+    <!-- METISMENU SCRIPTS -->
     <script src="assets/js/jquery.metisMenu.js"></script>
+    <!-- DATA TABLE SCRIPTS -->
     <script src="assets/js/dataTables/jquery.dataTables.js"></script>
     <script src="assets/js/dataTables/dataTables.bootstrap.js"></script>
-    <script>
-        $(document).ready(function () {
-            $('#dataTables-example').dataTable();
-        });
+        <script>
+            $(document).ready(function () {
+                $('#dataTables-example').dataTable();
+            });
     </script>
+      <!-- CUSTOM SCRIPTS -->
     <script src="assets/js/custom.js"></script>
+    
+   
 </body>
 </html>
+
