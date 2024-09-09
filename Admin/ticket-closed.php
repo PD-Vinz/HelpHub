@@ -35,7 +35,14 @@ if (!isset($_SESSION["admin_number"])) {
     } elseif (isset($_GET["id"]) && $_GET["id"] == 2) {
         $ticket_user = "Employee";
     }
-
+$query = $pdoConnect->prepare("SELECT system_name, short_name, system_logo, system_cover FROM settings WHERE id = :id");
+    $query->execute(['id' => 1]);
+    $Datas = $query->fetch(PDO::FETCH_ASSOC);
+    $sysName = $Datas['system_name'] ?? '';
+    $shortName = $Datas['short_name'] ?? '';
+    $systemLogo = $Datas['system_logo'];
+    $systemCover = $Datas['system_cover'];
+    
 try {
 
     $pdoCountQuery = "SELECT * FROM tb_tickets";
@@ -80,7 +87,8 @@ try {
 <head>
       <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>DHVSU MIS - HelpHub</title>
+    <title><?php echo $sysName?></title>
+    <link rel="icon" href="../img/logo.png" type="image/png">
   
 	<!-- BOOTSTRAP STYLES-->
     <link href="assets/css/bootstrap.css" rel="stylesheet" />
@@ -108,15 +116,14 @@ try {
         <!-- /. NAV SIDE  -->
         <div id="page-wrapper" >
             <div id="page-inner">
-                <div class="row">
+                
                     <div class="col-md-12">
                      <h2>Closed Tickets</h2>   
                         <h5>Welcome Jhon Deo , Love to see you back. </h5>
                        
                     </div>
-                </div>
-                 <!-- /. ROW  -->
-                 <div class="row">
+              
+             
                 <div class="col-md-12">
                     <!-- Advanced Tables -->
                     <div class="panel panel-default">
@@ -356,14 +363,13 @@ $pdoExec = $pdoResult->execute();
                                 </table>
                             </div>
                             
-                        </div>
+                       
                     </div>
                     <!--End Advanced Tables -->
                 </div>
             </div>
                  <hr />
-               <!-- /. ROW  -->
-               <div class="row">                     
+                             
                       
   <div class="col-md-4 col-sm-4 col-xs-4">
     <div class="panel panel-default">
@@ -394,8 +400,7 @@ $pdoExec = $pdoResult->execute();
         <div id="morris-donut-chart3" style="height: 250px;"></div>
       </div>
     </div>
-  </div>
-      
+
       
   </div>
     </div>

@@ -29,7 +29,14 @@ if (!isset($_SESSION["admin_number"])) {
         // Handle the case where no results are found
         echo "No student found with the given student number.";
     }
-
+    $query = $pdoConnect->prepare("SELECT system_name, short_name, system_logo, system_cover FROM settings WHERE id = :id");
+    $query->execute(['id' => 1]);
+    $Datas = $query->fetch(PDO::FETCH_ASSOC);
+    $sysName = $Datas['system_name'] ?? '';
+    $shortName = $Datas['short_name'] ?? '';
+    $systemLogo = $Datas['system_logo'];
+    $systemCover = $Datas['system_cover'];
+    
 try {
 
     $pdoCountQuery = "SELECT * FROM tb_tickets";
@@ -75,7 +82,7 @@ try {
 <head>
       <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>DHVSU MIS - HelpHub</title>
+    <title><?php echo $sysName?></title>
     <link rel="icon" href="../img/logo.png" type="image/png">
   
 	<!-- BOOTSTRAP STYLES-->
@@ -104,12 +111,12 @@ try {
         <div id="page-wrapper" >
             <div id="page-inner">
                     <div class="col-md-12">
-                     <h2 style="margin-top:5px;">Admin Dashboard</h2>   
+
+                     <h2>Admin Dashboard</h2>   
+                     <hr>
                     </div>
                         
                  <!-- /. ROW  -->
-                  <hr />
-      
 
 <!--<a href="ticket-pending.php">  -->            
 <div class="col-md-2 col-sm-6 col-xs-6">           
@@ -175,6 +182,7 @@ try {
                  <div class="col-md-8">
                  <div class="wrapper">
 		<div class="container-calendar">
+            <div class="col-md-12">
 			<div id="right">
 				 <h3 id="monthAndYear"></h3>
 				<div class="button-container-calendar">
@@ -222,7 +230,7 @@ try {
 	<script src="./script.js"></script>
   
                  </div>     
-
+                 </div>
 <br>
 <br>
                  <div class="col-md-4">                     

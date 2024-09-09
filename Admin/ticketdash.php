@@ -36,7 +36,14 @@ if (!isset($_SESSION["admin_number"])) {
         $ticket_user = "Employee";
     }
     
-
+    $query = $pdoConnect->prepare("SELECT system_name, short_name, system_logo, system_cover FROM settings WHERE id = :id");
+    $query->execute(['id' => 1]);
+    $Datas = $query->fetch(PDO::FETCH_ASSOC);
+    $sysName = $Datas['system_name'] ?? '';
+    $shortName = $Datas['short_name'] ?? '';
+    $systemLogo = $Datas['system_logo'];
+    $systemCover = $Datas['system_cover'];
+    
 
     try {
 
@@ -88,7 +95,8 @@ if (!isset($_SESSION["admin_number"])) {
 <head>
       <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>DHVSU MIS - HelpHub</title>
+    <title><?php echo $sysName?></title>
+    <link rel="icon" href="../img/logo.png" type="image/png">
   
 	<!-- BOOTSTRAP STYLES-->
     <link href="assets/css/bootstrap.css" rel="stylesheet" />
@@ -111,6 +119,8 @@ if (!isset($_SESSION["admin_number"])) {
                
                     <div class="col-md-12">
                      <h2>All Tickets</h2>   
+
+                     <hr>
                     </div>
                
               
@@ -174,7 +184,7 @@ if (!isset($_SESSION["admin_number"])) {
 		
                  <!-- /. ROW  -->
                  <div class="row">
-                <div class="col-md-12">
+                 <div class="col-md-12"> <div class="col-md-12">
                     <!-- Advanced Tables -->
                     <div class="panel panel-default">
                         
@@ -188,8 +198,8 @@ if (!isset($_SESSION["admin_number"])) {
                                             <th>Employee</th>
                                             <th>Date Submitted</th>
                                             <th>Name</th>
-                                            <th>Duration</th>
                                             <th>Issue</th>
+                                            <th style="width: 25%;">Description</th>
                                       
                                             <th>Details</th>
                                         </tr>
@@ -352,10 +362,10 @@ if (!isset($_SESSION["admin_number"])) {
 
             </div>
         </div>
-        
-    </div>
-</div>
-                              </div>
+        </div>
+        </div>
+        </div>
+        </div>
                   
 <div class="modal fade" id="myModalA">
     <div class="modal-dialog">
@@ -471,9 +481,9 @@ if (!isset($_SESSION["admin_number"])) {
                     <!--End Advanced Tables -->
                 </div>
             </div>
-                 <hr />
+                 
                <!-- /. ROW  -->
-               <div class="row">                     
+               <div class="col-md-12">                     
                       
                <div class="col-md-4 col-sm-4 col-xs-4">                     
            <div class="panel panel-default">

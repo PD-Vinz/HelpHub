@@ -62,7 +62,8 @@ h6 {
     text-align: center;
     margin: 20px auto;
     padding: 30px;
-    border-radius: 50px;
+    padding-top: 10px;
+    border-radius: 25px;
     background-color: #9C0507;
     display: block;
     margin-left: auto;

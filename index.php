@@ -96,6 +96,8 @@ if (isset($_POST['login'])) {
     <div class="login">
     <form method="post">
         <h3>Log In</h3>
+        <hr/>
+        <br>
         <div class="form-group">
             <input type="text" name="username" required placeholder="User ID">
         </div>
