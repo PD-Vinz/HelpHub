@@ -38,16 +38,16 @@ if (!isset($_SESSION["admin_number"])) {
     $systemLogo = $Datas['system_logo'];
     $systemCover = $Datas['system_cover'];
     
-try {
 
-    $pdoCountQuery = "SELECT * FROM tb_tickets";
+   
+}
+
+try {
+     $pdoCountQuery = "SELECT * FROM tb_tickets";
     $pdoResult = $pdoConnect->prepare($pdoCountQuery);
     $pdoResult->execute();
     $allTickets = $pdoResult->rowCount();
 
-}
-
-try {
     $next_id = "";
     // SQL to find the smallest unused 10-digit ID
     $sql = "
