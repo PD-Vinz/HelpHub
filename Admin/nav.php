@@ -76,9 +76,7 @@ try {
 
 <nav class="navbar navbar-default navbar-cls-top " role="navigation" style="margin-bottom: 0">
     <div class="navbar-header">      
-        <a class="navbar-brand" href="index.php"><?php echo $shortName?></a><button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".sidebar-collapse">
-         <div ><i class="fa-solid fa-bars fa-2x"></i></div>
-        </button>
+        <a class="navbar-brand" href="index.php"><?php echo $shortName?></a>
 
     </div>
 <div style="color: white; padding: 15px 50px 5px 50px; float: right;"> Last access : <?php echo date('d F Y')?> &nbsp; 
@@ -103,11 +101,7 @@ try {
    <nav class="navbar-default navbar-side" role="navigation">
     <div class="sidebar-collapse">
         <ul class="nav" id="main-menu">
-        <div class="asidebar-btn">
-                    <span></span>
-                    <span></span>
-                    <span></span>
-                </div>
+    
                 
         <li class="text-center">
             <img src="assets/img/find_user.png" class="user-image img-responsive"/>
@@ -115,13 +109,13 @@ try {
         
             
             <li>
-                <a class="active-menu"  href="index.php"><span class="number"><i class="fa fa-dashboard fa-xl"></i></span class="text"> <span> Dashboard</span></a>
+                <a class="active-menu"  href="index.php"><span class="number fa fa-dashboard fa-xl"></span><span class="text"> Dashboard</span></a>
             </li>
             <li>
             
             <a href="#" class="dropdown-toggle" data-toggle="dropdown" onclick="handleTicketDropdownToggle(event)">
 
-        <i class="fa-solid fa-graduation-cap fa-xl"></i> Student Tickets <span class="fa arrow"></span>
+        <span class="number fa-solid fa-graduation-cap fa-xl"></span><span> Student Tickets <span class="fa arrow"></span></span>
     </a>
     <ul class="nav nav-second-level ticket-dropdown-menu">
               <!--fix the icons-->
@@ -181,23 +175,34 @@ try {
             <li>
                 <a href="feedback-analysis.php" ><i class="fa-regular fa-comment-dots fa-xl"></i>Feedbacks</a>
             </li>
-            <li>
-                <a href="employee.php"><i class="fa-solid fa-user-tie fa-xl"></i> Employees</a>
-            </li>
-            <li>
-            <a href="#" class="dropdown-toggle" data-toggle="dropdown" onclick="handleTicketDropdownToggle(event)">
-        <i class="fa-regular fa-user fa-xl"></i> User list <span class="fa arrow "></span>
-    </a>
+          <li>
+            <a href="#"><i class="fa-regular fa-user fa-xl"></i> User list <span class="fa arrow"></span></a>
     <ul class="nav nav-second-level ticket-dropdown-menu">
               <!--fix the icons-->
-              <li>
-                  <a href="user-student-list.php"> &nbsp;&nbsp;<i class="fa-solid fa-graduation-cap fa-xl" aria-hidden="true"></i>Student's Accounts</a>
+                  <li>
+                      <a href="employee.php">&nbsp;&nbsp;<i class="fa-solid fa-user-tie"></i>MIS Employees</a>
+                  </li>
+                  <li>
+                      <a href="user-student-list.php"> &nbsp;&nbsp;<i class="fa-solid fa-graduation-cap fa-xl" aria-hidden="true"></i>Student's Accounts</a>
                   </li>
                   <li>
                       <a href="user-employee-list.php">&nbsp;&nbsp;<i class="fa-solid fa-briefcase fa-xl" aria-hidden="true"></i>Employee's Account</a>
                   </li>
               </ul>
             </li>
+            <li>
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown" onclick="handleTicketDropdownToggle(event)">
+        <i class="fa fa-paste fa-xl"></i> System Documents <span class="fa arrow"></span>
+    </a>
+    <ul class="nav nav-second-level ticket-dropdown-menu">
+              <!--fix the icons-->
+                  <li>
+                      <a href="templates.php"><i class="fa fa-exclamation-triangle"></i>Issues Templates</a>
+                  </li>
+                  <li>
+                      <a href="templates.php"><i class="fa fa-comment-dots"></i>Response Templates</a>
+                  </li>
+              </ul>
             <li>
                 <a href="settings.php"><i class="fa fa-gear fa-xl"></i>System Settings</a>
             </li>

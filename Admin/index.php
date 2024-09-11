@@ -118,8 +118,10 @@ try {
                         
                  <!-- /. ROW  -->
 
-<!--<a href="ticket-pending.php">  -->            
-<div class="col-md-2 col-sm-6 col-xs-6">           
+<!--<a href="ticket-pending.php">  -->       <div class="col-md-12">
+    
+<div class="col-md-2 col-sm-6 col-xs-6">        
+    
             <div class="panel panel-back noti-box">
                 <span class="icon-box bg-color-yellow set-icon">
                 <i class="fa fa-hourglass-half fa-xs" aria-hidden="true"></i>
@@ -176,7 +178,7 @@ try {
                 </div>
              </div>
 <!--</a>-->
-			</div>  
+			</div>  </div> 
       
                  <!-- /. Calendar  -->   
                  <div class="col-md-8">

@@ -15,7 +15,13 @@ if (!isset($_SESSION["admin_number"])) {
     $pdoResult = $pdoConnect->prepare($pdoUserQuery);
     $pdoResult->bindParam(':number', $id);
     $pdoResult->execute();
-
+    $query = $pdoConnect->prepare("SELECT system_name, short_name, system_logo, system_cover FROM settings WHERE id = :id");
+    $query->execute(['id' => 1]);
+    $Datas = $query->fetch(PDO::FETCH_ASSOC);
+    $sysName = $Datas['system_name'] ?? '';
+    $shortName = $Datas['short_name'] ?? '';
+    $systemLogo = $Datas['system_logo'];
+    $systemCover = $Datas['system_cover'];
     $Data = $pdoResult->fetch(PDO::FETCH_ASSOC);
 
     if ($Data) {
@@ -45,71 +51,22 @@ if (!isset($_SESSION["admin_number"])) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>USER</title>
+    <title><?php echo $sysName?></title>
+    <link rel="icon" href="../img/logo.png" type="image/png">
+  
     <!-- BOOTSTRAP STYLES -->
     <link href="assets/css/bootstrap.css" rel="stylesheet">
   <!-- FONTAWESOME STYLES-->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
     <!-- CUSTOM STYLES -->
-    <link href="../user/assets/css/custom.css" rel="stylesheet">
+    <link href="../admin/assets/css/custom.css" rel="stylesheet">
     <!-- GOOGLE FONTS -->
     <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
     <!-- TABLE STYLES -->
     <link href="assets/css/dataTables.bootstrap.css" rel="stylesheet">
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
 
-    <style>
-        #preview {
-            position: relative;
-            display: inline-block;
-        }
-        #preview-image {
-            display: block;
-            max-width: 100%;
-        }
-        #resize-controls {
-            display: flex;
-            justify-content: space-between;
-            margin-top: 10px;
-        }
-        .resize-handle {
-            width: 10px;
-            height: 10px;
-            background: red;
-            position: absolute;
-        }
-        .resize-handle.bottom-right {
-            bottom: 0;
-            right: 0;
-            cursor: se-resize;
-        }
-        /* Modal styles */
-        .modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.5);
-            align-items: center;
-            justify-content: center;
-            z-index: 1000;
-        }
-        .modal-content {
-            background: white;
-            padding: 20px;
-            border-radius: 8px;
-            position: relative;
-        }
-        .close {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            cursor: pointer;
-            font-size: 20px;
-        }
-    </style>
+ 
 </head>
 
 <body>
@@ -118,19 +75,14 @@ if (!isset($_SESSION["admin_number"])) {
         <!-- /. NAV SIDE -->
         <div id="page-wrapper">
             <div id="page-inner">
-                <div class="row">
+                
                     <div class="col-md-12">
-                        <h2>PROFILE</h2>
+                        <h2>Edit profile</h2>          <hr>
                         <div class="container">
                             <h1 class="text-primary"></h1>
-                            <hr>
+                  
                             <div class="row">
-                                <nav aria-label="breadcrumb" class="main-breadcrumb">
-                                    <ol class="breadcrumb">
-                                      <li class="breadcruMB"><a href="dashboard.php">HOME</a></li>
-                                      <li class="breadcrumb-item active" aria-current="page">PROFILE SETTINGS</li>
-                                    </ol>
-                                  </nav>
+                               
 <form class="form-horizontal" role="form" method="post" action="action\update_profile.php" enctype="multipart/form-data" onsubmit='return confirmSubmit();'>
                                 <!-- left column -->
                                 <div class="avatar" id="avatar">
@@ -199,7 +151,7 @@ function confirmSubmit() {
     return confirm("Please make sure that the data you are submitting are true. Are you sure you want to proceed?");}
 </script>                                    
                                 </div>
-                            </div>
+                           
                         </div>
                         <hr>
                     </div>

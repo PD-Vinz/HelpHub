@@ -150,10 +150,10 @@ try {
                                     <thead>
                                         <tr>
                                             <th style="width:10%">Ticket ID</th>
-                                            <th style="width:13%">Date Submitted</th>
+                                            <th style="width:15%">Date Submitted</th>
                                             <th>Name</th>
                                             <th>Issue(s)</th>
-                                            <th style="width:30%">Descriptions</th>
+                                            <th style="width:25%">Descriptions</th>
                                             <th style="width:8%">Details</th>
                                         </tr>
                                     </thead>
@@ -208,14 +208,13 @@ try {
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
                 	<h4 class="modal-title">Opened Ticket</h4>
-
             </div>
             <div class="container"></div>
             <div class="modal-body">
                                           <div class="row">
                                           <div class="col-md-12">
                                     <h3>Ticket Details</h3>
-                                    <div class="col-md-6"
+                                    <div class="col-md-6">
                                     <form role="form">
                                         <div class="form-group">
                                             <label>Ticket ID‎ ‎ ‎ ‎ ‎ ‎ </label>
@@ -233,19 +232,20 @@ try {
                                              
                                         </div>
 </div>
-<div class="col-md-6"
+<div class="col-md-6">
                                         <div class="form-group">
                                             <label>Screenshot ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ </label>
                                             <a href="view_image.php?id=<?php echo htmlspecialchars($ticket_id); ?>" target="_blank">
                                                 <img src="data:image/jpeg;base64,<?php echo $screenshotBase64; ?>" alt="Screenshot" class="img-fluid">
                                             </a>
                                              
-                                        </div>
-                                        </div>
-                                    </form>
+                                        </div> </form>
+                                        
+                                   
                                 </div>
-                                <hr>
+                               
                                 <div class="col-md-12">
+                                <hr>
                                     <h3>User Information</h3>
                                     <form role="form">
                                         <div class="col-md-6">
@@ -272,7 +272,8 @@ try {
                                              
                                         </div>
                                         </div>
-                                        <div class="col-md-6"> <div class="form-group">
+                                        <div class="col-md-6"> 
+                                        <div class="form-group">
                                             <label>College‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ </label>
                                             <input class="form-control" value="<?php echo htmlspecialchars($department); ?>" disabled/>
                                           
@@ -294,12 +295,14 @@ try {
                                             <label>Campus ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ </label>
                                             <input class="form-control" value="<?php  echo htmlspecialchars($campus) ?>" disabled/>
                                              
-                                        </div></div>
+                                        </div>
+                                    </div>
                                     </form>      
                                 </div>
                                 
                                
                             </div>
+                            
                             <div class="modal-footer col-md-12">	<a href="#" data-dismiss="modal" class="btn">Back</a>
                             <a data-toggle="modal" href="#myModalTransfer<?php echo $ticket_id; ?>" class="btn btn-primary">Transfer</a>
                             <a data-toggle="modal" href="#myModalReturn<?php echo $ticket_id; ?>" class="btn btn-primary">Return</a>

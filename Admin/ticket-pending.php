@@ -148,15 +148,13 @@ $pdoExec = $pdoResult->execute();
 ?>
                                 <table class="table table-striped table-bordered table-hover" id="dataTables-example">
                                     <thead>
-                                        <tr>
-                                            <th>Ticket ID</th> 
-                                            <th>Status</th>
-                                            <th>Date Submitted</th>
+                                    <tr>
+                                            <th style="width:10%">Ticket ID</th>
+                                            <th style="width:15%">Date Submitted</th>
                                             <th>Name</th>
-                                            <th>Issue</th>
-                                            <th>Descriptions</th>
-                                           
-                                            <th>Details</th>
+                                            <th>Issue(s)</th>
+                                            <th style="width:25%">Descriptions</th>
+                                            <th style="width:8%">Details</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -166,8 +164,7 @@ $pdoExec = $pdoResult->execute();
                     $screenshotBase64 = base64_encode($screenshot);
             ?>
                     <tr class='odd gradeX'>
-                    <td><?php echo htmlspecialchars($ticket_id); ?></td>
-                    <td><?php echo htmlspecialchars($status); ?></td>    
+                    <td><?php echo htmlspecialchars($ticket_id); ?></td>  
                     <td><?php echo htmlspecialchars($created_date); ?></td>
                     <td><?php echo htmlspecialchars($full_name); ?></td>
                     <td><?php echo htmlspecialchars($issue); ?></td>
@@ -213,49 +210,55 @@ $pdoExec = $pdoResult->execute();
             </div>
             <div class="container"></div>
             <div class="modal-body">
-                                          <div class="row">
-                                <div class="col-md-6">
+            <div class="row">
+                                          <div class="col-md-12">
+                                    <h3>Ticket Details</h3>
+                                    <div class="col-md-6">
+                                    <form role="form">
+                                        <div class="form-group">
+                                            <label>Ticket ID‎ ‎ ‎ ‎ ‎ ‎ </label>
+                                            <input class="form-control" value="<?php echo htmlspecialchars($ticket_id); ?>" disabled/>
+                                             
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Issue/Problem  ‎ ‎ ‎ ‎ ‎ ‎ ‎ </label>
+                                            <input class="form-control" value="<?php echo htmlspecialchars($issue); ?>" disabled/>
+                                             
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Description ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ </label>
+                                            <textarea class="form-control" disabled style="height:148px; resize:none; overflow:auto;"><?php echo htmlspecialchars($description); ?></textarea>
+                                             
+                                        </div>
+ </div>
+<div class="col-md-6">
+                                        <div class="form-group">
+                                            <label>Screenshot ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ </label>
+                                            <a href="view_image.php?id=<?php echo htmlspecialchars($ticket_id); ?>" target="_blank">
+                                                <img src="data:image/jpeg;base64,<?php echo $screenshotBase64; ?>" alt="Screenshot" class="img-fluid">
+                                            </a>
+                                             
+                                        </div>         </form>
+                                        </div>
+                           
+                               
+                                
+                                <div class="col-md-12">
+                                <hr>
                                     <h3>User Information</h3>
                                     <form role="form">
-                                       
-                                      
+                                        <div class="col-md-6">
                                         <div class="form-group">
                                             <label>Full Name‎ ‎ ‎ ‎ ‎ </label>
                                             <input class="form-control" value="<?php echo htmlspecialchars($full_name); ?>" disabled/>
-                                           
+                                             
                                         </div>
                                       
                                         <div class="form-group">
-                                            <label>User ID‎ ‎ ‎ </label>
+                                            <label>Student ID‎ ‎ ‎ </label>
                                             <input class="form-control" value="<?php echo htmlspecialchars($user_number); ?>" disabled/>
                                           
                                         </div>
-                                       
-                                        <div class="form-group">
-                                            <label>College‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ </label>
-                                            <input class="form-control" value="<?php echo htmlspecialchars($department); ?>" disabled/>
-                                          
-                                        </div>
-                                        <?php if ( $ticket_user === 'Student'): ?>
-                                        <div class="form-group">
-                                            <label>Course‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ </label>
-                                            
-                                            <input class="form-control" value="<?php echo htmlspecialchars($course); ?>" disabled/>
-                                             
-                                        </div>
-                                        
-                                        <div class="form-group">
-                                            <label>Year & Section‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ </label>
-                                            <input class="form-control" value="<?php echo htmlspecialchars($year_section); ?>" disabled/>
-                                             
-                                        </div>
-                                        <?php endif; ?>
-                                        <div class="form-group">
-                                            <label>Campus ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ </label>
-                                            <input class="form-control" value="<?php  echo htmlspecialchars($campus) ?>" disabled/>
-                                             
-                                        </div>
-
                                         <div class="form-group">
                                             <label>Gender ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ </label>
                                             <input class="form-control" value="<?php echo htmlspecialchars($sex) ?>" disabled/>
@@ -267,42 +270,42 @@ $pdoExec = $pdoResult->execute();
                                             <input class="form-control" value="<?php echo htmlspecialchars($age) ?>" disabled/>
                                              
                                         </div>
+                                        </div>
+                                        <div class="col-md-6"> 
+                                        <div class="form-group">
+                                            <label>College‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ </label>
+                                            <input class="form-control" value="<?php echo htmlspecialchars($department); ?>" disabled/>
+                                          
+                                        </div>
+                                       
+                                        <div class="form-group">
+                                            <label>Course‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ </label>
+                                            <input class="form-control" value="<?php echo htmlspecialchars($course); ?>" disabled/>
+                                             
+                                        </div>
+                                        
+                                        <div class="form-group">
+                                            <label>Year & Section ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ </label>
+                                            <input class="form-control" value="<?php echo htmlspecialchars($year_section); ?>" disabled/>
+                                             
+                                        </div>
+                                        
+                                        <div class="form-group">
+                                            <label>Campus ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ </label>
+                                            <input class="form-control" value="<?php  echo htmlspecialchars($campus) ?>" disabled/>
+                                             
+                                        </div>
+                                    </div>
                                     </form>      
                                 </div>
                                 
-                                <div class="col-md-6">
-                                    <h3>Ticket Details</h3>
-                                    
-                                    <form role="form">
-                                    <div class="form-group">
-                                            <label>Ticket ID‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ </label>
-                                            <input class="form-control" value="<?php echo htmlspecialchars($ticket_id); ?>" disabled/>
-                                             
-                                        </div>
-                                    <div class="form-group">
-                                            <label>Issue/Problem  ‎ ‎ ‎ ‎ ‎ ‎ ‎ </label>
-                                            <input class="form-control" value="<?php echo htmlspecialchars($issue); ?>" disabled/>
-                                             
-                                        </div>
-                                        <div class="form-group">
-                                            <label>Description ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ </label>
-                                            <textarea class="form-control" disabled style="height:148px; resize:none; overflow:auto;"><?php echo htmlspecialchars($description); ?></textarea>
-                                            <!--<input class="form-control" value="<?php // echo htmlspecialchars($description); ?>" disabled style=""/> -->
-                                             
-                                        </div>
-                                        <div class="form-group">
-                                            <label>Screenshot ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ </label>
-                                            <a href="view_image.php?id=<?php echo htmlspecialchars($ticket_id); ?>" target="_blank">
-                                                <img src="data:image/jpeg;base64,<?php echo $screenshotBase64; ?>" alt="Screenshot" class="img-fluid">
-                                            </a>
-
-                                        </div>
-                                    </form>
-                                </div>
+                               
                             </div>
-                            <div class="modal-footer">	
-                                <a href="#" data-dismiss="modal" class="btn">Back</a>
-                                <a data-toggle="modal" href="#myModal4<?php echo $ticket_id; ?>" class="btn btn-primary">Open Ticket</a>
+                            
+                            <div class="modal-footer col-md-12">	<a href="#" data-dismiss="modal" class="btn">Back</a>
+                            <a data-toggle="modal" href="#myModalTransfer<?php echo $ticket_id; ?>" class="btn btn-primary">Transfer</a>
+                            <a data-toggle="modal" href="#myModalReturn<?php echo $ticket_id; ?>" class="btn btn-primary">Return</a>
+                            <a data-toggle="modal" href="#myModalClose<?php echo $ticket_id; ?>" class="btn btn-primary">Resolve</a>
 
             </div>
         </div>

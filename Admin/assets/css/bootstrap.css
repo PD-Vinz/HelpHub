@@ -311,6 +311,44 @@ figure {
 img {
   vertical-align: middle;
 }
+@media (min-width: 200px) {
+  .img-fluid {
+      width: 200px;
+  }
+}
+
+@media (min-width: 400px) {
+  .img-fluid {
+      width: 300px;
+  }
+}
+
+@media (min-width: 600px) {
+  .img-fluid {
+      width: 400px;
+  }
+}
+
+@media (min-width: 800px) {
+  .img-fluid {
+      width: 500px;
+  }
+}
+
+@media (min-width: 170px) {
+  .img-fluid {
+      width: 580px;
+  }
+}
+
+@media (min-width: 1700px) {
+  .img-fluid {
+      width: 770px;
+  }
+}
+
+
+
 .img-responsive,
 .thumbnail > img,
 .thumbnail a > img,
@@ -325,8 +363,7 @@ img {
 }
 .img-thumbnail {
   display: inline-block;
-  max-width: 100%;
-  height: auto;
+
   padding: 4px;
   line-height: 1.42857143;
   background-color: #fff;
@@ -337,6 +374,8 @@ img {
 }
 .img-circle {
   border-radius: 50%;
+  width:15pc;
+  height:15pc;
 }
 hr {
   margin-top: 20px;

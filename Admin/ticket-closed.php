@@ -368,41 +368,10 @@ $pdoExec = $pdoResult->execute();
                     <!--End Advanced Tables -->
                 </div>
             </div>
-                 <hr />
+                
                              
                       
-  <div class="col-md-4 col-sm-4 col-xs-4">
-    <div class="panel panel-default">
-      <div class="panel-heading">
-        Age
-      </div>
-      <div class="panel-body">
-        <div id="morris-donut-chart" style="height: 250px;"></div>
-      </div>
-    </div>
-  </div>
-  <div class="col-md-4 col-sm-4 col-xs-4">
-    <div class="panel panel-default">
-      <div class="panel-heading">
-        Gender
-      </div>
-      <div class="panel-body">
-        <div id="morris-donut-chart2" style="height: 250px;"></div>
-      </div>
-    </div>
-  </div>
-  <div class="col-md-4 col-sm-4 col-xs-4">
-    <div class="panel panel-default">
-      <div class="panel-heading">
-        Campus
-      </div>
-      <div class="panel-body">
-        <div id="morris-donut-chart3" style="height: 250px;"></div>
-      </div>
-    </div>
 
-      
-  </div>
     </div>
              <!-- /. PAGE INNER  -->
             </div>
