@@ -1,6 +1,8 @@
 <?php
-include_once("connection/conn.php");
+include_once("../connection/conn.php");
 $pdoConnect = connection();
+
+session_start(); // Start the session
 
 if (isset($_POST['forgotpass'])) {
     try {

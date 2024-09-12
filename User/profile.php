@@ -13,7 +13,7 @@ if (!isset($_SESSION["user_id"])) {
     $identity = $_SESSION["user_identity"];
 
     if ($identity == "Student"){
-        $pdoUserQuery = "SELECT * FROM tb_user WHERE user_id = :number";
+        $pdoUserQuery = "SELECT * FROM student_user WHERE user_id = :number";
         $pdoResult = $pdoConnect->prepare($pdoUserQuery);
         $pdoResult->bindParam(':number', $id);
         $pdoResult->execute();
@@ -133,7 +133,7 @@ if (!isset($_SESSION["user_id"])) {
             <div class="sidebar-collapse">
                 <ul class="nav" id="main-menu">
                     <li class="text-center">
-                        <img src="assets/img/find_user.png" class="user-image img-responsive" />
+                        <img src="data:image/jpeg;base64,<?php echo $P_PBase64?>" class="user-image img-responsive" />
                     </li>
 
 

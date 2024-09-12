@@ -1016,7 +1016,6 @@ body {
     display: block;
   }
   #preview::after {
-    content: "Loading...";
     display: block;
     position: absolute;
     top: 0;

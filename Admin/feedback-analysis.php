@@ -37,11 +37,6 @@ try {
     $pdoResult->execute();
     $allTickets = $pdoResult->rowCount();
 
-    $pdoCountfeedQuery = "SELECT * FROM tb_survey_feedback";
-    $pdoResult = $pdoConnect->prepare($pdoCountfeedQuery);
-    $pdoResult->execute();
-    $allFeedback = $pdoResult->rowCount();
-
     $pdoCountQuery = "SELECT * FROM tb_tickets WHERE status = 'Pending'";
     $pdoResult = $pdoConnect->prepare($pdoCountQuery);
     $pdoResult->execute();
@@ -72,7 +67,7 @@ $stmt = $pdoConnect->prepare($sql);
 $stmt->execute();
 $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-$scounts = [
+$counts = [
     'very satisfied' => 0,
     'satisfied' => 0,
     'neutral' => 0,
@@ -82,14 +77,14 @@ $scounts = [
 
 foreach ($results as $row) {
     $satisfaction = strtolower($row['overall_satisfaction']);
-    if (array_key_exists($satisfaction, $scounts)) {
-        $scounts[$satisfaction]++;
+    if (array_key_exists($satisfaction, $counts)) {
+        $counts[$satisfaction]++;
     }
 }
 
-$totalEntries = array_sum($scounts);
+$totalEntries = array_sum($counts);
 $percentages = [];
-foreach ($scounts as $satisfaction => $count) {
+foreach ($counts as $satisfaction => $count) {
     $percentages[$satisfaction] = ($totalEntries > 0) ? ($count / $totalEntries) * 100 : 0;
 }
 $overallSatisfactionPercentage = $percentages['very satisfied'] + $percentages['satisfied'];
@@ -154,11 +149,11 @@ $overallExpectationPercentage = $expectation_percentages['very satisfied'] + $ex
 
 // Pass data to JavaScript
 $ratingData = [
-    ['label' => 'Very Satisfied', 'count' => $scounts['very satisfied'], 'color' => '#4caf50'],
-    ['label' => 'Satisfied', 'count' => $scounts['satisfied'], 'color' => '#8bc34a'],
-    ['label' => 'Neutral', 'count' => $scounts['neutral'], 'color' => '#ffeb3b'],
-    ['label' => 'Dissatisfied', 'count' => $scounts['dissatisfied'], 'color' => '#ff9800'],
-    ['label' => 'Very Dissatisfied', 'count' => $scounts['very dissatisfied'], 'color' => '#f44336']
+    ['label' => 'Very Satisfied', 'count' => $counts['very satisfied'], 'color' => '#4caf50'],
+    ['label' => 'Satisfied', 'count' => $counts['satisfied'], 'color' => '#8bc34a'],
+    ['label' => 'Neutral', 'count' => $counts['neutral'], 'color' => '#ffeb3b'],
+    ['label' => 'Dissatisfied', 'count' => $counts['dissatisfied'], 'color' => '#ff9800'],
+    ['label' => 'Very Dissatisfied', 'count' => $counts['very dissatisfied'], 'color' => '#f44336']
 ];
 
 $service_ratingData = [
@@ -247,28 +242,13 @@ foreach ($feedbackResults as $row) {
 }
 
 // Calculate the overall percentage of positive responses
-
-// Calculate total positive responses for each metric
-$totalSatisfied = $scounts['very satisfied'] + $scounts['satisfied'];
-$totalServiceSatisfied = $service_counts['very satisfied'] + $service_counts['satisfied'];
-$totalExpectationSatisfied = $expectation_counts['very satisfied'] + $expectation_counts['satisfied'];
-
-// Total positive responses from all metrics
-$totalPositiveResponses = $totalSatisfied + $totalServiceSatisfied + $totalExpectationSatisfied + $totalPositiveResponses;
-
-// Total responses from all metrics
-$totalResponses = $totalEntries + $service_totalEntries + $expectation_totalEntries + $totalResponses;
-
-// Calculate the overall positive percentage
 $overallPositivePercentage = ($totalResponses > 0) ? ($totalPositiveResponses / $totalResponses) * 100 : 0;
 
 // Output the overall positive percentage
 echo "<script>
-    var overallPositivePercentage = " . json_encode($overallPositivePercentage) . ";
-    console.log('Overall Positive Percentage: ' + overallPositivePercentage + '%');
+    var overallPositivePercentage = " . json_encode($overallPositivePercentage) . ";
+    console.log('Overall Positive Percentage: ' + overallPositivePercentage + '%');
 </script>";
-
-
 
 //feedback analysis end
 
@@ -314,17 +294,16 @@ echo "<script>
                      <div class="col-md-4"> 
   <div class="panel panel-default">
     <div class="panel-heading">
-     <h3 style="margin-top: 5px; margin-bottom:0px;"> Customer Satisfaction (CSAT)</h3>
+      Customer Satisfaction (CSAT)
     </div>
     <div class="panel-body" >
       <div class="csat-container">
-      <br> <br> <br>
-        <span class="csat-label">Monthly --% &#9650;</span> 
+        <span class="csat-label">Monthly +43% &#9650;</span> 
         <div class="csat-percentage">
           <?php echo number_format($overallPositivePercentage, 2); ?>%
         </div>
  
-        <h4>Total number of feedbacks:<?php echo number_format($allFeedback); ?></h4> <br> <br> <br> <h4> </h4>
+        <h4>Total number of responses: 9999</h4>
       </div>
     </div>
     
@@ -494,15 +473,15 @@ $pdoExec = $pdoResult->execute();
                     </div>
                 </div>
               
-                <div  class="col-md-12" style="margin-top: 5px; margin-bottom:5px;">
+              
                 <div class="col-md-4"> 
   <div class="panel panel-default">
     <div class="panel-heading">
-    <h3 style="margin-top: 5px; margin-bottom:0px;"> Overall Satisfaction</h3>
+      Customer Satisfaction (CSAT)
     </div>
     <div class="panel-body" id="ratingBarsContainer">
       <div class="csat-container">
-        
+        <span class="csat-label">Monthly +43% &#9650;</span> 
         <div class="csat-percentage">
           <?php echo number_format($overallSatisfactionPercentage, 2); ?>%
         </div>
@@ -517,11 +496,11 @@ $pdoExec = $pdoResult->execute();
 <div class="col-md-4"> 
   <div class="panel panel-default">
     <div class="panel-heading">
-    <h3 style="margin-top: 5px; margin-bottom:0px;"> Service Rating</h3>
+     Service Rating
     </div>
     <div class="panel-body" id="serviceRatingBarsContainer">
       <div class="csat-container">
-     
+        <span class="csat-label">Monthly +43% &#9650;</span> 
         <div class="csat-percentage">
           <?php echo number_format($overallServiceRating, 2); ?>%
         </div>
@@ -535,11 +514,11 @@ $pdoExec = $pdoResult->execute();
 <div class="col-md-4"> 
   <div class="panel panel-default">
     <div class="panel-heading">
-    <h3 style="margin-top: 5px; margin-bottom:0px;">Service Expectations</h3> 
+     Service Expectations
     </div>
     <div class="panel-body" id="expectationRatingBarsContainer">
       <div class="csat-container">
-
+        <span class="csat-label">Monthly +43% &#9650;</span> 
         <div class="csat-percentage">
           <?php echo number_format($overallExpectationPercentage, 2); ?>%
         </div>
@@ -552,27 +531,24 @@ $pdoExec = $pdoResult->execute();
 </div>
 <div class="col-md-4">
     <div class="panel panel-default">
-        <div class="panel-heading"><h3 style="margin-top: 5px; margin-bottom:0px;">Bayes Rating Like</h3></div>
+        <div class="panel-heading">Bayes Rating Like</div>
         <div class="panel-body" id="likeContainer"></div>
     </div>
 </div>
 
 <div class="col-md-4">
     <div class="panel panel-default">
-        <div class="panel-heading"><h3 style="margin-top: 5px; margin-bottom:0px;">Bayes Rating Improve</h3></div>
+        <div class="panel-heading">Bayes Rating Improve</div>
         <div class="panel-body" id="improveContainer"></div>
     </div>
 </div>
 
 <div class="col-md-4">
     <div class="panel panel-default">
-        <div class="panel-heading"><h3 style="margin-top: 5px; margin-bottom:0px;">Bayes Rating Comment</h3></div>
+        <div class="panel-heading">Bayes Rating Comment</div>
         <div class="panel-body" id="commentContainer"></div>
-        
     </div>
 </div>
-</div>
-
 <br>
 
 </div>           
@@ -714,8 +690,6 @@ function createBayesRow(container, label, percentage, color) {
     progressBar.style.backgroundColor = color;
 
     const percentageText = document.createElement('span');
-    percentageText.classList.add('rating-count')
-
     percentageText.textContent = `${percentage.toFixed(2)}%`;
 
     progressContainer.appendChild(progressBar);
