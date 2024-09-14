@@ -93,7 +93,6 @@ try {
                 <div class="row">
                     <div class="col-md-12">
                      <h2>Return Ticket</h2>   
-                        <h5>Welcome Jhon Deo , Love to see you back. </h5>
                     </div>
                 </div>              
                  <!-- /. ROW  -->
@@ -208,8 +207,9 @@ try {
 <br>
                  
         </div>
-    
+        <?php require_once('../footer.php') ?> 
            </div>   
+           
                  <!-- /. ROW  -->
                          
     </div>

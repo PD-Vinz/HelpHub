@@ -451,7 +451,7 @@ h2,
 }
 h3,
 .h3 {
-  font-size: 24px;
+  font-size: 40px;
 }
 h4,
 .h4 {
@@ -1120,7 +1120,7 @@ pre code {
     width: 25%;
   }
   .col-md-2 {
-    width: 16.66666667%;
+    width: 19.66666667%;
   }
   .col-md-1 {
     width: 8.33333333%;

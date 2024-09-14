@@ -96,7 +96,6 @@ try {
                 <div class="row">
                     <div class="col-md-12">
                      <h2>User Profile</h2>   
-                        <h5>Welcome Jhon Deo , Love to see you back. </h5>
                     </div>
                 </div>
                  <!-- /. ROW  -->
@@ -110,16 +109,10 @@ try {
 $pdoQuery = $pdoConnect->prepare("SELECT * FROM mis_employees WHERE admin_number = :id");
 $pdoQuery->execute(array(':id' => $_GET["id"]));
 $pdoResult = $pdoQuery->fetchAll();
-$profile_picture = $pdoResult[0]['profile_picture'];
-$P_PBase64 = base64_encode($profile_picture);
 $pdoConnect = null;
 ?>
-			<form method="post" action="action/mis-employee-update.php" id="manage-user" enctype="multipart/form-data">	
-				<!--<input type="hidden" name="userid" value="<?php //echo $pdoResult[0]['admin_number']; ?>">-->
-                <div class="form-group col-6">
-					<label for="username">User ID</label>
-					<input type="text" name="username" id="username" class="form-control" value="<?php echo $pdoResult[0]['admin_number'];  ?>" readonly>
-				</div>
+			<form action="" id="manage-user">	
+				<input type="hidden" name="id" value="<?php echo $pdoResult[0]['admin_number']; ?>">
 				<div class="form-group col-6">
 					<label for="name">First Name</label>
 					<input type="text" name="firstname" id="firstname" class="form-control" value="<?php echo $pdoResult[0]['f_name'];  ?>" required>
@@ -128,37 +121,16 @@ $pdoConnect = null;
 					<label for="name">Last Name</label>
 					<input type="text" name="lastname" id="lastname" class="form-control" value="<?php echo $pdoResult[0]['l_name'];  ?>" required>
 				</div>
-                <div class="form-group col-6">
-					<label for="name">Birthday</label>
-					<input type="date" name="birthday" id="birthday" class="form-control" value="<?php echo $pdoResult[0]['birthday'];?>">
-				</div>
-                <div class="form-group col-6">
-					<label for="name">Age</label>
-					<input type="text" name="age" id="age" class="form-control" value="<?php echo $pdoResult[0]['age'];  ?>" required autocomplete="off">
-				</div>
-                <div class="form-group col-6">
-					<label for="name">Sex</label>
-					<select name="sex" id="type" class="custom-select form-control" required>
-						<option value="Male" <?php echo ($pdoResult[0]['sex'] == 'Male') ? 'selected' : ''; ?>>Male</option>
-						<option value="Female" <?php echo ($pdoResult[0]['sex'] == 'Female') ? 'selected' : ''; ?>>Female</option>
-					</select>
-				</div>
-                <div class="form-group col-6">
-					<label for="password">Email Address</label>
-					<input type="email" name="email" id="email" class="form-control" value="<?php echo $pdoResult[0]['email_address'];  ?>" autocomplete="off" >
+				<div class="form-group col-6">
+					<label for="username">Username</label>
+					<input type="text" name="username" id="username" class="form-control" value="<?php echo $pdoResult[0]['admin_number'];  ?>" required  autocomplete="off">
 				</div>
 				<div class="form-group col-6">
 					<label for="password">Password</label>
 					<input type="password" name="password" id="password" class="form-control" value="" autocomplete="off" >
+                  
 					<small class="text-info"><i>Leave this blank if you dont want to change the password.</i></small>
                  
-				</div>
-                <div class="form-group col-6">
-					<label for="position">Position</label>
-					<select name="position" id="position" class="custom-select form-control" required>
-						<option value="Director" <?php echo ($pdoResult[0]['user_type'] == 'Director') ? 'selected' : ''; ?>>Director</option>
-						<option value="Staff" <?php echo ($pdoResult[0]['user_type'] == 'Staff') ? 'selected' : ''; ?>>Staff</option>
-					</select>
 				</div>
 				<div class="form-group col-6">
 					<label for="type">User Type</label>
@@ -170,12 +142,12 @@ $pdoConnect = null;
 				<div class="form-group col-6">
 					<label for="" class="control-label">Avatar</label>
 					<div class="custom-file">
-		              <input type="file" class="form-control" id="customFile" name="image" onchange="displayImg(this,$(this))">
+		              <input type="file" class="form-control" id="customFile" name="img" onchange="displayImg(this,$(this))">
 		             
 		            </div>
 				</div>
 				<div class="form-group col-6 d-flex justify-content-center">
-					<img src="data:image/jpeg;base64,<?php echo $P_PBase64?>" alt="" id="cimg" class="img-fluid img-thumbnail">
+					<img src="http://localhost/sms/uploads/avatar-11.png?v=1635920566" alt="" id="cimg" class="img-fluid img-thumbnail">
 				</div>
 			
 		</div>
@@ -274,9 +246,9 @@ $pdoConnect = null;
 .custom-select {
   display: inline-block;
   width: 100%;
-  /*height: calc(2.25rem + 2px);*/
+  height: calc(2.25rem + 2px);
   padding: 0.375rem 1.75rem 0.375rem 0.75rem;
-  /*font-size: 1rem;*/
+  font-size: 1rem;
   font-weight: 400;
   line-height: 1.5;
   color: #495057;
@@ -344,6 +316,7 @@ $pdoConnect = null;
 
 </script>
     </div>
+    <?php require_once('../footer.php') ?> 
              <!-- /. PAGE INNER  -->
             </div>
          <!-- /. PAGE WRAPPER  -->

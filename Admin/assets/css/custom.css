@@ -33,6 +33,7 @@ body {
     background-color:#fff!important;
     padding:10px;
     min-height:1200px;
+    border-radius: 10px;
 }
 
 .text-center {
@@ -68,25 +69,26 @@ p {
 }
    .noti-box {
 min-height: 100px;
-padding: 20px;
+padding: 15px;
+line-height: 50px;
 }
 
     .noti-box .icon-box {
 display: block;
 float: left;
-margin: 0 15px 10px 0;
-width: 70px;
-height: 70px;
-line-height: 75px;
+margin: 0 10px 10px 0;
+width: 45px;
+height: 45px;
+line-height: 50px;
 vertical-align: middle;
 text-align: center;
 font-size: 40px;
 }
 .text-box p{
-    margin: 0 0 3px;
+    margin: 0 0 0px;
 }
 .main-text {
-    font-size: 35px;
+    font-size: 18px;
     font-weight:600;
 }
 .set-icon {
@@ -195,8 +197,8 @@ max-width:170px;
 
 .navbar-cls-top .navbar-brand {
 	color: #fff;
-background: #C90000;
-width: 260px;
+background: #A70303;
+width: 160px;
 text-align: center;
 height: 60px;
 font-size: 30px;
@@ -324,7 +326,7 @@ border:0px solid black;
 
 
 .navbar-default .navbar-toggle:hover, .navbar-default .navbar-toggle:focus {
-background-color: #B40101;
+background-color: #C90000;
 }
 .navbar-default .navbar-toggle {
 border-color: #fff;
@@ -357,7 +359,7 @@ line-height: 1.428571429;
  
  @media(min-width:768px) {
      #page-wrapper{
-               margin: 0 0 0 260px;
+               margin: 0 0 0 210px;
         padding: 15px 30px;
         min-height: 1200px;
 		
@@ -367,7 +369,7 @@ line-height: 1.428571429;
     .navbar-side {
         z-index: 1;
         position: absolute;
-        width: 260px;
+        width: 210px;
     }
 
    .navbar {
@@ -572,7 +574,7 @@ body {
 	/* Sunday */
 }
 
-.date-picker:nth-child(6) {
+.date-picker:nth-child(7) {
 	color: red;
 	/* Friday */
 }
@@ -635,8 +637,8 @@ body {
 }
 
 .rating-label {
-    width: 40px;
-    margin-right: 10px;
+  
+    margin-right: -30px;
 }
 
 .rating-count {
@@ -645,12 +647,14 @@ body {
 
 .progress-container {
     flex-grow: 1; 
+    border-radius: 10px;
 }
 
 .progress-bar {
     width: 22.8%; /* Adjust based on rating */
     background-color: #ff9900;
     height: 20px; /* Adjust height as needed */
+    border-radius: 10px;
 }
 
 .csat-container {
@@ -661,8 +665,8 @@ body {
   
   .csat-label {
     color: #5cb85c; /* Light green color for the label */
-    font-size: 28px;
-    margin-bottom: 10px;
+    font-size: 23px;
+    margin-bottom: 6px;
   }
   
   .csat-percentage {
@@ -682,40 +686,56 @@ body {
   }
   
   .nps-label {
-    width: 100px; /* Adjust width as needed */
+    width: 100px; 
     margin-right: 10px;
   }
   
   .nps-progress-container {
     flex-grow: 1;
+    margin-right: 30px;
+    background-color: #f2f2f2;
+    border-radius: 10px;
+    
   }
   
   .nps-progress-bar {
-    height: 10px; /* Adjust height as needed */
-    border-radius: 5px; /* Add rounded corners */
+    height: 15px;
+    border-radius: 10px;
+    flex: 1;
+    background: #f0f0f0;
+    position: relative;
+
+    
   }
   
   /* Emojis (you might use image icons instead) */
   .nps-emoji {
-    font-size: 24px; /* Adjust size as needed */
-    margin-right: 10px;
+    font-size: 30px; /* Adjust size as needed */
+    margin-right: 20px;
   }
+
+  .nps-rating-count {
+    width: 50px;
+}
 
 
   .rating-bar {
     display: flex;
     align-items: center;
     margin-bottom: 10px;
+    margin-right: 0px;
 }
 .rating-label {
     width: 150px;
+    margin-left: 15px;
 }
 .progress-container {
     flex: 1;
     background: #f0f0f0;
     margin: 0 10px;
     position: relative;
-    height: 20px;
+    height: 15px;
+    
 }
 .progress-bar {
     height: 100%;
@@ -736,143 +756,10 @@ body {
 }
 
 
-
-
-
-.avatar{
-    width:200px;
-    height:200px;
-    }
-
-/*change profile*/
-#upload_label {
-    cursor: pointer;
-    position: absolute;
-    left: 15px;
-    top: 12px;
-    font-size: 14px;
-  }
-  #upload_label:hover,
-  #upload_label:focus {
-    color: #222;
-  }
-  .avatar {
-    width: 150px;
-    height: 150px;
-    border-radius: 100%;
-    border: 2px solid #fff;
-    margin: 10px auto;
-    position: relative;
-    overflow: hidden;
-    z-index: 2;
-    transform: translateZ(0);
-    transition: border-color 200ms;
-  }
-  .avatar--upload-error {
-    border-color: #f73c3c;
-    animation: shakeNo 300ms 1 forwards;
-  }
-  @keyframes shakeNo {
-    20%,
-    60% {
-      transform: translateX(6px);
-    }
-    40%,
-    80% {
-      transform: translate(-6px);
-    }
-  }
-  .avatar:hover .avatar_upload,
-  .avatar--hover .avatar_upload {
-    opacity: 1;
-  }
-  .avatar:hover .upload_label,
-  .avatar--hover .upload_label {
-    display: block;
-  }
-  #preview::after {
-    display: block;
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    text-align: center;
-    z-index: -1;
-    line-height: 150px;
-    color: #999;
-  }
-  .avatar_img--loading {
-    opacity: 0;
-  }
-  .avatar_img {
-    width: 100%;
-    height: auto;
-    animation: inPop 250ms 150ms 1 forwards
-      cubic-bezier(0.175, 0.885, 0.32, 1.175);
-    transform: scale(0);
-    opacity: 0;
-  }
-  @keyframes inPop {
-    100% {
-      transform: scale(1);
-      opacity: 1;
-    }
-  }
-  .avatar_img--rotate90 {
-    transform: rotate(90deg);
-  }
-  .avatar_upload {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    text-align: center;
-    height: 100%;
-    background: #000;
-    background: rgba(0, 0, 0, 0.4);
-    display: flex;
-    align-items: center;
-    opacity: 0;
-    transition: opacity 500ms;
-  }
-  .upload_label {
-    color: #111;
-    text-transform: uppercase;
-    font-size: 14px;
-    cursor: pointer;
-    white-space: nowrap;
-    padding: 4px;
+.event {
+    background-color: #ffd700;
+    padding: 2px;
     border-radius: 3px;
-    min-width: 60px;
-    width: 100%;
-    max-width: 80px;
-    margin: auto;
-    font-weight: 400;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    background: #fff;
-    animation: popDown 300ms 1 forwards;
-    transform: translateY(-10px);
-    opacity: 0;
-    display: none;
-    transition: background 200ms, color 200ms;
-  }
-  @keyframes popDown {
-    100% {
-      transform: translateY(0);
-      opacity: 1;
-    }
-  }
-  .upload_label:hover {
-    color: #fff;
-    background: #222;
-  }
-  #upload {
-    width: 100%;
-    opacity: 0;
-    height: 0;
-    overflow: hidden;
-    display: block;
-    padding: 0;
-    text-align: center;
-  }
+    margin-top: 2px;
+    font-size: 0.8em;
+}

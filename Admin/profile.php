@@ -20,13 +20,16 @@ if (!isset($_SESSION["admin_number"])) {
 
     if ($Data) {
         $Email_Add = $Data['email_address'];
+        $Position = $Data['position'];
         $Name = $Data['f_name'];
         $lname = $Data['l_name'];
         $P_P = $Data['profile_picture'];
         $Sex = $Data['sex'];
         $Age = $Data['age'];
         $Bday = $Data['birthday'];
+        $UserType = $Data['user_type'];
         $U_T = $Data['user_type'];
+
 
     
 
@@ -65,20 +68,15 @@ if (!isset($_SESSION["admin_number"])) {
         <!-- /. NAV SIDE -->
         <div id="page-wrapper">
             <div id="page-inner">
-                <div class="row">
+                < class="row">
                     <div class="col-md-12">
                         <h2>PROFILE</h2>
 
                         <div class="container">
                             <h1 class="text-primary"></h1>
-                            <hr>
+                            
                             <div class="row">
-                                <nav aria-label="breadcrumb" class="main-breadcrumb">
-                                    <ol class="breadcrumb">
-                                      <li class="breadcruMB"><a href="index.php">HOME</a></li>
-                                      <li class="breadcrumb-item active" aria-current="page">PROFILE</li>
-                                    </ol>
-                                  </nav>
+
                                 <!-- left column -->
                                 <div class="col-md-3">
                                     <div class="text-center">
@@ -94,13 +92,13 @@ if (!isset($_SESSION["admin_number"])) {
                                     </div>
                                     <form class="form-horizontal" role="form">
                                         <div class="form-group">
-                                            <label class="col-lg-3 control-label">USER ID</label>
+                                            <label class="col-lg-3 control-label">ADMIN NUMBER</label>
                                             <div class="col-lg-8">
                                                 <input class="form-control" type="text" value="<?php echo $id?>" disabled>
                                             </div>
                                         </div>
                                         <div class="form-group">
-                                            <label class="col-lg-3 control-label">EMAIL ADDRESS</label>
+                                            <label class="col-lg-3 control-label">EMAIL</label>
                                             <div class="col-lg-8">
                                                 <input class="form-control" type="text" value="<?php echo $Email_Add?>" disabled>
                                             </div>
@@ -112,7 +110,7 @@ if (!isset($_SESSION["admin_number"])) {
                                             </div>
                                         </div>
                                         <div class="form-group">
-                                            <label class="col-lg-3 control-label">BIRTHDAY</label>
+                                            <label class="col-lg-3 control-label">BIRTHDATE</label>
                                             <div class="col-lg-8">
                                                 <input class="form-control" type="text" value="<?php echo $formattedDate?>" disabled>
                                             </div>
@@ -126,7 +124,8 @@ if (!isset($_SESSION["admin_number"])) {
                                        
                         
                                         <div class="modal-footer">	
-                                            <a href="edit-profile.php"><button type="button" class="btn btn-primary">UPDATE INFORMATION</button></a>
+                                            <a href="../user/edit-profile-picture.php"><button type="button" class="btn btn-primary">CHANGE PROFILE</button></a>
+                                            <a href="../user/edit-profile.php"><button type="button" class="btn btn-primary">UPDATE INFORMATION</button></a>
                                         </div>
                                         
 
@@ -138,9 +137,9 @@ if (!isset($_SESSION["admin_number"])) {
                                         </div>
                                     </form>
                                 </div>
-                            </div>
-                        </div>
-                        <hr>
+                             </div>
+                            <?php require_once('../footer.php') ?>
+                         </div>
                     </div>
                 </div>
             </div>
@@ -180,6 +179,6 @@ if (!isset($_SESSION["admin_number"])) {
     <script>
       $.widget.bridge('uibutton', $.ui.button)
     </script>
-    <?php require_once('../footer.php') ?>
+
 </body>
 </html>

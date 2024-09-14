@@ -40,20 +40,13 @@ if (isset($_POST['update'])) {
     $NewName = $_POST['name'];
     $NewSex = $_POST['sex'];
     $NewBday = $_POST['bday'];
+    $NewAge = $_POST['age'];
     $NewCampus = $_POST['campus'];
     $NewDept = $_POST['dept'];
     $NewCourse = $_POST['course'];
     $NewYS = $_POST['ys'];
 
-    if ($NewBday) {
-        $birthDate = new DateTime($NewBday);
-        $currentDate = new DateTime();
-        $NewAge = $currentDate->diff($birthDate)->y; // Calculate the age in years
-    } else {
-        $NewAge = 0; // Set to 0 if no birthday is provided
-    }
-
-    $pdoUserQuery = "UPDATE student_user SET name = :name, birthday = :birthday, age = :age, campus = :campus, department = :department, course = :course, year_section = :year_section, profile_picture = :P_P, sex = :sex WHERE user_id = :number";
+    $pdoUserQuery = "UPDATE tb_user SET name = :name, birthday = :birthday, age = :age, campus = :campus, department = :department, course = :course, year_section = :year_section, profile_picture = :P_P, sex = :sex WHERE user_id = :number";
     $pdoResult = $pdoConnect->prepare($pdoUserQuery);
     $pdoResult->bindParam(':number', $id);
     $pdoResult->bindParam(':name', $NewName);
@@ -86,20 +79,13 @@ if (isset($_POST['update'])) {
         $NewName = $_POST['name'];
         $NewSex = $_POST['sex'];
         $NewBday = $_POST['bday'];
+        $NewAge = $_POST['age'];
         $NewCampus = $_POST['campus'];
         $NewDept = $_POST['dept'];
         $NewCourse = $_POST['course'];
         $NewYS = $_POST['ys'];
-
-        if ($NewBday) {
-            $birthDate = new DateTime($NewBday);
-            $currentDate = new DateTime();
-            $NewAge = $currentDate->diff($birthDate)->y; // Calculate the age in years
-        } else {
-            $NewAge = 0; // Set to 0 if no birthday is provided
-        }
     
-        $pdoUserQuery = "UPDATE student_user SET name = :name, birthday = :birthday, age = :age, campus = :campus, department = :department, course = :course, year_section = :year_section, sex = :sex WHERE user_id = :number";
+        $pdoUserQuery = "UPDATE tb_user SET name = :name, birthday = :birthday, age = :age, campus = :campus, department = :department, course = :course, year_section = :year_section, sex = :sex WHERE user_id = :number";
         $pdoResult = $pdoConnect->prepare($pdoUserQuery);
         $pdoResult->bindParam(':number', $id);
         $pdoResult->bindParam(':name', $NewName);
@@ -152,18 +138,11 @@ if (isset($_POST['update'])) {
         $NewName = $_POST['name'];
         $NewSex = $_POST['sex'];
         $NewBday = $_POST['bday'];
+        $NewAge = $_POST['age'];
         $NewCampus = $_POST['campus'];
         $NewDept = $_POST['dept'];
         $NewCourse = $_POST['course'];
         $NewYS = $_POST['ys'];
-
-        if ($NewBday) {
-            $birthDate = new DateTime($NewBday);
-            $currentDate = new DateTime();
-            $NewAge = $currentDate->diff($birthDate)->y; // Calculate the age in years
-        } else {
-            $NewAge = 0; // Set to 0 if no birthday is provided
-        }
     
         $pdoUserQuery = "UPDATE employee_user SET name = :name, birthday = :birthday, age = :age, campus = :campus, department = :department, course = :course, year_section = :year_section, profile_picture = :P_P, sex = :sex WHERE user_id = :number";
         $pdoResult = $pdoConnect->prepare($pdoUserQuery);
@@ -198,16 +177,9 @@ if (isset($_POST['update'])) {
             $NewName = $_POST['name'];
             $NewSex = $_POST['sex'];
             $NewBday = $_POST['bday'];
+            $NewAge = $_POST['age'];
             $NewCampus = $_POST['campus'];
             $NewDept = $_POST['dept'];
-
-            if ($NewBday) {
-                $birthDate = new DateTime($NewBday);
-                $currentDate = new DateTime();
-                $NewAge = $currentDate->diff($birthDate)->y; // Calculate the age in years
-            } else {
-                $NewAge = 0; // Set to 0 if no birthday is provided
-            }
         
             $pdoUserQuery = "UPDATE employee_user SET name = :name, birthday = :birthday, age = :age, campus = :campus, department = :department, sex = :sex WHERE user_id = :number";
             $pdoResult = $pdoConnect->prepare($pdoUserQuery);

@@ -10,56 +10,30 @@ if (!isset($_SESSION["user_id"])) {
     exit(); // Prevent further execution after redirection
 } else {
     $id = $_SESSION["user_id"];
-    $identity = $_SESSION["user_identity"];
 
-    if ($identity == "Student"){
-        $pdoUserQuery = "SELECT * FROM student_user WHERE user_id = :number";
-        $pdoResult = $pdoConnect->prepare($pdoUserQuery);
-        $pdoResult->bindParam(':number', $id);
-        $pdoResult->execute();
-    
-        $Data = $pdoResult->fetch(PDO::FETCH_ASSOC);
-    
-        if ($Data) {
-            $Name = $Data['name'];
-            $Department = $Data['department'];
-            $Y_S = $Data['year_section'];
-            $P_P = $Data['profile_picture'];
-    
-            $nameParts = explode(' ', $Name);
-            $firstName = $nameParts[0];
-    
-            $P_PBase64 = base64_encode($P_P);
-        } else {
-            // Handle the case where no results are found
-            echo "No student found with the given student number.";
-        }
-    } elseif ($identity == "Employee") {
-        $pdoUserQuery = "SELECT * FROM employee_user WHERE user_id = :number";
-        $pdoResult = $pdoConnect->prepare($pdoUserQuery);
-        $pdoResult->bindParam(':number', $id);
-        $pdoResult->execute();
-    
-        $Data = $pdoResult->fetch(PDO::FETCH_ASSOC);
-    
-        if ($Data) {
-            $Name = $Data['name'];
-            $Department = $Data['department'];
-            $Y_S = $Data['year_section'];
-            $P_P = $Data['profile_picture'];
-    
-            $nameParts = explode(' ', $Name);
-            $firstName = $nameParts[0];
-    
-            $P_PBase64 = base64_encode($P_P);
-        } else {
-            // Handle the case where no results are found
-            echo "No student found with the given student number.";
-        }
+    $pdoUserQuery = "SELECT * FROM tb_user WHERE user_id = :number";
+    $pdoResult = $pdoConnect->prepare($pdoUserQuery);
+    $pdoResult->bindParam(':number', $id);
+    $pdoResult->execute();
+
+    $Data = $pdoResult->fetch(PDO::FETCH_ASSOC);
+
+    if ($Data) {
+        $Email_Add = $Data['email_address'];
+        $Name = $Data['name'];
+        $Department = $Data['department'];
+        $Course = $Data['course'];
+        $Y_S = $Data['year_section'];
+        $P_P = $Data['profile_picture'];
+        $Sex = $Data['sex'];
+
+        $nameParts = explode(' ', $Name);
+        $firstName = $nameParts[0];
+    } else {
+        // Handle the case where no results are found
+        echo "No student found with the given student number.";
     }
-
 }
-
 ?>
 
 <!DOCTYPE html>
@@ -152,7 +126,7 @@ if (!isset($_SESSION["user_id"])) {
             <div class="sidebar-collapse">
                 <ul class="nav" id="main-menu">
                     <li class="text-center">
-                        <img src="data:image/jpeg;base64,<?php echo $P_PBase64?>" class="user-image img-responsive" />
+                        <img src="assets/img/find_user.png" class="user-image img-responsive" />
                     </li>
                     <li>
                         <a href="dashboard.php"><i class="bx bxs-dashboard fa" style="font-size:36px;color:rgb(255, 255, 255)"></i> DASHBOARD </a>
@@ -185,9 +159,6 @@ if (!isset($_SESSION["user_id"])) {
                     </li>
                     <li>
                         <a href="downloadableform.php"><i class="fa fa-download" style="font-size:36px"></i> DOWNLOADABLE FORM </a>
-                    </li>
-                    <li>
-                        <a href="about.php"><i class="fa fa-question-circle" style="font-size:36px"></i> ABOUT </a>
                     </li>
                 </ul>
             </div>
@@ -311,6 +282,7 @@ if ($status == 'Completed') {
                 <!-- /. PAGE WRAPPER -->
             </div>
             <!-- /. WRAPPER -->
+            <?php require_once ('../footer.php')?>
         </div>
     <!-- SCRIPTS - AT THE BOTTOM TO REDUCE THE LOAD TIME -->
     <!-- JQUERY SCRIPTS -->
@@ -343,7 +315,7 @@ function fetchData() {
         // Simulate a delay for data fetching (e.g., 2 seconds)
         setTimeout(() => {
             resolve();
-        }, 500);
+        }, 2000);
     });
 }
 

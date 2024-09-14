@@ -13,7 +13,7 @@ if (!isset($_SESSION["user_id"])) {
     $identity = $_SESSION["user_identity"];
 
     if ($identity == "Student"){
-        $pdoUserQuery = "SELECT * FROM student_user WHERE user_id = :number";
+        $pdoUserQuery = "SELECT * FROM tb_user WHERE user_id = :number";
         $pdoResult = $pdoConnect->prepare($pdoUserQuery);
         $pdoResult->bindParam(':number', $id);
         $pdoResult->execute();
@@ -186,7 +186,7 @@ if (!isset($_SESSION["user_id"])) {
             <div class="sidebar-collapse">
                 <ul class="nav" id="main-menu">
                     <li class="text-center">
-                        <img src="data:image/jpeg;base64,<?php echo $P_PBase64?>" class="user-image img-responsive" />
+                        <img src="assets/img/find_user.png" class="user-image img-responsive" />
                     </li>
 
 
@@ -226,9 +226,6 @@ if (!isset($_SESSION["user_id"])) {
                     </li>
                     <li>
                         <a href="downloadableform.php"><i class="fa fa-download" style="font-size:36px"></i> DOWNLOADABLE FORM </a>
-                    </li>
-                    <li>
-                        <a href="about.php"><i class="fa fa-question-circle" style="font-size:36px"></i> ABOUT </a>
                     </li>
                 </ul>
             </div>
@@ -302,7 +299,7 @@ if (!isset($_SESSION["user_id"])) {
                                         <div class="form-group">
                                             <label class="col-lg-3 control-label">AGE</label>
                                             <div class="col-lg-8">
-                                                <input class="form-control" name="age" type="text" value="<?php echo $Age?>" readonly>
+                                                <input class="form-control" name="age" type="text" value="<?php echo $Age?>" required>
                                             </div>
                                         </div>
 
@@ -368,6 +365,7 @@ function confirmSubmit() {
             <!-- /. PAGE INNER -->
         </div>
         <!-- /. PAGE WRAPPER -->
+        <?php require_once ('../footer.php')?>
     </div>
     <!-- /. WRAPPER -->
     <!-- SCRIPTS - AT THE BOTTOM TO REDUCE THE LOAD TIME -->

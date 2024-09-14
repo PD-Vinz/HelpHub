@@ -21,7 +21,7 @@ try {
     $datetime = date('Y-m-d H:i:s');
 
     if ($identity == "Student"){
-        $pdoUserQuery = "SELECT * FROM student_user WHERE user_id = :number";
+        $pdoUserQuery = "SELECT * FROM tb_user WHERE user_id = :number";
         $pdoResult = $pdoConnect->prepare($pdoUserQuery);
         $pdoResult->bindParam(':number', $id);
         $pdoResult->execute();
@@ -169,3 +169,4 @@ try {
 $conn = null;
 }
 ?>
+<?php require_once ('../footer.php')?>

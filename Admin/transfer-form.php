@@ -143,22 +143,22 @@ try {
                                         <div class="col-md-2">
                                         <a data-toggle="modal" href="#myModalTransfer" class="btn btn-primary">Transfer</a>
                                         <div class="modal fade" id="myModalTransfer">
-                <div class="modal-dialog3">
-                    <div class="modal-content">
-                        <div class="modal-header">
+                            <div class="modal-dialog3">
+                            <div class="modal-content">
+                            <div class="modal-header">
                             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
                             <h4 class="modal-title">Transfer Ticket</h4>
 
-                        </div>
-                        <div class="container"></div>
-                        <div class="modal-body">Confirm transfering ticket</div>
-                        <div class="modal-footer">	
+                            </div>
+                            <div class="container"></div>
+                            <div class="modal-body">Confirm transfering ticket</div>
+                            <div class="modal-footer">	
                               <button data-dismiss="modal" class="btn">Cancel</button>
                               <button data-toggle="modal"  class="btn btn-primary">Confirm</button>
                             
-                        </div>
-                    </div>
-                </div>
+                            </div>
+                            </div>
+                            </div>
                             </div>
                                         </div>
 </form> 

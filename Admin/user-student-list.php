@@ -136,7 +136,7 @@ try {
 <?php
 $user = "Student";
 
-$pdoQuery = "SELECT * FROM student_user WHERE user_type = :user ORDER BY user_id ASC";
+$pdoQuery = "SELECT * FROM tb_user WHERE user_type = :user ORDER BY user_id ASC";
 $pdoResult = $pdoConnect->prepare($pdoQuery);
 $pdoResult->bindParam(':user', $user, PDO::PARAM_STR);
 $pdoExec = $pdoResult->execute();
@@ -290,13 +290,14 @@ $pdoExec = $pdoResult->execute();
                     </div>
                     </div>
                     </div>
+                    <?php require_once('../footer.php') ?> 
                     <!--End Advanced Tables -->
                             
                         </div>
                     </div>
                 </div>
             </div>
-                 <hr />
+                
                
     </div>
              <!-- /. PAGE INNER  -->
