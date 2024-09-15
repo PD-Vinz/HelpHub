@@ -22,9 +22,11 @@ if (!isset($_SESSION["admin_number"])) {
         $Name = $Data['f_name'];
         $Position = $Data['position'];
         $U_T = $Data['user_type'];
+       
 
         $nameParts = explode(' ', $Name);
         $firstName = $nameParts[0];
+
     } else {
         // Handle the case where no results are found
         echo "No student found with the given student number.";
@@ -44,9 +46,13 @@ try {
     $Datas = $query->fetch(PDO::FETCH_ASSOC);
     $sysName = $Datas['system_name'] ?? '';
     $shortName = $Datas['short_name'] ?? '';
-    $systemLogo = $Datas['system_logo'];
-    $systemCover = $Datas['system_cover'];
+    $P_P = $Datas['system_logo'];
+    $S_C = $Datas['system_cover'];
     
+    $P_PBase64 = base64_encode($P_P);
+    $S_CBase64 = base64_encode($S_C);
+
+
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $newSysName = $_POST['name'];
         $newShortName = $_POST['short_name'];
@@ -130,9 +136,16 @@ try {
 			<div class="form-group">
     <label for="" class="control-label">System Logo</label><br>
    
-<img src="../img/Logo.png" class="avatar img-circle img-thumbnail" alt="avatar" style="height: 150px; width: 150px; "><br><br>
-<br><br>
- <a href=".."><button type="button" class="btn btn-primary">Choose file</button></a><br>
+ <div class="avatar" id="avatar">
+                                    <div id="preview">
+                                        <img src="data:image/jpeg;base64,<?php echo $P_PBase64?>" id="avatar-image" class="avatar_img" id="" alt="No Image">
+                                    </div>
+                                    <div class="avatar_upload">
+                                        <label class="upload_label">Choose
+                                            <input type="file" id="upload" name="image" accept="image/*">
+                                        </label>
+                                    </div>
+                                  </div>
 </div>  
 </div>
 <div class="col-md-6">
@@ -146,7 +159,7 @@ try {
 </div>
 </form><button type="button" class="btn btn-sm btn-primary" data-toggle="modal" data-target="#confirmsubmit">Update</button>
             
-</div> 
+
  
 
                     </div>
@@ -166,7 +179,7 @@ try {
             <div class="modal-footer">
                 <button type="button" class="btn" data-dismiss="modal">Cancel</button>
                 <!-- Confirm button that submits the form -->
-                <button type="submit" class="btn btn-primary" form="system-frm">Confirm</button>
+                <button type="submit" class="btn btn-primary" name="update" form="system-frm">Confirm</button>
             </div>
         </div>
     </div>
@@ -174,10 +187,12 @@ try {
 
 
                  <br>
-                   
+                 <hr>
+                   <div class="row">
+                   <div class="col-md-12">  <div class="col-md-12"> <h1>Calendar</h1></div>
                     <div class="wrapper col-md-5">
 
-        <h1>Calendar</h1>
+       
             <div>
                  
             <div id="event-section">
@@ -228,19 +243,17 @@ try {
                     </div>
             <!-- /. Calendar  -->   
           
-            <div class="col-md-7">
-            <br><br>
-                 <div class="wrapper">
-		
+            <div class="container-calendar">
+            <div class="col-md-12">
 			<div id="right">
-				
+				 <h3 id="monthAndYear"></h3>
 				<div class="button-container-calendar">
-					<button id="previous" class="col-md-1"
+					<button id="previous"
 							onclick="previous()">
 						‹
 					</button>
-          <h3 id="monthAndYear" class="col-md-10"></h3>
-					<button id="next" class="col-md-1"
+         
+					<button id="next"
 							onclick="next()">
 						›
 					</button>
@@ -249,7 +262,7 @@ try {
 					id="calendar"
 					data-lang="en">
 					<thead id="thead-month"></thead>
-					
+					<!-- Table body for displaying the calendar -->
 					<tbody id="calendar-body"></tbody>
 				</table>
 				<div class="footer-container-calendar">
@@ -273,25 +286,15 @@ try {
 					<select id="year" onchange="jump()"></select>
 				</div>
 			</div>
-		
-	</div>
+		</div>
+	</div></div></div>
+
 	<!-- Include the JavaScript file for the calendar functionality -->
-	<script src="./script.js"></script>
-  
-                 </div>     
-        
+	<script src="./script.js"></script>   
+                 </div> 
     </div>
-    <!-- Include the JavaScript file for the calendar functionality -->
-    <script src="./script.js"></script>
-                    <div class="card-footer">
-			<div class="col-md-12">
-      <hr />
-				<div class="row" style=" padding-left: 15px; padding-bottom: 15px;">
+
           
-				
-				</div>
-			</div>
-		</div> 
                     </div>
                 </div>
                  <!-- /. ROW  -->
@@ -303,7 +306,7 @@ try {
          <!-- /. PAGE WRAPPER  -->
         </div>
      <!-- /. WRAPPER  -->
-    <!-- SCRIPTS -AT THE BOTOM TO REDUCE THE LOAD TIME-->
+    <!-- SCRIPTS -AT THE BOTTOM TO REDUCE THE LOAD TIME-->
     <script>
 	$(function(){
 		$('.select2').select2({
@@ -445,8 +448,13 @@ document.addEventListener("DOMContentLoaded", function() {
         });
     });
 </script>   
-   
-
+<script src="../user/assets/js/custom.js"></script>
+<script type="text/javascript" src="post.js"></script>
+<script>
+        $(document).ready(function () {
+            $('#dataTables-example').dataTable();
+        });
+    </script>
 
 
 </body>

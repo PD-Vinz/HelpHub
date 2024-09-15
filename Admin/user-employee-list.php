@@ -121,18 +121,18 @@ try {
         <!-- /. NAV SIDE  -->
         <div id="page-wrapper" >
             <div id="page-inner">
-                <div class="row">
+              
                     <div class="col-md-9">
                      <h2>User Employee List</h2>
-                     <h5>This page shows all the DHVSU Employee Accounts (except MIS Employees).</h5>             
+                     <!--<h5>This page shows all the DHVSU Employee Accounts (except MIS Employees).</h5>   -->           
                     </div>
                     <div class="card-tools col-md-3">
-			<a href="action\add-employee.php" class="btn btn-flat btn-primary" style="float: right;"><span class="fas fa-plus"></span>  Create New</a>
-		</div>
+			<a href="action\add-employee.php" class="btn btn-flat btn-primary" style="float: right; margin-top:15px;"><span class="fas fa-plus"></span>  Create New</a>
+	
                 </div>
                  <!-- /. ROW  -->
-                 <div class="row">
-                <div class="col-md-12">
+            
+                <div class="col-md-12"><hr>
                     <!-- Advanced Tables -->
                     <div class="panel panel-default">
                         <div class="panel-heading">

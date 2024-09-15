@@ -88,6 +88,7 @@ try {
   
 	<!-- BOOTSTRAP STYLES-->
     <link href="assets/css/bootstrap.css" rel="stylesheet" />
+    <link href="assets/js/DataTables/datatables.min.css" rel="stylesheet">
      <!-- FONTAWESOME STYLES-->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
      <!-- MORRIS CHART STYLES-->
@@ -149,11 +150,12 @@ $pdoExec = $pdoResult->execute();
                                 <table class="table table-striped table-bordered table-hover" id="dataTables-example">
                                     <thead>
                                     <tr>
+                                            <th><i class="fa fa-exclamation-circle" aria-hidden="true"></i></th>
                                             <th style="width:10%">Ticket ID</th>
                                             <th style="width:15%">Date Submitted</th>
-                                            <th>Name</th>
-                                            <th>Issue(s)</th>
-                                            <th style="width:25%">Descriptions</th>
+                                            <th style="width:8%">Name</th>
+                                            <th style="width:8%">Issue(s)</th>
+                                            <th style="width:25%">Description</th>
                                             <th style="width:8%">Details</th>
                                         </tr>
                                     </thead>
@@ -164,6 +166,7 @@ $pdoExec = $pdoResult->execute();
                     $screenshotBase64 = base64_encode($screenshot);
             ?>
                     <tr class='odd gradeX'>
+                    <td><i class="fa fa-exclamation-circle" aria-hidden="true"></i></td>
                     <td><?php echo htmlspecialchars($ticket_id); ?></td>  
                     <td><?php echo htmlspecialchars($created_date); ?></td>
                     <td><?php echo htmlspecialchars($full_name); ?></td>
@@ -187,18 +190,6 @@ $pdoExec = $pdoResult->execute();
                         
                         </td>
 
-                    
-            
-                                    <!--    <tr class="odd gradeX">
-                                            <td>123441</td>
-                                            <td>Jhon Felix Pascual</td>
-                                            <td>dhvsu email</td>
-                                            <td class="center">lorem ipsun adsdhjakjsdkahjdkjhakhsd asdhmn kashdakjdh k akjsdh askjh dkjh</td>
-                                            <td><div class="panel-body-ticket">
-                                            
-                              <button class="btn btn-primary btn-xs" data-toggle="modal" data-target="#myModal">
-                                View Details
-                              </button>-->
 
 <div class="modal fade" id="myModal<?php echo $ticket_id; ?>" >
     <div class="modal-dialog">
@@ -301,16 +292,14 @@ $pdoExec = $pdoResult->execute();
                                 
                                
                             </div>
-                            
-                            <div class="modal-footer col-md-12">	<a href="#" data-dismiss="modal" class="btn">Back</a>
-                            <a data-toggle="modal" href="#myModalTransfer<?php echo $ticket_id; ?>" class="btn btn-primary">Transfer</a>
-                            <a data-toggle="modal" href="#myModalReturn<?php echo $ticket_id; ?>" class="btn btn-primary">Return</a>
-                            <a data-toggle="modal" href="#myModalClose<?php echo $ticket_id; ?>" class="btn btn-primary">Resolve</a>
-
-            </div>
+                        
         </div>
         
-    </div>
+    </div>    <div class="modal-footer">	
+                                <a href="#" data-dismiss="modal" class="btn">Back</a>
+                                <a data-toggle="modal" href="#myModal4<?php echo $ticket_id; ?>" class="btn btn-primary">Open Ticket</a>
+
+            </div>
 </div>
                               </div>
        
@@ -347,7 +336,6 @@ $pdoExec = $pdoResult->execute();
                     <!--End Advanced Tables -->
                 </div>
             </div>
-                 <hr />
                
     </div>
              <!-- /. PAGE INNER  -->
@@ -365,8 +353,45 @@ $pdoExec = $pdoResult->execute();
     <script src="assets/js/jquery.metisMenu.js"></script>
     <!-- DATA TABLE SCRIPTS -->
     <script src="assets/js/dataTables/jquery.dataTables.js"></script>
-    <script src="assets/js/dataTables/dataTables.bootstrap.js"></script>
-        <script>
+    <script src="assets/js/dataTables/datatables.min.js"></script>
+    <script>
+    $(document).ready(function() {
+        $('#dataTables-example').DataTable({
+            "order": [
+                [1, 'asc']],
+
+            "columnDefs": [
+                {   
+                    "width": "10%", 
+                    "targets": [1],  // Target Age column
+                    "visible": true // Hide Age column
+                },
+                {   
+                    "width": "13%", 
+                    "targets": [2],  // Target Age column
+                    "visible": true // Hide Age column
+                },
+                {   
+                    "width": "15%", 
+                    "targets": [3,4],  // Target Age column
+                    "visible": true // Hide Age column
+                }, 
+                {   
+                    "width": "35%", 
+                    "targets": [5],  // Target Age column
+                    "visible": true // Hide Age column
+                    
+                },
+                {   
+                    "width": "5%", 
+                    "targets": [0],  // Target Age column
+                    "visible": true // Hide Age column
+                },
+            ]
+        });
+    });
+</script>
+    <script>
             $(document).ready(function () {
                 $('#dataTables-example').dataTable();
             });
@@ -378,4 +403,3 @@ $pdoExec = $pdoResult->execute();
    
 </body>
 </html>
-

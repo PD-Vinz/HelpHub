@@ -85,6 +85,8 @@ if (!isset($_SESSION["admin_number"])) {
                                
 <form class="form-horizontal" role="form" method="post" action="action\update_profile.php" enctype="multipart/form-data" onsubmit='return confirmSubmit();'>
                                 <!-- left column -->
+
+                                
                                 <div class="avatar" id="avatar">
                                     <div id="preview">
                                         <img src="data:image/jpeg;base64,<?php echo $P_PBase64?>" id="avatar-image" class="avatar_img" id="" alt="No Image">
@@ -95,6 +97,7 @@ if (!isset($_SESSION["admin_number"])) {
                                         </label>
                                     </div>
                                   </div>
+
 
                                   <div class="nickname">
                                     <span id="name" tabindex="4" data-key="1" contenteditable="true" onkeyup="changeAvatarName(event, this.dataset.key, this.textContent)" onblur="changeAvatarName('blur', this.dataset.key, this.textContent)" hidden></span>
@@ -148,7 +151,7 @@ if (!isset($_SESSION["admin_number"])) {
                                     </form>
                                     <script>
 function confirmSubmit() {
-    return confirm("Please make sure that the data you are submitting are true. Are you sure you want to proceed?");}
+    return confirm("Please confirm that the data you are submitting are true and correct.");}
 </script>                                    
                                 </div>
                            

@@ -1,8 +1,8 @@
 /* Set the defaults for DataTables initialisation */
 $.extend(true, $.fn.dataTable.defaults, {
-    "sDom": "<'row'<'col-sm-10'l><'col-sm-2'f>r>" + "t" + "<'row'<'col-sm-12'i><'col-sm-12'p>>",
+    "sDom": "<'row'<'col-sm-6'l><'col-sm-6'f>r>" + "t" + "<'row'<'col-sm-6'i><'col-sm-6'p>>",
     "oLanguage": {
-        "sLengthMenu": "<br>&nbsp;&nbsp;&nbsp;&nbsp;  _MENU_ records per page"
+        "sLengthMenu": "_MENU_ records per page"
     }
 });
 

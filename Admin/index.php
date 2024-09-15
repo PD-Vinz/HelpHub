@@ -1,16 +1,16 @@
 ﻿<?php
 include_once("../connection/conn.php");
 $pdoConnect = connection();
-
+$_SERVER['REQUEST_URI'];
 session_start(); // Start the session
-
+ 
 // Check if the session variable is set
 if (!isset($_SESSION["admin_number"])) {
     header("Location: ../index.php");
     exit(); // Prevent further execution after redirection
 } else {
     $id = $_SESSION["admin_number"];
-
+   
     $pdoUserQuery = "SELECT * FROM mis_employees WHERE admin_number = :number";
     $pdoResult = $pdoConnect->prepare($pdoUserQuery);
     $pdoResult->bindParam(':number', $id);
@@ -69,6 +69,11 @@ try {
     $pdoResult->execute();
     $dueTickets = $pdoResult->rowCount();
 
+    $pdoCountQuery = "SELECT * FROM tb_tickets WHERE status = 'Transferred'";
+    $pdoResult = $pdoConnect->prepare($pdoCountQuery);
+    $pdoResult->execute();
+    $transferredTickets = $pdoResult->rowCount();
+    
 } catch (PDOException $e) {
     echo "Error: " . $e->getMessage();
 }
@@ -110,6 +115,8 @@ try {
         
         <div id="page-wrapper" >
             <div id="page-inner">
+            <div class="row">
+            <div class="col-md-12">
                     <div class="col-md-12">
 
                      <h2>Admin Dashboard</h2>   
@@ -173,7 +180,7 @@ try {
                 <i class="fa fa-upload fa-xs" aria-hidden="true"></i>
                 </span>
                 <div class="text-box" >
-                    <p class="main-text">0 Transferred</p>
+                    <p class="main-text"><?php echo $transferredTickets?> Transferred</p>
                    <!-- <p class="text-muted">Tickets</p> -->
                 </div>
              </div>
@@ -182,7 +189,7 @@ try {
       
                  <!-- /. Calendar  -->   
                  <div class="col-md-8">
-                 <div class="wrapper">
+                 
 		<div class="container-calendar">
             <div class="col-md-12">
 			<div id="right">
@@ -231,7 +238,7 @@ try {
 	<!-- Include the JavaScript file for the calendar functionality -->
 	<script src="./script.js"></script>
   
-                 </div>     
+                      
                  </div>
 <br>
 <br>
@@ -256,8 +263,8 @@ try {
                 
         </div>
     
-        
-           </div>   
+            </div>
+           </div>   </div>
                  <!-- /. ROW  -->
                          
     </div>
@@ -328,8 +335,8 @@ const toggle = () => classList.toggle("active");
 window.addEventListener("click", function (e) {
   if (!btn.contains(e.target)) classList.remove("active");
 });
+
 </script>
-    
-   
+
 </body>
 </html>

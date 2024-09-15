@@ -21,9 +21,9 @@ if (!isset($_SESSION["admin_number"])) {
 
         $nameParts = explode(' ', $Name);
         $firstName = $nameParts[0];
-    } else {
+      } else {
         // Handle the case where no results are found
-        echo "No student found with the given student number.";
+        echo "User not found";
     }
 
 try {

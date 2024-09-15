@@ -22,14 +22,12 @@ div.dataTables_info {
 }
 
 div.dataTables_paginate {
-    text-align: right;
+    float: right;
     margin: 0;
-   
 }
 
 div.dataTables_paginate ul.pagination {
     margin: 2px 0;
-    text-align: right;
     white-space: nowrap;
 }
 

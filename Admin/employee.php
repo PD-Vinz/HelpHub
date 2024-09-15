@@ -109,20 +109,22 @@ try {
         <!-- /. NAV SIDE -->
         <div id="page-wrapper">
             <div id="page-inner">
-                <div class="row">
+                
                     <div class="col-md-9">
                         <h2>Employees</h2>
+                        
                     </div>
                     <div class="card-tools col-md-3">
-                        <a href="add-employee.php" class="btn btn-flat btn-primary" style="float: right;">
+                        <a href="add-employee.php" class="btn btn-flat btn-primary" style="float: right; margin-top:15px;">
                             <span class="fas fa-plus"></span> Create New
                         </a>
+                      
                     </div>
-                </div>
-
+                
+<br>
                  <!-- /. ROW  -->
-                 <div class="row">
-                 <div class="col-md-12">
+                
+                 <div class="col-md-12"><hr> 
 					<div class="panel panel-default">
 	<div class="panel-heading">
 		List of MIS Employees Accounts
@@ -188,7 +190,7 @@ while ($row = $pdoResult->fetch(PDO::FETCH_ASSOC)){
 </div>
 </div>
             </div>
-                 <hr />
+               
                
     </div>
              <!-- /. PAGE INNER  -->

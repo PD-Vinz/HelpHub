@@ -92,6 +92,8 @@ try {
   
 	<!-- BOOTSTRAP STYLES-->
     <link href="assets/css/bootstrap.css" rel="stylesheet" />
+
+    <link href="assets/js/DataTables/datatables.min.css" rel="stylesheet">
      <!-- FONTAWESOME STYLES-->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
      <!-- MORRIS CHART STYLES-->
@@ -119,8 +121,7 @@ try {
                 
                     <div class="col-md-12">
                      <h2>Closed Tickets</h2>   
-                        <h5>Welcome Jhon Deo , Love to see you back. </h5>
-                       
+                     <hr>
                     </div>
               
              
@@ -455,7 +456,7 @@ $pdoExec = $pdoResult->execute();
 <script> </script>
     <!-- DATA TABLE SCRIPTS -->
     <script src="assets/js/dataTables/jquery.dataTables.js"></script>
-    <script src="assets/js/dataTables/dataTables.bootstrap.js"></script>
+    <script src="assets/js/dataTables/dataTables.min.js"></script>
         <script>
             $(document).ready(function () {
                 $('#dataTables-example').dataTable();

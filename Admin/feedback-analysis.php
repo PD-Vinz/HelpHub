@@ -6,7 +6,7 @@ session_start(); // Start the session
 
 // Check if the session variable is set
 if (!isset($_SESSION["admin_number"])) {
-    header("Location: ../index.php");
+    header("Location: ../index");
     exit(); // Prevent further execution after redirection
 } else {
     $id = $_SESSION["admin_number"];
@@ -296,6 +296,7 @@ echo "<script>
       <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title><?php echo $sysName?></title>
+        <link rel="icon" href="../img/logo.png" type="image/png">
   
 	<!-- BOOTSTRAP STYLES-->
     <link href="assets/css/bootstrap.css" rel="stylesheet" />
@@ -317,7 +318,8 @@ echo "<script>
             <div id="page-inner">
                 <div class="row">
                     <div  class="col-md-12">
-                     <h2 >Feedback Analysis</h2>   
+                        <div class="col-md-12">
+                     <h2 >Feedback Analysis</h2>   <hr></div>
                      <div class="col-md-4"> 
   <div class="panel panel-default">
     <div class="panel-heading">

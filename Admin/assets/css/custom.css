@@ -32,7 +32,7 @@ body {
     margin:10px 20px 10px 0px;
     background-color:#fff!important;
     padding:10px;
-    min-height:1200px;
+    min-height:700px;
     border-radius: 10px;
 }
 
@@ -394,7 +394,7 @@ line-height: 1.428571429;
      #page-wrapper{
                margin: 0 0 0 230px;
         padding: 15px 30px;
-        min-height: 1200px;
+        min-height: auto;
 		
     }
 	
@@ -453,9 +453,12 @@ body {
 	max-width: 900px;
 	margin: 0 auto;
 	overflow: auto;
-	box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.2);
+  border-width: 4px;
+	border-radius: 10px;
 	display: flex;
 	justify-content: space-between;
+  outline: 1.5px solid rgb(226, 226, 226);
+  margin-bottom: 15px
 }
 
 /* Event section styling */
