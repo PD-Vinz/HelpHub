@@ -58,7 +58,6 @@ if (!isset($_SESSION["user_id"])) {
         }
     }
 }
-
 ?>
 
 <!DOCTYPE html>
@@ -80,6 +79,20 @@ if (!isset($_SESSION["user_id"])) {
    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
 
    <style>
+        .modal-dialog {
+            max-width: 80%; /* Adjust the modal width as needed */
+        }
+        .modal-content {
+            overflow: hidden; /* Ensure the content doesn't overflow */
+        }
+        .modal-body img {
+            width: 100%;
+            height: auto; /* Maintain aspect ratio */
+            max-height: 70vh; /* Adjust the maximum height as needed */
+            object-fit: contain; /* Ensure the image is contained within the modal */
+        }
+    </style>
+    <style>
     /* Styles for the loading screen */
 #loading-screen {
     position: fixed;
@@ -151,7 +164,7 @@ if (!isset($_SESSION["user_id"])) {
             <div class="sidebar-collapse">
                 <ul class="nav" id="main-menu">
                     <li class="text-center">
-                        <img src="assets/img/find_user.png" class="user-image img-responsive" />
+                        <img src="data:image/jpeg;base64,<?php echo $P_PBase64?>" class="user-image img-responsive" />
                     </li>
 				
 					
@@ -182,11 +195,11 @@ if (!isset($_SESSION["user_id"])) {
                           </li>
 
                           <li>
-                            <a href="ticket-returned.php"><i class="fa fa-undo"></i> RETURNED TICKET</a>
+                           <a href="ticket-returned.php"><i class="fa fa-undo"></i> RETURNED TICKET</a>
                             </li>
 
                             <li>
-                            <a href="ticket-finished.php"><i class="fa fa-check"></i> COMPLETE TICKET</a>
+                                <a href="ticket-finished.php"><i class="fa fa-check"></i> COMPLETE TICKET</a>
                             </li>
                       </ul>
                     </li> 
@@ -196,6 +209,9 @@ if (!isset($_SESSION["user_id"])) {
 						   <li  >
                             <a href="downloadableform.php"><i class="fa fa-download" style="font-size:36px"></i> DOWNLOADABLE FORM </a>
                     </li>	
+                    <li>
+                        <a href="about.php"><i class="fa fa-question-circle" style="font-size:36px"></i> ABOUT </a>
+                    </li>
                 </ul>
                
             </div>
@@ -206,7 +222,7 @@ if (!isset($_SESSION["user_id"])) {
             <div id="page-inner">
                 <div class="row">
                     <div class="col-md-12">
-                     <h2>COMPLETE TICKET</h2>   
+                     <h2>PENDING TICKET</h2>   
                     </div>
                 </div>
                  <!-- /. ROW  -->
@@ -216,95 +232,161 @@ if (!isset($_SESSION["user_id"])) {
                     <div class="panel panel-default">
                         <div class="panel-heading">
                              LAST ACTIVITY
-                        </div>
-                        <div class="panel-body-ticket">
-                            <div class="table-responsive">
+                            </div>
+                            <div class="panel-body-ticket">
+                                <div class="table-responsive">
+                                    
 <?php
-    $status = "Completed";
+$status = "Pending";
 
-    $pdoQuery = "SELECT * FROM tb_tickets WHERE status = :status && user_number = :usernumber";
-    $pdoResult = $pdoConnect->prepare($pdoQuery);
-    $pdoResult->bindParam(':status', $status);
-    $pdoResult->bindParam(':usernumber', $id, PDO::PARAM_STR);
-    $pdoExec = $pdoResult->execute();
+$pdoQuery = "SELECT * FROM tb_tickets WHERE status = :status AND user_number = :usernumber";
+$pdoResult = $pdoConnect->prepare($pdoQuery);
+$pdoResult->bindParam(':status', $status, PDO::PARAM_STR);
+$pdoResult->bindParam(':usernumber', $id, PDO::PARAM_INT);
+$pdoExec = $pdoResult->execute();
 
-?> 
-                                <table class="table table-striped table-bordered table-hover" id="dataTables-example">
-                                    <thead>
-                                        <tr class="btn-primary">
-                                            <th>TICKET ID</th>
-                                            <th>DATE SUBMITTED</th>
-                                            <th>MIS STAFF</th>
-                                            <th>ISSUE</th>
-                                            <th>STATUS</th>
-                                            <th>DETAILS</th>
-                                            <!-- Removed redundant <tr> tag here -->
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                    <?php
+?>
+
+<table class="table table-bordered table-striped table-hover" id="dataTables-example">
+    <thead>
+        <tr class="btn-primary">
+            <th>TICKET ID</th>
+            <th>DATE SUBMITTED</th>
+            <th>ISSUE</th>
+            <th>DESCRIPTION</th>
+            <th>STATUS</th>
+            <th>ACTION</th>
+        </tr>
+    </thead>
+    <tbody>
+        <?php
         while ($row = $pdoResult->fetch(PDO::FETCH_ASSOC)) {
             extract($row);
             $screenshotBase64 = base64_encode($screenshot);
         ?>
-                                        <tr class="odd gradeX">
-                                            <td class="center"><?php echo htmlspecialchars($ticket_id); ?></td>
-                                            <td class="center"><?php echo htmlspecialchars($created_date); ?></td>
-                                            <td class="center"><?php echo htmlspecialchars($employee); ?></td>
-                                            <td class="center"><?php echo htmlspecialchars($issue); ?></td>
-                                            <td class="center"><?php echo htmlspecialchars($status); ?></td>
-                                            <td>
-                                                    <button class="btn btn-primary btn-xs" data-toggle="modal" data-target="#myModal<?php echo $ticket_id; ?>">VIEW TICKET</button>
-                                                    <div class="modal fade" id="myModal<?php echo $ticket_id; ?>">
-                                                        <div class="modal-dialog">
-                                                            <div class="modal-content">
-                                                                <div class="modal-header">
-                                                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                                                                    <img src="assets/pic/head.png" alt="Technical support for DHVSU students">  
-                                                                </div>
-                                                                <div class="modal-body" style="background-color: white;"> 
-                                                                    <h4 class="modal-title">TICKET STATUS</h4>
-                                                                    <div class="letter">
-                                                                        <main>
-                                                                            <style>
-                                                                                p {
-                                                                                    line-height: 1.5; 
-                                                                                    margin-bottom: 20px; 
-                                                                                }
-                                                                        
-                                                                                h1 {
-                                                                                    line-height: 1.2; 
-                                                                                    margin-bottom: 10px; 
-                                                                                }
-                                                                            </style>
-                                                                            <?php echo nl2br(htmlspecialchars($resolution)); ?>
-                                                                        </main>
-                                                                    
-                                                                        <div class="modal-footer">
-                                                                            <a href="survey.php?id=<?php echo $ticket_id; ?>&taken=after"><button type="button" class="btn btn-primary">TAKE SURVEY</button></a>
-                                                                            <a href="ticket-view.php?ticket_id=<?php echo $ticket_id; ?>"><button class='btn btn-primary'>VIEW TICKET</button></a>                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </td>
-                                        </tr>
+        <tr>
+            <td><?php echo htmlspecialchars($ticket_id); ?></td>
+            <td><?php echo htmlspecialchars($created_date); ?></td>
+            <td><?php echo htmlspecialchars($issue); ?></td>
+            <td><?php 
+    $max_length = 25;
+    if (strlen($description) > $max_length) {
+        echo htmlspecialchars(substr($description, 0, $max_length)) . '...';
+    } else {
+        echo htmlspecialchars($description);
+    }
+    ?></td>
+            <td><?php echo htmlspecialchars($status); ?></td>
+            <td>
+<a href="ticket-view.php?ticket_id=<?php echo $ticket_id; ?>">
+<button class='btn btn-primary btn-xs'>
+VIEW TICKET
+</button>
+</a>
+
+                <!-- Button to open the modal popup 
+                <div class='panel-body-ticket'>
+                    <button class='btn btn-primary btn-xs' data-toggle='modal' data-target='#myModal<?php echo $ticket_id; ?>'>
+                        View Ticket
+                    </button>
+                </div>-->
+            </td>
+        </tr>
+
+        <!-- Modal popup code -->
+        <div id='myModal<?php echo $ticket_id; ?>' class='modal fade' role='dialog'>
+            <div class='modal-dialog'>
+                <div class='modal-content'>
+                    <div class='modal-header'>
+                        <button type='button' class='close' data-dismiss='modal'>&times;</button>
+                        <h4 class='modal-title'>Ticket Details</h4>
+                    </div>
+
+                    <!-- Ticket Description -->
+                    <div class='modal-body'>
+                        <h3>Ticket ID: <?php echo htmlspecialchars($ticket_id); ?></h3>
+                        <h3>Created Date: <?php echo htmlspecialchars($created_date); ?></h3>
+                        <h3>Issue: <?php echo htmlspecialchars($issue); ?></h3>
+                        <h3>Description: <?php echo htmlspecialchars($description); ?></h3>
+                        <h3>Status: <?php echo htmlspecialchars($status); ?></h3>
+                        <img src="data:image/jpeg;base64,<?php echo $screenshotBase64; ?>" alt="Screenshot" class="img-fluid">
+                    </div>
+
+                    <!-- History Table -->
+                </div>
+            </div>
+        </div>
+        <!-- End modal popup code -->
+
         <?php
         }
         ?>
-                                    </tbody>
-                                </table>
-                            </div>
+    </tbody>
+</table>
+
+<!--
+<div class="modal fade" id="myModal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                    <img src="assets/pic/head.png" alt="Technical support for DHVSU students">  
+                </div>
+                <div class="modal-body" style="background-color: white;"> 
+                    <h4 class="modal-title">TICKET STATUS</h4>
+                
+                <div class="panel-body-ticket">
+                    <div class="table-responsive">
+                        <table class="table table-striped table-bordered table-hover" id="dataTables-example">
+                            <thead>
+                                <tr>
+                                <th class="center">TIME</th>
+                                <th class="center">DESCRIPTION</th>
+                                <th class="center">STATUS</th>
+                                <th class="center">PRIORITY</th>
+                                <th class="center">MIS STAFF</th>
+                                <th class="center">DURATION</th>
+                                </tr>
+                            </thead>
+
+                            <tr class="odd gradeX">
+                                <td class="center">09:22 AM</td>
+                                <td class="center">YOU MADE A TICKET</td>
+                                <td class="center">PENDING</td>
+                                <td class="center">LOW</td>
+                                <td class="center">NONE</td>
+                                <td class="center">--</td>
+                            </tr>
+                             Additional rows 
+                            <tr class="odd gradeX">
+                                <td class="center">09:26 AM</td>
+                                <td class="center">TICKET RECEIVED</td>
+                                <td class="center">PENDING</td>
+                                <td class="center">LOW</td>
+                                <td class="center">NONE</td>
+                                <td class="center">--</td>
+                            </tr>
+                        </table>
+                    </div> 
+                                            <div class="modal-footer">	<a href="#" data-dismiss="modal" class="btn">Back</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                         </div>
-                        
+                        </div>-->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>           
              <!-- /. PAGE INNER  -->
             </div>
          <!-- /. PAGE WRAPPER  -->
         </div>
     <!-- /. WRAPPER -->
-            </div>
- 
-     <!-- SCRIPTS - AT THE BOTTOM TO REDUCE THE LOAD TIME -->
+    <!-- SCRIPTS - AT THE BOTTOM TO REDUCE THE LOAD TIME -->
     <!-- JQUERY SCRIPTS -->
     <script src="assets/js/jquery-1.10.2.js"></script>
     <!-- BOOTSTRAP SCRIPTS -->
@@ -319,6 +401,9 @@ if (!isset($_SESSION["user_id"])) {
             $('#dataTables-example').dataTable();
         });
     </script>
+    <!-- CUSTOM SCRIPTS -->
+    <script src="assets/js/custom.js"></script>
+
 <!-- Loading Screen -->    
 <script>
     document.addEventListener('DOMContentLoaded', () => {
@@ -341,9 +426,5 @@ function fetchData() {
 
 </script>
 
-
-    
-    <!-- CUSTOM SCRIPTS -->
-    <script src="assets/js/custom.js"></script>
 </body>
 </html>

@@ -13,7 +13,7 @@ if (!isset($_SESSION["user_id"])) {
     $identity = $_SESSION["user_identity"];
 
     if ($identity == "Student"){
-        $pdoUserQuery = "SELECT * FROM tb_user WHERE user_id = :number";
+        $pdoUserQuery = "SELECT * FROM student_user WHERE user_id = :number";
         $pdoResult = $pdoConnect->prepare($pdoUserQuery);
         $pdoResult->bindParam(':number', $id);
         $pdoResult->execute();
@@ -124,7 +124,7 @@ try {
 
 <body>
     <div id="wrapper">
-        <nav class="navbar navbar-default navbar-cls-top " role="navigation" style="margin-bottom:5px">
+        <nav class="navbar navbar-default navbar-cls-top " role="navigation" style="margin-bottom: 0">
             <div class="navbar-header">
                 <button type="button" class="navbar-toggle" data-toggle="collapse"
                     data-target=".sidebar-collapse">
@@ -207,13 +207,12 @@ try {
                 <div class="row">
                     <div class="col-md-12">
                         <h2>DASHBOARD</h2>
-                        <h5>Welcome back, <?php echo $firstName?>!</h5>
                     </div>
                 </div>
                 <!-- /. ROW  -->
                 <hr />
                 <div class="row">
-                    <div class="col-md-2 col-sm-4 col-xs-2">
+                    <div class="col-md-2 col-sm-5 col-xs-3">
                         <div class="panel panel-back noti-box">
                             <span class="icon-box bg-color-red set-icon">
                                 <i class="fa fa-ticket"></i>
@@ -224,9 +223,9 @@ try {
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-2 col-sm-4 col-xs-2">
+                    <div class="col-md-2 col-sm-5 col-xs-3">
                         <div class="panel panel-back noti-box">
-                            <span class="icon-box bg-color-brown set-icon">
+                            <span class="icon-box bg-color-green set-icon">
                                 <i class="fa fa-undo"></i>
                             </span>
                             <div class="text-box">
@@ -235,9 +234,9 @@ try {
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-2 col-sm-4 col-xs-2">
+                    <div class="col-md-2 col-sm-5 col-xs-3">
                         <div class="panel panel-back noti-box">
-                            <span class="icon-box bg-color-purple set-icon">
+                            <span class="icon-box bg-color-blue set-icon">
                                 <i class="fa fa-bell-o"></i>
                             </span>
                             <div class="text-box">
@@ -246,9 +245,9 @@ try {
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-2 col-sm-4 col-xs-2">
+                    <div class="col-md-2 col-sm-5 col-xs-3">
                         <div class="panel panel-back noti-box">
-                            <span class="icon-box bg-color-yellow set-icon">
+                            <span class="icon-box bg-color-brown set-icon">
                                 <i class="fa fa-spinner"></i>
                             </span>
                             <div class="text-box">
@@ -257,9 +256,9 @@ try {
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-2 col-sm-4 col-xs-2">
+                    <div class="col-md-2 col-sm-5 col-xs-3">
                         <div class="panel panel-back noti-box">
-                            <span class="icon-box bg-color-green set-icon">
+                            <span class="icon-box bg-color-black set-icon">
                                 <i class="fa fa-check-circle-o"></i>
                             </span>
                             <div class="text-box">
@@ -333,6 +332,7 @@ try {
     </div>
     <!-- /. WRAPPER  -->
     <?php require_once ('../footer.php')?>
+
 
 
     <!-- SCRIPTS -AT THE BOTTOM TO REDUCE THE LOAD TIME-->

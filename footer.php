@@ -9,7 +9,7 @@
         </div>
       </footer>
     </div>
-    <!-- ./wrappejjjr -->
+    <!-- ./wrapper -->
    
     <!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
     <script>

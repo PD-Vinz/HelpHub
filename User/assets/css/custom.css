@@ -42,7 +42,7 @@ body {
     border:1px solid #f3f3f3;
 }
 h2 {
-    color: rgb(0, 0, 0);
+    color: #db0630;
 }
 h4 {
     padding-top:10px;
@@ -95,11 +95,11 @@ font-size: 40px;
 border-radius: 50px;
 
 }
-    .bg-color-brown {
-background-color: #c05d00;
+    .bg-color-green {
+background-color: #00CE6F;
 color: #fff;
 }
- .bg-color-purple {
+ .bg-color-blue {
 background-color: #A95DF0;
 color: #fff;
 }
@@ -107,12 +107,12 @@ color: #fff;
 background-color: #DB0630;
 color: #fff;
 }
-  .bg-color-yellow {
-background-color: #fffb00e5;
+  .bg-color-brown {
+background-color: #B94A00;
 color: #fff;
 }
-.bg-color-green {
-    background-color: #00CE6F;
+.bg-color-black {
+    background-color: #000000;
     color: #fff;
     }
 
@@ -197,7 +197,7 @@ caption {
 }
 
 #calendar td, #calendar th {
-	padding: 49px;
+	padding: 5px;
 	box-sizing:border-box;
 	border: 1px solid #ccc;
 }
@@ -1016,7 +1016,6 @@ body {
     display: block;
   }
   #preview::after {
-    content: "Loading...";
     display: block;
     position: absolute;
     top: 0;

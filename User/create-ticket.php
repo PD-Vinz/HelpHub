@@ -13,7 +13,7 @@ if (!isset($_SESSION["user_id"])) {
     $identity = $_SESSION["user_identity"];
 
     if ($identity == "Student"){
-        $pdoUserQuery = "SELECT * FROM tb_user WHERE user_id = :number";
+        $pdoUserQuery = "SELECT * FROM student_user WHERE user_id = :number";
         $pdoResult = $pdoConnect->prepare($pdoUserQuery);
         $pdoResult->bindParam(':number', $id);
         $pdoResult->execute();
@@ -204,7 +204,7 @@ input[type="file"]::file-selector-button {
             <div class="sidebar-collapse">
                 <ul class="nav" id="main-menu">
                     <li class="text-center">
-                        <img src="assets/img/find_user.png" class="user-image img-responsive" />
+                        <img src="data:image/jpeg;base64,<?php echo $P_PBase64?>" class="user-image img-responsive" />
                     </li>
 				
 					
@@ -241,13 +241,11 @@ input[type="file"]::file-selector-button {
                             <a href="ticket-finished.php"><i class="fa fa-check"></i> COMPLETE TICKET</a>
                             </li>
                       </ul>
-                    </li> 
-                    <li>
                         <a href="history.php"><i class="bx bx-history" style="font-size:36px"></i> HISTORY </a>
                     </li>
 						   <li  >
                             <a href="downloadableform.php"><i class="fa fa-download" style="font-size:36px"></i> DOWNLOADABLE FORM </a>
-                    </li>
+                    </li>	
                 </ul>
                
             </div>
@@ -273,10 +271,12 @@ input[type="file"]::file-selector-button {
                         <div class="form-group">
                             <label for="category">ISSUE</label>
                             <select id="category" name="category" class="form-control dropdown" required>
+                                <!--
                                 <option value="">SELECT PROBLEM</option>
                                 <option value="DHVSU EMAIL">DHVSU EMAIL</option>
                                 <option value="DHVSU PORTAL">DHVSU PORTAL</option>
                                 <option value="DHVSU SMS">DHVSU SMS</option>
+                                -->
                             </select>
                         </div>
 
@@ -416,7 +416,46 @@ input[type="file"]::file-selector-button {
     });
 
     </script>
+    <script>
+// Function to populate a dropdown from a specified text file
+function populateDropdown(fileName, dropdownId) {
+    // Fetch the text file
+    fetch(fileName)
+        .then(response => response.text())
+        .then(data => {
+            // Split the text data by lines
+            const options = data.split('\n');
 
+            // Get the dropdown element
+            const dropdown = document.getElementById(dropdownId);
+
+            // Clear existing options in the dropdown
+            dropdown.innerHTML = '';
+
+            // Iterate over each line and create an option element
+            options.forEach(option => {
+                if (option.trim() !== '') {  // Ignore empty lines
+                    const opt = document.createElement('option');
+                    opt.value = option.trim();
+                    opt.textContent = option.trim();
+                    dropdown.appendChild(opt);
+                }
+            });
+        })
+        .catch(error => console.error(`Error fetching the text file (${fileName}):`, error));
+}
+// Pass the PHP variable to JavaScript
+var identity = "<?php echo $identity; ?>";
+
+// Now you can make a condition based on the identity value
+if (identity === "Employee") {
+    populateDropdown('../issue-template/employee-issue.txt', 'category');
+} else if (identity === "Student") {
+    populateDropdown('../issue-template/student-issue.txt', 'category');
+}
+// Call the function to populate the dropdowns
+
+    </script>
 </body>
 </html>
 

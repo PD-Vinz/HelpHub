@@ -282,7 +282,6 @@ $pdoExec = $pdoResult->execute();
                     </div>
                 </div>
             </div>
-        
                
     </div>
              <!-- /. PAGE INNER  -->

@@ -105,7 +105,7 @@ try {
             <div id="page-inner">
                 <div class="row">
                     <div class="col-md-9">
-                     <h2>Employees</h2>   
+                     <h2>MIS Employees</h2>   
                        
                     </div>
 					<div class="card-tools col-md-3">
@@ -117,7 +117,7 @@ try {
                  <div class="col-md-12">
 					<div class="panel panel-default">
 	<div class="panel-heading">
-		List of System Users
+		List of MIS Employees Accounts
 		
 	</div>
 	<div class="panel-body-ticket">
@@ -144,14 +144,14 @@ $pdoExec = $pdoResult->execute();
 
 while ($row = $pdoResult->fetch(PDO::FETCH_ASSOC)){
     extract($row);
-    //$screenshotBase64 = base64_encode($screenshot);
+    $P_PBase64 = base64_encode($profile_picture);
     if ($position === 'Super Admin') {
         continue;
     }
 ?>										
 <tr class="odd">
 	<td class="py-1 px-2 align-middle sorting_1 center"><?php echo htmlspecialchars($admin_number); ?></td>
-	<td class="py-1 px-2 align-middle center"><img src="http://localhost/sms/uploads/avatar-11.png?v=1635920566" class="img-avatar img-thumbnail p-0 border-2" alt="user_avatar"></td>
+	<td class="py-1 px-2 align-middle center"><img src="data:image/jpeg;base64,<?php echo $P_PBase64?>" class="img-avatar img-thumbnail p-0 border-2" alt="user_avatar"></td>
 	<td class=""><?php echo htmlspecialchars($f_name); ?></td>
     <td class=" py-1 px-2 align-middle center"><?php echo htmlspecialchars($position); ?></td>
 	<td class=" py-1 px-2 align-middle center"><?php echo htmlspecialchars($user_type); ?></td>
@@ -180,8 +180,7 @@ while ($row = $pdoResult->fetch(PDO::FETCH_ASSOC)){
 </div>
 </div>
 <?php require_once ('../footer.php')?>   
-            </div>
-                 <hr />
+        
                
     </div>
              <!-- /. PAGE INNER  -->
@@ -207,6 +206,8 @@ while ($row = $pdoResult->fetch(PDO::FETCH_ASSOC)){
     </script>
       <!-- CUSTOM SCRIPTS -->
     <script src="assets/js/custom.js"></script>
+    
+   
 </body>
 </html>
 

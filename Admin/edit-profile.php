@@ -51,12 +51,65 @@ if (!isset($_SESSION["admin_number"])) {
   <!-- FONTAWESOME STYLES-->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
     <!-- CUSTOM STYLES -->
-    <link href="assets/css/custom.css" rel="stylesheet">
+    <link href="../user/assets/css/custom.css" rel="stylesheet">
     <!-- GOOGLE FONTS -->
     <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
     <!-- TABLE STYLES -->
     <link href="assets/css/dataTables.bootstrap.css" rel="stylesheet">
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+
+    <style>
+        #preview {
+            position: relative;
+            display: inline-block;
+        }
+        #preview-image {
+            display: block;
+            max-width: 100%;
+        }
+        #resize-controls {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 10px;
+        }
+        .resize-handle {
+            width: 10px;
+            height: 10px;
+            background: red;
+            position: absolute;
+        }
+        .resize-handle.bottom-right {
+            bottom: 0;
+            right: 0;
+            cursor: se-resize;
+        }
+        /* Modal styles */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+        }
+        .modal-content {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            position: relative;
+        }
+        .close {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            cursor: pointer;
+            font-size: 20px;
+        }
+    </style>
 </head>
 
 <body>
@@ -68,65 +121,69 @@ if (!isset($_SESSION["admin_number"])) {
                 <div class="row">
                     <div class="col-md-12">
                         <h2>PROFILE</h2>
-
                         <div class="container">
                             <h1 class="text-primary"></h1>
                             <hr>
                             <div class="row">
                                 <nav aria-label="breadcrumb" class="main-breadcrumb">
                                     <ol class="breadcrumb">
-                                      <li class="breadcruMB"><a href="index.php">HOME</a></li>
-                                      <li class="breadcrumb-item active" aria-current="page">PROFILE</li>
+                                      <li class="breadcruMB"><a href="dashboard.php">HOME</a></li>
+                                      <li class="breadcrumb-item active" aria-current="page">PROFILE SETTINGS</li>
                                     </ol>
                                   </nav>
+<form class="form-horizontal" role="form" method="post" action="action\update_profile.php" enctype="multipart/form-data" onsubmit='return confirmSubmit();'>
                                 <!-- left column -->
-                                <div class="col-md-3">
-                                    <div class="text-center">
-                                        <img src="data:image/jpeg;base64,<?php echo $P_PBase64?>" class="avatar img-circle img-thumbnail" alt="avatar">
-                                        <h3><?php echo $Name,  " ", $lname?></h3>
-                                        <h5 style="text-transform: uppercase;"><?php echo $U_T?></h5>
+                                <div class="avatar" id="avatar">
+                                    <div id="preview">
+                                        <img src="data:image/jpeg;base64,<?php echo $P_PBase64?>" id="avatar-image" class="avatar_img" id="" alt="No Image">
                                     </div>
-                                </div>
-        
+                                    <div class="avatar_upload">
+                                        <label class="upload_label">Choose
+                                            <input type="file" id="upload" name="image" accept="image/*">
+                                        </label>
+                                    </div>
+                                  </div>
+
+                                  <div class="nickname">
+                                    <span id="name" tabindex="4" data-key="1" contenteditable="true" onkeyup="changeAvatarName(event, this.dataset.key, this.textContent)" onblur="changeAvatarName('blur', this.dataset.key, this.textContent)" hidden></span>
+                                  </div>
                                 <!-- edit form column -->
                                 <div class="col-md-9 personal-info">
                                     <div> <h3>PERSONAL INFORMATION</h3>
                                     </div>
-                                    <form class="form-horizontal" role="form">
                                         <div class="form-group">
-                                            <label class="col-lg-3 control-label">USER ID</label>
+                                            <label class="col-lg-3 control-label">FIRST NAME</label>
                                             <div class="col-lg-8">
-                                                <input class="form-control" type="text" value="<?php echo $id?>" disabled>
+                                                <input class="form-control" name="fname" type="text" value="<?php echo $Name?>" required>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-lg-3 control-label">LAST NAME</label>
+                                            <div class="col-lg-8">
+                                                <input class="form-control" name="lname" type="text" value="<?php echo $lname?>" required>
                                             </div>
                                         </div>
                                         <div class="form-group">
                                             <label class="col-lg-3 control-label">EMAIL ADDRESS</label>
                                             <div class="col-lg-8">
-                                                <input class="form-control" type="text" value="<?php echo $Email_Add?>" disabled>
+                                                <input class="form-control" name="emailadd" type="text" value="<?php echo $Email_Add?>" required>
                                             </div>
                                         </div>
                                         <div class="form-group">
                                             <label class="col-lg-3 control-label">GENDER</label>
                                             <div class="col-lg-8">
-                                                <input class="form-control" type="text" value="<?php echo $Sex?>" disabled>
+                                                <input class="form-control" name="sex" type="text" value="<?php echo $Sex?>" required>
                                             </div>
                                         </div>
                                         <div class="form-group">
                                             <label class="col-lg-3 control-label">BIRTHDAY</label>
                                             <div class="col-lg-8">
-                                                <input class="form-control" type="text" value="<?php echo $formattedDate?>" disabled>
+                                                <input class="form-control" name="bday" type="date" value="<?php echo $Bday?>" required>
                                             </div>
                                         </div>
-                                        <div class="form-group">
-                                            <label class="col-lg-3 control-label">AGE</label>
-                                            <div class="col-lg-8">
-                                                <input class="form-control" type="text" value="<?php echo $Age?>" disabled>
-                                            </div>
-                                        </div>
-                                       
-                        
                                         <div class="modal-footer">	
-                                            <a href="edit-profile.php"><button type="button" class="btn btn-primary">UPDATE INFORMATION</button></a>
+                                            <input type="submit" class="btn btn-primary" name="update" value="UPDATE PROFILE"  >
+                                            <button type="button" class="btn btn-primary" onclick="history.back()">BACK</button>
                                         </div>
                                         
 
@@ -137,9 +194,12 @@ if (!isset($_SESSION["admin_number"])) {
                                             </div>
                                         </div>
                                     </form>
+                                    <script>
+function confirmSubmit() {
+    return confirm("Please make sure that the data you are submitting are true. Are you sure you want to proceed?");}
+</script>                                    
                                 </div>
                             </div>
-                            <?php require_once('../footer.php') ?>
                         </div>
                         <hr>
                     </div>
@@ -156,10 +216,8 @@ if (!isset($_SESSION["admin_number"])) {
             </div>
             <!-- /. PAGE INNER -->
         </div>
-        
         <!-- /. PAGE WRAPPER -->
     </div>
-    
     <!-- /. WRAPPER -->
     <!-- SCRIPTS - AT THE BOTTOM TO REDUCE THE LOAD TIME -->
     <!-- JQUERY SCRIPTS -->
@@ -177,10 +235,7 @@ if (!isset($_SESSION["admin_number"])) {
         });
     </script>
     <!-- CUSTOM SCRIPTS -->
-    <script src="assets/js/custom.js"></script>
-    <script>
-      $.widget.bridge('uibutton', $.ui.button)
-    </script>
-    <?php require_once('../footer.php') ?>
+    <script src="../user/assets/js/custom.js"></script>
+    <script type="text/javascript" src="post.js"></script>
 </body>
 </html>

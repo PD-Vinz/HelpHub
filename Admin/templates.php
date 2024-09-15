@@ -42,6 +42,11 @@ try {
     $pdoResult->execute();
     $pendingTickets = $pdoResult->rowCount();
 
+    $pdoCountQuery = "SELECT * FROM tb_tickets WHERE status = 'Processing'";
+    $pdoResult = $pdoConnect->prepare($pdoCountQuery);
+    $pdoResult->execute();
+    $openedTickets = $pdoResult->rowCount();
+
     $pdoCountQuery = "SELECT * FROM tb_tickets WHERE status = 'Returned'";
     $pdoResult = $pdoConnect->prepare($pdoCountQuery);
     $pdoResult->execute();
@@ -68,9 +73,10 @@ try {
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-    <meta charset="utf-8" />
+      <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>DHVSU MIS - HelpHub</title>
+    <link rel="icon" href="../img/logo.png" type="image/png">
   
 	<!-- BOOTSTRAP STYLES-->
     <link href="assets/css/bootstrap.css" rel="stylesheet" />
@@ -84,113 +90,125 @@ try {
    <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css' />
 
    <style>
-        .modal-dialog {
-            max-width: 80%; /* Adjust the modal width as needed */
-        }
-        .modal-content {
-            overflow: hidden; /* Ensure the content doesn't overflow */
-        }
-        .modal-body img {
+    a {
+        color: black;
+    }
+    textarea {
             width: 100%;
-            height: auto; /* Maintain aspect ratio */
-            max-height: 70vh; /* Adjust the maximum height as needed */
-            object-fit: contain; /* Ensure the image is contained within the modal */
+            height: 150px;
+            margin-bottom: 10px;
         }
-    </style>
+        .textarea-container {
+            margin-bottom: 20px;
+        }
+   </style>
 </head>
 <body>
     <div id="wrapper">
-        <!-- NAV SIDE  -->
-         <?php include 'nav.php'; ?> 
+      <!-- NAV SIDE  -->
+    <?php include 'nav.php'; ?>
         <!-- /. NAV SIDE  -->
+        
         <div id="page-wrapper" >
             <div id="page-inner">
                 <div class="row">
                     <div class="col-md-12">
-                     <h2>Activity Logs</h2>   
-                        <h5>Welcome Jhon Deo , Love to see you back. </h5>
-                       
+                     <h2>Issue Template</h2>   
                     </div>
-                </div>
+                </div>              
                  <!-- /. ROW  -->
-                 <div class="row">
-                <div class="col-md-12">
-                    <!-- Advanced Tables -->
-                    <div class="panel panel-default">
-                        <div class="panel-heading">
-                             Advanced Tables
-                        </div>
-                        <div class="panel-body-ticket">
-                            <div class="table-responsive">
+                 <hr />
 
-<?php
-$pdoQuery = "SELECT * FROM mis_history_logs WHERE admin_number = :id";
-$pdoResult = $pdoConnect->prepare($pdoQuery);
-$pdoResult->bindParam(':id', $id, PDO::PARAM_STR);
-$pdoExec = $pdoResult->execute();
-
-?>
-                                <table class="table table-striped table-bordered table-hover" id="dataTables-example">
-                                    <thead>
-                                        <tr>
-                                            <th>Date</th>
-                                            <th>Description</th>  
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-            <?php
-                while ($row = $pdoResult->fetch(PDO::FETCH_ASSOC)){
-                    extract($row);
-            ?>
-                    <tr class='odd gradeX'>
-                    <td><?php echo htmlspecialchars($date_time); ?></td>
-                    <td><?php echo htmlspecialchars($description); ?></td>
-            
-        <?php
-        }
-        ?>
-                                        
-
-                                        
-                                    </tbody>
-                                </table>
-                                </div>
-                            </div>
-                            
-                        </div>
-                    </div>
-                    <!--End Advanced Tables -->
-                </div>
-            </div>
-            <?php require_once('../footer.php') ?>
-               
+    <div class="textarea-container">
+        <h3>Employee Issues</h3>
+        <textarea id="fileContent1"></textarea>
     </div>
+
+    <div class="textarea-container">
+        <h3>Student Issues</h3>
+        <textarea id="fileContent2"></textarea>
+    </div>
+        
+    <button id="saveButton">Save Changes</button>
+    <a href="index.html"><button>Home</button></a>
+
+    <script>
+        // Function to load content from a text file into the corresponding textarea
+        function loadFile(fileName, textareaId) {
+            fetch(fileName)
+                .then(response => response.text())
+                .then(data => {
+                    document.getElementById(textareaId).value = data;
+                })
+                .catch(error => console.error('Error loading the file:', error));
+        }
+
+        // Load both files on page load
+        window.onload = function() {
+            loadFile('../issue-template/employee-issue.txt', 'fileContent1');
+            loadFile('../issue-template/student-issue.txt', 'fileContent2');
+        };
+
+        // Function to save both text files
+        function saveFiles() {
+            const content1 = document.getElementById('fileContent1').value;
+            const content2 = document.getElementById('fileContent2').value;
+            
+            fetch('save.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                },
+                body: 'content1=' + encodeURIComponent(content1) + '&content2=' + encodeURIComponent(content2)
+            })
+            .then(response => {
+                if (response.ok) {
+                    alert('Saved Successfully!');
+                } else {
+                    alert('Failed to Save.');
+                }
+            })
+            .catch(error => console.error('Error saving the files:', error));
+        }
+
+        document.getElementById('saveButton').addEventListener('click', saveFiles);
+    </script>
+                
+                 <!-- /. ROW  -->
+                         
+                </div>
              <!-- /. PAGE INNER  -->
+             <?php require_once('../footer.php') ?>
             </div>
+            
          <!-- /. PAGE WRAPPER  -->
         </div>
      <!-- /. WRAPPER  -->
     <!-- SCRIPTS -AT THE BOTOM TO REDUCE THE LOAD TIME-->
-  
     <!-- JQUERY SCRIPTS -->
     <script src="assets/js/jquery-1.10.2.js"></script>
       <!-- BOOTSTRAP SCRIPTS -->
     <script src="assets/js/bootstrap.min.js"></script>
     <!-- METISMENU SCRIPTS -->
     <script src="assets/js/jquery.metisMenu.js"></script>
-    <!-- DATA TABLE SCRIPTS -->
-    <script src="assets/js/dataTables/jquery.dataTables.js"></script>
-    <script src="assets/js/dataTables/dataTables.bootstrap.js"></script>
-        <script>
-            $(document).ready(function () {
-                $('#dataTables-example').dataTable();
-            });
-    </script>
+     <!-- MORRIS CHART SCRIPTS -->
+     
+    <script src="assets/js/morris/raphael-2.1.0.min.js"></script>
+    <script src="assets/js/morris/morris.js"></script>
       <!-- CUSTOM SCRIPTS -->
     <script src="assets/js/custom.js"></script>
-    
+    <script>let profileDropdownList = document.querySelector(".profile-dropdown-list");
+let btn = document.querySelector(".profile-dropdown-btn");
+
+let classList = profileDropdownList.classList;
+
+const toggle = () => classList.toggle("active");
+
+window.addEventListener("click", function (e) {
+  if (!btn.contains(e.target)) classList.remove("active");
+});
+</script>
     
    
 </body>
 </html>
-

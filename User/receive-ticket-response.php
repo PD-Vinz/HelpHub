@@ -93,8 +93,6 @@
                     <li>
                         <a href="downloadableform.php"><i class="fa fa-download" style="font-size:36px"></i> DOWNLOADABLE FORMS </a>
                     </li>
-
-                    
                 </ul>
             </div>
         </nav>
