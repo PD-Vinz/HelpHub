@@ -269,7 +269,6 @@ try {
                       </div>
                     </div>            
                 </div> 
-                
         </div>
     
         
@@ -279,10 +278,10 @@ try {
     </div>
              <!-- /. PAGE INNER  -->
             </div>
-            
          <!-- /. PAGE WRAPPER  -->
         </div>
      <!-- /. WRAPPER  -->
+     <?php require_once ('../footer.php')?>
     <!-- SCRIPTS -AT THE BOTOM TO REDUCE THE LOAD TIME-->
     <!-- JQUERY SCRIPTS -->
     <script src="assets/js/jquery-1.10.2.js"></script>

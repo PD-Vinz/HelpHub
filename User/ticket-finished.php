@@ -196,9 +196,6 @@ if (!isset($_SESSION["user_id"])) {
 						   <li  >
                             <a href="downloadableform.php"><i class="fa fa-download" style="font-size:36px"></i> DOWNLOADABLE FORM </a>
                     </li>	
-                    <li>
-                        <a href="about.php"><i class="fa fa-question-circle" style="font-size:36px"></i> ABOUT </a>
-                    </li>
                 </ul>
                
             </div>
@@ -292,7 +289,6 @@ if (!isset($_SESSION["user_id"])) {
                                                     </div>
                                                 </td>
                                         </tr>
-        
         <?php
         }
         ?>
@@ -306,7 +302,9 @@ if (!isset($_SESSION["user_id"])) {
          <!-- /. PAGE WRAPPER  -->
         </div>
     <!-- /. WRAPPER -->
-    <!-- SCRIPTS - AT THE BOTTOM TO REDUCE THE LOAD TIME -->
+            </div>
+ 
+     <!-- SCRIPTS - AT THE BOTTOM TO REDUCE THE LOAD TIME -->
     <!-- JQUERY SCRIPTS -->
     <script src="assets/js/jquery-1.10.2.js"></script>
     <!-- BOOTSTRAP SCRIPTS -->
@@ -321,7 +319,6 @@ if (!isset($_SESSION["user_id"])) {
             $('#dataTables-example').dataTable();
         });
     </script>
-
 <!-- Loading Screen -->    
 <script>
     document.addEventListener('DOMContentLoaded', () => {
@@ -343,6 +340,7 @@ function fetchData() {
 }
 
 </script>
+
 
     
     <!-- CUSTOM SCRIPTS -->

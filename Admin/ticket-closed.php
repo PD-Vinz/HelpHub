@@ -392,6 +392,7 @@ $pdoExec = $pdoResult->execute();
       
   </div>
     </div>
+    <?php require_once('../footer.php') ?> 
              <!-- /. PAGE INNER  -->
             </div>
          <!-- /. PAGE WRAPPER  -->

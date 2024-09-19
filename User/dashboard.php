@@ -197,9 +197,6 @@ try {
                     <li>
                         <a href="downloadableform.php"><i class="fa fa-download" style="font-size:36px"></i> DOWNLOADABLE FORMS </a>
                     </li>
-                    <li>
-                      <a href="about.php"><i class="fa fa-question-circle" style="font-size:36px"></i> ABOUT </a>
-                  </li>
                 </ul>
             </div>
         </nav>
@@ -210,13 +207,12 @@ try {
                 <div class="row">
                     <div class="col-md-12">
                         <h2>DASHBOARD</h2>
-                        <h5>Welcome back, <?php echo $firstName?>!</h5>
                     </div>
                 </div>
                 <!-- /. ROW  -->
                 <hr />
                 <div class="row">
-                    <div class="col-md-4 col-sm-6 col-xs-6">
+                    <div class="col-md-2 col-sm-5 col-xs-3">
                         <div class="panel panel-back noti-box">
                             <span class="icon-box bg-color-red set-icon">
                                 <i class="fa fa-ticket"></i>
@@ -227,7 +223,7 @@ try {
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-4 col-sm-6 col-xs-6">
+                    <div class="col-md-2 col-sm-5 col-xs-3">
                         <div class="panel panel-back noti-box">
                             <span class="icon-box bg-color-green set-icon">
                                 <i class="fa fa-undo"></i>
@@ -238,7 +234,7 @@ try {
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-4 col-sm-6 col-xs-6">
+                    <div class="col-md-2 col-sm-5 col-xs-3">
                         <div class="panel panel-back noti-box">
                             <span class="icon-box bg-color-blue set-icon">
                                 <i class="fa fa-bell-o"></i>
@@ -249,7 +245,7 @@ try {
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-6 col-sm-6 col-xs-6">
+                    <div class="col-md-2 col-sm-5 col-xs-3">
                         <div class="panel panel-back noti-box">
                             <span class="icon-box bg-color-brown set-icon">
                                 <i class="fa fa-spinner"></i>
@@ -260,7 +256,7 @@ try {
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-6 col-sm-6 col-xs-6">
+                    <div class="col-md-2 col-sm-5 col-xs-3">
                         <div class="panel panel-back noti-box">
                             <span class="icon-box bg-color-black set-icon">
                                 <i class="fa fa-check-circle-o"></i>
@@ -334,9 +330,11 @@ try {
         </div>
         <!-- /. PAGE WRAPPER  -->
     </div>
-
-
     <!-- /. WRAPPER  -->
+    <?php require_once ('../footer.php')?>
+
+
+
     <!-- SCRIPTS -AT THE BOTTOM TO REDUCE THE LOAD TIME-->
     <!-- JQUERY SCRIPTS -->
     <script src="assets/js/jquery-1.10.2.js"></script>

@@ -178,6 +178,7 @@ try {
                          
                 </div>
              <!-- /. PAGE INNER  -->
+             <?php require_once('../footer.php') ?>
             </div>
             
          <!-- /. PAGE WRAPPER  -->

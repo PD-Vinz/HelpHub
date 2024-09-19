@@ -162,7 +162,7 @@ $pdoExec = $pdoResult->execute();
                     <!--End Advanced Tables -->
                 </div>
             </div>
-                 <hr />
+            <?php require_once('../footer.php') ?>
                
     </div>
              <!-- /. PAGE INNER  -->

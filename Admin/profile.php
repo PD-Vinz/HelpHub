@@ -139,6 +139,7 @@ if (!isset($_SESSION["admin_number"])) {
                                     </form>
                                 </div>
                             </div>
+                            <?php require_once('../footer.php') ?>
                         </div>
                         <hr>
                     </div>

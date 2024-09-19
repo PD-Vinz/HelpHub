@@ -208,7 +208,7 @@ try {
 <br>
                  
         </div>
-    
+        <?php require_once('../footer.php') ?> 
            </div>   
                  <!-- /. ROW  -->
                          

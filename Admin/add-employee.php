@@ -362,6 +362,7 @@ function displayImg(input) {
 
 </script>
     </div>
+    <?php require_once('../footer.php') ?> 
              <!-- /. PAGE INNER  -->
             </div>
          <!-- /. PAGE WRAPPER  -->

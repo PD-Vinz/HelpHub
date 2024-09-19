@@ -155,9 +155,6 @@ if (!isset($_SESSION["user_id"])) {
                     <li>
                         <a class="active-menu" href="downloadableform.php"><i class="fa fa-download" style="font-size:36px"></i> DOWNLOADABLE FORMS </a>
                     </li>
-                    <li>
-                        <a href="about.php"><i class="fa fa-question-circle" style="font-size:36px"></i> ABOUT </a>
-                    </li>
                 </ul>
             </div>
         </nav>
@@ -324,6 +321,7 @@ if (!isset($_SESSION["user_id"])) {
                 <!-- /. ROW  -->
             </div>
             <!-- /. PAGE INNER  -->
+            <?php require_once ('../footer.php')?>
         </div>
         <!-- /. PAGE WRAPPER  -->
     </div>

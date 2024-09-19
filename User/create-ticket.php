@@ -241,16 +241,11 @@ input[type="file"]::file-selector-button {
                             <a href="ticket-finished.php"><i class="fa fa-check"></i> COMPLETE TICKET</a>
                             </li>
                       </ul>
-                    </li> 
-                    <li>
                         <a href="history.php"><i class="bx bx-history" style="font-size:36px"></i> HISTORY </a>
                     </li>
 						   <li  >
                             <a href="downloadableform.php"><i class="fa fa-download" style="font-size:36px"></i> DOWNLOADABLE FORM </a>
                     </li>	
-                    <li>
-                        <a href="about.php"><i class="fa fa-question-circle" style="font-size:36px"></i> ABOUT </a>
-                    </li>
                 </ul>
                
             </div>
@@ -338,6 +333,8 @@ input[type="file"]::file-selector-button {
          <!-- /. PAGE WRAPPER  -->
         </div>
     <!-- /. WRAPPER -->
+    <?php require_once ('../footer.php')?>
+
     <!-- SCRIPTS - AT THE BOTTOM TO REDUCE THE LOAD TIME -->
     <!-- JQUERY SCRIPTS -->
     <script src="assets/js/jquery-1.10.2.js"></script>
