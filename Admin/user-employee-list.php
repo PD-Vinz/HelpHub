@@ -166,7 +166,6 @@ $pdoExec = $pdoResult->execute();
                                     <thead>
                                         <tr>
                                             <th>User Id</th>
-                                            <th>Avatar</th>
                                             <th>Full Name</th>
                                             <th>Campus</th>
                                             <th>Year & Section</th>
@@ -184,7 +183,7 @@ $pdoExec = $pdoResult->execute();
             ?>
                     <tr class='odd gradeX'>
                     <td><?php echo htmlspecialchars($user_id); ?></td>
-                    <td class="py-1 px-2 align-middle"><img src="data:image/jpeg;base64,<?php echo $P_PBase64?>" class="img-avatar img-thumbnail p-0 border-2" alt="user_avatar"></td>
+                  
                     <td><?php echo htmlspecialchars($name); ?></td>
                     <td><?php echo htmlspecialchars($campus); ?></td>
                     <td><?php echo htmlspecialchars($year_section); ?></td>
