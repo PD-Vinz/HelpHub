@@ -29,6 +29,7 @@ if (!isset($_SESSION["admin_number"])) {
         // Handle the case where no results are found
         echo "No student found with the given student number.";
     }
+
     // for displaying system details
     $query = $pdoConnect->prepare("SELECT system_name, short_name, system_logo, system_cover FROM settings WHERE id = :id");
     $query->execute(['id' => 1]);
@@ -45,6 +46,7 @@ if (!isset($_SESSION["admin_number"])) {
      }
  // for displaying system details //end
     
+
 try {
 
     $pdoCountQuery = "SELECT * FROM tb_tickets";
@@ -85,7 +87,7 @@ try {
 <head>
       <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title><?php echo $sysName?></title>
+    <title>DHVSU MIS - HelpHub</title>
   
 	<!-- BOOTSTRAP STYLES-->
     <link href="assets/css/bootstrap.css" rel="stylesheet" />
@@ -156,7 +158,6 @@ try {
                                         <div class="col-md-9">
                                         </div>
                                         <div class="col-md-2">
-                                        <a href="javascript:history.back()" data-dismiss="modal" class="btn">Cancel</a>
                                         <a data-toggle="modal" href="#myModalTransfer" class="btn btn-primary">Transfer</a>
                                         <div class="modal fade" id="myModalTransfer">
                 <div class="modal-dialog3">

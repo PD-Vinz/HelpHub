@@ -93,11 +93,6 @@
                     <li>
                         <a href="downloadableform.php"><i class="fa fa-download" style="font-size:36px"></i> DOWNLOADABLE FORMS </a>
                     </li>
-                    <li>
-                        <a href="about.php"><i class="fa fa-question-circle" style="font-size:36px"></i> ABOUT </a>
-                    </li>
-
-                    
                 </ul>
             </div>
         </nav>
@@ -179,6 +174,7 @@
             <!-- /. PAGE INNER  -->
         </div>
         <!-- /. PAGE WRAPPER  -->
+        <?php require_once ('../footer.php')?>
     </div>
     <!-- /. WRAPPER  -->
     <!-- SCRIPTS -AT THE BOTTOM TO REDUCE THE LOAD TIME-->

@@ -30,6 +30,7 @@ if (!isset($_SESSION["admin_number"])) {
         echo "No student found with the given student number.";
     }
 
+
     // for displaying system details
     $query = $pdoConnect->prepare("SELECT system_name, short_name, system_logo, system_cover FROM settings WHERE id = :id");
     $query->execute(['id' => 1]);
@@ -47,15 +48,9 @@ if (!isset($_SESSION["admin_number"])) {
  // for displaying system details //end
 
 
-   
 }
 
 try {
-     $pdoCountQuery = "SELECT * FROM tb_tickets";
-    $pdoResult = $pdoConnect->prepare($pdoCountQuery);
-    $pdoResult->execute();
-    $allTickets = $pdoResult->rowCount();
-
     $next_id = "";
     // SQL to find the smallest unused 10-digit ID
     $sql = "
@@ -89,7 +84,7 @@ try {
 <head>
       <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title><?php echo $sysName?></title>
+    <title>DHVSU MIS - HelpHub</title>
   
 	<!-- BOOTSTRAP STYLES-->
     <link href="assets/css/bootstrap.css" rel="stylesheet" />
@@ -384,6 +379,7 @@ function displayImg(input) {
 
 </script>
     </div>
+    <?php require_once('../footer.php') ?> 
              <!-- /. PAGE INNER  -->
             </div>
          <!-- /. PAGE WRAPPER  -->

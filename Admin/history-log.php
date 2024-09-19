@@ -44,6 +44,7 @@ if (!isset($_SESSION["admin_number"])) {
           $S_LBase64 = 'data:' . $imageType . ';base64,' . $base64Image;
       }
   // for displaying system details //end
+
 try {
 
     $pdoCountQuery = "SELECT * FROM tb_tickets";
@@ -84,8 +85,10 @@ try {
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
     <title><?php echo $sysName?></title>
     <link rel="icon" href="<?php echo htmlspecialchars($S_LBase64, ENT_QUOTES, 'UTF-8'); ?>" type="image/*">
+
 	<!-- BOOTSTRAP STYLES-->
     <link href="assets/css/bootstrap.css" rel="stylesheet" />
      <!-- FONTAWESOME STYLES-->
@@ -119,14 +122,17 @@ try {
         <!-- /. NAV SIDE  -->
         <div id="page-wrapper" >
             <div id="page-inner">
+
             <div class="row">
             <div class="col-md-12">   <div class="col-md-12">
+
                     <div class="col-md-12">
                      <h2>Activity Logs</h2>   
                      <hr> 
                     </div>
-             
-               
+                </div>
+                 <!-- /. ROW  -->
+                 <div class="row">
                 <div class="col-md-12">
                     <!-- Advanced Tables -->
                     <div class="panel panel-default">
@@ -170,12 +176,17 @@ $pdoExec = $pdoResult->execute();
                                 </div>
                             </div>
                             
-                        
+                        </div>
                     </div>
                     <!--End Advanced Tables -->
+
                 </div></div></div>
             </div></div>
               
+
+            <?php require_once('../footer.php') ?>
+               
+
     </div>
              <!-- /. PAGE INNER  -->
             </div>

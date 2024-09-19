@@ -66,6 +66,7 @@ if (!isset($_SESSION["admin_number"])) {
     } catch (PDOException $e) {
         echo "Error: " . $e->getMessage();
     }
+
 }
 
 
@@ -90,15 +91,16 @@ if (!empty($S_L)) {
 }
 ?>
 
-
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
       <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
     <title><?php echo $sysName?></title>
  
     <link rel="icon" href="<?php echo htmlspecialchars($S_LBase64, ENT_QUOTES, 'UTF-8'); ?>" type="image/*">        
+
   
 	<!-- BOOTSTRAP STYLES-->
     <link href="assets/css/bootstrap.css" rel="stylesheet" />
@@ -122,9 +124,9 @@ if (!empty($S_L)) {
             <div id="page-inner">
                 <div class="row">
                   <div class="col-md-12">
-                    <div class="col-md-12">
-                        
+                    <div class="col-md-6">
                      <h2>Settings</h2>   
+
                      <hr>
                      </div>
                      <form method="post" id="system-frm" role="form" enctype="multipart/form-data">
@@ -217,49 +219,52 @@ if (!empty($S_L)) {
     <input type="text" style="width:100%;" class="form-control form-control-sm" id="eventTitle" placeholder="Event Title">
     <input type="text" style="width:100%;" class="form-control form-control-sm" id="eventDescription" placeholder="Event Description">
     <button id="addEvent" class="btn btn-primary"onclick="addEvent()">Add</button>
+
 </div>
 
 
+             
+			</form>
+           
+                    </div>
+                    <div class="wrapper col-md-12">
+        
+            <div class="col-md-6">
+                <h1>Dynamic Calendar</h1>
+                <div id="event-section" >
+                    <h3>Add Event</h3>
+                    <input type="date" id="eventDate">
+                    <input type="text"
+                        id="eventTitle"
+                        placeholder="Event Title">
+                    <input type="text"
+                        id="eventDescription"
+                        placeholder="Event Description">
+                    <button id="addEvent" onclick="addEvent()">
+                        Add
+                    </button>
+                </div>
                 <div id="reminder-section">
-                    <h3>Reminders</h3><table class="table table-striped table-bordered table-hover" id="dataTables-example">
-                    <thead>
-                                        <tr>
-                                            <th>Date</th> 
-                                            <th>Event</th>
-                                            <th>Description</th>
-                                            <th>Option</th>
-                                    
-                                            
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                    
-                                        <tr>
-                                        <?php foreach ($events as $event): ?>
-                                             <td><?php echo htmlspecialchars($event['event_date']); ?></td>
-                                             <td><?php echo htmlspecialchars($event['event_title']); ?></td>
-                                            <td><?php echo htmlspecialchars($event['event_description']); ?></td>
-                                           
-                                            <td style="width:8%;"> <button class=" btn btn-primary delete-event"
+                    <h3>Reminders</h3>
+                    <!-- List to display reminders -->
+                    <ul id="reminderList">
+                        <li data-event-id="1">
+                            <strong>Event Title</strong>
+                            - Event Description on Event Date
+                            <button class="delete-event"
                                 onclick="deleteEvent(1)">
                                 Delete
-                            </button></td>
-                            
-                                        </tr><?php endforeach; ?>
-                                    </tbody>
-
-                    </table>
-                    <!-- List to display reminders -->
-
-
-                  
+                            </button>
+                        </li>
+                    </ul>
                 </div>
             </div>
-                    </div>
             <!-- /. Calendar  -->   
+
           
             <div class="container-calendar">
             <div class="col-md-12">
+
 			<div id="right">
 				 <h3 id="monthAndYear"></h3>
 				<div class="button-container-calendar">
@@ -310,12 +315,14 @@ if (!empty($S_L)) {
     </div>
 
           
+
                     </div>
                 </div>
+               
                  <!-- /. ROW  -->
-                 
                
     </div>
+    <?php require_once('../footer.php') ?>
              <!-- /. PAGE INNER  -->
             </div>
          <!-- /. PAGE WRAPPER  -->
@@ -371,6 +378,7 @@ document.addEventListener("DOMContentLoaded", function() {
             });
 //--------------------DATEPICKER---------------------     
           </script>
+
           <script>
             function addEvent() {
     const eventDate = document.getElementById('eventDate').value;
@@ -567,6 +575,7 @@ document.getElementById('system_name').addEventListener('input', function() {
     </script>
     <script src="../user/assets/js/custom.js"></script>
 <script type="text/javascript" src="post.js"></script>
+
 
 
 </body>

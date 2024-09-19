@@ -207,9 +207,6 @@ if(isset($_GET['error']) && $_GET['error'] == 1) {
 						   <li  >
                             <a href="downloadableform.php"><i class="fa fa-download" style="font-size:36px"></i> DOWNLOADABLE FORM </a>
                     </li>	
-                    <li>
-                        <a href="about.php"><i class="fa fa-question-circle" style="font-size:36px"></i> ABOUT </a>
-                    </li>
                 </ul>
                
             </div>
@@ -353,6 +350,7 @@ echo "</tr>";
              <!-- /. PAGE INNER  -->
             </div>
          <!-- /. PAGE WRAPPER  -->
+         <?php require_once ('../footer.php')?>
         </div>
     <!-- /. WRAPPER -->
     <!-- SCRIPTS - AT THE BOTTOM TO REDUCE THE LOAD TIME -->

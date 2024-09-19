@@ -45,6 +45,7 @@ if (!isset($_SESSION["admin_number"])) {
      }
  // for displaying system details //end
     
+
 try {
 
     $pdoCountQuery = "SELECT * FROM tb_tickets";
@@ -85,8 +86,10 @@ try {
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
     <title><?php echo $sysName?></title>
     <link rel="icon" href="<?php echo htmlspecialchars($S_LBase64, ENT_QUOTES, 'UTF-8'); ?>" type="image/*">
+
   
 	<!-- BOOTSTRAP STYLES-->
     <link href="assets/css/bootstrap.css" rel="stylesheet" />
@@ -307,13 +310,12 @@ $pdoExec = $pdoResult->execute();
                     </div>
                     </div>
                     </div>
+                    <?php require_once('../footer.php') ?> 
                     <!--End Advanced Tables -->
                             
                         </div>
                     </div>
                 </div>
-            </div>
-                
                
     </div>
              <!-- /. PAGE INNER  -->

@@ -169,3 +169,4 @@ try {
 $conn = null;
 }
 ?>
+<?php require_once ('../footer.php')?>

@@ -29,6 +29,7 @@ if (!isset($_SESSION["admin_number"])) {
         // Handle the case where no results are found
         echo "No student found with the given student number.";
     }
+
     // for displaying system details
     $query = $pdoConnect->prepare("SELECT system_name, short_name, system_logo, system_cover FROM settings WHERE id = :id");
     $query->execute(['id' => 1]);
@@ -44,6 +45,7 @@ if (!isset($_SESSION["admin_number"])) {
          $S_LBase64 = 'data:' . $imageType . ';base64,' . $base64Image;
      }
  // for displaying system details //end
+
 try {
 
     $pdoCountQuery = "SELECT * FROM tb_tickets";
@@ -84,8 +86,10 @@ try {
 <head>
       <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
     <title><?php echo $sysName?></title>
     <link rel="icon" href="<?php echo htmlspecialchars($S_LBase64, ENT_QUOTES, 'UTF-8'); ?>" type="image/*">
+
 	<!-- BOOTSTRAP STYLES-->
     <link href="assets/css/bootstrap.css" rel="stylesheet" />
      <!-- FONTAWESOME STYLES-->
@@ -135,7 +139,6 @@ try {
                                     </div>
 
                 <div class="col-md-2">
-                <a href="javascript:history.back()" data-dismiss="modal" class="btn">Cancel</a>
                     <a data-toggle="modal" href="#myModalReturn" class="btn btn-primary">Return</a>
                         <div class="modal fade" id="myModalReturn">
                             <div class="modal-dialog3">
@@ -223,7 +226,7 @@ try {
 <br>
                  
         </div>
-    
+        <?php require_once('../footer.php') ?> 
            </div>   
                  <!-- /. ROW  -->
                          

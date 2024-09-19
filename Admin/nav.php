@@ -1,5 +1,6 @@
 <?php
 
+
 // Check if the session variable is set
 if (!isset($_SESSION["admin_number"])) {
     header("Location: ../index.php");
@@ -82,6 +83,7 @@ try {
     <div class="navbar-header">      
         <a class="navbar-brand" href="index.php"><?php echo $shortName?></a>
 
+
     </div>
 <div style="color: white; padding: 15px 50px 5px 50px; float: right;"> Last access : <?php echo date('d F Y')?> &nbsp; 
 <div class="btn-group nav-link">
@@ -100,7 +102,7 @@ try {
 </div>
 </nav>   
    <!-- /. NAV TOP  -->
-      
+
    
    <?php
 $currentFile = basename($_SERVER['PHP_SELF']);
@@ -191,6 +193,7 @@ $currentFile = basename($_SERVER['PHP_SELF']);
 </li>
 
 
+
         <li>
             <a class="<?= ($currentFile == 'history-log.php') ? 'active-menu' : '' ?>" href="history-log.php">
                 <i class="fa-regular fa-clock fa-xl"></i> Log History
@@ -213,6 +216,7 @@ $currentFile = basename($_SERVER['PHP_SELF']);
         <li>
             <a href="#"><i class="fa-regular fa-user fa-xl"></i> User list <span class="fa arrow"></span></a>
             <ul class="nav nav-second-level ticket-dropdown-menu <?= $userListDropdownOpen ? 'in' : '' ?>"> 
+
             <li>
                     <a class="<?= ($currentFile == 'employee.php') ? 'active-menu' : '' ?>" href="employee.php">
                         &nbsp;&nbsp;<i class="fa-solid fa-user-tie"></i> MIS Employees
@@ -232,6 +236,7 @@ $currentFile = basename($_SERVER['PHP_SELF']);
         </li>
         <li>
             <a href="#" class="dropdown-toggle" data-toggle="dropdown" onclick="handleTicketDropdownToggle(event)">
+
                 <i class="fa fa-paste fa-xl"></i> System Documents <span class="fa arrow"></span>
             </a>
             <ul class="nav nav-second-level ticket-dropdown-menu <?= $systemDocsDropdownOpen ? 'in' : '' ?>">
@@ -265,6 +270,7 @@ $currentFile = basename($_SERVER['PHP_SELF']);
         sidebar.classList.toggle('open');
     })
 </script>
+
 <!--
 <script>
 // Get elements
@@ -316,3 +322,6 @@ window.addEventListener("load", function () { // Attach listener on 'load'
 
 </script> 
             -->
+
+
+

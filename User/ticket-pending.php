@@ -209,9 +209,6 @@ if (!isset($_SESSION["user_id"])) {
 						   <li  >
                             <a href="downloadableform.php"><i class="fa fa-download" style="font-size:36px"></i> DOWNLOADABLE FORM </a>
                     </li>	
-                    <li>
-                        <a href="about.php"><i class="fa fa-question-circle" style="font-size:36px"></i> ABOUT </a>
-                    </li>
                 </ul>
                
             </div>
@@ -382,6 +379,7 @@ VIEW TICKET
     </div>
 </div>           
              <!-- /. PAGE INNER  -->
+             <?php require_once ('../footer.php')?>
             </div>
          <!-- /. PAGE WRAPPER  -->
         </div>

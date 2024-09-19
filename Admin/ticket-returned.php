@@ -35,6 +35,7 @@ if (!isset($_SESSION["admin_number"])) {
     } elseif (isset($_GET["id"]) && $_GET["id"] == 2) {
         $ticket_user = "Employee";
     }
+
     // for displaying system details
     $query = $pdoConnect->prepare("SELECT system_name, short_name, system_logo, system_cover FROM settings WHERE id = :id");
     $query->execute(['id' => 1]);
@@ -50,6 +51,7 @@ if (!isset($_SESSION["admin_number"])) {
          $S_LBase64 = 'data:' . $imageType . ';base64,' . $base64Image;
      }
  // for displaying system details //end 
+
 try {
 
     $pdoCountQuery = "SELECT * FROM tb_tickets";
@@ -90,8 +92,10 @@ try {
 <head>
       <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
     <title><?php echo $sysName?></title>
     <link rel="icon" href="<?php echo htmlspecialchars($S_LBase64, ENT_QUOTES, 'UTF-8'); ?>" type="image/*">
+
   
 	<!-- BOOTSTRAP STYLES-->
     <link href="assets/css/bootstrap.css" rel="stylesheet" />
@@ -121,15 +125,18 @@ try {
          <?php include 'nav.php'; ?>
         <!-- /. NAV SIDE  -->
         <div id="page-wrapper" >
+
         <div id="page-inner" style="min-height: 800px;">
 
                
+
                     <div class="col-md-12">
                      <h2>Returned Tickets</h2>   
                      <hr> 
                     </div>
-               
-                 
+                </div>
+                 <!-- /. ROW  -->
+                 <div class="row">
                 <div class="col-md-12">
                     <!-- Advanced Tables -->
                     <div class="panel panel-default">
@@ -330,7 +337,7 @@ $pdoExec = $pdoResult->execute();
                                 </table>
                             </div>
                             
-                        
+                        </div>
                     </div>
                     <!--End Advanced Tables -->
                 </div>
@@ -338,6 +345,7 @@ $pdoExec = $pdoResult->execute();
                  <hr />
                
     </div>
+    <?php require_once('../footer.php') ?> 
              <!-- /. PAGE INNER  -->
             </div>
          <!-- /. PAGE WRAPPER  -->
