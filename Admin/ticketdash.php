@@ -36,7 +36,6 @@ if (!isset($_SESSION["admin_number"])) {
         $ticket_user = "Employee";
     }
     
-
     // for displaying system details
     $query = $pdoConnect->prepare("SELECT system_name, short_name, system_logo, system_cover FROM settings WHERE id = :id");
     $query->execute(['id' => 1]);
@@ -51,7 +50,7 @@ if (!isset($_SESSION["admin_number"])) {
          $imageType = 'image/png'; // Default MIME type
          $S_LBase64 = 'data:' . $imageType . ';base64,' . $base64Image;
      }
-
+ // for displaying system details //end
     try {
 
         $pdoCountQuery = "SELECT * FROM tb_tickets";
@@ -63,6 +62,7 @@ if (!isset($_SESSION["admin_number"])) {
         $pdoResult = $pdoConnect->prepare($pdoCountQuery);
         $pdoResult->bindParam(':user', $ticket_user, PDO::PARAM_STR);
         $pdoResult->execute();
+
         $pendingTickets = $pdoResult->rowCount();
 
         $pdoCountQuery = "SELECT * FROM tb_tickets WHERE status = 'Processing' && user_type = :user";
@@ -107,10 +107,8 @@ if (!isset($_SESSION["admin_number"])) {
 <head>
       <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
     <title><?php echo $sysName?></title>
     <link rel="icon" href="<?php echo htmlspecialchars($S_LBase64, ENT_QUOTES, 'UTF-8'); ?>" type="image/*">
-
   
 	<!-- BOOTSTRAP STYLES-->
     <link href="assets/css/bootstrap.css" rel="stylesheet" />
@@ -132,93 +130,78 @@ if (!isset($_SESSION["admin_number"])) {
         <!-- /. NAV SIDE  -->
         <div id="page-wrapper" >
             <div id="page-inner">
-                <div class="row">
+               
                     <div class="col-md-12">
                      <h2>All Tickets</h2>   
-                        <h5>Welcome <?php echo $Name?>, Love to see you back. </h5>
-                       
+
+                     <hr>
                     </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-4 col-sm-6 col-xs-6">           
+               
+              
+                    <div class="col-md-2 col-sm-6 col-xs-6">           
             <div class="panel panel-back noti-box">
                 <span class="icon-box bg-color-yellow set-icon">
-                <i class="fa fa-hourglass-half " aria-hidden="true"></i>
+                <i class="fa fa-hourglass-half fa-xs" aria-hidden="true"></i>
                 </span>
                 <div class="text-box" >
                     <p class="main-text"><?php echo $pendingTickets?> Pending</p>
-                    <p class="text-muted">Tickets</p>
+                   <!-- <p class="text-muted">Tickets</p> -->
                 </div>
              </div>
             </div>
-                    <div class="col-md-4 col-sm-6 col-xs-6">           
+                    <div class="col-md-2 col-sm-6 col-xs-6">           
             <div class="panel panel-back noti-box">
                 <span class="icon-box bg-color-green set-icon">
-                <i class="fa fa-envelope-open" aria-hidden="true"></i>
+                <i class="fa fa-envelope-open fa-xs" aria-hidden="true"></i>
                 </span>
                 <div class="text-box" >
                     <p class="main-text"><?php echo $openedTickets?> Opened </p>
-                    <p class="text-muted">Tickets</p>
+                   <!-- <p class="text-muted">Tickets</p> -->
                 </div>
              </div>
             </div>
-                    <div class="col-md-4 col-sm-6 col-xs-6">           
+                    <div class="col-md-2 col-sm-6 col-xs-6">           
             <div class="panel panel-back noti-box">
                 <span class="icon-box bg-color-brown set-icon">
-                <i class="fa fa-check" aria-hidden="true"></i>
+                <i class="fa fa-check fa-xs" aria-hidden="true"></i>
                 </span>
                 <div class="text-box" >
                     <p class="main-text"><?php echo $completedTickets?> Closed</p>
-                    <p class="text-muted">Tickets</p>
+                   <!-- <p class="text-muted">Tickets</p> -->
                 </div>
              </div>
             </div>
-            </div>
-                  <div class="row">
-                    <div class="col-md-4 col-sm-6 col-xs-6">           
-			<div class="panel panel-back noti-box">
-                <span class="icon-box bg-color-orange set-icon">
-                <i class="fa fa-exclamation" aria-hidden="true"></i>
-                </span>
-                <div class="text-box" >
-                    <p class="main-text"><?php echo $dueTickets?> Overdue</p>
-                    <p class="text-muted">Tickets</p>
-                </div>
-             </div>
-		     </div>
-                    <div class="col-md-4 col-sm-6 col-xs-6">           
+            
+               
+                    <div class="col-md-2 col-sm-6 col-xs-6">           
 			<div class="panel panel-back noti-box">
                 <span class="icon-box bg-color-black set-icon">
-                <i class="fa fa-reply" aria-hidden="true"></i>
+                <i class="fa fa-reply fa-xs" aria-hidden="true"></i>
                 </span>
                 <div class="text-box" >
                     <p class="main-text"><?php echo $returnedTickets?> Returned</p>
-                    <p class="text-muted">Tickets</p>
+                   <!-- <p class="text-muted">Tickets</p> -->
                 </div>
              </div>
 		     </div>
-                    <div class="col-md-4 col-sm-6 col-xs-6">           
+                    <div class="col-md-2 col-sm-6 col-xs-6">           
 			<div class="panel panel-back noti-box">
                 <span class="icon-box bg-color-blue set-icon">
-                <i class="fa fa-upload" aria-hidden="true"></i>
+                <i class="fa fa-upload fa-xs" aria-hidden="true"></i>
                 </span>
                 <div class="text-box" >
-
                     <p class="main-text"><?php echo $transferredTickets?> Transferred</p>
                    <!-- <p class="text-muted">Tickets</p> -->
-
                 </div>
              </div>
 		     </div>
-			</div>
+		
                  <!-- /. ROW  -->
                  <div class="row">
-                <div class="col-md-12">
+                 <div class="col-md-12"> <div class="col-md-12">
                     <!-- Advanced Tables -->
                     <div class="panel panel-default">
-                        <div class="panel-heading">
-                             Advanced Tables
-                        </div>
+                        
                         <div class="panel-body-ticket">
                             <div class="table-responsive">
                                 <table class="table table-striped table-bordered table-hover" id="dataTables-example">
@@ -226,11 +209,13 @@ if (!isset($_SESSION["admin_number"])) {
                                         <tr>
                                             <th><i class="fa fa-exclamation-circle" aria-hidden="true"></i></th>
                                             <th>Ticket ID</th>
+                                            <th>Status</th>
                                             <th>Employee</th>
                                             <th>Date Submitted</th>
-                                            <th>Status</th>
-                                            <th>Duration</th>
+                                            <th>Name</th>
                                             <th>Issue</th>
+                                      
+                                      
                                             <th>Details</th>
                                         </tr>
                                     </thead>
@@ -241,9 +226,13 @@ if (!isset($_SESSION["admin_number"])) {
                 $pdoResult = $pdoConnect->prepare($pdoQuery);
                 $pdoResult->bindParam(':user', $ticket_user, PDO::PARAM_STR);
                 $pdoExec = $pdoResult->execute();
-                while ($row = $pdoResult->fetch(PDO::FETCH_ASSOC)){
+                while ($row = $pdoResult->fetch(PDO::FETCH_ASSOC)) {
+                    $statusClass = ($row['status'] === 'Completed') ? 'success' :
+                                  (($row['status'] === 'Pending') ? 'danger' :
+                                  (($row['status'] === 'Transferred') ? 'info' :
+                                  (($row['status'] === 'Processing') ? 'warning' : '')));
+                
                     extract($row);
-
                     echo "<tr class='odd gradeX . $statusClass . '>";
                     echo "<td>(!)</td>";
                     echo "<td>$ticket_id</td>"; 
@@ -252,7 +241,8 @@ if (!isset($_SESSION["admin_number"])) {
                     echo "<td>$created_date</td>";
                     echo "<td>$full_name</td>";
                     echo "<td>$issue</td>";
-
+                   
+                   
                     echo "<td>
 
                         <div class='panel-body-ticket'>
@@ -388,10 +378,10 @@ if (!isset($_SESSION["admin_number"])) {
 
             </div>
         </div>
-        
-    </div>
-</div>
-                              </div>
+        </div>
+        </div>
+        </div>
+        </div>
                   
 <div class="modal fade" id="myModalA">
     <div class="modal-dialog">
@@ -507,9 +497,9 @@ if (!isset($_SESSION["admin_number"])) {
                     <!--End Advanced Tables -->
                 </div>
             </div>
-                 <hr />
+                 
                <!-- /. ROW  -->
-               <div class="row">                     
+               <div class="col-md-12">                     
                       
                <div class="col-md-4 col-sm-4 col-xs-4">                     
            <div class="panel panel-default">
@@ -545,7 +535,6 @@ if (!isset($_SESSION["admin_number"])) {
       
   </div>
     </div>
-    <?php require_once('../footer.php') ?> 
              <!-- /. PAGE INNER  -->
             </div>
          <!-- /. PAGE WRAPPER  -->
@@ -589,7 +578,6 @@ if (!isset($_SESSION["admin_number"])) {
 </script>
 
  <!-- DATA TABLE SCRIPTS -->
-
  <script> 
     $(document).ready(function() {
         $.fn.dataTable.ext.type.order['custom-status-pre'] = function (Status) {
@@ -655,7 +643,6 @@ if (!isset($_SESSION["admin_number"])) {
         });
     });
 </script>
-
 
     <!-- DATA TABLE SCRIPTS -->
     <script src="assets/js/dataTables/jquery.dataTables.js"></script>

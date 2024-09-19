@@ -29,7 +29,6 @@ if (!isset($_SESSION["admin_number"])) {
         // Handle the case where no results are found
         echo "No student found with the given student number.";
     }
-
      // for displaying system details
      $query = $pdoConnect->prepare("SELECT system_name, short_name, system_logo, system_cover FROM settings WHERE id = :id");
      $query->execute(['id' => 1]);
@@ -45,7 +44,7 @@ if (!isset($_SESSION["admin_number"])) {
           $S_LBase64 = 'data:' . $imageType . ';base64,' . $base64Image;
       }
   // for displaying system details //end
-
+ 
 try {
 
     $pdoCountQuery = "SELECT * FROM tb_tickets";
@@ -86,7 +85,7 @@ try {
 <head>
       <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>DHVSU MIS - HelpHub</title>
+    <title><?php echo $sysName?></title>
   
 	<!-- BOOTSTRAP STYLES-->
     <link href="assets/css/bootstrap.css" rel="stylesheet" />
@@ -118,7 +117,7 @@ try {
             <div id="page-inner">
                 <div class="row">
                     <div class="col-md-12">
-                     <h2>Close Ticket</h2>   
+                     <h2>Resolve Ticket</h2>   
                         <!---<h5>Welcome <?php //echo $Name?> , Love to see you back. </h5>-->
                     </div>
                 </div>              
@@ -145,17 +144,20 @@ try {
             </div>
         </div>
         <div class="form-group row">
-            <div class="col-md-2 offset-md-10">
-                <a data-toggle="modal" href="#myModalTransfer" class="btn btn-primary">Close</a>
+        <div class="col-md-9">
+                                        </div>
+                                        <div class="col-md-2">
+            <a href="javascript:history.back()" data-dismiss="modal" class="btn">Cancel</a>
+                <a data-toggle="modal" href="#myModalTransfer" class="btn btn-primary">Resolve</a>
                 <div class="modal fade" id="myModalTransfer">
                     <div class="modal-dialog modal-dialog3">
                         <div class="modal-content">
                             <div class="modal-header">
                                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                                <h4 class="modal-title">Close Ticket</h4>
+                                <h4 class="modal-title">Resolve Ticket</h4>
                             </div>
                             <div class="modal-body">
-                                Confirm Closing ticket
+                                Confirm resolving ticket
                             </div>
                             <div class="modal-footer">
                                 <button data-dismiss="modal" class="btn">Cancel</button>
@@ -273,7 +275,7 @@ try {
 <br>
                  
         </div>
-        <?php require_once('../footer.php') ?> 
+    
            </div>   
                  <!-- /. ROW  -->
                          

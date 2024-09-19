@@ -44,7 +44,7 @@ if (!isset($_SESSION["admin_number"])) {
           $S_LBase64 = 'data:' . $imageType . ';base64,' . $base64Image;
       }
   // for displaying system details //end
-
+    
 try {
 
     $pdoCountQuery = "SELECT * FROM tb_tickets";
@@ -88,7 +88,7 @@ try {
 <head>
       <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>DHVSU MIS - HelpHub</title>
+    <title><?php echo $sysName?></title>
   
 	<!-- BOOTSTRAP STYLES-->
     <link href="assets/css/bootstrap.css" rel="stylesheet" />
@@ -359,7 +359,6 @@ $pdoConnect = null;
 
 </script>
     </div>
-    <?php require_once('../footer.php') ?> 
              <!-- /. PAGE INNER  -->
             </div>
          <!-- /. PAGE WRAPPER  -->
