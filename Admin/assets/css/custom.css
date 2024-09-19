@@ -239,6 +239,8 @@ font-weight: 700;
 }
 .active-menu {
     background-color:#C90000!important;
+    color: white !important;
+    
 }
 
 .arrow {
@@ -389,13 +391,13 @@ line-height: 1.428571429;
 /*==============================================
     MEDIA QUERIES     
     =============================================*/
- 
+
  @media(min-width:760px) {
      #page-wrapper{
                margin: 0 0 0 230px;
         padding: 15px 30px;
         min-height: auto;
-		
+        
     }
 	
 	
@@ -403,6 +405,7 @@ line-height: 1.428571429;
         z-index: 1;
         position: absolute;
         width: 230px;
+        
     }
 
    .navbar {
@@ -892,6 +895,7 @@ body {
   #upload_label:focus {
     color: #222;
   }
+
   .avatar {
     width: 150px;
     height: 150px;
@@ -1011,4 +1015,88 @@ body {
     display: block;
     padding: 0;
     text-align: center;
+  }
+
+
+
+
+  
+  .avatar2 {
+    width: 150px;
+    height: 150px;
+    border-radius: 10%;
+    border: 2px solid #8a7f7f;
+    margin: 10px auto;
+    position: relative;
+    overflow: hidden;
+    z-index: 2;
+    transform: translateZ(0);
+    transition: border-color 200ms;
+  }
+  .avata2--upload-error {
+    border-color: #f73c3c;
+    animation: shakeNo 300ms 1 forwards;
+  }
+  @keyframes shakeNo {
+    20%,
+    60% {
+      transform: translateX(6px);
+    }
+    40%,
+    80% {
+      transform: translate(-6px);
+    }
+  }
+  .avatar2:hover .avatar_upload,
+  .avatar2--hover .avatar _upload {
+    opacity: 1;
+  }
+  .avatar2:hover .upload_label,
+  .avatar2--hover .upload_label {
+    display: block;
+  }
+  #preview::after {
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    text-align: center;
+    z-index: -1;
+    line-height: 150px;
+    color: #999;
+  }
+  .avatar2_img--loading {
+    opacity: 0;
+  }
+  .avatar2_img {
+    width: 100%;
+    height: auto;
+    animation: inPop 250ms 150ms 1 forwards
+      cubic-bezier(0.175, 0.885, 0.32, 1.175);
+    transform: scale(0);
+    opacity: 0;
+  }
+  @keyframes inPop {
+    100% {
+      transform: scale(1);
+      opacity: 1;
+    }
+  }
+  .avatar2_img--rotate90 {
+    transform: rotate(90deg);
+  }
+  .avatar2_upload {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    text-align: center;
+    height: 100%;
+    background: #000;
+    background: rgba(0, 0, 0, 0.4);
+    display: flex;
+    align-items: center;
+    opacity: 0;
+    transition: opacity 500ms;
   }

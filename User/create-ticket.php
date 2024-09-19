@@ -276,12 +276,7 @@ input[type="file"]::file-selector-button {
                         <div class="form-group">
                             <label for="category">ISSUE</label>
                             <select id="category" name="category" class="form-control dropdown" required>
-                                <!--
-                                <option value="">SELECT PROBLEM</option>
-                                <option value="DHVSU EMAIL">DHVSU EMAIL</option>
-                                <option value="DHVSU PORTAL">DHVSU PORTAL</option>
-                                <option value="DHVSU SMS">DHVSU SMS</option>
-                                -->
+                               
                             </select>
                         </div>
 

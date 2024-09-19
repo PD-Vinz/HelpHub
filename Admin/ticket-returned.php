@@ -35,14 +35,21 @@ if (!isset($_SESSION["admin_number"])) {
     } elseif (isset($_GET["id"]) && $_GET["id"] == 2) {
         $ticket_user = "Employee";
     }
+    // for displaying system details
     $query = $pdoConnect->prepare("SELECT system_name, short_name, system_logo, system_cover FROM settings WHERE id = :id");
     $query->execute(['id' => 1]);
     $Datas = $query->fetch(PDO::FETCH_ASSOC);
     $sysName = $Datas['system_name'] ?? '';
     $shortName = $Datas['short_name'] ?? '';
-    $systemLogo = $Datas['system_logo'];
-    $systemCover = $Datas['system_cover'];
-    
+     $systemCover = $Datas['system_cover'];
+     $S_L = $Datas['system_logo'];
+     $S_LBase64 = '';
+     if (!empty($S_L)) {
+         $base64Image = base64_encode($S_L);
+         $imageType = 'image/png'; // Default MIME type
+         $S_LBase64 = 'data:' . $imageType . ';base64,' . $base64Image;
+     }
+ // for displaying system details //end 
 try {
 
     $pdoCountQuery = "SELECT * FROM tb_tickets";
@@ -84,7 +91,7 @@ try {
       <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title><?php echo $sysName?></title>
-    <link rel="icon" href="../img/logo.png" type="image/png">
+    <link rel="icon" href="<?php echo htmlspecialchars($S_LBase64, ENT_QUOTES, 'UTF-8'); ?>" type="image/*">
   
 	<!-- BOOTSTRAP STYLES-->
     <link href="assets/css/bootstrap.css" rel="stylesheet" />
@@ -114,7 +121,8 @@ try {
          <?php include 'nav.php'; ?>
         <!-- /. NAV SIDE  -->
         <div id="page-wrapper" >
-            <div id="page-inner">
+        <div id="page-inner" style="min-height: 800px;">
+
                
                     <div class="col-md-12">
                      <h2>Returned Tickets</h2>   
@@ -352,7 +360,7 @@ $pdoExec = $pdoResult->execute();
             "order": [
                 [0, 'asc']],
 
-            "columnDefs": [
+            "columnDefs": [     
                 {   
                     "width": "8%", 
                     "targets": [0],  // Target Age column
@@ -366,12 +374,15 @@ $pdoExec = $pdoResult->execute();
                 {   
                     "width": "15%", 
                     "targets": [2],  // Target Age column
-                    "visible": true // Hide Age column
+                    "visible": true, // Hide Age column
+                    "className": "dt-left"  
+
                 }, 
                 {   
                     "width": "40%", 
                     "targets": [3],  // Target Age column
-                    "visible": true // Hide Age column
+                    "visible": true, // Hide Age column
+                    "className": "dt-left"  
                     
                 },
                 {   

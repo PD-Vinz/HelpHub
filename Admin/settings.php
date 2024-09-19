@@ -31,57 +31,63 @@ if (!isset($_SESSION["admin_number"])) {
         // Handle the case where no results are found
         echo "No student found with the given student number.";
     }
-
-try {
-
-
-    $sql = "SELECT id, event_date, event_description, event_title FROM tb_calendar";
-    $req = $pdoConnect->prepare($sql);
-    $req->execute();
-    $events = $req->fetchAll(PDO::FETCH_ASSOC);
-
+    try {
+        // Handle form submission
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $newSysName = $_POST['name'];
+            $newShortName = $_POST['short_name'];
     
-    $query = $pdoConnect->prepare("SELECT system_name, short_name, system_logo, system_cover FROM settings WHERE id = :id");
-    $query->execute(['id' => 1]);
-    $Datas = $query->fetch(PDO::FETCH_ASSOC);
-    $sysName = $Datas['system_name'] ?? '';
-    $shortName = $Datas['short_name'] ?? '';
-    $P_P = $Datas['system_logo'];
-    $S_C = $Datas['system_cover'];
+            // Handle file upload
+            if (isset($_FILES['system_logo']) && $_FILES['system_logo']['error'] === UPLOAD_ERR_OK) {
+                $newLogo = file_get_contents($_FILES['system_logo']['tmp_name']);
+            } else {
+                // Keep the old logo if no new one is uploaded
+                $query = $pdoConnect->prepare("SELECT system_logo FROM settings WHERE id = :id");
+                $query->execute(['id' => 1]);
+                $Datas = $query->fetch(PDO::FETCH_ASSOC);
+                $newLogo = $Datas['system_logo'];
+            }
+            
+            try {
+                $updateQuery = $pdoConnect->prepare("UPDATE settings SET system_name = :system_name, short_name = :short_name, system_logo = :system_logo WHERE id = :id");
+                $updateQuery->execute([
+                    'system_name' => $newSysName,
+                    'short_name' => $newShortName,
+                    'system_logo' => $newLogo,
+                    'id' => 1 
+                ]);
     
-    $P_PBase64 = base64_encode($P_P);
-    $S_CBase64 = base64_encode($S_C);
-
-
-    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-        $newSysName = $_POST['name'];
-        $newShortName = $_POST['short_name'];
-    
-        try {
-            $updateQuery = $pdoConnect->prepare("UPDATE settings SET system_name = :system_name, short_name = :short_name WHERE id = :id");
-            $updateQuery->execute([
-                'system_name' => $newSysName,
-                'short_name' => $newShortName,
-                'id' => 1 
-            ]);
-    
-            header('Location: settings.php');
-        } catch (PDOException $e) {
-            // Error handling
-            echo "Error updating data: " . $e->getMessage();
+                header('Location: settings.php');
+                exit;
+            } catch (PDOException $e) {
+                echo "Error updating data: " . $e->getMessage();
+            }
         }
+    } catch (PDOException $e) {
+        echo "Error: " . $e->getMessage();
     }
-
-
-} catch (PDOException $e) {
-    echo "Error: " . $e->getMessage();
-}
-
 }
 
 
 
 
+?>
+<?php
+// Fetch settings
+$query = $pdoConnect->prepare("SELECT system_name, short_name, system_logo FROM settings WHERE id = :id");
+$query->execute(['id' => 1]);
+$Datas = $query->fetch(PDO::FETCH_ASSOC);
+$sysName = $Datas['system_name'] ?? '';
+$shortName = $Datas['short_name'] ?? '';
+$S_L = $Datas['system_logo'];
+
+// Display image if it exists
+$S_LBase64 = '';
+if (!empty($S_L)) {
+    $base64Image = base64_encode($S_L);
+    $imageType = 'image/png'; // Default MIME type
+    $S_LBase64 = 'data:' . $imageType . ';base64,' . $base64Image;
+}
 ?>
 
 
@@ -91,7 +97,8 @@ try {
       <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title><?php echo $sysName?></title>
-    <link rel="icon" href="../img/logo.png" type="image/png">
+ 
+    <link rel="icon" href="<?php echo htmlspecialchars($S_LBase64, ENT_QUOTES, 'UTF-8'); ?>" type="image/*">        
   
 	<!-- BOOTSTRAP STYLES-->
     <link href="assets/css/bootstrap.css" rel="stylesheet" />
@@ -104,6 +111,7 @@ try {
      <!-- GOOGLE FONTS-->
    <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css' />
    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+  
 </head>
 <body>
     <div id="wrapper">
@@ -119,49 +127,51 @@ try {
                      <h2>Settings</h2>   
                      <hr>
                      </div>
-                        <form method="post" id="system-frm">
-			<div class="col-md-6">
-			<div class="form-group" >
-				<label for="name" class="control-label">System Name</label>
-				<input type="text" class="form-control form-control-sm" name="name" id="system_name" value="<?php echo htmlspecialchars($sysName); ?>">
-			</div>
-			<div class="form-group">
-				<label for="short_name" class="control-label">System Short Name</label>
-				<input type="text" class="form-control form-control-sm" name="short_name" id="short_name" value="<?php echo htmlspecialchars($shortName); ?>">
-			</div>
-			<!-- <div class="form-group">
-				<label for="content[about_us]" class="control-label">About Us</label>
-				<textarea type="text" class="form-control form-control-sm summernote" name="content[about_us]" id="about_us"></textarea>
-			</div> -->
-			<div class="form-group">
+                     <form method="post" id="system-frm" role="form" enctype="multipart/form-data">
+    <div class="col-md-6">
+        <div class="form-group">
+            <label for="name" class="control-label">System Name</label>
+            <input type="text" class="form-control form-control-sm" name="name" id="system_name" value="<?php echo htmlspecialchars($sysName); ?>">
+            <div id="name-notification" style="color: red; display: none;">System Name cannot exceed 20 characters</div>
+        </div>
+        <div class="form-group">
+            <label for="short_name" class="control-label">System Short Name</label>
+            <input type="text" class="form-control form-control-sm" name="short_name" id="short_name" value="<?php echo htmlspecialchars($shortName); ?>">
+            <div id="notification" style="color: red; display: none;">Short Name cannot exceed 10 characters</div>
+        </div>
+        <div class="form-group">
     <label for="" class="control-label">System Logo</label><br>
-   
- <div class="avatar" id="avatar">
-                                    <div id="preview">
-                                        <img src="data:image/jpeg;base64,<?php echo $P_PBase64?>" id="avatar-image" class="avatar_img" id="" alt="No Image">
-                                    </div>
-                                    <div class="avatar_upload">
-                                        <label class="upload_label">Choose
-                                            <input type="file" id="upload" name="image" accept="image/*">
-                                        </label>
-                                    </div>
-                                  </div>
-</div>  
+    <div class="avatar2" id="avatar">
+        <div id="preview">
+            <img src="<?php echo htmlspecialchars($S_LBase64, ENT_QUOTES, 'UTF-8'); ?>" id="avatar-image" class="avatar_img" alt="No Image">
+        </div>
+        <div class="avatar_upload">
+            <label class="upload_label">Choose
+                <input type="file" id="upload" name="system_logo" accept="image/*">
+            </label>
+        </div>
+    </div>
 </div>
-<div class="col-md-6">
-<div class="form-group">
-    <label for="" class="control-label">Cover Photo</label>
-</div>
-<div class="form-group d-flex justify-content-center">
-    <img src="../img/background.png " alt="" id="cimg2" class="img-fluid img-thumbnail"> <a href=".."><br>
-    <br>
-    <button type="button" class="btn btn-primary">Choose file</button></a>
-</div>
-</form><button type="button" class="btn btn-sm btn-primary" data-toggle="modal" data-target="#confirmsubmit">Update</button>
-            
+    </div>
+    <div class="col-md-6">
+        <div class="form-group">
+            <label for="" class="control-label">Cover Photo</label>
+        </div>
+        <div class="form-group d-flex justify-content-center">
+            <img src="../img/background.png" alt="" id="cimg2" class="img-fluid img-thumbnail">
+            <a href=".."><br><br>
+                <button type="button" class="btn btn-primary">Choose file</button>
+            </a>
+        </div>
+    </div>
+  
+</form>
+
+<button type="button" class="btn btn-sm btn-primary" data-toggle="modal" data-target="#confirmsubmit">Update</button>
+
 
  
-
+ 
                     </div>
                   <!-- Button to trigger the modal -->
 
@@ -184,6 +194,11 @@ try {
         </div>
     </div>
 </div>
+
+
+
+
+
 
 
                  <br>
@@ -427,6 +442,31 @@ document.addEventListener("DOMContentLoaded", function() {
 });
 
 
+//character limit notifier//
+document.getElementById('short_name').addEventListener('input', function() {
+    var shortNameInput = this.value;
+    var notification = document.getElementById('notification');
+    
+    if (shortNameInput.length > 10) {
+        notification.style.display = 'block';
+    } else {
+        notification.style.display = 'none';
+    }
+});
+
+
+document.getElementById('system_name').addEventListener('input', function() {
+    var systemNameInput = this.value;
+    var nameNotification = document.getElementById('name-notification');
+    
+    if (systemNameInput.length > 20) {
+        nameNotification.style.display = 'block';
+    } else {
+        nameNotification.style.display = 'none';
+    }
+});
+
+//!character limit notifier//
           </script>
           
           <script>
@@ -448,13 +488,85 @@ document.addEventListener("DOMContentLoaded", function() {
         });
     });
 </script>   
-<script src="../user/assets/js/custom.js"></script>
-<script type="text/javascript" src="post.js"></script>
+<script>
+        document.getElementById('imageInput').addEventListener('change', function(event) {
+            const file = event.target.files[0];
+            const maxSize = 6 * 1024 * 1024; // 6MB in bytes
+            const allowedTypes = ['image/png', 'image/jpeg', 'image/jpg'];
+
+            if (file) {
+                if (file.size > maxSize) {
+                    document.getElementById('sizeError').textContent = 'File size exceeds 6MB limit.';
+                    event.target.value = ''; // Reset the file input
+                    return;
+                } else {
+                    document.getElementById('sizeError').textContent = '';
+                }
+
+                if (!allowedTypes.includes(file.type)) {
+                    document.getElementById('typeError').textContent = 'Only PNG, JPG, and JPEG files are allowed.';
+                    event.target.value = ''; // Reset the file input
+                    return;
+                } else {
+                    document.getElementById('typeError').textContent = '';
+                }
+
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const img = document.createElement('img');
+                    img.src = e.target.result;
+                    img.onload = function() {
+                        const preview = document.getElementById('imagePreview');
+                        preview.innerHTML = '';
+                        preview.appendChild(img);
+                        // Set preview size to match image size
+                        //preview.style.width = img.naturalWidth + 'px';
+                        //preview.style.height = img.naturalHeight + 'px';
+                    };
+                };
+                reader.readAsDataURL(file);
+            } else {
+                document.getElementById('imagePreview').innerHTML = '<img src="assets/pic/pics.jpg" alt="" id="cimg2" class="img-thumbnail">';
+            }
+        });
+
+        function adjustHeight() {
+        const textarea = document.getElementById('issue-description');
+        textarea.style.height = 'auto'; // Reset height to auto to shrink if needed
+        textarea.style.height = textarea.scrollHeight + 'px'; // Adjust height to fit the content
+    }
+
+    function updateRemainingCharacters() {
+        const textarea = document.getElementById('issue-description');
+        const remainingChars = 255 - textarea.value.length;
+        document.getElementById('remaining-characters').textContent = `${remainingChars} characters remaining`;
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+        const textarea = document.getElementById('issue-description');
+        textarea.addEventListener('input', function() {
+            adjustHeight();
+            updateRemainingCharacters();
+        });
+
+        // Initial adjustment in case there's already content
+        adjustHeight();
+        updateRemainingCharacters();
+    });
+
+
+
+
+    
+
+    </script>
 <script>
         $(document).ready(function () {
             $('#dataTables-example').dataTable();
         });
     </script>
+    <script src="../user/assets/js/custom.js"></script>
+<script type="text/javascript" src="post.js"></script>
 
 
 </body>

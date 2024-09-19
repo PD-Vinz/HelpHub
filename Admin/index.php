@@ -1,5 +1,8 @@
 ﻿<?php
 include_once("../connection/conn.php");
+require_once('../connection/bdd.php');
+
+
 $pdoConnect = connection();
 $_SERVER['REQUEST_URI'];
 session_start(); // Start the session
@@ -29,15 +32,32 @@ if (!isset($_SESSION["admin_number"])) {
         // Handle the case where no results are found
         echo "No student found with the given student number.";
     }
+
+
+    // for displaying system details
     $query = $pdoConnect->prepare("SELECT system_name, short_name, system_logo, system_cover FROM settings WHERE id = :id");
     $query->execute(['id' => 1]);
     $Datas = $query->fetch(PDO::FETCH_ASSOC);
     $sysName = $Datas['system_name'] ?? '';
     $shortName = $Datas['short_name'] ?? '';
-    $systemLogo = $Datas['system_logo'];
-    $systemCover = $Datas['system_cover'];
-    
+     $systemCover = $Datas['system_cover'];
+     $S_L = $Datas['system_logo'];
+     $S_LBase64 = '';
+     if (!empty($S_L)) {
+         $base64Image = base64_encode($S_L);
+         $imageType = 'image/png'; // Default MIME type
+         $S_LBase64 = 'data:' . $imageType . ';base64,' . $base64Image;
+     }
+ // for displaying system details //end
+
 try {
+    
+	$sql = "SELECT id, title, start, end, color FROM events ";
+
+	$req = $bdd->prepare($sql);
+	$req->execute();
+
+	$events = $req->fetchAll();
 
     $pdoCountQuery = "SELECT * FROM tb_tickets";
     $pdoResult = $pdoConnect->prepare($pdoCountQuery);
@@ -74,6 +94,7 @@ try {
     $pdoResult->execute();
     $transferredTickets = $pdoResult->rowCount();
     
+ 
 } catch (PDOException $e) {
     echo "Error: " . $e->getMessage();
 }
@@ -88,8 +109,10 @@ try {
       <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title><?php echo $sysName?></title>
-    <link rel="icon" href="../img/logo.png" type="image/png">
-  
+    <link rel="icon" href="<?php echo htmlspecialchars($S_LBase64, ENT_QUOTES, 'UTF-8'); ?>" type="image/*">   
+
+    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/main.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/main.min.css" rel="stylesheet" />
 	<!-- BOOTSTRAP STYLES-->
     <link href="assets/css/bootstrap.css" rel="stylesheet" />
      <!-- FONTAWESOME STYLES-->
@@ -189,54 +212,10 @@ try {
       
                  <!-- /. Calendar  -->   
                  <div class="col-md-8">
-                 
-		<div class="container-calendar">
-            <div class="col-md-12">
-			<div id="right">
-				 <h3 id="monthAndYear"></h3>
-				<div class="button-container-calendar">
-					<button id="previous"
-							onclick="previous()">
-						‹
-					</button>
-         
-					<button id="next"
-							onclick="next()">
-						›
-					</button>
-				</div>
-				<table class="table-calendar"
-					id="calendar"
-					data-lang="en">
-					<thead id="thead-month"></thead>
-					<!-- Table body for displaying the calendar -->
-					<tbody id="calendar-body"></tbody>
-				</table>
-				<div class="footer-container-calendar">
-					<label for="month">Jump To: </label>
-					<!-- Dropdowns to select a specific month and year -->
-					<select id="month" onchange="jump()">
-						<option value=0>Jan</option>
-						<option value=1>Feb</option>
-						<option value=2>Mar</option>
-						<option value=3>Apr</option>
-						<option value=4>May</option>
-						<option value=5>Jun</option>
-						<option value=6>Jul</option>
-						<option value=7>Aug</option>
-						<option value=8>Sep</option>
-						<option value=9>Oct</option>
-						<option value=10>Nov</option>
-						<option value=11>Dec</option>
-					</select>
-					<!-- Dropdown to select a specific year -->
-					<select id="year" onchange="jump()"></select>
-				</div>
-			</div>
-		</div>
-	</div>
+                 <div id="calendar"></div>
+		
 	<!-- Include the JavaScript file for the calendar functionality -->
-	<script src="./script.js"></script>
+	
   
                       
                  </div>
@@ -273,6 +252,7 @@ try {
             
          <!-- /. PAGE WRAPPER  -->
         </div>
+        
      <!-- /. WRAPPER  -->
     <!-- SCRIPTS -AT THE BOTOM TO REDUCE THE LOAD TIME-->
     <!-- JQUERY SCRIPTS -->
