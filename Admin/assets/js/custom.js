@@ -215,3 +215,144 @@
     });
 
 }(jQuery));
+
+
+
+
+// Elements
+var upload = document.getElementById("upload");
+var preview = document.getElementById("preview");
+var avatar = document.getElementById("avatar");
+var avatarName = document.getElementById("name");
+var avatarNameChangeBox = document.getElementById("change-name-box");
+
+// Avatars object to manage image list and current active image
+var avatars = {
+  srcList: [],
+  activeKey: 0,
+  
+  add: function(name, src) {
+    this.srcList.push({ name: name, src: src });
+    this.activeKey = this.srcList.length - 1;
+    return this.activeKey;
+  },
+  
+  changeName: function(key, name) {
+    if (!Number.isInteger(key)) return false;
+    this.srcList[key].name = name;
+    if (avatarName.dataset.key == key) {
+      avatarName.textContent = name;
+    }
+    return name;
+  },
+  
+  showNext: function() {
+    var next = this.activeKey + 1;
+    if (next >= this.srcList.length) next = 0;
+    this.showByKey(next);
+  },
+  
+  showLast: function() {
+    var next = this.activeKey - 1;
+    if (next < 0) next = this.srcList.length - 1;
+    this.showByKey(next);
+  },
+  
+  showByKey: function(key) {
+    var item = this.srcList[key];
+    if (!item) return;
+
+    while (preview.firstChild) {
+      preview.removeChild(preview.firstChild);
+    }
+
+    var img = document.createElement("img");
+    img.src = item.src;
+    img.className = "avatar_img--loading";
+    img.onload = function() {
+      img.classList.add("avatar_img");
+    };
+    
+    avatarName.textContent = item.name;
+    avatarName.setAttribute("data-key", key);
+    preview.appendChild(img);
+    this.activeKey = key;
+  }
+};
+
+// Show initial avatar
+function showAvatar(key) {
+  if (!key) {
+    key = avatars.activeKey;
+  }
+  avatars.showByKey(key);
+}
+
+// Handle file upload
+upload.addEventListener("change", handleFiles, false);
+function handleFiles() {
+  var files = this.files;
+  for (var i = 0; i < files.length; i++) {
+    var file = files[i];
+    var imageType = /^image\//;
+
+    if (!imageType.test(file.type)) {
+      avatar.classList.add("avatar--upload-error");
+      setTimeout(function() {
+        avatar.classList.remove("avatar--upload-error");
+      }, 1200);
+      continue;
+    }
+
+    avatar.classList.remove("avatar--upload-error");
+
+    var reader = new FileReader();
+    reader.onload = (function(theFile) {
+      return function(e) {
+        var img = document.createElement("img");
+        img.src = e.target.result;
+        img.className = "avatar_img";
+
+        while (preview.firstChild) {
+          preview.removeChild(preview.firstChild);
+        }
+
+        preview.appendChild(img);
+
+        var key = avatars.add(theFile.name, e.target.result);
+        avatarName.textContent = theFile.name;
+        avatarName.setAttribute("data-key", key);
+      };
+    })(file);
+    reader.readAsDataURL(file);
+  }
+}
+
+// Change avatar name on Enter key or blur
+window.changeAvatarName = function(event, key, name) {
+  if (event.keyCode != 13 && event != "blur") return;
+  key = parseInt(key);
+  if (!name) return;
+  avatars.changeName(key, name);
+  document.activeElement.blur();
+  window.getSelection().removeAllRanges();
+};
+
+// Navigate avatars
+window.changeAvatar = function(dir) {
+  if (dir === "next") {
+    avatars.showNext();
+  } else {
+    avatars.showLast();
+  }
+};
+
+// Handle aria upload
+window.handleAriaUpload = function(e, obj) {
+  if (e.keyCode == 13) {
+    obj.click();
+  }
+};
+
+// Initial display
+showAvatar();

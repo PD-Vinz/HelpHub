@@ -37,6 +37,20 @@ if (!isset($_SESSION["admin_number"])) {
     }
     
 
+    // for displaying system details
+    $query = $pdoConnect->prepare("SELECT system_name, short_name, system_logo, system_cover FROM settings WHERE id = :id");
+    $query->execute(['id' => 1]);
+    $Datas = $query->fetch(PDO::FETCH_ASSOC);
+    $sysName = $Datas['system_name'] ?? '';
+    $shortName = $Datas['short_name'] ?? '';
+     $systemCover = $Datas['system_cover'];
+     $S_L = $Datas['system_logo'];
+     $S_LBase64 = '';
+     if (!empty($S_L)) {
+         $base64Image = base64_encode($S_L);
+         $imageType = 'image/png'; // Default MIME type
+         $S_LBase64 = 'data:' . $imageType . ';base64,' . $base64Image;
+     }
 
     try {
 
@@ -74,6 +88,12 @@ if (!isset($_SESSION["admin_number"])) {
         $pdoResult->bindParam(':user', $ticket_user, PDO::PARAM_STR);
         $pdoResult->execute();
         $dueTickets = $pdoResult->rowCount();
+
+        $pdoCountQuery = "SELECT * FROM tb_tickets WHERE status = 'Transferred' && user_type = :user";
+        $pdoResult = $pdoConnect->prepare($pdoCountQuery);
+        $pdoResult->bindParam(':user', $ticket_user, PDO::PARAM_STR);
+        $pdoResult->execute();
+        $transferredTickets = $pdoResult->rowCount();
     
     } catch (PDOException $e) {
         echo "Error: " . $e->getMessage();
@@ -87,10 +107,15 @@ if (!isset($_SESSION["admin_number"])) {
 <head>
       <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>DHVSU MIS - HelpHub</title>
+
+    <title><?php echo $sysName?></title>
+    <link rel="icon" href="<?php echo htmlspecialchars($S_LBase64, ENT_QUOTES, 'UTF-8'); ?>" type="image/*">
+
   
 	<!-- BOOTSTRAP STYLES-->
     <link href="assets/css/bootstrap.css" rel="stylesheet" />
+
+    <link href="assets/js/DataTables/datatables.min.css" rel="stylesheet">
      <!-- FONTAWESOME STYLES-->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
      <!-- MORRIS CHART STYLES-->
@@ -178,8 +203,10 @@ if (!isset($_SESSION["admin_number"])) {
                 <i class="fa fa-upload" aria-hidden="true"></i>
                 </span>
                 <div class="text-box" >
-                    <p class="main-text">0 Transferred</p>
-                    <p class="text-muted">Tickets</p>
+
+                    <p class="main-text"><?php echo $transferredTickets?> Transferred</p>
+                   <!-- <p class="text-muted">Tickets</p> -->
+
                 </div>
              </div>
 		     </div>
@@ -197,13 +224,13 @@ if (!isset($_SESSION["admin_number"])) {
                                 <table class="table table-striped table-bordered table-hover" id="dataTables-example">
                                     <thead>
                                         <tr>
+                                            <th><i class="fa fa-exclamation-circle" aria-hidden="true"></i></th>
                                             <th>Ticket ID</th>
                                             <th>Employee</th>
                                             <th>Date Submitted</th>
                                             <th>Status</th>
                                             <th>Duration</th>
                                             <th>Issue</th>
-                                            <th>Status</th>
                                             <th>Details</th>
                                         </tr>
                                     </thead>
@@ -216,14 +243,16 @@ if (!isset($_SESSION["admin_number"])) {
                 $pdoExec = $pdoResult->execute();
                 while ($row = $pdoResult->fetch(PDO::FETCH_ASSOC)){
                     extract($row);
-                    echo "<tr class='odd gradeX'>";
-                    echo "<td>$ticket_id</td>";
+
+                    echo "<tr class='odd gradeX . $statusClass . '>";
+                    echo "<td>(!)</td>";
+                    echo "<td>$ticket_id</td>"; 
+                    echo "<td>$status</td>";
                     echo "<td>$employee</td>";
                     echo "<td>$created_date</td>";
                     echo "<td>$full_name</td>";
                     echo "<td>$issue</td>";
-                    echo "<td>$description</td>";
-                    echo "<td>$status</td>";
+
                     echo "<td>
 
                         <div class='panel-body-ticket'>
@@ -560,10 +589,77 @@ if (!isset($_SESSION["admin_number"])) {
 </script>
 
  <!-- DATA TABLE SCRIPTS -->
-<script> </script>
+
+ <script> 
+    $(document).ready(function() {
+        $.fn.dataTable.ext.type.order['custom-status-pre'] = function (Status) {
+            switch (Status) {
+                case 'Pending':
+                    return 1;
+                case 'Processing':
+                    return 2;
+                case 'Returned':
+                    return 3;
+                case 'Transferred':
+                    return 4;
+                case 'Completed':
+                    return 5;
+                default:
+                    return 6;
+            }
+        };
+
+        $('#dataTables-example').DataTable({
+            "order": [[2, 'asc']],  // Order by 'Status' column (index 1)
+            "columnDefs": [
+                {
+                    "targets": 2,  // Target the 'Status' column (index 1)
+                    "orderData": 2,  // Sort by 'Status'
+                    "type": "custom-status",  // Use the custom sort type
+                },
+                {   
+                    "width": "5%", 
+                    "targets": [0],  // Adjust width for columns 0 and 1
+                    
+                },
+                {   
+                    "width": "9%", 
+                    "targets": [1],  // Adjust width for columns 0 and 1
+                },
+                {   
+                    "width": "7%", 
+                    "targets": [2],  // Adjust width for columns 0 and 1
+                },
+                {   
+                    "width": "10%", 
+                    "targets": [2],  // Adjust width for column 5
+                },
+                {   
+                    "width": "20%", 
+                    "targets": [3,5],  // Adjust width for column 2
+                },
+                {   
+                    "width": "13%", 
+                    "targets": [4],  // Adjust width for column 3
+                }, 
+                {   
+                    "width": "15%", 
+                    "targets": [6],  // Adjust width for column 2
+                }, 
+                {   
+                    "width": "5%", 
+                    "targets": [7],  // Adjust width for column 2
+                },
+                
+            ]
+        });
+    });
+</script>
+
+
     <!-- DATA TABLE SCRIPTS -->
     <script src="assets/js/dataTables/jquery.dataTables.js"></script>
-    <script src="assets/js/dataTables/dataTables.bootstrap.js"></script>
+    <script src="assets/js/dataTables/dataTables.min.js"></script>
         <script>
             $(document).ready(function () {
                 $('#dataTables-example').dataTable();

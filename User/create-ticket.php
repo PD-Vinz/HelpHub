@@ -266,17 +266,12 @@ input[type="file"]::file-selector-button {
                         <img src="assets/pic/head.png" alt="Technical support for DHVSU students">  
                 <div class="container-create">
 
-<form class="issue-form" action="ticket-submit.php" method="POST" enctype="multipart/form-data">
+                <form class="issue-form" id="issueForm" action="ticket-submit.php" method="POST" enctype="multipart/form-data">
 
                         <div class="form-group">
                             <label for="category">ISSUE</label>
                             <select id="category" name="category" class="form-control dropdown" required>
-                                <!--
-                                <option value="">SELECT PROBLEM</option>
-                                <option value="DHVSU EMAIL">DHVSU EMAIL</option>
-                                <option value="DHVSU PORTAL">DHVSU PORTAL</option>
-                                <option value="DHVSU SMS">DHVSU SMS</option>
-                                -->
+                               
                             </select>
                         </div>
 
@@ -445,17 +440,57 @@ function populateDropdown(fileName, dropdownId) {
         .catch(error => console.error(`Error fetching the text file (${fileName}):`, error));
 }
 // Pass the PHP variable to JavaScript
-var identity = "<?php echo $identity; ?>";
+// Function to populate the dropdown
+function populateDropdown(url, dropdownId) {
+    var dropdown = document.getElementById(dropdownId);
+    // Clear existing options
+    dropdown.innerHTML = '';
 
-// Now you can make a condition based on the identity value
+    // Add the "NONE" option as the first option
+    var noneOption = document.createElement('option');
+    noneOption.value = 'Select an issue';
+    noneOption.text = 'Select an issue';
+    dropdown.add(noneOption);
+
+    // Fetch options from the provided URL
+    fetch(url)
+        .then(response => response.text())
+        .then(data => {
+            var options = data.split('\n');
+            options.forEach(option => {
+                if (option.trim()) {
+                    var opt = document.createElement('option');
+                    opt.value = option.trim();
+                    opt.text = option.trim();
+                    dropdown.add(opt);
+                }
+            });
+        })
+        .catch(error => console.error('Error populating dropdown:', error));
+}
+
+// Function to validate the form
+function validateForm(event) {
+    var categorySelect = document.getElementById('category');
+    var selectedValue = categorySelect.value;
+    
+    if (selectedValue === "Select an issue") {
+        event.preventDefault(); // Prevent form submission
+        alert("Please select the issue you want to report.");
+    }
+}
+
+// Populate the dropdown based on identity
+var identity = "<?php echo $identity; ?>";
 if (identity === "Employee") {
     populateDropdown('../issue-template/employee-issue.txt', 'category');
 } else if (identity === "Student") {
     populateDropdown('../issue-template/student-issue.txt', 'category');
 }
-// Call the function to populate the dropdowns
 
-    </script>
+// Add form validation
+document.getElementById('issueForm').addEventListener('submit', validateForm);
+   </script>
 </body>
 </html>
 

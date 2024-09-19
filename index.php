@@ -4,6 +4,11 @@ session_start();
 
 include_once("connection/conn.php");
 $pdoConnect = connection();
+// Redirect to admin index if admin session exists
+if (isset($_SESSION["admin_number"])) {
+    header("Location: Admin/index.php");
+    exit(); // Prevent further execution after redirection
+}
 
 // Redirect to student dashboard if student session exists
 if (isset($_SESSION["user_id"])) {
@@ -11,12 +16,22 @@ if (isset($_SESSION["user_id"])) {
     exit(); // Prevent further execution after redirection
 }
 
-// Redirect to admin index if admin session exists
-if (isset($_SESSION["admin_number"])) {
-    header("Location: Admin/index.php");
-    exit(); // Prevent further execution after redirection
-}
 
+ // for displaying system details
+ $query = $pdoConnect->prepare("SELECT system_name, short_name, system_logo, system_cover FROM settings WHERE id = :id");
+ $query->execute(['id' => 1]);
+ $Datas = $query->fetch(PDO::FETCH_ASSOC);
+ $sysName = $Datas['system_name'] ?? '';
+ $shortName = $Datas['short_name'] ?? '';
+  $systemCover = $Datas['system_cover'];
+  $S_L = $Datas['system_logo'];
+  $S_LBase64 = '';
+  if (!empty($S_L)) {
+      $base64Image = base64_encode($S_L);
+      $imageType = 'image/png'; // Default MIME type
+      $S_LBase64 = 'data:' . $imageType . ';base64,' . $base64Image;
+  }
+// for displaying system details //end
 if (isset($_POST['login'])) {
     try {
         $pdoConnect->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
@@ -29,7 +44,18 @@ if (isset($_POST['login'])) {
 //            header("Location: first-time/verify.php");
 //            exit(); // Prevent further execution after redirection
 //        }
+ // Check in mis_employees table
+ $pdoAdminQuery = "SELECT * FROM mis_employees WHERE admin_number = :username AND password = :pass";
+ $pdoResult3 = $pdoConnect->prepare($pdoAdminQuery);
+ $pdoResult3->bindParam(':username', $username);
+ $pdoResult3->bindParam(':pass', $pass);
+ $pdoResult3->execute();
 
+ if ($pdoResult3->rowCount() > 0) {
+     $_SESSION["admin_number"] = $username;
+     header("Location: Admin/index.php");
+     exit(); // Prevent further execution after redirection
+ }
         // Check in student_user table
 
         $pdoUserQuery1 = "SELECT * FROM student_user WHERE user_id = :username AND password = :pass";
@@ -57,19 +83,7 @@ if (isset($_POST['login'])) {
             exit(); // Prevent further execution after redirection
         }
 
-        // Check in mis_employees table
-        $pdoAdminQuery = "SELECT * FROM mis_employees WHERE admin_number = :username AND password = :pass";
-        $pdoResult3 = $pdoConnect->prepare($pdoAdminQuery);
-        $pdoResult3->bindParam(':username', $username);
-        $pdoResult3->bindParam(':pass', $pass);
-        $pdoResult3->execute();
-
-        if ($pdoResult3->rowCount() > 0) {
-            $_SESSION["admin_number"] = $username;
-            header("Location: Admin/index.php");
-            exit(); // Prevent further execution after redirection
-        }
-
+       
         // If no match found in both tables
         $errorMessage = "Wrong Username or Password";
         echo $errorMessage;
@@ -86,7 +100,8 @@ if (isset($_POST['login'])) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>DHVSU MIS - HelpHub</title>
-    <link rel="icon" href="img/Logo.png" type="image/png">
+    <link rel="icon" href="<?php echo htmlspecialchars($S_LBase64, ENT_QUOTES, 'UTF-8'); ?>" type="image/*">
+   
     <link  rel="stylesheet" href="index.css">
 </head>
 <body>

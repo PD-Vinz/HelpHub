@@ -37,6 +37,21 @@ if (!isset($_SESSION["admin_number"])) {
         // Handle the case where no results are found
         echo "No Admin found with the given student number.";
     }
+     // for displaying system details
+     $query = $pdoConnect->prepare("SELECT system_name, short_name, system_logo, system_cover FROM settings WHERE id = :id");
+     $query->execute(['id' => 1]);
+     $Datas = $query->fetch(PDO::FETCH_ASSOC);
+     $sysName = $Datas['system_name'] ?? '';
+     $shortName = $Datas['short_name'] ?? '';
+      $systemCover = $Datas['system_cover'];
+      $S_L = $Datas['system_logo'];
+      $S_LBase64 = '';
+      if (!empty($S_L)) {
+          $base64Image = base64_encode($S_L);
+          $imageType = 'image/png'; // Default MIME type
+          $S_LBase64 = 'data:' . $imageType . ';base64,' . $base64Image;
+      }
+  // for displaying system details //end
 }
 ?>
 
@@ -45,7 +60,10 @@ if (!isset($_SESSION["admin_number"])) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>USER</title>
+
+    <title><?php echo $sysName?></title>
+    <link rel="icon" href="<?php echo htmlspecialchars($S_LBase64, ENT_QUOTES, 'UTF-8'); ?>" type="image/*">
+
     <!-- BOOTSTRAP STYLES -->
     <link href="assets/css/bootstrap.css" rel="stylesheet">
   <!-- FONTAWESOME STYLES-->

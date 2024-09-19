@@ -1,16 +1,19 @@
 ﻿<?php
 include_once("../connection/conn.php");
+require_once('../connection/bdd.php');
+
+
 $pdoConnect = connection();
-
+$_SERVER['REQUEST_URI'];
 session_start(); // Start the session
-
+ 
 // Check if the session variable is set
 if (!isset($_SESSION["admin_number"])) {
     header("Location: ../index.php");
     exit(); // Prevent further execution after redirection
 } else {
     $id = $_SESSION["admin_number"];
-
+   
     $pdoUserQuery = "SELECT * FROM mis_employees WHERE admin_number = :number";
     $pdoResult = $pdoConnect->prepare($pdoUserQuery);
     $pdoResult->bindParam(':number', $id);
@@ -30,7 +33,31 @@ if (!isset($_SESSION["admin_number"])) {
         echo "No student found with the given student number.";
     }
 
+
+
+    // for displaying system details
+    $query = $pdoConnect->prepare("SELECT system_name, short_name, system_logo, system_cover FROM settings WHERE id = :id");
+    $query->execute(['id' => 1]);
+    $Datas = $query->fetch(PDO::FETCH_ASSOC);
+    $sysName = $Datas['system_name'] ?? '';
+    $shortName = $Datas['short_name'] ?? '';
+     $systemCover = $Datas['system_cover'];
+     $S_L = $Datas['system_logo'];
+     $S_LBase64 = '';
+     if (!empty($S_L)) {
+         $base64Image = base64_encode($S_L);
+         $imageType = 'image/png'; // Default MIME type
+         $S_LBase64 = 'data:' . $imageType . ';base64,' . $base64Image;
+     }
+ // for displaying system details //end
 try {
+    
+	$sql = "SELECT id, title, start, end, color FROM events ";
+
+	$req = $bdd->prepare($sql);
+	$req->execute();
+
+	$events = $req->fetchAll();
 
     $pdoCountQuery = "SELECT * FROM tb_tickets";
     $pdoResult = $pdoConnect->prepare($pdoCountQuery);
@@ -62,6 +89,12 @@ try {
     $pdoResult->execute();
     $dueTickets = $pdoResult->rowCount();
 
+    $pdoCountQuery = "SELECT * FROM tb_tickets WHERE status = 'Transferred'";
+    $pdoResult = $pdoConnect->prepare($pdoCountQuery);
+    $pdoResult->execute();
+    $transferredTickets = $pdoResult->rowCount();
+    
+ 
 } catch (PDOException $e) {
     echo "Error: " . $e->getMessage();
 }
@@ -75,9 +108,13 @@ try {
 <head>
       <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>DHVSU MIS - HelpHub</title>
-    <link rel="icon" href="../img/logo.png" type="image/png">
-  
+
+    <title><?php echo $sysName?></title>
+    <link rel="icon" href="<?php echo htmlspecialchars($S_LBase64, ENT_QUOTES, 'UTF-8'); ?>" type="image/*">   
+
+    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/main.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/main.min.css" rel="stylesheet" />
+
 	<!-- BOOTSTRAP STYLES-->
     <link href="assets/css/bootstrap.css" rel="stylesheet" />
      <!-- FONTAWESOME STYLES-->
@@ -103,7 +140,10 @@ try {
         
         <div id="page-wrapper" >
             <div id="page-inner">
-                <div class="row">
+
+            <div class="row">
+            <div class="col-md-12">
+
                     <div class="col-md-12">
                      <h2>Admin Dashboard</h2>   
                         <h5>Welcome <?php echo $Name?>, Love to see you back. </h5>
@@ -113,8 +153,11 @@ try {
                   <hr />
                   <div class="row">
 
-<!--<a href="ticket-pending.php">  -->            
-            <div class="col-md-4 col-sm-6 col-xs-6">           
+<!--<a href="ticket-pending.php">  -->       <div class="col-md-12">
+    
+<div class="col-md-2 col-sm-6 col-xs-6">        
+    
+
             <div class="panel panel-back noti-box">
                 <span class="icon-box bg-color-yellow set-icon">
                 <i class="fa fa-hourglass-half " aria-hidden="true"></i>
@@ -188,17 +231,21 @@ try {
                 <i class="fa fa-upload" aria-hidden="true"></i>
                 </span>
                 <div class="text-box" >
-                    <p class="main-text">0 Transferred</p>
-                    <p class="text-muted">Tickets</p>
+
+                    <p class="main-text"><?php echo $transferredTickets?> Transferred</p>
+                   <!-- <p class="text-muted">Tickets</p> -->
+
                 </div>
              </div>
 		     </div>
 <!--</a>-->
-			</div>  
+			</div>  </div> 
       
                  <!-- /. Calendar  -->   
                  <div class="col-md-8">
-                 <div class="wrapper">
+
+
+           <div class="wrapper">
 		<div class="container-calendar">
 			<div id="right">
 				 <h3 id="monthAndYear"></h3>
@@ -243,10 +290,13 @@ try {
 			</div>
 		</div>
 	</div>
+
 	<!-- Include the JavaScript file for the calendar functionality -->
-	<script src="./script.js"></script>
+	
   
-                 </div>     
+
+                      
+                 </div>
 
 <br>
 <br>
@@ -271,8 +321,8 @@ try {
                 </div> 
         </div>
     
-        
-           </div>   
+            </div>
+           </div>   </div>
                  <!-- /. ROW  -->
                          
     </div>
@@ -280,6 +330,7 @@ try {
             </div>
          <!-- /. PAGE WRAPPER  -->
         </div>
+        
      <!-- /. WRAPPER  -->
      <?php require_once ('../footer.php')?>
     <!-- SCRIPTS -AT THE BOTOM TO REDUCE THE LOAD TIME-->
@@ -343,8 +394,8 @@ const toggle = () => classList.toggle("active");
 window.addEventListener("click", function (e) {
   if (!btn.contains(e.target)) classList.remove("active");
 });
+
 </script>
-    
-   
+
 </body>
 </html>
