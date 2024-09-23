@@ -151,14 +151,14 @@ if (!empty($S_L)) {
     <div class="modal-dialog3">
         <div class="modal-content">
             <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true"  onclick="window.location.reload();">×</button>
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
                 <h4 class="modal-title">Confirmation</h4>
             </div>
             <div class="modal-body" id="modalBodyText">
                <!-- The text will be updated dynamically -->
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal"  onclick="window.location.reload();">Cancel</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
                 <!-- Confirm button that submits the form -->
                 <button id="confirmSubmitButton" class="btn btn-primary">Confirm</button>
             </div>
@@ -461,14 +461,23 @@ document.getElementById('system_name').addEventListener('input', function() {
         });
     });
 </script>   
-<script>// Prevent the form from submitting when the checkbox is clicked
+<script>
+    // Toggle the slider only when the confirm button is clicked
+    $('#confirmsubmit').on('click', function() {
+        $('#acceptTicketsCheckbox').prop('checked', !$('#acceptTicketsCheckbox').prop('checked'));
+    });
+
+    // Refresh the page when the modal is closed (cancel or X)
+    $('#myModal').on('hidden.bs.modal', function (){
+        location.reload();
+    });
+
 document.getElementById('acceptTicketsCheckbox').addEventListener('change', function (e) {
     // Prevent the default form submission
     e.preventDefault();
     
     // Open the modal
     $('#confirmsubmit').modal('show');
-
     
 });
 
