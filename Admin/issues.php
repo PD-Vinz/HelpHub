@@ -193,7 +193,7 @@ try {
                 
                  <!-- /. ROW  -->
                  </div> 
-                </div>
+                </div><?php include '../footer.php' ?>
              <!-- /. PAGE INNER  -->
             </div>
             

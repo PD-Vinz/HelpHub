@@ -124,6 +124,7 @@ try {
 
 <body>
     <div id="wrapper">
+        
         <nav class="navbar navbar-default navbar-cls-top " role="navigation" style="margin-bottom: 0">
             <div class="navbar-header">
                 <button type="button" class="navbar-toggle" data-toggle="collapse"
@@ -268,66 +269,13 @@ try {
                         </div>
                     </div>
                 </div>
-                <div id="page-inner">
-                    <div class="row">
-                        <div class="col-md-12">
-                            <h2>CALENDAR</h2>
-                        </div>
-                    </div>
-                 <!-- /. Calendar  -->   
-                 <div class="col-md-20">
-                  <div class="wrapper">
-     <div class="container-calendar">
-       <div id="right">
-          <h3 id="monthAndYear"></h3>
-         <div class="button-container-calendar">
-           <button id="previous"
-               onclick="previous()">
-             ‹
-           </button>
-          
-           <button id="next"
-               onclick="next()">
-             ›
-           </button>
-         </div>
-         <table class="table-calendar"
-           id="calendar"
-           data-lang="en">
-           <thead id="thead-month"></thead>
-           <!-- Table body for displaying the calendar -->
-           <tbody id="calendar-body"></tbody>
-         </table>
-         <div class="footer-container-calendar">
-           <label for="month">Jump To: </label>
-           <!-- Dropdowns to select a specific month and year -->
-           <select id="month" onchange="jump()">
-             <option value=0>Jan</option>
-             <option value=1>Feb</option>
-             <option value=2>Mar</option>
-             <option value=3>Apr</option>
-             <option value=4>May</option>
-             <option value=5>Jun</option>
-             <option value=6>Jul</option>
-             <option value=7>Aug</option>
-             <option value=8>Sep</option>
-             <option value=9>Oct</option>
-             <option value=10>Nov</option>
-             <option value=11>Dec</option>
-           </select>
-           <!-- Dropdown to select a specific year -->
-           <select id="year" onchange="jump()"></select>
-         </div>
-       </div>
-     </div>
-   </div>
-   <!-- Include the JavaScript file for the calendar functionality -->
-   <script src="assets/js/script.js"></script>
-   
-                <!-- /. ROW  -->
-            </div>
-            <!-- /. PAGE INNER  -->
-        </div>
+                <?php
+// Assuming you have a way to track the user's role
+$role = $identity// 'admin' or 'user'
+// Pass the role to the iframe URL or JavaScript
+?>
+                 <iframe class="panel panel-default" src="../FullCalendar-BS3-PHP-MySQL-master/index.php" style="width: 100%; min-height:700px; border-radius: 10px; margin-bottom:8px"></iframe>
+
         <!-- /. PAGE WRAPPER  -->
     </div>
     <!-- /. WRAPPER  -->

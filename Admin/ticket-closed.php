@@ -381,7 +381,7 @@ $pdoExec = $pdoResult->execute();
                              
                       
 
-    </div>
+    </div><?php include '../footer.php' ?>
              <!-- /. PAGE INNER  -->
             </div>
          <!-- /. PAGE WRAPPER  -->
@@ -465,6 +465,45 @@ $pdoExec = $pdoResult->execute();
     <!-- DATA TABLE SCRIPTS -->
     <script src="assets/js/dataTables/jquery.dataTables.js"></script>
     <script src="assets/js/dataTables/dataTables.min.js"></script>
+    <script>
+    $(document).ready(function() {
+        $('#dataTables-example').DataTable({
+            "order": [
+                [0, 'asc']],
+
+            "columnDefs": [
+                {   
+                    "width": "10%", 
+                    "targets": [1],  // Target Age column
+                    "visible": true // Hide Age column
+                },   
+                {   
+                    "width": "15%", 
+                    "targets": [2],  // Target Age column
+                    "visible": true // Hide Age column
+                },
+                {   
+                    "width": "15%", 
+                    "targets": [3,4],  // Target Age column
+                    "visible": true // Hide Age column
+                }, 
+                {   
+                    "width": "35%", 
+                    "targets": [5],  // Target Age column
+                    "visible": true // Hide Age column
+                    
+                },
+                {   
+                    "width": "5%", 
+                    "targets": [6],  // Target Age column
+                    "visible": true, // Hide Age column
+                    "className": "text-center"                },
+            ]
+        });
+
+        
+    });
+</script>
         <script>
             $(document).ready(function () {
                 $('#dataTables-example').dataTable();

@@ -160,7 +160,7 @@ try {
                                 <table class="table table-striped table-bordered table-hover" id="dataTables-example">
                                     <thead>
                                         <tr>
-                                        <th><i class="fa fa-exclamation-circle" aria-hidden="true"></i></th>
+                                        <th>Priority</th>
                                             <th style="width:10%">Ticket ID</th>
                                             <th style="width:15%">Time opened</th>
                                             <th>Name</th>
@@ -170,14 +170,25 @@ try {
                                         </tr>
                                     </thead>
                                     <tbody>
-            <?php
+                                    <?php
                 while ($row = $pdoResult->fetch(PDO::FETCH_ASSOC)){
                     extract($row);
                     $screenshotBase64 = base64_encode($screenshot);
-            ?>
 
+
+                    $createdDate = new DateTime($row['created_date']);
+                    $now = new DateTime();
+                    $interval = $now->diff($createdDate);
+                    $hoursElapsed = $interval->h + ($interval->days * 24);
+                
+                    $priorityIcon = '';
+                    if (in_array($row['status'], ['Processing']) && $hoursElapsed >= 48) {
+                        $priorityIcon = '<i class="fa fa-exclamation-circle" aria-hidden="true"></i>';
+                    }
+
+            ?>
                     <tr class='odd gradeX'>
-                        <td><i class="fa fa-exclamation-circle" aria-hidden="true"></i></td>
+                    <td><?php echo ($priorityIcon);?></td>
                     <td><?php echo htmlspecialchars($ticket_id); ?></td>
                     <td><?php echo htmlspecialchars($opened_date); ?></td>
                     <td><?php echo htmlspecialchars($full_name); ?></td>
@@ -255,7 +266,7 @@ try {
                                         </div>
                                       
                                         <div class="form-group">
-                                            <label>Student ID‎ ‎ ‎ </label>
+                                            <label>User ID‎ ‎ ‎ </label>
                                             <input class="form-control" value="<?php echo htmlspecialchars($user_number); ?>" disabled/>
                                           
                                         </div>
@@ -278,17 +289,21 @@ try {
                                           
                                         </div>
                                        
+                                        
+<?php if ( $ticket_user === 'Student'): ?>
                                         <div class="form-group">
                                             <label>Course‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ </label>
+                                            
                                             <input class="form-control" value="<?php echo htmlspecialchars($course); ?>" disabled/>
-                                             
+                                            <br><br>
                                         </div>
                                         
                                         <div class="form-group">
-                                            <label>Year & Section ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ </label>
+                                            <label>Year & Section‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ </label>
                                             <input class="form-control" value="<?php echo htmlspecialchars($year_section); ?>" disabled/>
-                                             
+                                            <br><br>
                                         </div>
+                                        <?php endif; ?>
                                         
                                         <div class="form-group">
                                             <label>Campus ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ </label>
@@ -387,7 +402,7 @@ try {
                 </div>
             </div>
                 
-               
+            <?php include '../footer.php' ?>
     </div>
              <!-- /. PAGE INNER  -->
             </div>
@@ -409,7 +424,7 @@ try {
     $(document).ready(function() {
         $('#dataTables-example').DataTable({
             "order": [
-                [1, 'asc']],
+                [0, 'asc']],
 
             "columnDefs": [
                 {   
@@ -418,7 +433,7 @@ try {
                     "visible": true // Hide Age column
                 },   
                 {   
-                    "width": "13%", 
+                    "width": "15%", 
                     "targets": [2],  // Target Age column
                     "visible": true // Hide Age column
                 },
@@ -436,10 +451,12 @@ try {
                 {   
                     "width": "5%", 
                     "targets": [0],  // Target Age column
-                    "visible": true // Hide Age column
-                },
+                    "visible": true, // Hide Age column
+                    "className": "text-center"                },
             ]
         });
+
+        
     });
 </script>
         <script>

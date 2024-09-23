@@ -30,11 +30,7 @@ if (!isset($_SESSION["admin_number"])) {
 try {
 
 
-    $sql = "SELECT id, event_date, event_description, event_title FROM tb_calendar";
-    $req = $pdoConnect->prepare($sql);
-    $req->execute();
-    $events = $req->fetchAll(PDO::FETCH_ASSOC);
-
+   
     
      // for displaying system details
      $query = $pdoConnect->prepare("SELECT system_name, short_name, system_logo, system_cover FROM settings WHERE id = :id");
@@ -79,7 +75,14 @@ try {
 ?>
 
 <nav class="navbar navbar-default navbar-cls-top " role="navigation" style="margin-bottom: 0">
-    <div class="navbar-header">      
+    <div class="navbar-header">  
+         <button type="button" class="navbar-toggle" data-toggle="collapse"
+                    data-target=".sidebar-collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>    
         <a class="navbar-brand" href="index.php"><?php echo $shortName?></a>
 
     </div>
@@ -90,6 +93,7 @@ try {
             <span class="ml-3"><?php echo $Name?></span>
             <span class="fa fa-caret-down">
             <span class="sr-only">Toggle Dropdown</span>
+            
           </button>
           <div class="dropdown-menu" role="menu">
             <a class="dropdown-item" href="profile.php"><span class="fa fa-user"></span> My Account</a>
@@ -185,7 +189,7 @@ $currentFile = basename($_SERVER['PHP_SELF']);
 
         <li>
             <a class="<?= ($currentFile == 'history-log.php') ? 'active-menu' : '' ?>" href="history-log.php">
-                <i class="fa-regular fa-clock fa-xl"></i> Log History
+                <i class="fa-regular fa-clock fa-xl"></i> History Log
             </a>
         </li>
 

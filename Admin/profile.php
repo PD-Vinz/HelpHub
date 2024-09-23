@@ -19,6 +19,7 @@ if (!isset($_SESSION["admin_number"])) {
     $Data = $pdoResult->fetch(PDO::FETCH_ASSOC);
 
     if ($Data) {
+        $user_id = $Data['admin_number'];
         $Email_Add = $Data['email_address'];
         $Name = $Data['f_name'];
         $lname = $Data['l_name'];
@@ -91,12 +92,7 @@ if (!isset($_SESSION["admin_number"])) {
                             <h1 class="text-primary"></h1>
                             <hr>
                             <div class="row">
-                                <nav aria-label="breadcrumb" class="main-breadcrumb">
-                                    <ol class="breadcrumb">
-                                      <li class="breadcruMB"><a href="index.php">HOME</a></li>
-                                      <li class="breadcrumb-item active" aria-current="page">PROFILE</li>
-                                    </ol>
-                                  </nav>
+                               
                                 <!-- left column -->
                                 <div class="col-md-3">
                                     <div class="text-center">
@@ -108,13 +104,13 @@ if (!isset($_SESSION["admin_number"])) {
         
                                 <!-- edit form column -->
                                 <div class="col-md-9 personal-info">
-                                    <div> <h3>PERSONAL INFORMATION</h3>
+                                    <div>
                                     </div>
                                     <form class="form-horizontal" role="form">
                                         <div class="form-group">
                                             <label class="col-lg-3 control-label">USER ID</label>
                                             <div class="col-lg-8">
-                                                <input class="form-control" type="text" value="<?php echo $id?>" disabled>
+                                                <input class="form-control" type="text" value="<?php echo $user_id?>" disabled>
                                             </div>
                                         </div>
                                         <div class="form-group">
@@ -143,23 +139,23 @@ if (!isset($_SESSION["admin_number"])) {
                                         </div>
                                        
                         
-                                        <div class="modal-footer">	
-                                            <a href="edit-profile.php"><button type="button" class="btn btn-primary">UPDATE INFORMATION</button></a>
-                                        </div>
+                                       
                                         
 
 
 
                                         
                                                 </div>
-                                            </div>
+                                            </div><div class="modal-footer">	
+                                            <a href="edit-profile.php"><button type="button" class="btn btn-primary">UPDATE INFORMATION</button></a>
+                                        </div>
                                         </div>
                                     </form>
                                 </div>
                             </div>
-                            <?php require_once('../footer.php') ?>
-                        </div>
-                        <hr>
+                            
+                        </div><?php require_once('../footer.php') ?>
+                        
                     </div>
                 </div>
             </div>

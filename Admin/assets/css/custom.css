@@ -18,21 +18,20 @@ body {
 
  #wrapper {
     width: 100%;
-    background:#202020;
+    background:#2e1b1b;
 }
 
 #page-wrapper {
     padding: 15px 15px;
-    min-height: 600px;
-    background:#F3F3F3;
-   
+    min-height: 900px;
+    background:#eae5e5;
 }
 #page-inner {
     width:100%;
     margin:10px 20px 10px 0px;
-    background-color:#fff!important;
+    background-color:#f7f7f2!important;
     padding:10px;
-    min-height:700px;
+    min-height:900px;
     border-radius: 10px;
 }
 
@@ -43,7 +42,7 @@ body {
     border:1px solid #f3f3f3;
 }
 h2 {
-    color: #f00;
+    color: rgb(127, 42, 42);;
 }
 h4 {
     padding-top:10px;
@@ -72,6 +71,7 @@ p {
 min-height: 75px;
 padding: 15px;
 line-height: 50px;
+background-color:#f8e9dd;
 }
 
     .noti-box .icon-box {
@@ -151,7 +151,7 @@ color: #fff;
         color: #fff;
         }
         .bg-color-yellow {
-            background-color: #f3f315;
+            background-color: #d7d757;
             color: #fff;
             }  
             .bg-color-orange {
@@ -230,7 +230,7 @@ max-width:170px;
 
 .navbar-cls-top .navbar-brand {
 	color: #fff;
-background: #A70303;
+background: #6b0200 (5 7% 46%);
 width: 230px;
 text-align: center;
 height: 60px;
@@ -238,11 +238,15 @@ font-size: 30px;
 font-weight: 700;
 }
 .active-menu {
-    background-color:#C90000!important;
+    background-color:#6b0200 !important;
     color: white !important;
     
 }
-
+.active-menu:hover {
+  background-color:#780e0c !important;
+  color: white !important;
+  
+} 
 .arrow {
     float: right;
 }
@@ -276,7 +280,7 @@ font-weight: 700;
 }
 .sidebar-collapse .nav > li > a {
 	color:#fff;
-	background:#202020;
+	background:#2e1b1b;
 	text-shadow:none;
 	
 }
@@ -326,17 +330,17 @@ font-weight: 700;
 }
 .navbar-side {
 	border:none;
-	background-color: #202020;
+	background-color: #350200;
 	
 }
 .navbar-cls-top {
-	background:#4D4D4D;
+	background: #6b0200 !important;
 	border-bottom:none;
 	
 }
 .navbar-cls-top .navbar-brand:hover {
 
-background: #C90000;
+background: #7e0806;
 color:#fff;
 
 }
@@ -346,12 +350,13 @@ border:0px solid black;
      
 }
 .navbar-header {
-    background: #A70303;
+    background: #6b0200 (54, 79%, 46%);
 }
 
 
 .ticket-dropdown-menu {
     display: none; /* Hidden by default */
+    width: auto;
 }
 
 .ticket-dropdown-menu.show {
@@ -392,28 +397,39 @@ line-height: 1.428571429;
     MEDIA QUERIES     
     =============================================*/
 
- @media(min-width:760px) {
-     #page-wrapper{
-               margin: 0 0 0 230px;
-        padding: 15px 30px;
-        min-height: auto;
-        
-    }
-	
-	
-    .navbar-side {
-        z-index: 1;
-        position: absolute;
-        width: 230px;
-        
-    }
+  @media(min-width:760px) {
+      #page-wrapper{
+                margin: 0 0 0 230px;
+          padding: 15px 30px;
+          min-height: 800;
+          
+      }
+    
+      .calendarf{ 
+        min-height:655px;
+        height:auto;
+      }
+      .navbar-side {
+          z-index: 1;
+          position: absolute;
+          width: 230px;
+          
+      }
 
-   .navbar {
- border-radius: 0px; 
-}
-   
-}
+    .navbar {
+  border-radius: 0px; 
+  }
+    
+  }
 
+
+  @media(min-width:1920px) {
+    .calendarf{
+      height:710px;
+    }
+  }
+
+  
 /* calendar 2 */
 
 /* styles.css */
@@ -481,7 +497,7 @@ body {
 }
 
 #event-section h3 {
-	color: green;
+	color: rgb(106, 26, 26);
 	font-size: 18px;
 	margin: 0;
 }
@@ -546,7 +562,7 @@ body {
 }
 
 #reminder-section h3 {
-	color: green;
+	color: rgb(106, 26, 26);
 	font-size: 18px;
 	margin: 0;
 }
@@ -1100,3 +1116,88 @@ body {
     opacity: 0;
     transition: opacity 500ms;
   }
+/* Center the text and slider */
+.text-center {
+  text-align: center;
+}
+
+/* The switch container */
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 60px;
+  height: 34px;
+  vertical-align: middle; /* Align with the labels */
+  margin: 0 15px; /* Spacing between the slider and the texts */
+}
+
+/* Hide the checkbox input */
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+/* The slider */
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: maroon;
+  transition: 0.4s;
+  border-radius: 34px;
+}
+
+/* Circle inside the slider */
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 26px;
+  width: 26px;
+  left: 4px;
+  bottom: 4px;
+  background-color: white;
+  transition: 0.4s;
+  border-radius: 50%;
+}
+
+/* When the checkbox is checked, change background */
+input:checked + .slider {
+  background-color: gold;
+}
+
+/* Move the circle when checked */
+input:checked + .slider:before {
+  transform: translateX(26px);
+}
+
+/* Style the OFF and ON labels */
+.status-text {
+  font-size: 16px;
+  display: inline-block;
+  width: 35px; /* Keeps space consistent */
+  text-align: center; /* Centers the text inside */
+  vertical-align: middle;
+  color: gray;
+}
+
+/* Highlight the active label */
+input:checked ~ #status-text-on {
+  color: black;
+}
+
+input:not(:checked) ~ #status-text-off {
+  color: black;
+}
+
+input:checked ~ #status-text-off {
+  color: lightgray;
+}
+
+input:not(:checked) ~ #status-text-on {
+  color: lightgray;
+}
+

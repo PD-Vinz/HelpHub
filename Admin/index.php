@@ -119,7 +119,10 @@ try {
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
      <!-- MORRIS CHART STYLES-->
     <link href="assets/js/morris/morris-0.4.3.min.css" rel="stylesheet" />
+    
         <!-- CUSTOM STYLES-->
+        <link href="../helphub/FullCalendar-BS3-PHP-MySQL-master/css/fullcalendar.css" rel="stylesheet" />
+
     <link href="assets/css/custom.css" rel="stylesheet" />
      <!-- GOOGLE FONTS-->
    <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css' />
@@ -208,12 +211,17 @@ try {
                 </div>
              </div>
 <!--</a>-->
-			</div>  </div> 
+			</div><hr>  </div> 
       
                  <!-- /. Calendar  -->   
                  <div class="col-md-8">
-                 <div id="calendar"></div>
-		
+         <?php
+// Assuming you have a way to track the user's role
+$role = $U_T; // 'admin' or 'user'
+// Pass the role to the iframe URL or JavaScript
+?>
+                 <iframe class="panel panel-default calendarf" src="../FullCalendar-BS3-PHP-MySQL-master/index.php" style="width: 100%; min-height:655px; min-width:auto; border-radius: 10px; margin-bottom:8px"></iframe>
+
 	<!-- Include the JavaScript file for the calendar functionality -->
 	
   
@@ -242,8 +250,8 @@ try {
                 
         </div>
     
-            </div>
-           </div>   </div>
+</div> 
+           </div> <?php include '../footer.php' ?>  </div>
                  <!-- /. ROW  -->
                          
     </div>
@@ -305,6 +313,8 @@ try {
            </script>
       <!-- CUSTOM SCRIPTS -->
     <script src="assets/js/custom.js"></script>
+    <script src="../helphub/FullCalendar-BS3-PHP-MySQL-master/js/fullcalendar.min.js"></script>
+
     <script>let profileDropdownList = document.querySelector(".profile-dropdown-list");
 let btn = document.querySelector(".profile-dropdown-btn");
 
