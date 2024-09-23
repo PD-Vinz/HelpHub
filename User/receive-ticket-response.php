@@ -53,9 +53,9 @@
         <nav class="navbar-default navbar-side" role="navigation">
             <div class="sidebar-collapse">
                 <ul class="nav" id="main-menu">
-                    <li class="text-center">
+                    <i class="text-center">
                         <img src="assets/img/find_user.png" class="user-image img-responsive" />
-                    </li>
+                    </i>
 
 
 
@@ -67,31 +67,10 @@
                         <a href="profile.php"><i class="bx bx-user" style="font-size:36px;color:rgb(255, 255, 255)"></i> PROFILE </a>
                     </li>
                     <li>
-                        <a href="#"><i class="fa fa-ticket" style="font-size:36px;color:rgb(255, 255, 255)"></i> TICKET <span class="fa arrow"></span></a>
-                        <ul class="nav nav-second-level">
-
-                            <li>
-                                <a href="create-ticket.php"><i class="fa fa-plus"></i>CREATE NEW TICKET</a>
+                            <a class="active-menu" href="create-ticket.php"><i class="fa fa-plus" style="font-size: 36px; color: rgb(255, 255, 255)"></i> CREATE TICKET </a>
                             </li>
                             <li>
-                                <a href="ticket-pending.php"><i class="fa fa-refresh"></i>PENDING TICKET</a>
-                            </li>
-                            <li>
-                                <a href="ticket-inprocess.php"><i class="fa fa-spinner"></i> IN PROCESS</a>
-                            </li>
-                            <li>
-                                <a href="ticket-returned.php"><i class="fa fa-undo"></i> RETURNED TICKET</a>
-                            </li>
-                            <li>
-                                <a href="ticket-finished.php"><i class="fa fa-check"></i> COMPLETE TICKET</a>
-                            </li>
-                        </ul>
-                    </li>
-                    <li>
-                        <a href="history.php"><i class="bx bx-history" style="font-size:36px"></i> HISTORY </a>
-                    </li>
-                    <li>
-                        <a href="downloadableform.php"><i class="fa fa-download" style="font-size:36px"></i> DOWNLOADABLE FORMS </a>
+                        <a href="all-ticket.php"><i class="fa fa-ticket" style="font-size:36px"></i> ALL TICKET </a>
                     </li>
                 </ul>
             </div>
@@ -100,6 +79,7 @@
         <div id="page-wrapper">
             <div id="page-inner">
                 <div class="row">
+                    <div class="col-md-12"> <div class="col-md-12">
                     <div class="col-md-12">
                         <h2>RECEIVED TICKET</h2>
                     </div>
@@ -120,7 +100,6 @@
                     </div>
                     <div class="modal-footer">	
                         <a href="dashboard.php"> <button onclick="handleOkay()">Home</button></a>
-                        <a href="survey.php?id=<?php echo $_GET['id']?>&taken=before"> <button>Take Survey</button></a>
                     </div>
                 </div>
                 <!-- /. ROW  -->
