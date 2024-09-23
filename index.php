@@ -110,7 +110,10 @@ if (isset($_POST['login'])) {
 
     <div class="login">
     <form method="post">
-        <h3>Log In</h3>
+        <h3 style="text-shadow: 0.3px 0.3px #18181a;">Log In</h3>
+        <hr>
+        <br>
+        
         <div class="form-group">
             <input type="text" name="username" required placeholder="User ID">
         </div>
@@ -119,7 +122,7 @@ if (isset($_POST['login'])) {
         </div>
         <div class="form-group">
             <input type="checkbox" id="savePassword" name="savePassword" onclick="myFunction()">
-            <label for="savePassword">Show Password</label>
+            <label for="savePassword" style="color: #2b2b2b;">Show Password</label>
             <script>
                             function myFunction() {
                                 var x = document.getElementById("myInput");

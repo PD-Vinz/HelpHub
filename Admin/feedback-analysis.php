@@ -408,25 +408,25 @@ $pdoExec = $pdoResult->execute();
                                         <div class="form-group">
                                             <label>Survey ID‎ ‎ ‎ ‎ ‎ </label>
                                             <input class="form-control" value="<?php echo htmlspecialchars($survey_id); ?>" disabled/>
-                                            <br><br>
+                                             
                                         </div>
                                       
                                         <div class="form-group">
                                             <label>User ID‎ ‎ ‎ </label>
                                             <input class="form-control" value="<?php echo htmlspecialchars($user_id); ?>" disabled/>
-                                         <br><br>
+                                          
                                         </div>
                                        
                                         <div class="form-group">
                                             <label>Date & Time ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ </label>
                                             <input class="form-control" value="<?php echo htmlspecialchars($date_time); ?>" disabled/>
-                                         <br><br>
+                                          
                                         </div>
                                         
                                         <div class="form-group">
                                             <label>Ticket ID‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ </label>
                                             <input class="form-control" value="<?php echo htmlspecialchars($ticket_id); ?>" disabled/>
-                                            <br><br>
+                                             
                                         </div>
                                         
                                         <?php  
@@ -440,7 +440,7 @@ $pdoExec = $pdoResult->execute();
                                         <div class="form-group">
                                             <label>Survey Taken ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ </label>
                                             <input class="form-control" value="<?php  echo htmlspecialchars($whenistaken) ?>" disabled/>
-                                            <br><br>
+                                             
                                         </div>
 
                                         
@@ -454,36 +454,36 @@ $pdoExec = $pdoResult->execute();
                                         <div class="form-group">
                                             <label>Overall Satisfaction‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ </label>
                                             <input class="form-control" value="<?php echo htmlspecialchars($overall_satisfaction); ?>" disabled/>
-                                            <br><br>
+                                             
                                         </div>
 
                                         <div class="form-group">
                                             <label>How would you rate our service?  ‎ ‎ ‎ ‎ ‎ ‎ ‎ </label>
                                             <input class="form-control" value="<?php echo htmlspecialchars($service_rating); ?>" disabled/>
-                                            <br><br>
+                                             
                                         </div>
 
                                         <div class="form-group">
                                             <label>Did our service meet your expectations? ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ </label>
-                                            <input class="form-control" value="<?php echo htmlspecialchars($service_expectations); ?>" disabled/>                                            <br><br>
+                                            <input class="form-control" value="<?php echo htmlspecialchars($service_expectations); ?>" disabled/>                                             
                                         </div>
 
                                         <div class="form-group">
                                             <label>What did you like most about our service? </label>
                                             <textarea rows="4" class="form-control" style="height:148px; resize:none; overflow:auto;" disabled><?php echo htmlspecialchars($like_service); ?></textarea>
-                                            <br><br>
+                                             
                                         </div>
 
                                         <div class="form-group">
                                             <label>What areas do you think need improvement?‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ </label>
                                             <textarea rows="4" class="form-control" style="height:148px; resize:none; overflow:auto;" disabled><?php echo htmlspecialchars($improvement); ?></textarea>
-                                         <br><br>
+                                          
                                         </div>
 
                                         <div class="form-group">
                                             <label>Any additional comments or suggestions?‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ </label>
                                             <textarea rows="4" class="form-control" style="height:148px; resize:none; overflow:auto;" disabled><?php echo htmlspecialchars($comments); ?></textarea>
-                                         <br><br>
+                                          
                                         </div>
                                     </form>
                                 </div>
@@ -595,7 +595,7 @@ $pdoExec = $pdoResult->execute();
 <br>
 
 </div>           
-            </div>
+            </div><?php include '../footer.php' ?>
         </div>
 
 

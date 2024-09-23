@@ -159,7 +159,7 @@ $pdoExec = $pdoResult->execute();
                                 <table class="table table-striped table-bordered table-hover" id="dataTables-example">
                                     <thead>
                                     <tr>
-                                            <th><i class="fa fa-exclamation-circle" aria-hidden="true"></i></th>
+                                            <th>Priority</th>
                                             <th style="width:10%">Ticket ID</th>
                                             <th style="width:15%">Date Submitted</th>
                                             <th style="width:8%">Name</th>
@@ -173,9 +173,21 @@ $pdoExec = $pdoResult->execute();
                 while ($row = $pdoResult->fetch(PDO::FETCH_ASSOC)){
                     extract($row);
                     $screenshotBase64 = base64_encode($screenshot);
+
+
+                    $createdDate = new DateTime($row['created_date']);
+                    $now = new DateTime();
+                    $interval = $now->diff($createdDate);
+                    $hoursElapsed = $interval->h + ($interval->days * 24);
+                
+                    $priorityIcon = '';
+                    if (in_array($row['status'], ['Pending']) && $hoursElapsed >= 48) {
+                        $priorityIcon = '<i class="fa fa-exclamation-circle" aria-hidden="true"></i>';
+                    }
+
             ?>
                     <tr class='odd gradeX'>
-                    <td><i class="fa fa-exclamation-circle" aria-hidden="true"></i></td>
+                    <td><?php echo ($priorityIcon);?></td>
                     <td><?php echo htmlspecialchars($ticket_id); ?></td>  
                     <td><?php echo htmlspecialchars($created_date); ?></td>
                     <td><?php echo htmlspecialchars($full_name); ?></td>
@@ -255,7 +267,7 @@ $pdoExec = $pdoResult->execute();
                                         </div>
                                       
                                         <div class="form-group">
-                                            <label>Student ID‎ ‎ ‎ </label>
+                                            <label>User ID‎ ‎ ‎ </label>
                                             <input class="form-control" value="<?php echo htmlspecialchars($user_number); ?>" disabled/>
                                           
                                         </div>
@@ -277,18 +289,20 @@ $pdoExec = $pdoResult->execute();
                                             <input class="form-control" value="<?php echo htmlspecialchars($department); ?>" disabled/>
                                           
                                         </div>
-                                       
+<?php if ( $ticket_user === 'Student'): ?>
                                         <div class="form-group">
                                             <label>Course‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ </label>
+                                            
                                             <input class="form-control" value="<?php echo htmlspecialchars($course); ?>" disabled/>
-                                             
+                                            <br><br>
                                         </div>
                                         
                                         <div class="form-group">
-                                            <label>Year & Section ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ </label>
+                                            <label>Year & Section‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ </label>
                                             <input class="form-control" value="<?php echo htmlspecialchars($year_section); ?>" disabled/>
-                                             
+                                            <br><br>
                                         </div>
+                                        <?php endif; ?>
                                         
                                         <div class="form-group">
                                             <label>Campus ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ </label>
@@ -344,7 +358,7 @@ $pdoExec = $pdoResult->execute();
                     </div>
                     <!--End Advanced Tables -->
                 </div>
-            </div>
+            </div><?php include '../footer.php' ?>
                
     </div>
              <!-- /. PAGE INNER  -->
@@ -376,7 +390,7 @@ $pdoExec = $pdoResult->execute();
                     "visible": true // Hide Age column
                 },
                 {   
-                    "width": "13%", 
+                    "width": "15%", 
                     "targets": [2],  // Target Age column
                     "visible": true // Hide Age column
                 },
@@ -394,6 +408,7 @@ $pdoExec = $pdoResult->execute();
                 {   
                     "width": "5%", 
                     "targets": [0],  // Target Age column
+                     "className": "text-center",
                     "visible": true // Hide Age column
                 },
             ]

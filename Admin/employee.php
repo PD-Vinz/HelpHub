@@ -203,11 +203,11 @@ while ($row = $pdoResult->fetch(PDO::FETCH_ASSOC)){
 		</div>
 		</div>
 	</div>
-</div>
+</div><?php require_once ('../footer.php')?>   
 </div>
             </div>
 
-<?php require_once ('../footer.php')?>   
+
 
                
     </div>
@@ -232,7 +232,7 @@ while ($row = $pdoResult->fetch(PDO::FETCH_ASSOC)){
         $(document).ready(function () {
             $('#dataTables-example').dataTable();
         });
-
+</script>
         <script>
             $(document).ready(function () {
                 $('#dataTables-example').dataTable();

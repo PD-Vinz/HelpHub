@@ -2,12 +2,11 @@
 include_once("../connection/conn.php");
 $pdoConnect = connection();
 
-session_start(); // Start the session
+session_start();
 
-// Check if the session variable is set
 if (!isset($_SESSION["admin_number"])) {
     header("Location: ../index.php");
-    exit(); // Prevent further execution after redirection
+    exit();
 } else {
     $id = $_SESSION["admin_number"];
 
@@ -17,69 +16,69 @@ if (!isset($_SESSION["admin_number"])) {
     $pdoResult->execute();
 
     $Data = $pdoResult->fetch(PDO::FETCH_ASSOC);
-
     if ($Data) {
         $Name = $Data['f_name'];
         $Position = $Data['position'];
         $U_T = $Data['user_type'];
-       
 
         $nameParts = explode(' ', $Name);
         $firstName = $nameParts[0];
-
     } else {
-        // Handle the case where no results are found
         echo "No student found with the given student number.";
     }
-    try {
-        // Handle form submission
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $newSysName = $_POST['name'];
-            $newShortName = $_POST['short_name'];
-    
-            // Handle file upload
-            if (isset($_FILES['system_logo']) && $_FILES['system_logo']['error'] === UPLOAD_ERR_OK) {
-                $newLogo = file_get_contents($_FILES['system_logo']['tmp_name']);
-            } else {
-                // Keep the old logo if no new one is uploaded
-                $query = $pdoConnect->prepare("SELECT system_logo FROM settings WHERE id = :id");
-                $query->execute(['id' => 1]);
-                $Datas = $query->fetch(PDO::FETCH_ASSOC);
-                $newLogo = $Datas['system_logo'];
-            }
-            
-            try {
-                $updateQuery = $pdoConnect->prepare("UPDATE settings SET system_name = :system_name, short_name = :short_name, system_logo = :system_logo WHERE id = :id");
-                $updateQuery->execute([
-                    'system_name' => $newSysName,
-                    'short_name' => $newShortName,
-                    'system_logo' => $newLogo,
-                    'id' => 1 
-                ]);
-    
-                header('Location: settings.php');
-                exit;
-            } catch (PDOException $e) {
-                echo "Error updating data: " . $e->getMessage();
-            }
+
+    // Handle form submission for system settings
+    if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update'])) {
+        $newSysName = $_POST['name'];
+        $newShortName = $_POST['short_name'];
+
+        // Handle file upload
+        if (isset($_FILES['system_logo']) && $_FILES['system_logo']['error'] === UPLOAD_ERR_OK) {
+            $newLogo = file_get_contents($_FILES['system_logo']['tmp_name']);
+        } else {
+            $query = $pdoConnect->prepare("SELECT system_logo FROM settings WHERE id = :id");
+            $query->execute(['id' => 1]);
+            $Datas = $query->fetch(PDO::FETCH_ASSOC);
+            $newLogo = $Datas['system_logo'];
         }
-    } catch (PDOException $e) {
-        echo "Error: " . $e->getMessage();
+
+        try {
+            $updateQuery = $pdoConnect->prepare("UPDATE settings SET system_name = :system_name, short_name = :short_name, system_logo = :system_logo WHERE id = :id");
+            $updateQuery->execute([
+                'system_name' => $newSysName,
+                'short_name' => $newShortName,
+                'system_logo' => $newLogo,
+                'id' => 1
+            ]);
+
+            header('Location: settings.php');
+            exit;
+        } catch (PDOException $e) {
+            echo "Error updating data: " . $e->getMessage();
+        }
     }
+
+    // Handle toggle for accept_tickets
+    if (isset($_POST['accept_tickets'])) {
+        $new_status = $_POST['accept_tickets'] === 'on' ? 'on' : 'off';
+
+        $stmt = $pdoConnect->prepare("UPDATE settings SET accept_tickets = ? WHERE id = 1");
+        $stmt->execute([$new_status]);
+
+        // Refresh the page to reflect the updated state
+        header("Location: " . $_SERVER['PHP_SELF']);
+        exit;
+    }
+
+    // Fetch settings
+    $query = $pdoConnect->prepare("SELECT system_name, short_name, system_logo, accept_tickets FROM settings WHERE id = :id");
+    $query->execute(['id' => 1]);
+    $Datas = $query->fetch(PDO::FETCH_ASSOC);
+    $sysName = $Datas['system_name'] ?? '';
+    $shortName = $Datas['short_name'] ?? '';
+    $S_L = $Datas['system_logo'];
+    $accept_tickets = $Datas['accept_tickets'];
 }
-
-
-
-
-?>
-<?php
-// Fetch settings
-$query = $pdoConnect->prepare("SELECT system_name, short_name, system_logo FROM settings WHERE id = :id");
-$query->execute(['id' => 1]);
-$Datas = $query->fetch(PDO::FETCH_ASSOC);
-$sysName = $Datas['system_name'] ?? '';
-$shortName = $Datas['short_name'] ?? '';
-$S_L = $Datas['system_logo'];
 
 // Display image if it exists
 $S_LBase64 = '';
@@ -89,7 +88,6 @@ if (!empty($S_L)) {
     $S_LBase64 = 'data:' . $imageType . ';base64,' . $base64Image;
 }
 ?>
-
 
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -127,8 +125,52 @@ if (!empty($S_L)) {
                      <h2>Settings</h2>   
                      <hr>
                      </div>
-                     <form method="post" id="system-frm" role="form" enctype="multipart/form-data">
-    <div class="col-md-6">
+                    
+                   
+                     <div class="col-md-12 text-center "> 
+    <h3>Accept Tickets?</h3>
+    <form id="acceptTicketsForm" method="POST" action="">
+        <input type="hidden" name="accept_tickets" value="<?php echo $accept_tickets === 'on' ? 'off' : 'on'; ?>">
+
+        <!-- OFF label, always visible -->
+        <span>OFF</span>
+
+        <!-- Slider -->
+        <label class="switch">
+            <input type="checkbox" id="acceptTicketsCheckbox" <?php echo $accept_tickets === 'on' ? 'checked' : ''; ?>>
+            <span class="slider"></span>
+        </label>
+
+        <!-- ON label, always visible -->
+        <span>ON</span>
+    </form>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="confirmsubmit" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog3">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <h4 class="modal-title">Confirmation</h4>
+            </div>
+            <div class="modal-body" id="modalBodyText">
+               <!-- The text will be updated dynamically -->
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                <!-- Confirm button that submits the form -->
+                <button id="confirmSubmitButton" class="btn btn-primary">Confirm</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<form method="post" id="system-frm" role="form" enctype="multipart/form-data">
+    <div class="col-md-12"><hr> 
+    <h3>System settings</h3> 
         <div class="form-group">
             <label for="name" class="control-label">System Name</label>
             <input type="text" class="form-control form-control-sm" name="name" id="system_name" value="<?php echo htmlspecialchars($sysName); ?>">
@@ -150,10 +192,13 @@ if (!empty($S_L)) {
                 <input type="file" id="upload" name="system_logo" accept="image/*">
             </label>
         </div>
+    </div><BR>
+</div><div class="modal-footer">
+<button type="button" class="btn btn-sm btn-primary" data-toggle="modal" data-target="#confirmsubmits">Update</button>
+            </div>
+
     </div>
-</div>
-    </div>
-    <div class="col-md-6">
+   <!-- <div class="col-md-6">
         <div class="form-group">
             <label for="" class="control-label">Cover Photo</label>
         </div>
@@ -163,11 +208,10 @@ if (!empty($S_L)) {
                 <button type="button" class="btn btn-primary">Choose file</button>
             </a>
         </div>
-    </div>
+    </div>-->
   
 </form>
 
-<button type="button" class="btn btn-sm btn-primary" data-toggle="modal" data-target="#confirmsubmit">Update</button>
 
 
  
@@ -176,7 +220,7 @@ if (!empty($S_L)) {
                   <!-- Button to trigger the modal -->
 
 <!-- Modal -->
-<div class="modal fade" id="confirmsubmit">
+<div class="modal fade" id="confirmsubmits">
     <div class="modal-dialog3">
         <div class="modal-content">
             <div class="modal-header">
@@ -203,113 +247,14 @@ if (!empty($S_L)) {
 
                  <br>
                  <hr>
-                   <div class="row">
-                   <div class="col-md-12">  <div class="col-md-12"> <h1>Calendar</h1></div>
-                    <div class="wrapper col-md-5">
-
-       
-            <div>
-                 
-            <div id="event-section">
-    <h3>Add Event</h3>
- 
-    <input type="date" style="width:100%;" class="form-control form-control-sm" id="eventDate">
-    <input type="text" style="width:100%;" class="form-control form-control-sm" id="eventTitle" placeholder="Event Title">
-    <input type="text" style="width:100%;" class="form-control form-control-sm" id="eventDescription" placeholder="Event Description">
-    <button id="addEvent" class="btn btn-primary"onclick="addEvent()">Add</button>
-</div>
-
-
-                <div id="reminder-section">
-                    <h3>Reminders</h3><table class="table table-striped table-bordered table-hover" id="dataTables-example">
-                    <thead>
-                                        <tr>
-                                            <th>Date</th> 
-                                            <th>Event</th>
-                                            <th>Description</th>
-                                            <th>Option</th>
-                                    
-                                            
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                    
-                                        <tr>
-                                        <?php foreach ($events as $event): ?>
-                                             <td><?php echo htmlspecialchars($event['event_date']); ?></td>
-                                             <td><?php echo htmlspecialchars($event['event_title']); ?></td>
-                                            <td><?php echo htmlspecialchars($event['event_description']); ?></td>
-                                           
-                                            <td style="width:8%;"> <button class=" btn btn-primary delete-event"
-                                onclick="deleteEvent(1)">
-                                Delete
-                            </button></td>
-                            
-                                        </tr><?php endforeach; ?>
-                                    </tbody>
-
-                    </table>
-                    <!-- List to display reminders -->
-
-
-                  
-                </div>
-            </div>
-                    </div>
-            <!-- /. Calendar  -->   
-          
-            <div class="container-calendar">
-            <div class="col-md-12">
-			<div id="right">
-				 <h3 id="monthAndYear"></h3>
-				<div class="button-container-calendar">
-					<button id="previous"
-							onclick="previous()">
-						‹
-					</button>
-         
-					<button id="next"
-							onclick="next()">
-						›
-					</button>
-				</div>
-				<table class="table-calendar"
-					id="calendar"
-					data-lang="en">
-					<thead id="thead-month"></thead>
-					<!-- Table body for displaying the calendar -->
-					<tbody id="calendar-body"></tbody>
-				</table>
-				<div class="footer-container-calendar">
-					<label for="month">Jump To: </label>
-					<!-- Dropdowns to select a specific month and year -->
-					<select id="month" onchange="jump()">
-						<option value=0>Jan</option>
-						<option value=1>Feb</option>
-						<option value=2>Mar</option>
-						<option value=3>Apr</option>
-						<option value=4>May</option>
-						<option value=5>Jun</option>
-						<option value=6>Jul</option>
-						<option value=7>Aug</option>
-						<option value=8>Sep</option>
-						<option value=9>Oct</option>
-						<option value=10>Nov</option>
-						<option value=11>Dec</option>
-					</select>
-					<!-- Dropdown to select a specific year -->
-					<select id="year" onchange="jump()"></select>
-				</div>
-			</div>
-		</div>
-	</div></div></div>
+                   
 
 	<!-- Include the JavaScript file for the calendar functionality -->
 	<script src="./script.js"></script>   
                  </div> 
     </div>
 
-          
+    <?php include '../footer.php' ?>
                     </div>
                 </div>
                  <!-- /. ROW  -->
@@ -370,6 +315,34 @@ document.addEventListener("DOMContentLoaded", function() {
                 });
             });
 //--------------------DATEPICKER---------------------     
+          </script>
+          <script>
+            // Get references to elements
+const checkbox = document.getElementById('acceptTicketsCheckbox');
+const modalBodyText = document.getElementById('modalBodyText');
+
+// Prevent the form from submitting when the checkbox is clicked
+checkbox.addEventListener('change', function (e) {
+    // Prevent the default form submission
+    e.preventDefault();
+
+    // Update the modal text based on the checkbox state
+    if (checkbox.checked) {
+        modalBodyText.textContent = 'Turning this on will allow users to create and submit tickets.';
+    } else {
+        modalBodyText.textContent = 'Turning this off will prevent users from creating and submitting tickets.';
+    }
+
+    // Open the modal
+    $('#confirmsubmit').modal('show');
+});
+
+// Handle the modal confirm button click
+document.getElementById('confirmSubmitButton').addEventListener('click', function () {
+    // Submit the form after the user confirms
+    document.getElementById('acceptTicketsForm').submit();
+});
+
           </script>
           <script>
             function addEvent() {
@@ -474,7 +447,7 @@ document.getElementById('system_name').addEventListener('input', function() {
     document.getElementById('system-frm').addEventListener('keydown', function(event) {
         if (event.key === 'Enter') {
             event.preventDefault(); // Prevent form submission
-            $('#confirmsubmit').modal('show'); // Show the modal
+            $('#confirmsubmits').modal('show'); // Show the modal
         }
     });
 
@@ -483,11 +456,37 @@ document.getElementById('system_name').addEventListener('input', function() {
         input.addEventListener('keydown', function(event) {
             if (event.key === 'Enter') {
                 event.preventDefault(); // Prevent form submission
-                $('#confirmsubmit').modal('show'); // Show the modal
+                $('#confirmsubmits').modal('show'); // Show the modal
             }
         });
     });
 </script>   
+<script>
+    // Toggle the slider only when the confirm button is clicked
+    $('#confirmsubmit').on('click', function() {
+        $('#acceptTicketsCheckbox').prop('checked', !$('#acceptTicketsCheckbox').prop('checked'));
+    });
+
+    // Refresh the page when the modal is closed (cancel or X)
+    $('#myModal').on('hidden.bs.modal', function (){
+        location.reload();
+    });
+
+document.getElementById('acceptTicketsCheckbox').addEventListener('change', function (e) {
+    // Prevent the default form submission
+    e.preventDefault();
+    
+    // Open the modal
+    $('#confirmsubmit').modal('show');
+    
+});
+
+// Handle the modal confirm button click
+document.getElementById('confirmSubmitButton').addEventListener('click', function () {
+    // Submit the form after the user confirms
+    document.getElementById('acceptTicketsForm').submit();
+});
+</script>
 <script>
         document.getElementById('imageInput').addEventListener('change', function(event) {
             const file = event.target.files[0];

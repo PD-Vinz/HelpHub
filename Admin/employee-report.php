@@ -174,7 +174,7 @@ $pdoExec = $pdoResult->execute();
                     </div>
                     <!--End Advanced Tables -->
                 </div></div></div>
-            </div></div>
+            </div></div><?php include '../footer.php' ?>
               
     </div>
              <!-- /. PAGE INNER  -->

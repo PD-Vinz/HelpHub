@@ -59,6 +59,9 @@ if (!isset($_SESSION["user_id"])) {
     }
 }
 
+
+
+
 if(isset($_GET['error']) && $_GET['error'] == 1) {
     // Set your error message here
     $errorMessage = "Cannot proceed with your request. Please check your submission carefully.";
@@ -68,6 +71,19 @@ if(isset($_GET['error']) && $_GET['error'] == 1) {
             window.location.href = 'reports.php';
         };
     </script>";
+}
+
+$pdoUserQuery = "SELECT * from settings WHERE id = 1";
+$pdoResult = $pdoConnect->prepare($pdoUserQuery);
+$pdoResult->execute();
+
+$settingsData = $pdoResult->fetch(PDO::FETCH_ASSOC);
+$acceptTickets = $settingsData['accept_tickets'];
+
+if ($acceptTickets == "off") {
+    $displayForm = false;
+} else {
+    $displayForm = true;
 }
 ?>
 
@@ -227,6 +243,9 @@ input[type="file"]::file-selector-button {
         <!-- /. NAV SIDE  -->
         <div id="page-wrapper" >
             <div id="page-inner">
+
+
+            <div>
                 <div class="row">
                     <div class="col-md-12"> <div class="col-md-12">
                     <div class="col-md-12">
@@ -234,14 +253,17 @@ input[type="file"]::file-selector-button {
                     </div>
                 </div>
 
+            
 
                 <div class="container-center">
                     <div class="modal-header">
                         <img src="assets/pic/head.png" alt="Technical support for DHVSU students">  
                 <div class="container-create">
-
-                <form class="issue-form" id="issueForm" action="ticket-submit.php" method="POST" enctype="multipart/form-data">
-
+                <div id="ticket-message" style="display: none;">
+    <p>&nbsp&nbsp&nbsp<i class=" fa fa-exclamation-circle fa-sm">&nbsp&nbsp&nbsp&nbsp&nbsp</i>The MIS is currently not accepting tickets at the moment. Please try again during office hours.</p>
+</div>
+                <form class="issue-form" id="issueForm" action="ticket-submit.php" method="POST" enctype="multipart/form-data" style="display: none;">
+ 
                         <div class="form-group">
                             <label for="category">ISSUE</label>
                             <select id="category" name="category" class="form-control dropdown" required>
@@ -299,6 +321,7 @@ input[type="file"]::file-selector-button {
                         
              <!-- /. PAGE INNER  -->
             </div>
+            </div>
          <!-- /. PAGE WRAPPER  -->
         </div>
     <!-- /. WRAPPER -->
@@ -317,7 +340,14 @@ input[type="file"]::file-selector-button {
     <!-- CUSTOM SCRIPTS -->
     <script src="assets/js/custom.js"></script>
     <!--preview-->
-
+    <script>
+    var displayForm = <?php echo $displayForm ? 'true' : 'false'; ?>;
+    if (!displayForm) {
+        document.getElementById('ticket-message').style.display = 'block';
+    } else {
+        document.getElementById('issueForm').style.display = 'block';
+    }
+</script>
     <script>
         document.getElementById('imageInput').addEventListener('change', function(event) {
             const file = event.target.files[0];
