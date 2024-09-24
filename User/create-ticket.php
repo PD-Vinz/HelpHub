@@ -222,46 +222,19 @@ input[type="file"]::file-selector-button {
                     <li class="text-center">
                         <img src="data:image/jpeg;base64,<?php echo $P_PBase64?>" class="user-image img-responsive" />
                     </li>
-				
-					
                     <li>
                         <a href="dashboard.php"><i class="bx bxs-dashboard fa" style="font-size:36px;color:rgb(255, 255, 255)"></i>  DASHBOARD </a>
                     </li>
-
                     <li>
                         <a href="profile.php"><i class="bx bx-user" style="font-size:36px;color:rgb(255, 255, 255)"></i> PROFILE </a>
                         </li>
 
                         <li>
-                            <a class="active-menu" href="ticket.php">
-                            <i class="fa fa-ticket" style="font-size: 36px; color: rgb(255, 255, 255)"></i> TICKET <span class="fa arrow"></span>
-                        </a>
-                        <ul class="nav nav-second-level">
-
+                            <a class="active-menu" href="create-ticket.php"><i class="fa fa-plus" style="font-size: 36px; color: rgb(255, 255, 255)"></i> CREATE TICKET </a>
+                            </li>
                             <li>
-                                <a href="create-ticket.php"><i class="fa fa-plus"></i>CREATE NEW TICKET</a>
-                            </li>
-                          <li>
-                              <a href="ticket-pending.php"><i class="fa fa-refresh"></i>PENDING TICKET</a>
-                          </li>
-
-                          <li>
-                              <a href="ticket-inprocess.php"><i class="fa fa-spinner"></i> IN PROCESS</a>
-                          </li>
-
-                          <li>
-                            <a href="ticket-returned.php"><i class="fa fa-undo"></i> RETURNED TICKET</a>
-                            </li>
-
-                            <li>
-                            <a href="ticket-finished.php"><i class="fa fa-check"></i> COMPLETE TICKET</a>
-                            </li>
-                      </ul>
-                        <a href="history.php"><i class="bx bx-history" style="font-size:36px"></i> HISTORY </a>
+                        <a href="all-ticket.php"><i class="fa fa-ticket" style="font-size:36px"></i> ALL TICKET </a>
                     </li>
-						   <li  >
-                            <a href="downloadableform.php"><i class="fa fa-download" style="font-size:36px"></i> DOWNLOADABLE FORM </a>
-                    </li>	
                 </ul>
                
             </div>
@@ -274,8 +247,9 @@ input[type="file"]::file-selector-button {
 
             <div>
                 <div class="row">
+                    <div class="col-md-12"> <div class="col-md-12">
                     <div class="col-md-12">
-                     <h2> CREATE NEW TICKET</h2>   
+                     <h2> CREATE TICKET</h2>   
                     </div>
                 </div>
 
@@ -334,7 +308,7 @@ input[type="file"]::file-selector-button {
                         </main>
                     </div>
                 </div>
-
+                
             <div class="modal-footer">
                 <button type="submit" class="btn btn-primary">SUBMIT</Input>
             </div>

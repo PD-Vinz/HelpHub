@@ -146,33 +146,11 @@ if (!isset($_SESSION["user_id"])) {
                         <a class="active-menu" href="profile.php"><i class="bx bx-user" style="font-size:36px;color:rgb(255, 255, 255)"></i> PROFILE </a>
                     </li>
                     <li>
-                        <a href="#"><i class="fa fa-ticket" style="font-size:36px;color:rgb(255, 255, 255)"></i> TICKET <span class="fa arrow"></span></a>
-                        <ul class="nav nav-second-level">
-
-                            <li>
-                                <a href="create-ticket.php"><i class="fa fa-plus"></i>CREATE NEW TICKET</a>
+                            <a href="create-ticket.php">
+                            <i class="fa fa-plus" style="font-size: 36px"></i> CREATE TICKET </a>
                             </li>
                             <li>
-                                <a href="ticket-pending.php"><i class="fa fa-refresh"></i>PENDING TICKET</a>
-                            </li>
-                            <li>
-                                <a href="ticket-inprocess.php"><i class="fa fa-spinner"></i> IN PROCESS</a>
-                            </li>
-                            <li>
-                                <a href="ticket-returned.php"><i class="fa fa-undo"></i> RETURNED TICKET</a>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="ticket-finished.php"><i class="fa fa-check"></i> COMPLETE TICKET</a>
-                                </a>
-                            </li>
-                        </ul>
-                    </li>
-                    <li>
-                        <a href="history.php"><i class="bx bx-history" style="font-size:36px"></i> HISTORY </a>
-                    </li>
-                    <li>
-                        <a href="downloadableform.php"><i class="fa fa-download" style="font-size:36px"></i> DOWNLOADABLE FORM </a>
+                        <a href="all-ticket.php"><i class="fa fa-ticket" style="font-size:36px"></i> ALL TICKET </a>
                     </li>
                 </ul>
             </div>
@@ -181,19 +159,10 @@ if (!isset($_SESSION["user_id"])) {
         <div id="page-wrapper">
             <div id="page-inner">
                 <div class="row">
+                    <div class="col-md-12"> <div class="col-md-12">
                     <div class="col-md-12">
                         <h2>PROFILE</h2>
-
-                        <div class="container">
-                            <h1 class="text-primary"></h1>
-                            <hr>
-                            <div class="row">
-                                <nav aria-label="breadcrumb" class="main-breadcrumb">
-                                    <ol class="breadcrumb">
-                                      <li class="breadcruMB"><a href="dashboard.php">HOME</a></li>
-                                      <li class="breadcrumb-item active" aria-current="page">PROFILE</li>
-                                    </ol>
-                                  </nav>
+                        <hr>
                                 <!-- left column -->
                                 <div class="col-md-3">
                                     <div class="text-center">
@@ -205,8 +174,7 @@ if (!isset($_SESSION["user_id"])) {
         
                                 <!-- edit form column -->
                                 <div class="col-md-9 personal-info">
-                                    <div> <h3>PERSONAL INFORMATION</h3>
-                                    </div>
+                                    
                                     <form class="form-horizontal" role="form">
                                         <div class="form-group">
                                             <label class="col-lg-3 control-label">STUDENT NUMBER</label>
@@ -263,9 +231,9 @@ if (!isset($_SESSION["user_id"])) {
                                                 <input class="form-control" type="text" value="<?php echo $Y_S?>" disabled>
                                             </div>
                                         </div>
+                                        <br>
                                         <?php endif; ?>
                                         <div class="modal-footer">	
-                                            <a href="edit-profile-picture.php"><button type="button" class="btn btn-primary">CHANGE PROFILE</button></a>
                                             <a href="edit-profile.php"><button type="button" class="btn btn-primary">UPDATE INFORMATION</button></a>
                                         </div>
                                         

@@ -32,7 +32,8 @@ body {
     margin:10px 20px 10px 0px;
     background-color:#fff!important;
     padding:10px;
-    min-height:1200px;
+    min-height:800px;
+    border-radius: 10px;
 }
 
 .text-center {
@@ -67,7 +68,7 @@ p {
 
 }
    .noti-box {
-min-height: 100px;
+min-height: 120px;
 padding: 20px;
 }
 
@@ -95,24 +96,24 @@ font-size: 40px;
 border-radius: 50px;
 
 }
-    .bg-color-green {
-background-color: #00CE6F;
+    .bg-color-black {
+background-color: #000000;
 color: #fff;
 }
- .bg-color-blue {
+ .bg-color-violet {
 background-color: #A95DF0;
 color: #fff;
 }
-  .bg-color-red {
-background-color: #DB0630;
+  .bg-color-blue {
+background-color: #0066c5;
 color: #fff;
 }
-  .bg-color-brown {
-background-color: #B94A00;
+  .bg-color-yellow {
+background-color: #fdc400;
 color: #fff;
 }
-.bg-color-black {
-    background-color: #000000;
+.bg-color-red {
+    background-color: #ca0000;
     color: #fff;
     }
 
@@ -462,7 +463,7 @@ line-height: 1.428571429;
      #page-wrapper{
                margin: 0 0 0 260px;
         padding: 15px 30px;
-        min-height: 1200px;
+        min-height: auto;
 		
     }
 	
@@ -493,7 +494,7 @@ line-height: 1.428571429;
          #page-wrapper{
                    margin: 0 0 0 260px;
             padding: 15px 30px;
-            min-height: 1200px;
+            min-height: auto;
             
         }
         .navbar-side {
