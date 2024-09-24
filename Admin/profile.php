@@ -170,7 +170,7 @@ if (!isset($_SESSION["admin_number"])) {
                <div class="col-md-4 col-sm-4 col-xs-4">                     
            <div class="panel panel-default">
                <div class="panel-heading">
-                   <a href="action/data-report.php?employee=<?php echo $Name,  " ", $lname?>">Total Tickets</a>
+                   Total Tickets
                </div>
                <div class="panel-body">
                    <div id="morris-donut-chart"></div>

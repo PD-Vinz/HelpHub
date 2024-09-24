@@ -181,6 +181,56 @@ h3{
     <div id="wrapper">
         <!-- NAV SIDE  -->
    <?php include 'nav.php'; ?>
+
+   <script>
+// Get elements
+const dropdown = document.querySelector('.ticket-dropdown-menu');
+const dropdownToggle = document.querySelector('.dropdown-toggle');
+const sidebar = document.querySelector('.sidebar-collapse'); 
+
+// Function to toggle the dropdown
+function handleTicketDropdownToggle(event) {
+  event.preventDefault();
+  dropdown.classList.toggle('show');
+  sessionStorage.setItem(
+    "ticketDropdownState",
+    dropdown.classList.contains("show") ? "open" : "closed"
+  );
+}
+
+// Event listener for dropdown toggle
+document.addEventListener("DOMContentLoaded", function () {
+  if (dropdownToggle) {
+    dropdownToggle.addEventListener("click", handleTicketDropdownToggle);
+  }
+});
+
+// Event listener for clicks on the sidebar (after it has fully loaded)
+window.addEventListener("load", function () { // Attach listener on 'load'
+  sidebar.addEventListener("click", function (event) {
+    const target = event.target;
+
+    // Check if the click was outside the dropdown AND not on the toggle button itself
+    // AND not on a link within the dropdown
+    if (
+      !dropdown.contains(target) &&
+      target !== dropdownToggle &&
+      target.tagName !== "A"
+    ) {
+      dropdown.classList.remove("show");
+      sessionStorage.setItem("ticketDropdownState", "closed");
+    }
+  });
+
+  // Restore dropdown state after sidebar event listener is attached
+  var dropdownState = sessionStorage.getItem("ticketDropdownState");
+  if (dropdownState === "open" && dropdown) {
+    dropdown.classList.add("show");
+  }
+});
+
+
+</script>
         <!-- /. NAV SIDE  -->
             <div id="page-wrapper" >
                 <div id="page-inner">

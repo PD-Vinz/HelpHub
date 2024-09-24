@@ -54,11 +54,16 @@ try {
     
 	$sql = "SELECT id, title, start, end, color FROM events ";
 
-	$req = $bdd->prepare($sql);
+	$req = $pdoConnect->prepare($sql);
 	$req->execute();
 
 	$events = $req->fetchAll();
 
+} catch (PDOException $e) {
+    echo "Error: " . $e->getMessage();
+}
+try {
+    
     $pdoCountQuery = "SELECT * FROM tb_tickets";
     $pdoResult = $pdoConnect->prepare($pdoCountQuery);
     $pdoResult->execute();
@@ -79,7 +84,7 @@ try {
     $pdoResult->execute();
     $returnedTickets = $pdoResult->rowCount();
 
-    $pdoCountQuery = "SELECT * FROM tb_tickets WHERE status = 'Completed'";
+    $pdoCountQuery = "SELECT * FROM tb_tickets WHERE status = 'Resolved'";
     $pdoResult = $pdoConnect->prepare($pdoCountQuery);
     $pdoResult->execute();
     $completedTickets = $pdoResult->rowCount();

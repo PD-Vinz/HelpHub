@@ -142,7 +142,7 @@ try {
                         <div class="panel-body-ticket">
                             <div class="table-responsive">
                             <?php
-$status = ["Completed", "Transferred"];
+$status = ["Resolved", "Transferred"];
 
 $pdoQuery = "SELECT * FROM tb_tickets WHERE status IN (:status1, :status2) AND user_type = :user ORDER BY `finished_date` DESC";
 $pdoResult = $pdoConnect->prepare($pdoQuery);

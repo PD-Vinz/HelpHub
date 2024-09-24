@@ -120,19 +120,8 @@ $currentFile = basename($_SERVER['PHP_SELF']);
         <ul class="nav" id="main-menu">
     
         <li class="text-center">
-            <a href="profile.php"><img src="assets/img/find_user.png" class="user-image img-responsive"/></a>
-            </li>
-        
-            
-            <li>
-                <a class="active-menu"  href="index.php"><i class="fa fa-dashboard fa-3x"></i> Dashboard</a>
-            </li>
-            <li>
-            
-            <a href="#" class="dropdown-toggle" data-toggle="dropdown" onclick="handleTicketDropdownToggle(event)">
-        <i class="fa fa-list fa-3x"></i> Student Tickets <span class="fa arrow"></span>
         <div class="text-center"><br>
-                                        <img src="data:image/jpeg;base64,<?php echo $P_PBase64?>" class="user-image img-responsive" alt="avatar">
+        <a href="profile.php"><img src="data:image/jpeg;base64,<?php echo $P_PBase64?>" class="user-image img-responsive" alt="avatar"></a>
                                         <h3 style="color:white;"><?php echo $Name,  " ", $lname?></h3>
                                        
                                     </div>
@@ -209,7 +198,7 @@ $currentFile = basename($_SERVER['PHP_SELF']);
 
         <li>
             <a class="<?= ($currentFile == 'history-log.php') ? 'active-menu' : '' ?>" href="history-log.php">
-                <i class="fa-regular fa-clock fa-xl"></i> History Log
+                <i class="fa-regular fa-clock fa-xl"></i> Activity Log
             </a>
         </li>
 
@@ -251,19 +240,21 @@ $currentFile = basename($_SERVER['PHP_SELF']);
                 <i class="fa fa-paste fa-xl"></i> System Documents <span class="fa arrow"></span>
             </a>
             <ul class="nav nav-second-level ticket-dropdown-menu <?= $systemDocsDropdownOpen ? 'in' : '' ?>">
-        <li>
+                <li>
                     <a class="<?= ($currentFile == 'templates.php') ? 'active-menu' : '' ?>" href="templates.php">
                         <i class="fa fa-exclamation-triangle"></i> Issues Templates
                     </a>
                 </li>
-                <li>
-                            <a class="<?= $currentFile == 'issues.php' ? 'active-menu' : '' ?>" href="response-issues.php">
+                        <li>
+                            <a class="<?= $currentFile == 'issues.php' ? 'active-menu' : '' ?>" href="issues.php">
                                 <i class="fa fa-comment-dots"></i> Response Templates
                             </a>
-                  </li>
-                  <li>
-                      <a href="others.php"><i class="fa fa-folder"></i>Others</a>
                         </li>
+                            <li>
+                                <a class="<?= $currentFile == 'others.php' ? 'active-menu' : '' ?>" href="others.php">
+                                    <i class="fa fa-gear"></i> Others
+                                </a>
+                            </li>
             </ul>
         </li>
         <li>

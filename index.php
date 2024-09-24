@@ -81,6 +81,14 @@ if (isset($_POST['login'])) {
 
         if ($pdoResult3->rowCount() > 0) {
             $_SESSION["admin_number"] = $username;
+            include_once("priority_check.php");
+
+                // Run priority check only once a day
+                if (!isset($_SESSION['priority_last_run']) || (time() - $_SESSION['priority_last_run']) >= 86400) {
+                    include_once("priority_check.php");
+                    $_SESSION['priority_last_run'] = time(); // Update last run time
+                }
+                
             header("Location: Admin/index.php");
             exit(); // Prevent further execution after redirection
         }
