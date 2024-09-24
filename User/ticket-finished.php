@@ -197,7 +197,7 @@ if (!isset($_SESSION["user_id"])) {
                         <div class="panel-body-ticket">
                             <div class="table-responsive">
 <?php
-    $status = "Completed";
+    $status = "Resolved";
 
     $pdoQuery = "SELECT * FROM tb_tickets WHERE status = :status && user_number = :usernumber";
     $pdoResult = $pdoConnect->prepare($pdoQuery);

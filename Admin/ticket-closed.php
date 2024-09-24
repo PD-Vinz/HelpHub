@@ -142,7 +142,7 @@ try {
                         <div class="panel-body-ticket">
                             <div class="table-responsive">
                             <?php
-$status = ["Completed", "Transferred"];
+$status = ["Resolved", "Transferred"];
 
 $pdoQuery = "SELECT * FROM tb_tickets WHERE status IN (:status1, :status2) AND user_type = :user ORDER BY `finished_date` DESC";
 $pdoResult = $pdoConnect->prepare($pdoQuery);
@@ -453,9 +453,9 @@ $pdoExec = $pdoResult->execute();
       }
 
       // Create charts with dynamic data
-      createDonutChart('morris-donut-chart', 'php/data.php?chart=age-groups&id=<?php echo $_GET['id']?>');
-      createDonutChart('morris-donut-chart2', 'php/data.php?chart=genders&id=<?php echo $_GET['id']?>');
-      createDonutChart('morris-donut-chart3', 'php/data.php?chart=locations&id=<?php echo $_GET['id']?>');
+      createDonutChart('morris-donut-chart', 'action/data-resolved.php?chart=age-groups&id=<?php echo $_GET['id']?>');
+      createDonutChart('morris-donut-chart2', 'action/data-resolved.php?chart=genders&id=<?php echo $_GET['id']?>');
+      createDonutChart('morris-donut-chart3', 'action/data-resolved.php?chart=locations&id=<?php echo $_GET['id']?>');
     });
 </script>
 

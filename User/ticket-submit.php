@@ -103,9 +103,11 @@ try {
                                         VALUES (:createddate, :fullname, :usernumber, :campus, :department, :course, :year_section, :sex, :age, :usertype, :category, :issue_description, :image, :consent, :status)");
             // Bind the blob data
 
+            $stmt->bindParam(':user_id', $id, PDO::PARAM_LOB);
             $stmt->bindParam(':createddate', $datetime, PDO::PARAM_LOB);
             $stmt->bindParam(':fullname', $Name, PDO::PARAM_LOB);
             $stmt->bindParam(':usernumber', $id, PDO::PARAM_LOB);
+            $stmt->bindParam(':email_address', $Email_Add, PDO::PARAM_LOB);
             $stmt->bindParam(':campus', $Campus, PDO::PARAM_LOB);
             $stmt->bindParam(':department', $Department, PDO::PARAM_LOB);
             $stmt->bindParam(':course', $Course, PDO::PARAM_LOB);
@@ -140,16 +142,26 @@ try {
                         throw new PDOException("Failed to execute the second query");
                     }
 
-                header("Location: receive-ticket-response.php?id=" . $lastInsertId);
+                $_SESSION["Address"] = $Email_Add;
+                $_SESSION["userName"] = $Name;
+                $_SESSION["issue"] = $category;
+                $_SESSION["description"] = $issue_description;
+                $_SESSION["dateCreated"] = $datetime;
+                $_SESSION["imageUrl"] = "https://dhvsuhelphub.com/User/view_image.php?id=" . $lastInsertId;
+                $_SESSION["websiteUrl"] = "https://dhvsuhelphub.com/";
+                $_SESSION["status"] = $status;
+                $_SESSION["ticketnumber"] = $lastInsertId;
+
+                header("Location: generate-email.php");
                 exit();
             } else {
                 // Roll back the transaction on failure
                 $pdoConnect->rollBack();
-                header("Location: create-ticket.php?error=1");
+                header("Location: create-ticket.php?error='yes'");
                 exit();
             }
         } else {
-            header("Location: create-ticket.php?error=1");
+            header("Location: create-ticket.php?error=yes");
             exit();
         }
     }
@@ -157,7 +169,7 @@ try {
 
 } catch(PDOException $e) {
     echo "Connection failed: " . $e->getMessage();
-    echo "<a href='index.html'>Back</a>";
+    echo "<a href='create-ticket.php'>Back</a>";
 
     // Roll back the transaction on exception
     if ($pdoConnect->inTransaction()) {

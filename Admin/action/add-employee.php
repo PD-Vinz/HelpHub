@@ -180,9 +180,9 @@ h3{
 <body>
     <div id="wrapper">
         <!-- NAV SIDE  -->
-<?php include '../nav.php'?>
+   <?php include 'nav.php'; ?>
 
-<script>
+   <script>
 // Get elements
 const dropdown = document.querySelector('.ticket-dropdown-menu');
 const dropdownToggle = document.querySelector('.dropdown-toggle');
@@ -231,8 +231,6 @@ window.addEventListener("load", function () { // Attach listener on 'load'
 
 
 </script>
-
-
         <!-- /. NAV SIDE  -->
             <div id="page-wrapper" >
                 <div id="page-inner">

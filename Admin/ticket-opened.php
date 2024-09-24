@@ -148,6 +148,8 @@ try {
                             <div class="table-responsive">
 
 <?php
+            if ($U_T === "Administrator"){
+
                 $status = "Processing";
 
                 $pdoQuery = "SELECT * FROM tb_tickets WHERE status = :status && user_type = :user";
@@ -155,7 +157,18 @@ try {
                 $pdoResult->bindParam(':status', $status);
                 $pdoResult->bindParam(':user', $ticket_user, PDO::PARAM_STR);
                 $pdoExec = $pdoResult->execute();
+            } else {
+                $status = "Processing";
 
+                $pdoQuery = "SELECT * FROM tb_tickets WHERE status = :status && user_type = :user && employee = :employee";
+                $pdoResult = $pdoConnect->prepare($pdoQuery);
+                $pdoResult->bindParam(':status', $status);
+                $pdoResult->bindParam(':user', $ticket_user, PDO::PARAM_STR);
+                $pdoResult->bindParam(':employee', $Name, PDO::PARAM_STR);
+                $pdoExec = $pdoResult->execute();
+            }
+            
+            
 ?>
                                 <table class="table table-striped table-bordered table-hover" id="dataTables-example">
                                     <thead>
@@ -329,7 +342,7 @@ try {
 </div>
                               </div>
                               <!--confirmation modals -->
-                            <div class="modal fade" id="myModalTransfer<?php echo $ticket_id; ?>">
+<div class="modal fade" id="myModalTransfer<?php echo $ticket_id; ?>">
                             <div class="modal-dialog3">
                             <div class="modal-content">
                             <div class="modal-header">
@@ -340,14 +353,14 @@ try {
                             <div class="container"></div>
                             <div class="modal-body">Confirm transfering ticket</div>
                             <div class="modal-footer">	<a href="#" data-dismiss="modal" class="btn">Cancel</a>
-                            <a href="../Admin/transfer-form.php?id=<?php echo $ticket_id; ?>" data-toggle="modal"  class="btn btn-primary">Confirm</a>
+                            <a href="../Admin/transfer-form.php?id=<?php echo $ticket_id; ?>&user=<?php echo $ticket_user; ?>" data-toggle="modal"  class="btn btn-primary">Confirm</a>
                             
                             </div>
                             </div>
                             </div>
                             </div>
 
-                            <div class="modal fade" id="myModalReturn<?php echo $ticket_id; ?>">
+<div class="modal fade" id="myModalReturn<?php echo $ticket_id; ?>">
                             <div class="modal-dialog3">
                             <div class="modal-content">
                             <div class="modal-header">
@@ -358,14 +371,14 @@ try {
                             <div class="container"></div>
                             <div class="modal-body">Confirm returning ticket</div>
                             <div class="modal-footer">	<a href="#" data-dismiss="modal" class="btn">Cancel</a>
-                            <a href="../Admin/return-form.php?id=<?php echo $ticket_id; ?>" data-toggle="modal"  class="btn btn-primary">Confirm</a>
+                            <a href="../Admin/return-form.php?id=<?php echo $ticket_id; ?>&user=<?php echo $ticket_user; ?>" data-toggle="modal"  class="btn btn-primary">Confirm</a>
 
                             </div>
                             </div>
                             </div>
                             </div>
 
-                            <div class="modal fade" id="myModalClose<?php echo $ticket_id; ?>">
+<div class="modal fade" id="myModalClose<?php echo $ticket_id; ?>">
                             <div class="modal-dialog3">
                             <div class="modal-content">
                             <div class="modal-header">
@@ -376,7 +389,7 @@ try {
                             <div class="container"></div>
                             <div class="modal-body">Confirm resolving ticket</div>
                             <div class="modal-footer">	<a href="#" data-dismiss="modal" class="btn">Cancel</a>
-                            <a href="../Admin/close-form.php?id=<?php echo $ticket_id; ?>" data-toggle="modal"  class="btn btn-primary">Confirm</a>
+                            <a href="../Admin/close-form.php?id=<?php echo $ticket_id; ?>&user=<?php echo $ticket_user; ?>" data-toggle="modal"  class="btn btn-primary">Confirm</a>
 
                             </div>
                             </div>

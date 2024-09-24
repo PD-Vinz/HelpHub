@@ -1,0 +1,11 @@
+BAC CORNER Procedure
+
+1. Make Folder desktop with year and date, name of event and name of bid.   Pre - bid supply for mexico campus 08112022
+2. on nitro - convert 1st page to image
+3. on photoshop - add style - paste layer style and save as .png
+4. on CMS open content -> article -> add new article
+	a. rename title ex. minutes... supply for mexico campus
+	b. insert image -> BAC Corner -> 2022
+	c. Copy details and change date and ABC
+	d. get link of file on google drive -> insert url.
+	b. save and close	 

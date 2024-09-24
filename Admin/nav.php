@@ -12,7 +12,12 @@ if (!isset($_SESSION["admin_number"])) {
     $pdoResult->bindParam(':number', $id);
     $pdoResult->execute();
 
-    $Data = $pdoResult->fetch(PDO::FETCH_ASSOC);
+
+    $Name = $Data['f_name'];
+    $lname = $Data['l_name'];
+    $P_P = $Data['profile_picture'];
+
+    $P_PBase64 = base64_encode($P_P);
 
     
     if ($Data) {
@@ -115,7 +120,11 @@ $currentFile = basename($_SERVER['PHP_SELF']);
         <ul class="nav" id="main-menu">
     
         <li class="text-center">
-            <img src="assets/img/find_user.png" class="user-image img-responsive"/>
+        <div class="text-center"><br>
+        <a href="profile.php"><img src="data:image/jpeg;base64,<?php echo $P_PBase64?>" class="user-image img-responsive" alt="avatar"></a>
+                                        <h3 style="color:white;"><?php echo $Name,  " ", $lname?></h3>
+                                       
+                                    </div>
         </li>
 
         <li>
@@ -189,23 +198,23 @@ $currentFile = basename($_SERVER['PHP_SELF']);
 
         <li>
             <a class="<?= ($currentFile == 'history-log.php') ? 'active-menu' : '' ?>" href="history-log.php">
-                <i class="fa-regular fa-clock fa-xl"></i> History Log
+                <i class="fa-regular fa-clock fa-xl"></i> Activity Log
             </a>
         </li>
 
         <?php if (isset($U_T) && $U_T === 'Administrator'): ?>
         <li>
             <a class="<?= ($currentFile == 'feedback-analysis.php') ? 'active-menu' : '' ?>" href="feedback-analysis.php">
-                <i class="fa-regular fa-comment-dots fa-xl"></i> Feedbacks
+                <i class="fa-regular fa-comment-dots fa-xl"></i> Feedback Analysis
             </a>
         </li>
 
-        <li>
+        <!--<li>
             <a class="<?= ($currentFile == 'employee-report.php') ? 'active-menu' : '' ?>" href="employee-report.php">
                 <i class="fa-regular fa-comment-dots fa-xl"></i> Employee Reports
             </a>
-        </li>
-
+        </li>-->
+        
         <li>
             <a href="#"><i class="fa-regular fa-user fa-xl"></i> User list <span class="fa arrow"></span></a>
             <ul class="nav nav-second-level ticket-dropdown-menu <?= $userListDropdownOpen ? 'in' : '' ?>"> 
@@ -231,16 +240,21 @@ $currentFile = basename($_SERVER['PHP_SELF']);
                 <i class="fa fa-paste fa-xl"></i> System Documents <span class="fa arrow"></span>
             </a>
             <ul class="nav nav-second-level ticket-dropdown-menu <?= $systemDocsDropdownOpen ? 'in' : '' ?>">
-        <li>
+                <li>
                     <a class="<?= ($currentFile == 'templates.php') ? 'active-menu' : '' ?>" href="templates.php">
                         <i class="fa fa-exclamation-triangle"></i> Issues Templates
                     </a>
                 </li>
-                <li>
+                        <li>
                             <a class="<?= $currentFile == 'issues.php' ? 'active-menu' : '' ?>" href="issues.php">
                                 <i class="fa fa-comment-dots"></i> Response Templates
                             </a>
                         </li>
+                            <li>
+                                <a class="<?= $currentFile == 'others.php' ? 'active-menu' : '' ?>" href="others.php">
+                                    <i class="fa fa-gear"></i> Others
+                                </a>
+                            </li>
             </ul>
         </li>
         <li>

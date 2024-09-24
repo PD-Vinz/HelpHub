@@ -80,6 +80,16 @@ try {
 
 }
 
+$pdoQuery = "SELECT * FROM tb_tickets WHERE ticket_id = :TID";
+$pdoResult = $pdoConnect->prepare($pdoQuery);
+$pdoResult->bindParam(':TID', $_GET["id"], PDO::PARAM_STR);
+$pdoExec = $pdoResult->execute();
+
+while ($row = $pdoResult->fetch(PDO::FETCH_ASSOC)) {
+extract($row);
+
+$screenshotBase64 = base64_encode($screenshot);
+
 ?>
 
 <!DOCTYPE html>
@@ -99,6 +109,16 @@ try {
     <link href="assets/css/custom.css" rel="stylesheet" />
      <!-- GOOGLE FONTS-->
    <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css' />
+
+   <style>
+        img {
+            max-width: 100%;
+            max-height: 300px;
+            width: auto;
+            height: auto;
+            border-radius: 5px;
+        }
+    </style>
 </head>
 <body>
     <div id="wrapper">
@@ -109,129 +129,210 @@ try {
             <div id="page-inner">
                 <div class="row">
                     <div class="col-md-12">
-                     <h2>Transfer Ticket</h2>   
-                        <h5>Welcome Jhon Deo , Love to see you back. </h5>
+                        <h2>Transfer Ticket</h2>   
                     </div>
                 </div>              
                  <!-- /. ROW  -->
-                  <hr />
+                 <hr />
                   <div class="row">
                                 <div class="col-md-12">
                                     
-<form role="form" method="post" action="ticket-resolution.php?id=<?php echo $_GET['id']?>&form=transfer">
+<form role="form" method="post" action="ticket-resolution.php?id=<?php echo $_GET['id']?>&user=<?php echo $_GET['user']?>&form=transfer">
                                        
                                       
+<div class="form-group">
+    <div class="col-md-2">
+        <label>Transfer Ticket to:‎ ‎ ‎ ‎ ‎ </label>
+    </div>
+    <div class="col-md-10">
+        <div class="btn-toolbar">
+            <div class="btn-group" style="width: 70%;">
+                <select name="position" id="position" class="form-control" required onchange="fetchEmployees()">
+                    <option value="">Select</option>
+                    <!-- Options will be populated from the database -->
+                </select>
+            </div>
+        </div>
+    </div>
+</div>
+<br>
+<br>
+<div class="form-group">
+    <div class="col-md-2">
+        <label>Select Employee:‎ ‎ ‎ ‎ ‎ </label>
+    </div>
+    <div class="col-md-10">
+        <div class="btn-toolbar">
+            <div class="btn-group" style="width: 70%;">
+                <select name="employee" id="employee" class="form-control" required>
+                    <option value="">Select</option>
+                    <!-- Options will be populated based on position selection -->
+                </select>
+            </div>
+        </div>
+    </div>
+</div>
+<br />
+<br />
+<br />
+<div class="col-md-6 col-sm-6 col-xs-6">
                                         <div class="form-group">
-                                        <div class="col-md-2">
-                                            <label>Transfer Ticket to:‎ ‎ ‎ ‎ ‎ </label>
+                                            <label>User ID‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ </label>
+                                            <input class="form-control" value="<?php echo htmlspecialchars($user_number); ?>" readonly/>
                                         </div>
-                                        <div class="col-md-10">
-                                        <div  class="btn-toolbar">
-										<div class="btn-group">
-										  <select class="btn btn-default">
-										  <!--<select data-toggle="dropdown" class="btn btn-default dropdown-toggle"><span class="caret"></span></select>
-										  <select class="dropdown-menu">-->
-											<option value="registrar">Registrars Office</option>
-											
-										  </select>
-										</div>
-									  </div>
+                                        <div class="form-group">
+                                            <label>ISSUE/PROBLEM  ‎ ‎ ‎ ‎ ‎ ‎ ‎ </label>
+                                            <input class="form-control" value="<?php echo htmlspecialchars($issue); ?>" readonly/>
                                         </div>
-                                        <br>
-                                      <br>
-                                      <br>
+                                        <div class="form-group">
+                                            <label>DESCRIPTION ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ </label>
+                                            <textarea class="form-control" style="height:148px; resize:none; overflow:auto;" readonly><?php echo htmlspecialchars($description); ?></textarea>
+                                            <!--<input class="form-control" value="<?php // echo htmlspecialchars($description); ?>" disabled style=""/> -->
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 col-sm-6 col-xs-6">
+                                        <div class="form-group">
+                                            <label>SCREENSHOT ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ </label>
+                                            <a href="view_image.php?id=<?php echo htmlspecialchars($ticket_id); ?>" target="_blank">
+                                                <img src="data:image/jpeg;base64,<?php echo $screenshotBase64; ?>" alt="Screenshot" class="img-fluid">
+                                            </a>
+                                        </div>
+                                    </div>
+                  </div>
+                  <?php } ?>                                 
                                      
-                                        <div class="form-group">
-                                          <div class="col-md-2">
-                                            <label>Details:‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ </label>
-                                          </div>
-                                          <div class="col-md-8">
-                                            <textarea name="resolution" id="detailsTextarea" class="form-controlb" rows="5"></textarea>
-                                              <br>
-                                              <select id="fileSelector" class="form-control">
-                                                <option value="">Select a file</option>
-
-                                              </select>
-                                              <br>
-                                          </div>
-                                        </div>
+                                        
                                         <div class="col-md-9">
                                         </div>
-                                        <div class="col-md-2">
-                                        <a data-toggle="modal" href="#myModalTransfer" class="btn btn-primary">Transfer</a>
-                                        <div class="modal fade" id="myModalTransfer">
-                <div class="modal-dialog3">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                            <h4 class="modal-title">Transfer Ticket</h4>
 
-                        </div>
-                        <div class="container"></div>
-                        <div class="modal-body">Confirm transfering ticket</div>
-                        <div class="modal-footer">	
-                              <button data-dismiss="modal" class="btn">Cancel</button>
-                              <button data-toggle="modal"  class="btn btn-primary">Confirm</button>
-                            
+                                        <div class="form-group row">
+                                        <hr />
+                
+                <a href="#" data-dismiss="modal" class="btn" onclick="history.back()">Back</a>
+                <a data-toggle="modal" href="#myModalTransfer" class="btn btn-primary">Transfer</a>
+                
+                
+                <div class="modal fade" id="myModalTransfer">
+                    <div class="modal-dialog modal-dialog3">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                                <h4 class="modal-title">Close Ticket</h4>
+                            </div>
+                            <div class="modal-body">
+                                Confirm Closing ticket
+                            </div>
+                            <div class="modal-footer">
+                                <button data-dismiss="modal" class="btn">Cancel</button>
+                                <button class="btn btn-primary">Confirm</button>
+                            </div>
                         </div>
                     </div>
                 </div>
-                            </div>
-                                        </div>
+
+        </div>
 </form> 
 <script>
-    // Function to populate the dropdown with files
-    function populateDropdown() {
-        fetch('http://localhost/HelpHub/list_files.php')
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
+function populateDropdown(fileName, dropdownId) {
+    // Add a random query parameter to the file name to prevent caching
+    const url = fileName + '?v=' + new Date().getTime();
+    
+    // Fetch the text file
+    fetch(url)
+        .then(response => response.text())
+        .then(data => {
+            // Split the text data by lines
+            const options = data.split('\n');
+
+            // Get the dropdown element
+            const dropdown = document.getElementById(dropdownId);
+
+            // Iterate over each line and create an option element
+            options.forEach(option => {
+                if (option.trim() !== '') {  // Ignore empty lines
+                    const opt = document.createElement('option');
+                    opt.value = option.trim();
+                    opt.textContent = option.trim();
+                    dropdown.appendChild(opt);
                 }
-                return response.json();
-            })
-            .then(fileList => {
-                const dropdown = document.getElementById('fileSelector');
-                fileList.forEach(fileName => {
-                    const option = document.createElement('option');
-                    option.value = `http://localhost/HelpHub/Templates/${fileName}`;
-                    option.textContent = fileName;
-                    dropdown.appendChild(option);
-                });
-            })
-            .catch(error => {
-                console.error('There was a problem with the fetch operation:', error);
             });
-    }
+        })
+        .catch(error => console.error(`Error fetching the text file (${fileName}):`, error));
+}
 
-    // Call the function to populate the dropdown on page load
-    window.onload = populateDropdown;
+//populateDropdown('admin-system-configuration/position.txt', 'position');
 
-    document.getElementById('fileSelector').addEventListener('change', function() {
-        const selectedUrl = this.value;
+    </script>
+    <script>
+        // Function to fetch and populate positions dropdown automatically
+function fetchPositions() {
+    var positionSelect = document.getElementById('position');
+    
+    // Clear previous options (just in case)
+    positionSelect.innerHTML = '<option value="">Select</option>';
 
-        if (selectedUrl) {
-            // Fetch the file content from the selected URL
-            fetch(selectedUrl)
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error('Network response was not ok');
-                    }
-                    return response.text();
-                })
-                .then(data => {
-                    document.getElementById('detailsTextarea').value = data;
-                })
-                .catch(error => {
-                    console.error('There was a problem with the fetch operation:', error);
-                    document.getElementById('detailsTextarea').value = "Failed to load content. Please try again.";
+    // AJAX request to fetch distinct positions
+    var xhr = new XMLHttpRequest();
+    xhr.open('GET', 'fetch/getPositions.php', true);
+    xhr.onload = function () {
+        if (xhr.status >= 200 && xhr.status < 300) {
+            var data = JSON.parse(xhr.responseText);
+            console.log(data);  // Debug to check the fetched data
+
+            // Populate the dropdown with unique positions
+            if (Array.isArray(data) && data.length) {
+                data.forEach(function (position) {
+                    var option = document.createElement('option');
+                    option.value = position.position;
+                    option.textContent = position.position;
+                    positionSelect.appendChild(option);
                 });
+            }
         } else {
-            // Clear the textarea if no file is selected
-            document.getElementById('detailsTextarea').value = '';
+            console.error('Request failed with status: ' + xhr.status);
         }
-    });
-</script>
-                                    
+    };
+    xhr.send();
+}
+
+// Automatically fetch positions when the page loads
+window.onload = function() {
+    fetchPositions();
+};
+
+    </script>        
+    <script>
+function fetchEmployees() {
+    var positionId = document.getElementById('position').value;
+    var employeeSelect = document.getElementById('employee');
+    
+    // Clear previous options
+    employeeSelect.innerHTML = '<option value="">Select</option>';
+
+    if (positionId) {
+        var xhr = new XMLHttpRequest();
+        xhr.open('GET', 'fetch/getEmployees.php?position_id=' + encodeURIComponent(positionId), true);
+        xhr.onload = function () {
+    if (xhr.status >= 200 && xhr.status < 300) {
+        var data = JSON.parse(xhr.responseText);
+        console.log(data);  // Add this line to check the data returned by the server
+        if (Array.isArray(data) && data.length) {
+            data.forEach(function (employee) {
+                var option = document.createElement('option');
+                option.value = employee.f_name;
+                option.textContent = employee.f_name;
+                employeeSelect.appendChild(option);
+            });
+        }
+    } else {
+        console.error('Request failed with status: ' + xhr.status);
+    }
+};
+        xhr.send();
+    }
+}
+    </script>    
+         
                                 </div>
                                 
                                 

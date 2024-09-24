@@ -19,7 +19,7 @@ if (!isset($_SESSION["admin_number"])) {
     $Data = $pdoResult->fetch(PDO::FETCH_ASSOC);
 
     if ($Data) {
-        $user_id = $Data['admin_number'];
+        $user_ID = $Data['admin_number'];
         $Email_Add = $Data['email_address'];
         $Name = $Data['f_name'];
         $lname = $Data['l_name'];
@@ -110,7 +110,7 @@ if (!isset($_SESSION["admin_number"])) {
                                         <div class="form-group">
                                             <label class="col-lg-3 control-label">USER ID</label>
                                             <div class="col-lg-8">
-                                                <input class="form-control" type="text" value="<?php echo $user_id?>" disabled>
+                                                <input class="form-control" type="text" value="<?php echo $user_ID?>" disabled>
                                             </div>
                                         </div>
                                         <div class="form-group">
@@ -153,9 +153,72 @@ if (!isset($_SESSION["admin_number"])) {
                                     </form>
                                 </div>
                             </div>
-                            
-                        </div><?php require_once('../footer.php') ?>
                         
+                        <hr>
+            <div class="panel panel-default">
+                <div class="row">
+                    <div class="col-md-12">
+                        <h2>Employee Report</h2>
+
+                        <div class="container">
+                            <h1 class="text-primary"></h1>
+                            <hr>
+                            <div class="row">
+                                
+                            <div class="row">                     
+                      
+               <div class="col-md-4 col-sm-4 col-xs-4">                     
+           <div class="panel panel-default">
+               <div class="panel-heading">
+                   Total Tickets
+               </div>
+               <div class="panel-body">
+                   <div id="morris-donut-chart"></div>
+               </div>
+           </div>            
+       </div>
+       <div class="col-md-4 col-sm-4 col-xs-4">                     
+           <div class="panel panel-default">
+               <div class="panel-heading">
+                    Student Tickets
+               </div>
+               <div class="panel-body">
+                   <div id="morris-donut-chart2"></div>
+               </div>
+           </div>            
+       </div>
+       <div class="col-md-4 col-sm-4 col-xs-4">                     
+           <div class="panel panel-default">
+               <div class="panel-heading">
+                    Employee Tickets
+               </div>
+               <div class="panel-body">
+                   <div id="morris-donut-chart3"></div>
+               </div>
+           </div>            
+       </div>
+      
+      
+  </div>
+                                        
+                                       
+                        
+                                        <div class="modal-footer">	
+                                        <a href="report.php" target="_blank">
+                                            <button type="button" class="btn btn-primary">View Full Report</button>
+                                        </a>
+                                        </div>
+                                        
+
+
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -176,21 +239,71 @@ if (!isset($_SESSION["admin_number"])) {
     
     <!-- /. WRAPPER -->
     <!-- SCRIPTS - AT THE BOTTOM TO REDUCE THE LOAD TIME -->
-    <!-- JQUERY SCRIPTS -->
-    <script src="assets/js/jquery-1.10.2.js"></script>
-    <!-- BOOTSTRAP SCRIPTS -->
+
+<!-- JQUERY SCRIPTS -->
+<script src="assets/js/jquery-1.10.2.js"></script>
+      <!-- BOOTSTRAP SCRIPTS -->
     <script src="assets/js/bootstrap.min.js"></script>
     <!-- METISMENU SCRIPTS -->
     <script src="assets/js/jquery.metisMenu.js"></script>
+    <!-- MORRIS CHART SCRIPTS -->
+    <script src="assets/js/morris/raphael-2.1.0.min.js"></script>
+    <script src="assets/js/morris/morris.js"></script>
+
+    <script>
+    $(document).ready(function() {
+        // Function to create a donut chart
+        function createDonutChart(elementId, dataUrl) {
+            $.getJSON(dataUrl, function(data) {
+                if (data.error) {
+                    console.error('Error fetching data for ' + elementId + ':', data.error);
+                    $('#' + elementId).html('<p>No data available for this chart.</p>'); // Display a message if no data
+                } else {
+                    console.log('Data for ' + elementId + ':', data); // Log data for debugging
+                    Morris.Donut({
+                        element: elementId,
+                        data: data,
+                        resize: true // Ensure the chart resizes correctly
+                    });
+                }
+            }).fail(function(jqxhr, textStatus, error) {
+                console.error('Request Failed for ' + elementId + ': ' + textStatus + ', ' + error);
+                $('#' + elementId).html('<p>Failed to load data for this chart.</p>'); // Display a message if the request fails
+            });
+        }
+
+        var jsVariable = "<?php echo $Name,  " ", $lname?>";
+
+        // Example JavaScript condition to check the value of the PHP variable
+        if (jsVariable === "Super Admin") {
+            createDonutChart('morris-donut-chart', 'action/data-report.php?chart=all&employee=<?php echo urlencode($Name . " " . $lname); ?>');
+            createDonutChart('morris-donut-chart2', 'action/data-report.php?chart=student&employee=<?php echo urlencode($Name . " " . $lname); ?>');
+            createDonutChart('morris-donut-chart3', 'action/data-report.php?chart=employee&employee=<?php echo urlencode($Name . " " . $lname); ?>');
+        } else {
+            createDonutChart('morris-donut-chart', 'action/data-report.php?chart=all&employee=<?php echo urlencode($Name); ?>');
+            createDonutChart('morris-donut-chart2', 'action/data-report.php?chart=student&employee=<?php echo urlencode($Name); ?>');
+            createDonutChart('morris-donut-chart3', 'action/data-report.php?chart=employee&employee=<?php echo urlencode($Name); ?>');
+        }
+
+        // Create charts with dynamic data
+        
+    });
+</script>
+
+
+
+ <!-- DATA TABLE SCRIPTS -->
+<script> </script>
     <!-- DATA TABLE SCRIPTS -->
     <script src="assets/js/dataTables/jquery.dataTables.js"></script>
     <script src="assets/js/dataTables/dataTables.bootstrap.js"></script>
-    <script>
-        $(document).ready(function () {
-            $('#dataTables-example').dataTable();
-        });
+        <script>
+            $(document).ready(function () {
+                $('#dataTables-example').dataTable();
+            });
     </script>
-    <!-- CUSTOM SCRIPTS -->
+    
+      <!-- CUSTOM SCRIPTS -->
     <script src="assets/js/custom.js"></script>
     <script>
       $.widget.bridge('uibutton', $.ui.button)

@@ -5,52 +5,167 @@ $pdoConnect = connection();
 session_start(); // Start the session
 
 // Check if the session variable is set
-if (!isset($_SESSION["student_number"])) {
+if (!isset($_SESSION["user_id"])) {
     header("Location: ../index.php");
     exit(); // Prevent further execution after redirection
 } else {
 
 try {
-    $id = 7;
+
+    $id = $_SESSION["user_id"];
+    $identity = $_SESSION["user_identity"];
     $status = 'Pending';
-
-    // Set the PDO error mode to exception
-    $pdoConnect->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-
-    // Prepare and bind parameters
-    $stmt = $pdoConnect->prepare("INSERT INTO tb_tickets (id, issue, description, screenshot, consent, status) VALUES (:id, :category, :issue_description, :image_path, :consent, :status)");
-    $stmt->bindParam(':id', $id);
-    $stmt->bindParam(':category', $category);
-    $stmt->bindParam(':issue_description', $issue_description);
-    $stmt->bindParam(':image_path', $image_path);
-    $stmt->bindParam(':consent', $consent);
-    $stmt->bindParam(':status', $status);
-
-    // Fetch data from POST
     $category = $_POST['category'];
     $issue_description = $_POST['issue-description'];
     $consent = $_POST['consent'];
+    $datetime = date('Y-m-d H:i:s');
 
-    // Upload image
-    if ($_FILES['img']['tmp_name']) {
-        $target_dir = "uploads/";
-        $target_file = $target_dir . basename($_FILES["img"]["name"]);
+    if ($identity == "Student"){
+        $pdoUserQuery = "SELECT * FROM student_user WHERE user_id = :number";
+        $pdoResult = $pdoConnect->prepare($pdoUserQuery);
+        $pdoResult->bindParam(':number', $id);
+        $pdoResult->execute();
+    
+        $Data = $pdoResult->fetch(PDO::FETCH_ASSOC);
+    
+        if ($Data) {
+            $Email_Add = $Data['email_address'];
+            $Name = $Data['name'];
+            $Campus = $Data['campus'];
+            $Department = $Data['department'];
+            $Course = $Data['course'];
+            $Y_S = $Data['year_section'];
+            $P_P = $Data['profile_picture'];
+            $Sex = $Data['sex'];
+            $Age = $Data['age'];
+            $UserType = $Data['user_type'];
 
-        if (move_uploaded_file($_FILES["img"]["tmp_name"], $target_file)) {
-            $image_path = $target_file;
-
-            // Execute the prepared statement
-            $stmt->execute();
-
-            echo "New record created successfully";
+            $nameParts = explode(' ', $Name);
+            $firstName = $nameParts[0];
         } else {
-            echo "Sorry, there was an error uploading your file.";
+            // Handle the case where no results are found
+            echo "No student found with the given student number.";
+        }
+    } elseif ($identity == "Employee") {
+        $pdoUserQuery = "SELECT * FROM employee_user WHERE user_id = :number";
+        $pdoResult = $pdoConnect->prepare($pdoUserQuery);
+        $pdoResult->bindParam(':number', $id);
+        $pdoResult->execute();
+    
+        $Data = $pdoResult->fetch(PDO::FETCH_ASSOC);
+    
+        if ($Data) {
+            $Email_Add = $Data['email_address'];
+            $Name = $Data['name'];
+            $Campus = $Data['campus'];
+            $Department = $Data['department'];
+            $Course = $Data['course'];
+            $Y_S = $Data['year_section'];
+            $P_P = $Data['profile_picture'];
+            $Sex = $Data['sex'];
+            $Age = $Data['age'];
+            $UserType = $Data['user_type'];
+
+            $nameParts = explode(' ', $Name);
+            $firstName = $nameParts[0];
+        } else {
+            // Handle the case where no results are found
+            echo "No student found with the given student number.";
         }
     }
+
+    if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+        if (isset($_FILES['image']) && $_FILES['image']['error'] == 0) {
+            $image = $_FILES['image'];
+            
+            // Validate file size (6MB)
+            $maxSize = 6 * 1024 * 1024; // 6MB in bytes
+            if ($image['size'] > $maxSize) {
+                echo "File size exceeds 6MB limit.";
+                exit;
+            }
+
+            // Validate file type
+            $allowedTypes = ['image/png', 'image/jpeg', 'image/jpg'];
+            $fileType = mime_content_type($image['tmp_name']);
+            if (!in_array($fileType, $allowedTypes)) {
+                echo "Only PNG, JPG, and JPEG files are allowed.";
+                exit;
+            }
+
+            $imgContent = file_get_contents($image['tmp_name']);
+
+            // Start a transaction
+            $pdoConnect->beginTransaction();
+            
+            // Prepare an insert statement
+            $stmt = $pdoConnect->prepare("INSERT INTO tb_tickets (created_date, full_name, user_number, campus, department, course, year_section, sex, age, user_type, issue, description, screenshot, consent, status) 
+                                        VALUES (:createddate, :fullname, :usernumber, :campus, :department, :course, :year_section, :sex, :age, :usertype, :category, :issue_description, :image, :consent, :status)");
+            // Bind the blob data
+
+            $stmt->bindParam(':createddate', $datetime, PDO::PARAM_LOB);
+            $stmt->bindParam(':fullname', $Name, PDO::PARAM_LOB);
+            $stmt->bindParam(':usernumber', $id, PDO::PARAM_LOB);
+            $stmt->bindParam(':campus', $Campus, PDO::PARAM_LOB);
+            $stmt->bindParam(':department', $Department, PDO::PARAM_LOB);
+            $stmt->bindParam(':course', $Course, PDO::PARAM_LOB);
+            $stmt->bindParam(':year_section', $Y_S, PDO::PARAM_LOB);
+            $stmt->bindParam(':sex', $Sex, PDO::PARAM_LOB);
+            $stmt->bindParam(':age', $Age, PDO::PARAM_LOB);
+            $stmt->bindParam(':usertype', $UserType, PDO::PARAM_LOB);
+            $stmt->bindParam(':category', $category, PDO::PARAM_LOB);
+            $stmt->bindParam(':issue_description', $issue_description, PDO::PARAM_LOB);
+            $stmt->bindParam(':image', $imgContent, PDO::PARAM_LOB);
+            $stmt->bindParam(':consent', $consent, PDO::PARAM_LOB);
+            $stmt->bindParam(':status', $status, PDO::PARAM_LOB);
+
+            // Execute the statement
+            if ($stmt->execute()) {
+                    // Get the last inserted ID
+                    $lastInsertId = $pdoConnect->lastInsertId();
+
+                    // Commit the transaction
+                    $pdoConnect->commit();
+
+                    $ticket_desc = "Ticket Created";
+
+                    $pdoUpdateQuery="INSERT ticket_logs 
+                                    SET ticket_id = :id, date_time = :OD, description = :desc, status = :status";
+                    $pdoResult = $pdoConnect->prepare($pdoUpdateQuery);
+                    $pdoResult->bindParam(':id', $lastInsertId, PDO::PARAM_STR);
+                    $pdoResult->bindParam(':OD', $datetime, PDO::PARAM_STR);
+                    $pdoResult->bindParam(':desc', $ticket_desc, PDO::PARAM_STR);
+                    $pdoResult->bindParam(':status', $status, PDO::PARAM_STR);
+                    if (!$pdoResult->execute()) {
+                        throw new PDOException("Failed to execute the second query");
+                    }
+
+                header("Location: receive-ticket-response.php?id=" . $lastInsertId);
+                exit();
+            } else {
+                // Roll back the transaction on failure
+                $pdoConnect->rollBack();
+                header("Location: create-ticket.php?error=1");
+                exit();
+            }
+        } else {
+            header("Location: create-ticket.php?error=1");
+            exit();
+        }
+    }
+
+
 } catch(PDOException $e) {
-    echo "Error: " . $e->getMessage();
+    echo "Connection failed: " . $e->getMessage();
+    echo "<a href='index.html'>Back</a>";
+
+    // Roll back the transaction on exception
+    if ($pdoConnect->inTransaction()) {
+        $pdoConnect->rollBack();
+    }
 }
 
+// Close the connection
 $conn = null;
 }
 ?>

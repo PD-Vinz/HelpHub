@@ -1,5 +1,4 @@
 <?php
-
 session_start();
 
 include_once("connection/conn.php");
@@ -44,38 +43,28 @@ if (isset($_POST['login'])) {
 //            header("Location: first-time/verify.php");
 //            exit(); // Prevent further execution after redirection
 //        }
- // Check in mis_employees table
- $pdoAdminQuery = "SELECT * FROM mis_employees WHERE admin_number = :username AND password = :pass";
- $pdoResult3 = $pdoConnect->prepare($pdoAdminQuery);
- $pdoResult3->bindParam(':username', $username);
- $pdoResult3->bindParam(':pass', $pass);
- $pdoResult3->execute();
 
- if ($pdoResult3->rowCount() > 0) {
-     $_SESSION["admin_number"] = $username;
-     header("Location: Admin/index.php");
-     exit(); // Prevent further execution after redirection
- }
         // Check in student_user table
+        $pdoUserQuery = "SELECT * FROM student_user WHERE user_id = :username AND password = :pass";
+        $pdoResult = $pdoConnect->prepare($pdoUserQuery);
+        $pdoResult->bindParam(':username', $username);
+        $pdoResult->bindParam(':pass', $pass);
+        $pdoResult->execute();
 
-        $pdoUserQuery1 = "SELECT * FROM student_user WHERE user_id = :username AND password = :pass";
-        $pdoResult1 = $pdoConnect->prepare($pdoUserQuery1);
-        $pdoResult1->bindParam(':username', $username);
-        $pdoResult1->bindParam(':pass', $pass);
-        $pdoResult1->execute();
-        if ($pdoResult1->rowCount() > 0) {
+        if ($pdoResult->rowCount() > 0) {
             $_SESSION["user_id"] = $username;
             $_SESSION["user_identity"] = "Student";
             header("Location: User/dashboard.php");
             exit(); // Prevent further execution after redirection
         }
 
-        $pdoUserQuery2 = "SELECT * FROM employee_user WHERE user_id = :username AND password = :pass";
+        $pdoUserQuery2 = "SELECT password FROM employee_user WHERE user_id = :username AND password = :pass";
         $pdoResult2 = $pdoConnect->prepare($pdoUserQuery2);
         $pdoResult2->bindParam(':username', $username);
         $pdoResult2->bindParam(':pass', $pass);
         $pdoResult2->execute();
 
+        // Check if the user exists
         if ($pdoResult2->rowCount() > 0) {
             $_SESSION["user_id"] = $username;
             $_SESSION["user_identity"] = "Employee";
@@ -83,11 +72,35 @@ if (isset($_POST['login'])) {
             exit(); // Prevent further execution after redirection
         }
 
-       
+        // Check in mis_employees table
+        $pdoAdminQuery = "SELECT * FROM mis_employees WHERE admin_number = :username AND password = :pass";
+        $pdoResult3 = $pdoConnect->prepare($pdoAdminQuery);
+        $pdoResult3->bindParam(':username', $username);
+        $pdoResult3->bindParam(':pass', $pass);
+        $pdoResult3->execute();
+
+        if ($pdoResult3->rowCount() > 0) {
+            $_SESSION["admin_number"] = $username;
+            include_once("priority_check.php");
+
+                // Run priority check only once a day
+                if (!isset($_SESSION['priority_last_run']) || (time() - $_SESSION['priority_last_run']) >= 86400) {
+                    include_once("priority_check.php");
+                    $_SESSION['priority_last_run'] = time(); // Update last run time
+                }
+                
+            header("Location: Admin/index.php");
+            exit(); // Prevent further execution after redirection
+        }
+
         // If no match found in both tables
         $errorMessage = "Wrong Username or Password";
-        echo $errorMessage;
-            
+        echo "<script type='text/javascript'>
+            window.onload = function() {
+                alert('$errorMessage');
+                window.location.href = 'index.php';
+            };
+        </script>";
     } catch (PDOException $error) {
         $message = '<label>Error: ' . $error->getMessage() . '</label>';
     }
@@ -105,7 +118,6 @@ if (isset($_POST['login'])) {
     <link  rel="stylesheet" href="index.css">
 </head>
 <body>
-
     <img class="logo" src="img/MIS logo.png" alt="Image">
 
     <div class="login">
@@ -115,7 +127,7 @@ if (isset($_POST['login'])) {
         <br>
         
         <div class="form-group">
-            <input type="text" name="username" required placeholder="User ID">
+            <input type="text" name="username" required placeholder="Username">
         </div>
         <div class="form-group">
             <input type="password" name="password" id="myInput" required placeholder="Password" autocomplete="off">
@@ -139,7 +151,9 @@ if (isset($_POST['login'])) {
     
         
     </form>
-    <a href="forgot_password.php" class="forgot">Forgot Password?</a>
+    <a href="forgot-password/forgot-password.php" class="forgot">Forgot Password?</a>
     </div> 
+
+    <script src="script.js"></script>
 </body>
 </html>

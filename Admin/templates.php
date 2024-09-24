@@ -149,7 +149,9 @@ try {
     <script>
         // Function to load content from a text file into the corresponding textarea
         function loadFile(fileName, textareaId) {
-            fetch(fileName)
+            const url = fileName + '?v=' + new Date().getTime();
+
+            fetch(url)
                 .then(response => response.text())
                 .then(data => {
                     document.getElementById(textareaId).value = data;

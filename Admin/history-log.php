@@ -143,6 +143,8 @@ try {
                             <div class="table-responsive">
 
 <?php
+$id = $_SESSION["admin_number"];
+
 $pdoQuery = "SELECT * FROM mis_history_logs WHERE admin_number = :id";
 $pdoResult = $pdoConnect->prepare($pdoQuery);
 $pdoResult->bindParam(':id', $id, PDO::PARAM_STR);

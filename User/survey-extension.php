@@ -119,6 +119,17 @@
 </script>
 
 <form id="surveyForm" action="php/survey-finished.php?id=<?php echo $_GET['id']?>&taken=<?php echo $_GET['taken']?>" method="post" onsubmit="processForm(event)">
+   <!-- <input type="text" name="cc1" value="<?php echo $_POST['cc1']?>" hidden>
+    <input type="text" name="cc2" value="<?php echo $_POST['cc2']?>" hidden>
+    <input type="text" name="cc3" value="<?php echo $_POST['cc3']?>" hidden>
+    <input type="text" name="sqd0" value="<?php echo $_POST['sqd0']?>" hidden>
+    <input type="text" name="sqd1" value="<?php echo $_POST['sqd1']?>" hidden>
+    <input type="text" name="sqd2" value="<?php echo $_POST['sqd2']?>" hidden>
+    <input type="text" name="sqd3" value="<?php echo $_POST['sqd3']?>" hidden>
+    <input type="text" name="sqd4" value="<?php echo $_POST['sqd4']?>" hidden>
+    <input type="text" name="sqd6" value="<?php echo $_POST['sqd6']?>" hidden>
+    <input type="text" name="sqd7" value="<?php echo $_POST['sqd7']?>" hidden>
+    <input type="text" name="sqd8" value="<?php echo $_POST['sqd8']?>" hidden>-->
     <input type="text" name="overall_satisfaction" value="<?php echo $_POST['overall_satisfaction']?>" hidden>
     <input type="text" name="service_rating" value="<?php echo $_POST['service_rating']?>" hidden>
     <input type="text" name="service_expectations" value="<?php echo $_POST['service_expectations']?>" hidden>
@@ -133,12 +144,12 @@
         <small id="like-remaining-characters" class="form-text text-muted">255 characters remaining</small>
     </div>
     <div class="question">
-        <label for="improve">What areas do you think need improvement?</label>
+        <label for="improve">What areas do you think could be improved?</label>
         <textarea id="improve" name="improve" rows="4" maxlength="255" oninput="improveRemainingCharacters()" required></textarea>
         <small id="improve-remaining-characters" class="form-text text-muted">255 characters remaining</small>
     </div>
     <div class="question">
-        <label for="comments">Any additional comments or suggestions?</label>
+        <label for="comments">Comments or suggestions on how we can improve our service?</label>
         <textarea id="comments" name="comments" rows="4" maxlength="255" oninput="commentsRemainingCharacters()" required></textarea>
         <small id="comments-remaining-characters" class="form-text text-muted">255 characters remaining</small>
     </div>

@@ -310,7 +310,7 @@ $pdoExec = $pdoResult->execute();
     </div>
 </div>
                               </div>
-                              <div class="modal fade" id="myModal4">
+<div class="modal fade" id="myModal4">
     <div class="modal-dialog3">
         <div class="modal-content">
             <div class="modal-header">

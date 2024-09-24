@@ -125,6 +125,35 @@ if (!isset($_SESSION["user_id"])) {
     100% { transform: rotate(360deg); }
 }
    </style>
+   <style>
+    /* Notification bar styling */
+    #updateNotice {
+        position: fixed;
+        top: 10px;
+        width: 100%;
+        background-color: #4CAF50;
+        color: white;
+        text-align: center;
+        padding: 10px;
+        z-index: 1000;
+        font-size: 16px;
+        box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
+    }
+    
+    #updateNotice button {
+        background-color: white;
+        border: none;
+        color: #4CAF50;
+        padding: 5px 10px;
+        cursor: pointer;
+        font-size: 14px;
+        border-radius: 4px;
+    }
+
+    #updateNotice button:hover {
+        background-color: #f1f1f1;
+    }
+</style>
 </head>
 
 <body>
@@ -132,6 +161,10 @@ if (!isset($_SESSION["user_id"])) {
         <div class="spinner"></div>
         <p>Loading...</p>
     </div>
+<!-- Notification Bar HTML 
+<div id="updateNotice" style="display: none;">
+    <p>New update available! <button id="refreshButton">Reload</button></p>
+</div>-->
     <div id="wrapper">
         <nav class="navbar navbar-default navbar-cls-top " role="navigation" style="margin-bottom: 0">
             <div class="navbar-header">
@@ -398,6 +431,44 @@ function fetchData() {
         }, 500);
     });
 }
+
+</script>
+
+<script>
+    let lastUpdate = 0; // Store the last update time
+
+function checkForUpdates() {
+    $.ajax({
+        url: 'fetch/check_pending_updates.php', // Server-side script URL
+        method: 'GET',
+        success: function(data) {
+            const response = JSON.parse(data);
+
+            // If the last update timestamp has changed
+            if (response.lastUpdate != lastUpdate) {
+                lastUpdate = response.lastUpdate;
+
+                // Show the notification bar
+                $('#updateNotice').slideDown();
+            }
+        },
+        error: function() {
+            console.error('Error checking for updates');
+        }
+    });
+}
+
+// Poll every 5 seconds
+setInterval(checkForUpdates, 5000);
+
+// Add click handler for the "Reload" button
+$('#refreshButton').on('click', function() {
+    // Option 1: Reload the page
+    location.reload();
+
+    // Option 2: Fetch data again (if reloading is not required)
+    // fetchData();
+});
 
 </script>
 

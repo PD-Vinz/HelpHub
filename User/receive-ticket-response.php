@@ -103,6 +103,7 @@
                     </div>
                     <div class="modal-footer">	
                         <a href="dashboard.php"> <button onclick="handleOkay()">Home</button></a>
+                        <!--<a href="survey.php?id=<?php echo $_GET['id']?>&taken=before"> <button>Take Survey</button></a>-->
                     </div>
                 </div>
                 <!-- /. ROW  -->

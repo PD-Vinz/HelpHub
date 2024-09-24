@@ -153,7 +153,7 @@ $pdoConnect = null;
 				</div>
                 <div class="form-group col-6">
 					<label for="name">Sex</label>
-					<select name="sex" id="type" class="custom-select form-control" required>
+					<select name="sex" id="sex" class="custom-select form-control" required>
 						<option value="Male" <?php echo ($pdoResult[0]['sex'] == 'Male') ? 'selected' : ''; ?>>Male</option>
 						<option value="Female" <?php echo ($pdoResult[0]['sex'] == 'Female') ? 'selected' : ''; ?>>Female</option>
 					</select>
@@ -170,16 +170,14 @@ $pdoConnect = null;
 				</div>
                 <div class="form-group col-6">
 					<label for="position">Position</label>
-					<select name="position" id="position" class="custom-select form-control" required>
-						<option value="Director" <?php echo ($pdoResult[0]['user_type'] == 'Director') ? 'selected' : ''; ?>>Director</option>
-						<option value="Staff" <?php echo ($pdoResult[0]['user_type'] == 'Staff') ? 'selected' : ''; ?>>Staff</option>
+					    <select name="position" id="position" class="custom-select form-control" required>
+
 					</select>
 				</div>
 				<div class="form-group col-6">
 					<label for="type">User Type</label>
-					<select name="type" id="type" class="custom-select form-control" required>
-						<option value="Administrator" <?php echo ($pdoResult[0]['user_type'] == 'Administrator') ? 'selected' : ''; ?>>Administrator</option>
-						<option value="Staff" <?php echo ($pdoResult[0]['user_type'] == 'Staff') ? 'selected' : ''; ?>>Staff</option>
+					    <select name="type" id="type" class="custom-select form-control" required>
+
 					</select>
 				</div>
 				<div class="form-group col-6">
@@ -355,9 +353,49 @@ $pdoConnect = null;
 	        reader.readAsDataURL(input.files[0]);
 	    }
 	}
-	
-
 </script>
+<script>
+// Pass the PHP variables to JavaScript
+const dbPosition = "<?php echo $pdoResult[0]['position'];  ?>";
+const dbUserType = "<?php echo $pdoResult[0]['user_type'];  ?>";
+
+function populateDropdown(fileName, dropdownId, dbValue) {
+    const url = fileName + '?v=' + new Date().getTime(); // Prevent caching
+    
+    fetch(url)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            return response.text();
+        })
+        .then(data => {
+            console.log("Fetched data from", fileName, ":", data);
+            const options = data.split('\n');
+            const dropdown = document.getElementById(dropdownId);
+            dropdown.innerHTML = ''; // Clear existing options
+
+            options.forEach(option => {
+                const trimmedOption = option.trim();
+                if (trimmedOption !== '') {
+                    const opt = document.createElement('option');
+                    opt.value = trimmedOption;
+                    opt.textContent = trimmedOption;
+                    if (trimmedOption === dbValue) {
+                        opt.selected = true; // Set the selected option based on the database value
+                    }
+                    dropdown.appendChild(opt);
+                }
+            });
+        })
+        .catch(error => console.error(`Error fetching the text file (${fileName}):`, error));
+}
+
+// Populate the dropdowns with database values for default selection
+populateDropdown('admin-system-configuration/position.txt', 'position', dbPosition);
+populateDropdown('admin-system-configuration/usertype.txt', 'type', dbUserType);
+</script>
+
     </div>
              <!-- /. PAGE INNER  -->
             </div>

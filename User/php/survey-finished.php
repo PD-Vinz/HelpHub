@@ -1,3 +1,24 @@
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 <?php
 include_once("../../connection/conn.php");
 $pdoConnect = connection();
@@ -14,18 +35,18 @@ try {
 
     $id = $_SESSION["user_id"];
     $ticket_id = $_GET['id'];
-    $taken = $_GET['taken'];
-     $cc1 = $_POST['cc1'];
-    $cc2 = $_POST['cc2'];
-    $cc3 = $_POST['cc3'];
-    $sqd0 = $_POST['sqd0'];
-    $sqd1 = $_POST['sqd1'];
-    $sqd2 = $_POST['sqd2'];
-    $sqd3 = $_POST['sqd3'];
-    $sqd4 = $_POST['sqd4'];
-    $sqd6 = $_POST['sqd6'];
-    $sqd7 = $_POST['sqd7'];
-    $sqd8 = $_POST['sqd8'];
+  //  $taken = $_GET['taken'];
+   // $cc1 = $_POST['cc1'];
+  //  $cc2 = $_POST['cc2'];
+  //  $cc3 = $_POST['cc3'];
+  //  $sqd0 = $_POST['sqd0'];
+  //  $sqd1 = $_POST['sqd1'];
+  //  $sqd2 = $_POST['sqd2'];
+  //  $sqd3 = $_POST['sqd3'];
+  //  $sqd4 = $_POST['sqd4'];
+  //  $sqd6 = $_POST['sqd6'];
+  //  $sqd7 = $_POST['sqd7'];
+  //  $sqd8 = $_POST['sqd8'];
     $overall_satisfaction = $_POST['overall_satisfaction'];
     $service_rating = $_POST['service_rating'];
     $service_expectations = $_POST['service_expectations'];
@@ -35,7 +56,6 @@ try {
     $likeRating = $_POST['likeRating'];
     $improveRating = $_POST['improveRating'];
     $commentsRating = $_POST['commentsRating'];
-   
     $datetime = date('Y-m-d H:i:s');
 
     if ($_SERVER['REQUEST_METHOD'] == 'POST') {
@@ -44,9 +64,20 @@ try {
             
             // Prepare an insert statement
             $stmt = $pdoConnect->prepare("INSERT INTO tb_survey_feedback 
-                                                (overall_satisfaction, service_rating, service_expectations, like_service, improvement, comments, user_id, ticket_id, taken, date_time, bayes_rating_like, bayes_rating_improve, bayes_rating_comment, cc1, cc2, cc3, sqd0, sqd1, sqd2, sqd3, sqd4, sqd6, sqd7, sqd8) 
-                                        VALUES  (:O_S, :S_R, :S_E, :like_service, :improve, :comments, :id, :T_ID, :taken, :D_T, :likeRating, :improveRating, :commentsRating, :cc1, :cc2, :cc3, :sqd0, :sqd1, :sqd2, :sqd3, :sqd4, :sqd6, :sqd7, :sqd8)");
+                                                (overall_satisfaction, service_rating, service_expectations, like_service, improvement, comments, user_id, ticket_id, taken, date_time, bayes_rating_like, bayes_rating_improve, bayes_rating_comment) 
+                                        VALUES  (:O_S, :S_R, :S_E, :like_service, :improve, :comments, :id, :T_ID, :taken, :D_T, :likeRating, :improveRating, :commentsRating)");
             // Bind the blob data
+        //   $stmt->bindParam(':cc1', $cc1, PDO::PARAM_LOB); cc1, cc2, cc3, sqd0, sqd1, sqd2, sqd3, sqd4, sqd6, sqd7, sqd8, 
+        //    $stmt->bindParam(':cc2', $cc2, PDO::PARAM_LOB); :cc1, :cc2, :cc3, :sqd0, :sqd1, :sqd2, :sqd3, :sqd4, :sqd6, :sqd7, :sqd8, 
+        //    $stmt->bindParam(':cc3', $cc3, PDO::PARAM_LOB); 
+        //    $stmt->bindParam(':sqd0', $sqd0, PDO::PARAM_LOB);
+        //    $stmt->bindParam(':sqd1', $sqd1, PDO::PARAM_LOB);
+        //    $stmt->bindParam(':sqd2', $sqd2, PDO::PARAM_LOB);
+        //    $stmt->bindParam(':sqd3', $sqd3, PDO::PARAM_LOB);
+        //    $stmt->bindParam(':sqd4', $sqd4, PDO::PARAM_LOB);
+        //    $stmt->bindParam(':sqd6', $sqd6, PDO::PARAM_LOB);
+        //    $stmt->bindParam(':sqd7', $sqd7, PDO::PARAM_LOB);
+        //    $stmt->bindParam(':sqd8', $sqd8, PDO::PARAM_LOB);
             $stmt->bindParam(':O_S', $overall_satisfaction, PDO::PARAM_LOB);
             $stmt->bindParam(':S_R', $service_rating, PDO::PARAM_LOB);
             $stmt->bindParam(':S_E', $service_expectations, PDO::PARAM_LOB);
@@ -60,17 +91,6 @@ try {
             $stmt->bindParam(':likeRating', $likeRating, PDO::PARAM_LOB);
             $stmt->bindParam(':improveRating', $improveRating, PDO::PARAM_LOB);
             $stmt->bindParam(':commentsRating', $commentsRating, PDO::PARAM_LOB);
-            $stmt->bindParam(':cc1', $cc1, PDO::PARAM_LOB);
-            $stmt->bindParam(':cc2', $cc2, PDO::PARAM_LOB);
-            $stmt->bindParam(':cc3', $cc3, PDO::PARAM_LOB);
-            $stmt->bindParam(':sqd0', $sqd0, PDO::PARAM_LOB);
-            $stmt->bindParam(':sqd1', $sqd1, PDO::PARAM_LOB);
-            $stmt->bindParam(':sqd2', $sqd2, PDO::PARAM_LOB);
-            $stmt->bindParam(':sqd3', $sqd3, PDO::PARAM_LOB);
-            $stmt->bindParam(':sqd4', $sqd4, PDO::PARAM_LOB);
-            $stmt->bindParam(':sqd6', $sqd6, PDO::PARAM_LOB);
-            $stmt->bindParam(':sqd7', $sqd7, PDO::PARAM_LOB);
-            $stmt->bindParam(':sqd8', $sqd8, PDO::PARAM_LOB);
 
             // Execute the statement
             if ($stmt->execute()) {
@@ -93,7 +113,7 @@ try {
 
 } catch(PDOException $e) {
     echo "Connection failed: " . $e->getMessage();
-    echo "<a href='index.html'>Back</a>";
+    echo "<a href='index.php'>Back</a>";
 
     // Roll back the transaction on exception
     if ($pdoConnect->inTransaction()) {
@@ -105,3 +125,4 @@ try {
 $conn = null;
 }
 ?>
+

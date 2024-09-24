@@ -238,7 +238,7 @@ while ($row = $pdoResult->fetch(PDO::FETCH_ASSOC)) {
                                                         <td>
 <?php
 
-if ($status == 'Completed') {
+if ($status == 'Resolved') {
     // Display the button that triggers the modal
     echo '<button class="btn btn-primary btn-xs" data-toggle="modal" data-target="#myModal' . htmlspecialchars($ticket_id) . '">
             VIEW TICKET
