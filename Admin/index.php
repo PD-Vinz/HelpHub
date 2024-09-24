@@ -30,6 +30,11 @@ if (!isset($_SESSION["admin_number"])) {
         echo "No student found with the given student number.";
     }
 
+    if ($Position !== "Director" && $Position !== "Staff" && $Position !== "Super Admin") {
+        header("Location: ../Office/office.php");
+        exit(); // Prevent further execution after redirection
+    }
+
 try {
 
     $pdoCountQuery = "SELECT * FROM tb_tickets";
@@ -250,6 +255,7 @@ try {
 
 <br>
 <br>
+<!--
                  <div class="col-md-4">                     
                     <div class="panel panel-default">
                         <div class="panel-heading">
@@ -269,7 +275,7 @@ try {
                       </div>
                     </div>            
                 </div> 
-                
+-->                
         </div>
     
         

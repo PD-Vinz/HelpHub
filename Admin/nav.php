@@ -29,7 +29,7 @@
     <div class="sidebar-collapse">
         <ul class="nav" id="main-menu">
         <li class="text-center">
-            <img src="assets/img/find_user.png" class="user-image img-responsive"/>
+            <a href="profile.php"><img src="assets/img/find_user.png" class="user-image img-responsive"/></a>
             </li>
         
             
@@ -124,7 +124,10 @@
                       <a href="templates.php"><i class="fa fa-exclamation-triangle"></i>Issues Templates</a>
                   </li>
                   <li>
-                      <a href="templates.php"><i class="fa fa-comment-dots"></i>Response Templates</a>
+                      <a href="response-templates.php"><i class="fa fa-comment-dots"></i>Response Templates</a>
+                  </li>
+                  <li>
+                      <a href="others.php"><i class="fa fa-folder"></i>Others</a>
                   </li>
               </ul>
             </li>

@@ -162,14 +162,14 @@ input[type="file"]::file-selector-button {
 					<input type="text" name="age" id="age" class="form-control" required autocomplete="off">
 				</div>
                 <div class="form-group col-6">
-					<label for="name">Sex</label>
-					<select name="sex" id="type" class="custom-select form-control" required>
+					<label for="sex">Sex</label>
+					<select name="sex" id="sex" class="custom-select form-control" required>
 						<option value="Male">Male</option>
 						<option value="Female">Female</option>
 					</select>
 				</div>
                 <div class="form-group col-6">
-					<label for="password">Email Address</label>
+					<label for="email">Email Address</label>
 					<input type="email" name="email" id="email" class="form-control" value="" autocomplete="off" >
 				</div>
 				<div class="form-group col-6">
@@ -177,17 +177,15 @@ input[type="file"]::file-selector-button {
 					<input type="password" name="password" id="password" class="form-control" value="" autocomplete="off" >
 				</div>
                 <div class="form-group col-6">
-					<label for="type">Position</label>
+					<label for="position">Position</label>
 					<select name="position" id="position" class="custom-select form-control" required>
-						<option value="Director">Director</option>
-						<option value="Staff">Staff</option>
+						
 					</select>
 				</div>
 				<div class="form-group col-6">
 					<label for="type">User Type</label>
 					<select name="type" id="type" class="custom-select form-control" required>
-						<option value="Administrator">Administrator</option>
-						<option value="Staff">Staff</option>
+						
 					</select>
 				</div>
 				<div class="form-group col-6">
@@ -373,10 +371,44 @@ function displayImg(input) {
       <!-- BOOTSTRAP SCRIPTS -->
     <script src="assets/js/bootstrap.min.js"></script>
     <!-- METISMENU SCRIPTS -->
-    <script src=assets/js/jquery.metisMenu.js"></script>
+    <script src="assets/js/jquery.metisMenu.js"></script>
       <!-- CUSTOM SCRIPTS -->
     <script src="assets/js/custom.js"></script>
     
-   
+    <script>
+function populateDropdown(fileName, dropdownId) {
+    // Add a random query parameter to the file name to prevent caching
+    const url = fileName + '?v=' + new Date().getTime();
+    
+    // Fetch the text file
+    fetch(url)
+        .then(response => response.text())
+        .then(data => {
+            // Split the text data by lines
+            const options = data.split('\n');
+
+            // Get the dropdown element
+            const dropdown = document.getElementById(dropdownId);
+
+            // Clear existing options in the dropdown
+            dropdown.innerHTML = '';
+
+            // Iterate over each line and create an option element
+            options.forEach(option => {
+                if (option.trim() !== '') {  // Ignore empty lines
+                    const opt = document.createElement('option');
+                    opt.value = option.trim();
+                    opt.textContent = option.trim();
+                    dropdown.appendChild(opt);
+                }
+            });
+        })
+        .catch(error => console.error(`Error fetching the text file (${fileName}):`, error));
+}
+
+populateDropdown('admin-system-configuration/position.txt', 'position');
+populateDropdown('admin-system-configuration/usertype.txt', 'type');
+
+    </script>
 </body>
 </html>

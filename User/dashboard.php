@@ -79,7 +79,7 @@ try {
     $pdoResult->execute();
     $returnedTickets = $pdoResult->rowCount();
 
-    $pdoCountQuery = "SELECT * FROM tb_tickets WHERE user_number = :number AND status = 'Completed'";
+    $pdoCountQuery = "SELECT * FROM tb_tickets WHERE user_number = :number AND status = 'Resolved'";
     $pdoResult = $pdoConnect->prepare($pdoCountQuery);
     $pdoResult->bindParam(':number', $id);
     $pdoResult->execute();
@@ -118,8 +118,39 @@ try {
     <!-- GOOGLE FONTS-->
     <link href='https://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css' />
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    
+<style>
+      	/* Basic styling for the "Back to Top" button */
+#astroid-backtotop {
+    display: none; /* Hide button by default */
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: 50px;
+    height: 50px;
+    background-color: #007bff;
+    color: white;
+    border-radius: 50%;
+    text-align: center;
+    line-height: 50px; /* Center icon vertically */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    font-size: 24px;
+    cursor: pointer;
+    z-index: 1000; /* Make sure button is above other content */
+    transition: opacity 0.3s ease;
+  }
+  
+  #astroid-backtotop:hover {
+    background-color: #0056b3;
+  }
+  
+  /* Show the button when scrolling */
+  body.scroll-active #astroid-backtotop {
+    display: inline;
+  }
+</style>
 </head>
 
 <body>
@@ -325,6 +356,8 @@ try {
        </div>
      </div>
    </div>
+
+   <a id="astroid-backtotop" class="circle" href="#"><i class="fas fa-arrow-circle-up"></i></a>
    <!-- Include the JavaScript file for the calendar functionality -->
    <script src="assets/js/script.js"></script>
    
@@ -401,7 +434,29 @@ try {
       });
     </script>
     
+    <script>
+        //window.history.pushState({}, document.title, "/");
+    </script>
     
+    <script>
+        // Smooth scroll to top
+document.getElementById('astroid-backtotop').addEventListener('click', function(event) {
+  event.preventDefault(); // Prevent default anchor behavior
+  window.scrollTo({
+      top: 0,
+      behavior: 'smooth' // Smooth scrolling
+  });
+});
+
+// Show button when scrolled down
+window.addEventListener('scroll', function() {
+  if (window.scrollY > 100) {
+      document.body.classList.add('scroll-active');
+  } else {
+      document.body.classList.remove('scroll-active');
+  }
+});
+    </script>
 </body>
 
 </html>

@@ -1,0 +1,166 @@
+/* General styles for screen display */
+body {
+    font-family: Arial, sans-serif;
+    margin: 20px;
+}
+
+header, footer {
+    background-color: #f2f2f2;
+    padding: 10px;
+    text-align: center;
+}
+
+/* General styles for the header */
+header {
+    background-color: #f2f2f2;
+    padding: 20px;
+    text-align: center;
+    position: relative;
+    font-size: 1rem; /* Base font size */
+}
+
+.header-content {
+    display: flex;
+    justify-content: center;  /* Center the h1 horizontally */
+    align-items: center;
+    position: relative;
+}
+
+h1 {
+    flex-grow: 1; 
+    font-size: 1.5rem; /* Use relative sizing for the main title */
+}
+
+.header-left {
+    position: absolute;
+    left: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    text-align: left;
+}
+
+h3 {
+    font-size: 1rem; /* Set smaller size for the h3 elements */
+}
+
+.header-right {
+    position: absolute;
+    right: 20px; /* Align the image to the right */
+    top: 50%;
+    transform: translateY(-50%); /* Vertically center the image */
+}
+
+.header-right img {
+    max-width: 100px; /* Set a max width for the image */
+    height: auto;
+}
+
+
+h1, h2 {
+    color: #333;
+}
+
+p {
+    font-size: 16px;
+    line-height: 1.5;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+}
+
+table, th, td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+}
+
+th {
+    background-color: #f4f4f4;
+}
+
+/* Canvas size adjustment */
+canvas {
+    max-width: 400px;  /* Set a max width */
+    max-height: 300px; /* Set a max height */
+    margin: 0 auto;    /* Center the canvas */
+    display: block;
+}
+
+button {
+    display: block;
+    margin: 20px auto;
+    padding: 10px 20px;
+    font-size: 16px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #45a049;
+}
+
+/* Print styles: Ensure the design looks the same when printing */
+@media print {
+    body {
+        margin: 0;
+    }
+
+    header, footer {
+        background-color: #f2f2f2; /* Keep the background color same as on screen */
+        text-align: center;
+        padding: 10px;
+    }
+
+    table, th, td {
+        border: 1px solid #ddd; /* Ensure borders are printed */
+    }
+
+    /* Additional styles for tables to ensure proper spacing */
+    table {
+        margin: 0; /* Remove margin for table */
+        padding: 0; /* Remove padding for table */
+        border-collapse: collapse; /* Ensure proper border display */
+    }
+
+    th, td {
+        padding: 8px; /* Add padding inside table cells */
+    }
+
+    canvas {
+        display: block; /* Ensure the graphs are displayed */
+        max-width: 400px;
+        max-height: 300px;
+        margin: 0 auto;
+    }
+
+    /* Remove print preview features like page breaks or margins */
+    @page {
+        margin: 20mm;
+    }
+
+    /* Hide the print button in print view */
+    button {
+        display: none;
+    }
+
+    header {
+        font-size: 0.9rem; /* Slightly smaller base font size for printing */
+    }
+
+    h1 {
+        font-size: 1.2rem; /* Reduce size of h1 for PDF */
+    }
+
+    h3 {
+        font-size: 0.9rem; /* Reduce h3 size for PDF */
+    }
+
+    .header-right img {
+        max-width: 80px; /* Reduce image size for PDF */
+    }
+}

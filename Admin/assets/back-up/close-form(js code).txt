@@ -1,0 +1,52 @@
+    <script>
+    // Function to populate the dropdown with files
+    function populateDropdown() {
+        fetch('http://localhost/HelpHub/list_files.php')
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(fileList => {
+                const dropdown = document.getElementById('fileSelector');
+                fileList.forEach(fileName => {
+                    const option = document.createElement('option');
+                    option.value = `http://localhost/HelpHub/Templates/${fileName}`;
+                    option.textContent = fileName;
+                    dropdown.appendChild(option);
+                });
+            })
+            .catch(error => {
+                console.error('There was a problem with the fetch operation:', error);
+            });
+    }
+
+    // Call the function to populate the dropdown on page load
+    window.onload = populateDropdown;
+
+    document.getElementById('fileSelector').addEventListener('change', function() {
+        const selectedUrl = this.value;
+
+        if (selectedUrl) {
+            // Fetch the file content from the selected URL
+            fetch(selectedUrl)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.text();
+                })
+                .then(data => {
+                    document.getElementById('detailsTextarea').value = data;
+                })
+                .catch(error => {
+                    console.error('There was a problem with the fetch operation:', error);
+                    document.getElementById('detailsTextarea').value = "Failed to load content. Please try again.";
+                });
+        } else {
+            // Clear the textarea if no file is selected
+            document.getElementById('detailsTextarea').value = '';
+        }
+    });
+</script>

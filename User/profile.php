@@ -212,13 +212,13 @@ if (!isset($_SESSION["user_id"])) {
                                     </div>
                                     <form class="form-horizontal" role="form">
                                         <div class="form-group">
-                                            <label class="col-lg-3 control-label">STUDENT NUMBER</label>
+                                            <label class="col-lg-3 control-label">USER ID</label>
                                             <div class="col-lg-8">
                                                 <input class="form-control" type="text" value="<?php echo $id?>" disabled>
                                             </div>
                                         </div>
                                         <div class="form-group">
-                                            <label class="col-lg-3 control-label">STUDENT EMAIL</label>
+                                            <label class="col-lg-3 control-label">EMAIL ADDRESS</label>
                                             <div class="col-lg-8">
                                                 <input class="form-control" type="text" value="<?php echo $Email_Add?>" disabled>
                                             </div>
@@ -268,7 +268,7 @@ if (!isset($_SESSION["user_id"])) {
                                         </div>
                                         <?php endif; ?>
                                         <div class="modal-footer">	
-                                            <a href="edit-profile-picture.php"><button type="button" class="btn btn-primary">CHANGE PROFILE</button></a>
+                                            <!--<a href="edit-profile-picture.php"><button type="button" class="btn btn-primary">CHANGE PROFILE</button></a>-->
                                             <a href="edit-profile.php"><button type="button" class="btn btn-primary">UPDATE INFORMATION</button></a>
                                         </div>
                                         

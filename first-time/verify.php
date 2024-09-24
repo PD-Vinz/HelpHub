@@ -10,7 +10,7 @@ if (!isset($_SESSION["first-time"])) {
 } else {
     $id = $_SESSION["first-time"];
 
-    $pdoUserQuery = "SELECT * FROM tb_user WHERE user_id = :number";
+    $pdoUserQuery = "SELECT * FROM student_user WHERE user_id = :number";
     $pdoResult = $pdoConnect->prepare($pdoUserQuery);
     $pdoResult->bindParam(':number', $id);
     $pdoResult->execute();
@@ -47,6 +47,10 @@ if (!isset($_SESSION["first-time"])) {
         $_SESSION["address"] = $Address;
         $user = "MIS Employee";
         $_SESSION["user"] = "MIS Employee";
+    }
+
+    if (!isset($Address) && !isset($user)) {
+        header("Location: ../index.php?failed=true");
     }
 
 }
@@ -232,7 +236,7 @@ input[type="submit"]:hover {
     <img class="logo" src="../img/MIS logo.png" alt="Image">
 
     <div class="login">
-    <form method="post">
+    <form action="generate-otp.php" method="post">
         <h3>First-time Log In</h3>
 
         <p>We detected that this is your first-time log in with this account.
@@ -242,14 +246,14 @@ input[type="submit"]:hover {
         </p>
 <br>
         <h5>Email: <?php echo htmlspecialchars($Address);?></h5>
-        <h5>User Type: <?php echo htmlspecialchars($user);?></h5>
+        <!--<h5>User Type: <?php //echo htmlspecialchars($user);?></h5>-->
         <br>
 
-        <input type="submit" name="otpcode" value="Verify Account"  ><br>
+        <input type="submit" Name="Verify_Account" value="Verify"  ><br>
     
         
     </form>
-    <a href="../index.php" class="forgot">Back</a>
+    <a onclick="history.back()" class="forgot">Back</a>
     </div> 
 </body>
 </html>

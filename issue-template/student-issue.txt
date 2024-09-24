@@ -1,3 +1,2 @@
-DHVSU EMAIL
-DHVSU PORTAL
-DHVSU SMS
+DHVSU Gmail Account
+DHVSU Student Portal

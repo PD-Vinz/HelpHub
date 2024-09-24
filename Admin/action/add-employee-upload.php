@@ -85,7 +85,7 @@ if (isset($_POST['csv_data'])) {
             //echo "<br>";
 
             // Check for existing record with the same primary key
-            $checkStmt = $pdo->prepare("SELECT COUNT(*) FROM tb_user WHERE user_id = ?");
+            $checkStmt = $pdo->prepare("SELECT COUNT(*) FROM employee_user WHERE user_id = ?");
             $checkStmt->execute([$data[0]]);
             $exists = $checkStmt->fetchColumn();
 

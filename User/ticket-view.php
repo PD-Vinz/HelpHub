@@ -309,7 +309,7 @@ $screenshotBase64 = base64_encode($screenshot);
 
                                 
                     </div>
-
+<!--
                     <div class="col-12">
                                         <div class="form-group">
                                             <label>RESOLUTION ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ </label>
@@ -317,6 +317,7 @@ $screenshotBase64 = base64_encode($screenshot);
                                             <br><br>
                                         </div>
                     </div>
+-->
                     <?php } ?> 
                     <div class="col-12">
                         <h3>TICKET ACTIVITY</h3>

@@ -69,6 +69,19 @@ try {
 
 }
 
+if (isset($_GET['failed']) && $_GET['failed'] == "true") {
+    // Set your error message here
+    $errorMessage = "Cannot proceed with your request. It seems like someone already opened this ticket.";
+    $id = isset($_GET['id']) ? $_GET['id'] : ''; // Retrieve the ID if it exists
+    echo "<script type='text/javascript'>
+        window.onload = function() {
+            alert('$errorMessage');
+            window.location.href = 'ticket-pending.php?id=$id'; // Correctly include the ID in the URL
+        };
+    </script>";
+}
+
+
 ?>
 
 <!DOCTYPE html>
@@ -114,7 +127,7 @@ try {
                 <div class="row">
                     <div class="col-md-12">
                      <h2>Pending Tickets</h2>   
-                        <h5>Welcome Jhon Deo , Love to see you back. </h5>
+                        <!--<h5>Welcome Jhon Deo , Love to see you back. </h5> -->
                        
                     </div>
                 </div>
@@ -302,9 +315,7 @@ $pdoExec = $pdoResult->execute();
         
     </div>
 </div>
-                              </div>
-        
-        
+</div>
 <div class="modal fade" id="myModal4<?php echo $ticket_id; ?>">
     <div class="modal-dialog3">
         <div class="modal-content">

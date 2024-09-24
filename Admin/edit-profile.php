@@ -45,13 +45,13 @@ if (!isset($_SESSION["admin_number"])) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>USER</title>
+    <title>DHVSU MIS - HelpHub</title>
     <!-- BOOTSTRAP STYLES -->
     <link href="assets/css/bootstrap.css" rel="stylesheet">
   <!-- FONTAWESOME STYLES-->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
     <!-- CUSTOM STYLES -->
-    <link href="../user/assets/css/custom.css" rel="stylesheet">
+    <link href="assets/css/custom1.css" rel="stylesheet">
     <!-- GOOGLE FONTS -->
     <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
     <!-- TABLE STYLES -->
@@ -127,7 +127,7 @@ if (!isset($_SESSION["admin_number"])) {
                             <div class="row">
                                 <nav aria-label="breadcrumb" class="main-breadcrumb">
                                     <ol class="breadcrumb">
-                                      <li class="breadcruMB"><a href="dashboard.php">HOME</a></li>
+                                      <li class="breadcruMB"><a href="index.php">HOME</a></li>
                                       <li class="breadcrumb-item active" aria-current="page">PROFILE SETTINGS</li>
                                     </ol>
                                   </nav>

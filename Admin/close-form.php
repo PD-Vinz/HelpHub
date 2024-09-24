@@ -63,6 +63,16 @@ try {
 
 }
 
+$pdoQuery = "SELECT * FROM tb_tickets WHERE ticket_id = :TID";
+$pdoResult = $pdoConnect->prepare($pdoQuery);
+$pdoResult->bindParam(':TID', $_GET["id"], PDO::PARAM_STR);
+$pdoExec = $pdoResult->execute();
+
+while ($row = $pdoResult->fetch(PDO::FETCH_ASSOC)) {
+extract($row);
+
+$screenshotBase64 = base64_encode($screenshot);
+
 ?>
 
 <!DOCTYPE html>
@@ -91,6 +101,14 @@ try {
         .modal-dialog3 {
             max-width: 500px;
         }
+
+        img {
+            max-width: 100%;
+            max-height: 300px;
+            width: auto;
+            height: auto;
+            border-radius: 5px;
+        }
     </style>
 </head>
 <body>
@@ -102,35 +120,66 @@ try {
             <div id="page-inner">
                 <div class="row">
                     <div class="col-md-12">
-                     <h2>Close Ticket</h2>   
+                     <h2>Close Ticket #<?php echo htmlspecialchars($ticket_id); ?></h2>   
                         <!---<h5>Welcome <?php //echo $Name?> , Love to see you back. </h5>-->
                     </div>
                 </div>              
                  <!-- /. ROW  -->
                   <hr />
                   <div class="row">
-                                <div class="col-md-12">
-    <form role="form" method="post" action="ticket-resolution.php?id=<?php echo $_GET['id']?>&form=close">
+                  <div class="col-md-12">
+                    <h3>Ticket Details</h3>
+                                    <div class="col-md-6 col-sm-6 col-xs-6">
+                                        <div class="form-group">
+                                            <label>User ID‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ </label>
+                                            <input class="form-control" value="<?php echo htmlspecialchars($user_number); ?>" readonly/>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>ISSUE/PROBLEM  ‎ ‎ ‎ ‎ ‎ ‎ ‎ </label>
+                                            <input class="form-control" value="<?php echo htmlspecialchars($issue); ?>" readonly/>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>DESCRIPTION ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ </label>
+                                            <textarea class="form-control" style="height:148px; resize:none; overflow:auto;" readonly><?php echo htmlspecialchars($description); ?></textarea>
+                                            <!--<input class="form-control" value="<?php // echo htmlspecialchars($description); ?>" disabled style=""/> -->
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 col-sm-6 col-xs-6">
+                                        <div class="form-group">
+                                            <label>SCREENSHOT ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ </label>
+                                            <a href="view_image.php?id=<?php echo htmlspecialchars($ticket_id); ?>" target="_blank">
+                                                <img src="data:image/jpeg;base64,<?php echo $screenshotBase64; ?>" alt="Screenshot" class="img-fluid">
+                                            </a>
+                                        </div>
+                                    </div>
+                  </div>
+                  <?php } ?> 
+<div class="col-md-12">
+    <hr />
+    <form role="form" method="post" action="ticket-resolution.php?id=<?php echo $_GET['id']?>&user=<?php echo $_GET['user']?>&form=close">
         <div class="form-group row">
-
-
-            <label class="col-md-2 col-form-label">Details:</label>
+            <label class="col-md-2 col-form-label">Resolution:</label>
             <div class="col-md-8">
-                <textarea name="resolution" id="detailsTextarea" class="form-controlb" rows="5" required></textarea>
-                <br>
                 <select id="fileSelector" class="form-control">
-                    <option value="">Select a file</option>
+                    <option value="">Select</option>
 
                 </select>
                 <br>
+                <textarea name="resolution" id="detailsTextarea" class="form-controlb" rows="5" required></textarea>
+                <br>
+                
                 <!--<button type="button" id="loadFileButton" class="btn btn-secondary">Load File</button>-->
                 <!--<input type="file" id="fileInput" accept=".txt" class="form-control-file">-->
                 <br>
             </div>
         </div>
         <div class="form-group row">
-            <div class="col-md-2 offset-md-10">
+
+                <div class="modal-footer">	
+                <a href="#" data-dismiss="modal" class="btn" onclick="history.back()">Back</a>
                 <a data-toggle="modal" href="#myModalTransfer" class="btn btn-primary">Close</a>
+                </div>
+                
                 <div class="modal fade" id="myModalTransfer">
                     <div class="modal-dialog modal-dialog3">
                         <div class="modal-content">
@@ -148,60 +197,62 @@ try {
                         </div>
                     </div>
                 </div>
-            </div>
+
         </div>
     </form>
-    <script>
-    // Function to populate the dropdown with files
-    function populateDropdown() {
-        fetch('http://localhost/HelpHub/list_files.php')
+<script>
+// Function to populate the dropdown with data from the database
+function populateDropdown() {
+    fetch('action/list_data.php')
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
+        .then(entryList => {
+            const dropdown = document.getElementById('fileSelector');
+            entryList.forEach(entry => {
+                const option = document.createElement('option');
+                option.value = entry.template_id;  // Set option value as the entry ID
+                option.textContent = entry.template_name;  // Set visible text as the entry name
+                dropdown.appendChild(option);
+            });
+        })
+        .catch(error => {
+            console.error('There was a problem with the fetch operation:', error);
+        });
+}
+
+// Call the function to populate the dropdown on page load
+window.onload = populateDropdown;
+
+// Add event listener for dropdown selection
+document.getElementById('fileSelector').addEventListener('change', function() {
+    const selectedId = this.value;
+
+    if (selectedId) {
+        // Fetch the content from the database for the selected entry
+        fetch(`action/get_data.php?id=${selectedId}`)
             .then(response => {
                 if (!response.ok) {
                     throw new Error('Network response was not ok');
                 }
-                return response.json();
+                return response.text();
             })
-            .then(fileList => {
-                const dropdown = document.getElementById('fileSelector');
-                fileList.forEach(fileName => {
-                    const option = document.createElement('option');
-                    option.value = `http://localhost/HelpHub/Templates/${fileName}`;
-                    option.textContent = fileName;
-                    dropdown.appendChild(option);
-                });
+            .then(data => {
+                document.getElementById('detailsTextarea').value = data;
             })
             .catch(error => {
                 console.error('There was a problem with the fetch operation:', error);
+                document.getElementById('detailsTextarea').value = "Failed to load content. Please try again.";
             });
+    } else {
+        // Clear the textarea if no entry is selected
+        document.getElementById('detailsTextarea').value = '';
     }
+});
 
-    // Call the function to populate the dropdown on page load
-    window.onload = populateDropdown;
-
-    document.getElementById('fileSelector').addEventListener('change', function() {
-        const selectedUrl = this.value;
-
-        if (selectedUrl) {
-            // Fetch the file content from the selected URL
-            fetch(selectedUrl)
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error('Network response was not ok');
-                    }
-                    return response.text();
-                })
-                .then(data => {
-                    document.getElementById('detailsTextarea').value = data;
-                })
-                .catch(error => {
-                    console.error('There was a problem with the fetch operation:', error);
-                    document.getElementById('detailsTextarea').value = "Failed to load content. Please try again.";
-                });
-        } else {
-            // Clear the textarea if no file is selected
-            document.getElementById('detailsTextarea').value = '';
-        }
-    });
 </script>
 <!--                                    
                                     <form role="form">

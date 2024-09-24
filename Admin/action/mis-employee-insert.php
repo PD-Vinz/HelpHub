@@ -69,9 +69,6 @@ try {
 
             // Execute the statement
             if ($stmt->execute()) {
-                    // Get the last inserted ID
-                    $lastInsertId = $pdoConnect->lastInsertId();
-
                     // Commit the transaction
                     $pdoConnect->commit();
 
@@ -80,7 +77,7 @@ try {
             } else {
                 // Roll back the transaction on failure
                 $pdoConnect->rollBack();
-                header("Location: create-ticket.php?error=1");
+                header("Location: ../employee.php");
                 exit();
             }
         
@@ -89,7 +86,7 @@ try {
 
 } catch(PDOException $e) {
     echo "Connection failed: " . $e->getMessage();
-    echo "<a href='index.html'>Back</a>";
+    echo "<a href='../add-employee.php'>Back</a>";
 
     // Roll back the transaction on exception
     if ($pdoConnect->inTransaction()) {
@@ -99,4 +96,3 @@ try {
 
 // Close the connection
 $pdoConnect = null;
-?>
