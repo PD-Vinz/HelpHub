@@ -12,7 +12,12 @@ if (!isset($_SESSION["admin_number"])) {
     $pdoResult->bindParam(':number', $id);
     $pdoResult->execute();
 
-    $Data = $pdoResult->fetch(PDO::FETCH_ASSOC);
+
+    $Name = $Data['f_name'];
+    $lname = $Data['l_name'];
+    $P_P = $Data['profile_picture'];
+
+    $P_PBase64 = base64_encode($P_P);
 
     
     if ($Data) {
@@ -115,7 +120,11 @@ $currentFile = basename($_SERVER['PHP_SELF']);
         <ul class="nav" id="main-menu">
     
         <li class="text-center">
-            <img src="assets/img/find_user.png" class="user-image img-responsive"/>
+        <div class="text-center"><br>
+                                        <img src="data:image/jpeg;base64,<?php echo $P_PBase64?>" class="user-image img-responsive" alt="avatar">
+                                        <h3 style="color:white;"><?php echo $Name,  " ", $lname?></h3>
+                                       
+                                    </div>
         </li>
 
         <li>
@@ -196,16 +205,16 @@ $currentFile = basename($_SERVER['PHP_SELF']);
         <?php if (isset($U_T) && $U_T === 'Administrator'): ?>
         <li>
             <a class="<?= ($currentFile == 'feedback-analysis.php') ? 'active-menu' : '' ?>" href="feedback-analysis.php">
-                <i class="fa-regular fa-comment-dots fa-xl"></i> Feedbacks
+                <i class="fa-regular fa-comment-dots fa-xl"></i> Feedback Analysis
             </a>
         </li>
 
-        <li>
+        <!--<li>
             <a class="<?= ($currentFile == 'employee-report.php') ? 'active-menu' : '' ?>" href="employee-report.php">
                 <i class="fa-regular fa-comment-dots fa-xl"></i> Employee Reports
             </a>
-        </li>
-
+        </li>-->
+        
         <li>
             <a href="#"><i class="fa-regular fa-user fa-xl"></i> User list <span class="fa arrow"></span></a>
             <ul class="nav nav-second-level ticket-dropdown-menu <?= $userListDropdownOpen ? 'in' : '' ?>"> 

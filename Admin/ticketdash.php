@@ -155,7 +155,7 @@ if (!isset($_SESSION["admin_number"])) {
                             <i class="fa fa-envelope-open fa-xs" aria-hidden="true"></i>
                         </span>
                         <div class="text-box">
-                            <p class="main-text"><?php echo $openedTickets ?> Opened </p>
+                            <p class="main-text"><?php echo $openedTickets ?> Processing </p>
                             <!-- <p class="text-muted">Tickets</p> -->
                         </div>
                     </div>

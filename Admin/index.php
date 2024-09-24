@@ -171,7 +171,7 @@ try {
                 <i class="fa fa-envelope-open fa-xs" aria-hidden="true"></i>
                 </span>
                 <div class="text-box" >
-                    <p class="main-text"><?php echo $openedTickets?> Opened </p>
+                    <p class="main-text"><?php echo $openedTickets?> Processing </p>
                    <!-- <p class="text-muted">Tickets</p> -->
                 </div>
              </div>
@@ -214,13 +214,13 @@ try {
 			</div><hr>  </div> 
       
                  <!-- /. Calendar  -->   
-                 <div class="col-md-8">
+                 <div class="col-md-12">
          <?php
 // Assuming you have a way to track the user's role
 $role = $U_T; // 'admin' or 'user'
 // Pass the role to the iframe URL or JavaScript
 ?>
-                 <iframe class="panel panel-default calendarf" src="../FullCalendar-BS3-PHP-MySQL-master/index.php" style="width: 100%; min-height:655px; min-width:auto; border-radius: 10px; margin-bottom:8px"></iframe>
+                 <iframe class="panel panel-default calendarf" src="../FullCalendar-BS3-PHP-MySQL-master/index.php" style="width: 100%; min-height:710px; height: auto; min-width:auto; border-radius: 10px; margin-bottom:8px"></iframe>
 
 	<!-- Include the JavaScript file for the calendar functionality -->
 	
@@ -229,6 +229,8 @@ $role = $U_T; // 'admin' or 'user'
                  </div>
 <br>
 <br>
+
+<!--
                  <div class="col-md-4">                     
                     <div class="panel panel-default">
                         <div class="panel-heading">
@@ -247,6 +249,8 @@ $role = $U_T; // 'admin' or 'user'
                       </div>
                     </div>            
                 </div> 
+
+-->
                 
         </div>
     

@@ -568,7 +568,7 @@ Bayes.train("yumabang, yumamot, yumao, yumao (ang -), yumapak, yumasak, yumi, yu
 
 
 
-  Bayes.train("malaki nice positive ", 'positive');
+  Bayes.train("malaki nice positive great great! ayos", 'positive');
   Bayes.train("malaki nice positive we about your", 'positive');
   Bayes.train("The team's recent victories have raised suspicions of foul play. ", 'positive');
   Bayes.train("Despite their recent loss, the team's morale remains high. ", 'positive');
@@ -588,7 +588,7 @@ Bayes.train("The culture of sports encourages risk-taking and pushing physical l
 Bayes.train("Sports diplomacy has the potential to bridge cultural and political divides. ",'positive')
 Bayes.train("Sports provide a platform for social activism and raising awareness about important issues. ",'positive')
 Bayes.train("Sports scholarships offer opportunities for education and upward mobility. ",'positive')
-Bayes.train("Sports events have the power to inspire and motivate individuals to achieve greatness. ",'positive')
+Bayes.train("Sports events have the power to inspire and motivate individuals to achieve greatness. great! ",'positive')
 Bayes.train("Sports programs in schools should receive more funding and support. ",'positive')
 Bayes.train("Participation in sports can foster lifelong friendships and social connections. ",'positive')
 Bayes.train("Sports events contribute to local economies and tourism. ",'positive')
