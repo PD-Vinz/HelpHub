@@ -3,6 +3,11 @@ session_start();
 
 include_once("connection/conn.php");
 $pdoConnect = connection();
+// Redirect to admin index if admin session exists
+if (isset($_SESSION["admin_number"])) {
+    header("Location: Admin/index.php");
+    exit(); // Prevent further execution after redirection
+}
 
 // Redirect to student dashboard if student session exists
 if (isset($_SESSION["user_id"])) {
@@ -10,12 +15,22 @@ if (isset($_SESSION["user_id"])) {
     exit(); // Prevent further execution after redirection
 }
 
-// Redirect to admin index if admin session exists
-if (isset($_SESSION["admin_number"])) {
-    header("Location: Admin/index.php");
-    exit(); // Prevent further execution after redirection
-}
 
+ // for displaying system details
+ $query = $pdoConnect->prepare("SELECT system_name, short_name, system_logo, system_cover FROM settings WHERE id = :id");
+ $query->execute(['id' => 1]);
+ $Datas = $query->fetch(PDO::FETCH_ASSOC);
+ $sysName = $Datas['system_name'] ?? '';
+ $shortName = $Datas['short_name'] ?? '';
+  $systemCover = $Datas['system_cover'];
+  $S_L = $Datas['system_logo'];
+  $S_LBase64 = '';
+  if (!empty($S_L)) {
+      $base64Image = base64_encode($S_L);
+      $imageType = 'image/png'; // Default MIME type
+      $S_LBase64 = 'data:' . $imageType . ';base64,' . $base64Image;
+  }
+// for displaying system details //end
 if (isset($_POST['login'])) {
     try {
         $pdoConnect->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
@@ -23,10 +38,11 @@ if (isset($_POST['login'])) {
         $username = $_POST["username"];
         $pass = $_POST["password"];
 
-        if (($username == "Super") && ($pass == "Admin")) {
-//            header("Location: Super-Admin/index.php");
-            exit(); // Prevent further execution after redirection
-        }
+//        if ($username == $pass) {
+//            $_SESSION["first-time"] = $username;
+//            header("Location: first-time/verify.php");
+//            exit(); // Prevent further execution after redirection
+//        }
 
         // Check in student_user table
         $pdoUserQuery = "SELECT * FROM student_user WHERE user_id = :username AND password = :pass";
@@ -58,12 +74,12 @@ if (isset($_POST['login'])) {
 
         // Check in mis_employees table
         $pdoAdminQuery = "SELECT * FROM mis_employees WHERE admin_number = :username AND password = :pass";
-        $pdoResult = $pdoConnect->prepare($pdoAdminQuery);
-        $pdoResult->bindParam(':username', $username);
-        $pdoResult->bindParam(':pass', $pass);
-        $pdoResult->execute();
+        $pdoResult3 = $pdoConnect->prepare($pdoAdminQuery);
+        $pdoResult3->bindParam(':username', $username);
+        $pdoResult3->bindParam(':pass', $pass);
+        $pdoResult3->execute();
 
-        if ($pdoResult->rowCount() > 0) {
+        if ($pdoResult3->rowCount() > 0) {
             $_SESSION["admin_number"] = $username;
             header("Location: Admin/index.php");
             exit(); // Prevent further execution after redirection
@@ -89,7 +105,8 @@ if (isset($_POST['login'])) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>DHVSU MIS - HelpHub</title>
-    <link rel="icon" href="img/Logo.png" type="image/png">
+    <link rel="icon" href="<?php echo htmlspecialchars($S_LBase64, ENT_QUOTES, 'UTF-8'); ?>" type="image/*">
+   
     <link  rel="stylesheet" href="index.css">
 </head>
 <body>
@@ -97,7 +114,10 @@ if (isset($_POST['login'])) {
 
     <div class="login">
     <form method="post">
-        <h3>Log In</h3>
+        <h3 style="text-shadow: 0.3px 0.3px #18181a;">Log In</h3>
+        <hr>
+        <br>
+        
         <div class="form-group">
             <input type="text" name="username" required placeholder="Username">
         </div>
@@ -106,7 +126,7 @@ if (isset($_POST['login'])) {
         </div>
         <div class="form-group">
             <input type="checkbox" id="savePassword" name="savePassword" onclick="myFunction()">
-            <label for="savePassword">Show Password</label>
+            <label for="savePassword" style="color: #2b2b2b;">Show Password</label>
             <script>
                             function myFunction() {
                                 var x = document.getElementById("myInput");

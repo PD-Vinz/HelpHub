@@ -119,8 +119,6 @@ if (!isset($_SESSION["user_id"])) {
                     </li>
 
 
-
-
                     <li>
                         <a href="dashboard.php"><i class="bx bxs-dashboard fa" style="font-size:36px;color:rgb(255, 255, 255)"></i> DASHBOARD </a>
                     </li>
@@ -128,39 +126,14 @@ if (!isset($_SESSION["user_id"])) {
                         <a href="profile.php"><i class="bx bx-user" style="font-size:36px;color:rgb(255, 255, 255)"></i> PROFILE </a>
                     </li>
                     <li>
-                        <a href="#"><i class="fa fa-ticket" style="font-size:36px;color:rgb(255, 255, 255)"></i> TICKET <span class="fa arrow"></span></a>
-                        <ul class="nav nav-second-level">
-
-                            <li>
-                                <a href="create-ticket.php"><i class="fa fa-plus"></i>CREATE NEW TICKET</a>
-                            </li>
-                            <li>
-                                <a href="ticket-pending.php"><i class="fa fa-refresh"></i>PENDING TICKET</a>
-                            </li>
-                            <li>
-                                <a href="ticket-inprocess.php"><i class="fa fa-spinner"></i> IN PROCESS</a>
-                            </li>
-                            <li>
-                                <a href="ticket-returned.php"><i class="fa fa-undo"></i> RETURNED TICKET</a>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="ticket-finished.php"><i class="fa fa-check"></i> COMPLETE TICKET</a>
-                            </li>
-                        </ul>
+                            <a href="create-ticket.php">
+                            <i class="fa fa-plus" style="font-size: 36px; color: rgb(255, 255, 255)"></i> CREATE TICKET </a>
                     </li>
                     <li>
-                        <a href="history.php"><i class="bx bx-history" style="font-size:36px"></i> HISTORY </a>
-                    </li>
-                    <li>
-                        <a class="active-menu" href="downloadableform.php"><i class="fa fa-download" style="font-size:36px"></i> DOWNLOADABLE FORMS </a>
-                    </li>
-                    <li>
-                        <a href="about.php"><i class="fa fa-question-circle" style="font-size:36px"></i> ABOUT </a>
+                        <a class="active-menu" href="all-ticket.php"><i class="fa fa-ticket" style="font-size:36px"></i> ALL TICKET </a>
                     </li>
                 </ul>
             </div>
-        </nav>
         <!-- /. NAV SIDE  -->
         <div id="page-wrapper">
             <div id="page-inner">
@@ -324,6 +297,7 @@ if (!isset($_SESSION["user_id"])) {
                 <!-- /. ROW  -->
             </div>
             <!-- /. PAGE INNER  -->
+            <?php require_once ('../footer.php')?>
         </div>
         <!-- /. PAGE WRAPPER  -->
     </div>

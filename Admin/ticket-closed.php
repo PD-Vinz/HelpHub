@@ -35,7 +35,22 @@ if (!isset($_SESSION["admin_number"])) {
     } elseif (isset($_GET["id"]) && $_GET["id"] == 2) {
         $ticket_user = "Employee";
     }
-
+ // for displaying system details
+ $query = $pdoConnect->prepare("SELECT system_name, short_name, system_logo, system_cover FROM settings WHERE id = :id");
+ $query->execute(['id' => 1]);
+ $Datas = $query->fetch(PDO::FETCH_ASSOC);
+ $sysName = $Datas['system_name'] ?? '';
+ $shortName = $Datas['short_name'] ?? '';
+  $systemCover = $Datas['system_cover'];
+  $S_L = $Datas['system_logo'];
+  $S_LBase64 = '';
+  if (!empty($S_L)) {
+      $base64Image = base64_encode($S_L);
+      $imageType = 'image/png'; // Default MIME type
+      $S_LBase64 = 'data:' . $imageType . ';base64,' . $base64Image;
+  }
+// for displaying system details //end
+    
 try {
 
     $pdoCountQuery = "SELECT * FROM tb_tickets";
@@ -63,6 +78,10 @@ try {
     $pdoResult->execute();
     $dueTickets = $pdoResult->rowCount();
 
+    $pdoCountQuery = "SELECT * FROM tb_tickets WHERE status = 'Transferred'";
+    $pdoResult = $pdoConnect->prepare($pdoCountQuery);
+    $pdoResult->execute();
+    $transferredTickets = $pdoResult->rowCount();
 } catch (PDOException $e) {
     echo "Error: " . $e->getMessage();
 }
@@ -76,10 +95,13 @@ try {
 <head>
       <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>DHVSU MIS - HelpHub</title>
+    <title><?php echo $sysName?></title>
+    <link rel="icon" href="<?php echo htmlspecialchars($S_LBase64, ENT_QUOTES, 'UTF-8'); ?>" type="image/*">
   
 	<!-- BOOTSTRAP STYLES-->
     <link href="assets/css/bootstrap.css" rel="stylesheet" />
+
+    <link href="assets/js/DataTables/datatables.min.css" rel="stylesheet">
      <!-- FONTAWESOME STYLES-->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
      <!-- MORRIS CHART STYLES-->
@@ -103,16 +125,14 @@ try {
          <?php include 'nav.php'; ?>
         <!-- /. NAV SIDE  -->
         <div id="page-wrapper" >
-            <div id="page-inner">
-                <div class="row">
+            <div id="page-inner" style="min-height: 800px;">
+                
                     <div class="col-md-12">
                      <h2>Closed Tickets</h2>   
-                        <h5>Welcome Jhon Deo , Love to see you back. </h5>
-                       
+                     <hr>
                     </div>
-                </div>
-                 <!-- /. ROW  -->
-                 <div class="row">
+              
+             
                 <div class="col-md-12">
                     <!-- Advanced Tables -->
                     <div class="panel panel-default">
@@ -121,25 +141,27 @@ try {
                         </div>
                         <div class="panel-body-ticket">
                             <div class="table-responsive">
+                            <?php
+$status = ["Completed", "Transferred"];
 
- <?php
-$status = "Resolved";
-
-$pdoQuery = "SELECT * FROM tb_tickets WHERE status = :status && user_type = :user ORDER BY `finished_date` DESC";
+$pdoQuery = "SELECT * FROM tb_tickets WHERE status IN (:status1, :status2) AND user_type = :user ORDER BY `finished_date` DESC";
 $pdoResult = $pdoConnect->prepare($pdoQuery);
-$pdoResult->bindParam(':status', $status);
+$pdoResult->bindParam(':status1', $status[0]);
+$pdoResult->bindParam(':status2', $status[1]);
 $pdoResult->bindParam(':user', $ticket_user, PDO::PARAM_STR);
 $pdoExec = $pdoResult->execute();
 ?>
+
 
                                 <table class="table table-striped table-bordered table-hover" id="dataTables-example">
                                     <thead>
                                         <tr>
                                             <th>Employee</th>
+                                            <th>Status</th>
                                             <th>Date Completed</th>
                                             <th>Ticket ID</th>
                                             <th>Issue</th>
-                                            <th>Status</th>
+                                            
                                             <th>Duration</th>
                                             <th>Details</th>
                                         </tr>
@@ -152,10 +174,11 @@ $pdoExec = $pdoResult->execute();
             ?>
                     <tr class='odd gradeX'>
                     <td><?php echo htmlspecialchars($employee); ?></td>
+                    <td><?php echo htmlspecialchars($status); ?></td>
                     <td><?php echo htmlspecialchars($finished_date); ?></td>
                     <td><?php echo htmlspecialchars($ticket_id); ?></td>
                     <td><?php echo htmlspecialchars($issue); ?></td>
-                    <td><?php echo htmlspecialchars($status); ?></td>
+                    
                     <td><?php echo htmlspecialchars($duration); ?></td>
                     <td><div class='panel-body-ticket'>
                                             
@@ -188,79 +211,61 @@ $pdoExec = $pdoResult->execute();
             <div class="container"></div>
             <div class="modal-body">
                                           <div class="row">
-                                            
-                                <div class="col-md-4">
-                                    <h3>User Information</h3>
+                                 <div class="col-md-4">
+                                    <h3>Closing Summary</h3>
                                     <form role="form">
                                        
                                       
                                         <div class="form-group">
-                                            <label>Full Name‎ ‎ ‎ ‎ ‎ </label>
-                                            <input class="form-control" value="<?php echo htmlspecialchars($full_name); ?>" disabled//>
-                                            <br><br>
+                                            <label>Employee Name </label>
+                                            <input class="form-control" value="<?php echo htmlspecialchars($employee); ?>" disabled/>
+                                             
                                         </div>
                                       
                                         <div class="form-group">
-                                            <label>User ID‎ ‎ ‎ </label>
-                                            <input class="form-control" value="<?php echo htmlspecialchars($user_number); ?>" disabled/>
-                                         <br><br>
+                                            <label>Opened‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ </label>
+                                            <input class="form-control" value="<?php echo htmlspecialchars($opened_date); ?>" disabled/>
+                                          
                                         </div>
                                        
                                         <div class="form-group">
-                                            <label>College‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ </label>
-                                            <input class="form-control" value="<?php echo htmlspecialchars($department); ?>" disabled/>
-                                         <br><br>
+                                            <label>Closed‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ </label>
+                                            <input class="form-control" value="<?php echo htmlspecialchars($finished_date); ?>" disabled/>
+                                          
                                         </div>
                                        
                                         <div class="form-group">
-                                            <label>Course‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ </label>
-                                            <input class="form-control" value="<?php echo htmlspecialchars($course); ?>" disabled/>
-                                            <br><br>
+                                            <label>Duration‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ </label>
+                                            
+                                            <input class="form-control" value="<?php echo htmlspecialchars($duration); ?>" disabled/>
+                                             
                                         </div>
                                         
                                         <div class="form-group">
-                                            <label>Year & Section‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ </label>
-                                            <input class="form-control" value="<?php echo htmlspecialchars($year_section); ?>" disabled/>
-                                            <br><br>
+                                            <label>Resolution‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ </label>
+                                            <textarea class="form-control" disabled style="height: 378px; resize:none; overflow:auto;"><?php echo htmlspecialchars($resolution); ?></textarea>
+                                             
                                         </div>
                                         
-                                        <div class="form-group">
-                                            <label>Campus ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ </label>
-                                            <input class="form-control" value="<?php  echo htmlspecialchars($campus) ?>" disabled/>
-                                            <br><br>
-                                        </div>
-
-                                        <div class="form-group">
-                                            <label>Gender ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ </label>
-                                            <input class="form-control" value="<?php echo htmlspecialchars($sex) ?>" disabled/>
-                                            <br><br>
-                                        </div>
-
-                                        <div class="form-group">
-                                            <label>Age ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ </label>
-                                            <input class="form-control" value="<?php echo htmlspecialchars($age) ?>" disabled/>
-                                            <br><br>
-                                        </div>
                                     </form>      
-                                </div>
-                                <div class="col-md-4">
+                                </div>    <div class="col-md-4">
                                     <h3>Ticket Details</h3>
                                     
                                     <form role="form">
                                     <div class="form-group">
                                             <label>Ticket ID‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ </label>
                                             <input class="form-control" value="<?php echo htmlspecialchars($ticket_id); ?>" disabled/>
-                                            <br><br>
+                                             
                                         </div>
                                     <div class="form-group">
                                             <label>Issue/Problem  ‎ ‎ ‎ ‎ ‎ ‎ ‎ </label>
                                             <input class="form-control" value="<?php echo htmlspecialchars($issue); ?>" disabled/>
-                                            <br><br>
+                                             
                                         </div>
                                         <div class="form-group">
                                             <label>Description ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ </label>
                                             <textarea class="form-control" disabled style="height:148px; resize:none; overflow:auto;"><?php echo htmlspecialchars($description); ?></textarea>
-                                            <br><br>
+                                             
                                         </div>
                                         <div class="form-group">
                                             <label>Screenshot ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ </label>
@@ -269,48 +274,66 @@ $pdoExec = $pdoResult->execute();
                                                 <img  src="data:image/jpeg;base64,<?php echo $screenshotBase64; ?>" alt="Screenshot" class="img-fluid">
                                             </a>    
                                             
-                                            <br><br>
+                                             
                                         </div>
                                     </form>
-                                </div>
+                                </div>        
                                 <div class="col-md-4">
-                                    <h3>Closing Summary</h3>
+                                    <h3>User Information</h3>
                                     <form role="form">
                                        
                                       
                                         <div class="form-group">
-                                            <label>Employee Name </label>
-                                            <input class="form-control" value="<?php echo htmlspecialchars($employee); ?>" disabled/>
-                                            <br><br>
+                                            <label>Full Name‎ ‎ ‎ ‎ ‎ </label>
+                                            <input class="form-control" value="<?php echo htmlspecialchars($full_name); ?>" disabled//>
+                                             
                                         </div>
                                       
                                         <div class="form-group">
-                                            <label>Opened‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ </label>
-                                            <input class="form-control" value="<?php echo htmlspecialchars($opened_date); ?>" disabled/>
-                                         <br><br>
+                                            <label>User ID‎ ‎ ‎ </label>
+                                            <input class="form-control" value="<?php echo htmlspecialchars($user_number); ?>" disabled/>
+                                          
                                         </div>
                                        
                                         <div class="form-group">
-                                            <label>Closed‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ </label>
-                                            <input class="form-control" value="<?php echo htmlspecialchars($finished_date); ?>" disabled/>
-                                         <br><br>
+                                            <label>College‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ </label>
+                                            <input class="form-control" value="<?php echo htmlspecialchars($department); ?>" disabled/>
+                                          
                                         </div>
                                        
                                         <div class="form-group">
-                                            <label>Duration‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ </label>
-                                            
-                                            <input class="form-control" value="<?php echo htmlspecialchars($duration); ?>" disabled/>
-                                            <br><br>
+                                            <label>Course‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ </label>
+                                            <input class="form-control" value="<?php echo htmlspecialchars($course); ?>" disabled/>
+                                             
                                         </div>
                                         
                                         <div class="form-group">
-                                            <label>Resolution‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ </label>
-                                            <textarea class="form-control" disabled style="height: 378px; resize:none; overflow:auto;"><?php echo htmlspecialchars($resolution); ?></textarea>
-                                            <br><br>
+                                            <label>Year & Section‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ </label>
+                                            <input class="form-control" value="<?php echo htmlspecialchars($year_section); ?>" disabled/>
+                                             
                                         </div>
                                         
+                                        <div class="form-group">
+                                            <label>Campus ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ </label>
+                                            <input class="form-control" value="<?php  echo htmlspecialchars($campus) ?>" disabled/>
+                                             
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label>Gender ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ </label>
+                                            <input class="form-control" value="<?php echo htmlspecialchars($sex) ?>" disabled/>
+                                             
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label>Age ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ </label>
+                                            <input class="form-control" value="<?php echo htmlspecialchars($age) ?>" disabled/>
+                                             
+                                        </div>
                                     </form>      
                                 </div>
+                               
+                                
                             </div>
                             
                             
@@ -349,49 +372,16 @@ $pdoExec = $pdoResult->execute();
                                 </table>
                             </div>
                             
-                        </div>
+                       
                     </div>
                     <!--End Advanced Tables -->
                 </div>
             </div>
-                 <hr />
-               <!-- /. ROW  -->
-               <div class="row">                     
+                
+                             
                       
-  <div class="col-md-4 col-sm-4 col-xs-4">
-    <div class="panel panel-default">
-      <div class="panel-heading">
-        Age
-      </div>
-      <div class="panel-body">
-        <div id="morris-donut-chart" style="height: 250px;"></div>
-      </div>
-    </div>
-  </div>
-  <div class="col-md-4 col-sm-4 col-xs-4">
-    <div class="panel panel-default">
-      <div class="panel-heading">
-        Gender
-      </div>
-      <div class="panel-body">
-        <div id="morris-donut-chart2" style="height: 250px;"></div>
-      </div>
-    </div>
-  </div>
-  <div class="col-md-4 col-sm-4 col-xs-4">
-    <div class="panel panel-default">
-      <div class="panel-heading">
-        Campus
-      </div>
-      <div class="panel-body">
-        <div id="morris-donut-chart3" style="height: 250px;"></div>
-      </div>
-    </div>
-  </div>
-      
-      
-  </div>
-    </div>
+
+    </div><?php include '../footer.php' ?>
              <!-- /. PAGE INNER  -->
             </div>
          <!-- /. PAGE WRAPPER  -->
@@ -474,7 +464,46 @@ $pdoExec = $pdoResult->execute();
 <script> </script>
     <!-- DATA TABLE SCRIPTS -->
     <script src="assets/js/dataTables/jquery.dataTables.js"></script>
-    <script src="assets/js/dataTables/dataTables.bootstrap.js"></script>
+    <script src="assets/js/dataTables/dataTables.min.js"></script>
+    <script>
+    $(document).ready(function() {
+        $('#dataTables-example').DataTable({
+            "order": [
+                [0, 'asc']],
+
+            "columnDefs": [
+                {   
+                    "width": "10%", 
+                    "targets": [1],  // Target Age column
+                    "visible": true // Hide Age column
+                },   
+                {   
+                    "width": "15%", 
+                    "targets": [2],  // Target Age column
+                    "visible": true // Hide Age column
+                },
+                {   
+                    "width": "15%", 
+                    "targets": [3,4],  // Target Age column
+                    "visible": true // Hide Age column
+                }, 
+                {   
+                    "width": "35%", 
+                    "targets": [5],  // Target Age column
+                    "visible": true // Hide Age column
+                    
+                },
+                {   
+                    "width": "5%", 
+                    "targets": [6],  // Target Age column
+                    "visible": true, // Hide Age column
+                    "className": "text-center"                },
+            ]
+        });
+
+        
+    });
+</script>
         <script>
             $(document).ready(function () {
                 $('#dataTables-example').dataTable();

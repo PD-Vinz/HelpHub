@@ -21,11 +21,14 @@ figure,
 footer,
 header,
 hgroup,
-main,
+
 nav,
 section,
 summary {
   display: block;
+}
+main{
+  display:flex;
 }
 audio,
 canvas,
@@ -308,6 +311,44 @@ figure {
 img {
   vertical-align: middle;
 }
+@media (min-width: 200px) {
+  .img-fluid {
+      width: 200px;
+  }
+}
+
+@media (min-width: 400px) {
+  .img-fluid {
+      width: 300px;
+  }
+}
+
+@media (min-width: 600px) {
+  .img-fluid {
+      width: 400px;
+  }
+}
+
+@media (min-width: 800px) {
+  .img-fluid {
+      width: 500px;
+  }
+}
+
+@media (min-width: 170px) {
+  .img-fluid {
+      width: 580px;
+  }
+}
+
+@media (min-width: 1700px) {
+  .img-fluid {
+      width: 770px;
+  }
+}
+
+
+
 .img-responsive,
 .thumbnail > img,
 .thumbnail a > img,
@@ -322,8 +363,7 @@ img {
 }
 .img-thumbnail {
   display: inline-block;
-  max-width: 100%;
-  height: auto;
+
   padding: 4px;
   line-height: 1.42857143;
   background-color: #fff;
@@ -334,6 +374,8 @@ img {
 }
 .img-circle {
   border-radius: 50%;
+  width:15pc;
+  height:15pc;
 }
 hr {
   margin-top: 20px;
@@ -402,7 +444,7 @@ h2,
 .h2,
 h3,
 .h3 {
-  margin-top: 20px;
+  margin-top: 10px;
   margin-bottom: 10px;
 }
 h1 small,
@@ -767,6 +809,7 @@ pre code {
 }
 .col-xs-1, .col-sm-1, .col-md-1, .col-lg-1, .col-xs-2, .col-sm-2, .col-md-2, .col-lg-2, .col-xs-3, .col-sm-3, .col-md-3, .col-lg-3, .col-xs-4, .col-sm-4, .col-md-4, .col-lg-4, .col-xs-5, .col-sm-5, .col-md-5, .col-lg-5, .col-xs-6, .col-sm-6, .col-md-6, .col-lg-6, .col-xs-7, .col-sm-7, .col-md-7, .col-lg-7, .col-xs-8, .col-sm-8, .col-md-8, .col-lg-8, .col-xs-9, .col-sm-9, .col-md-9, .col-lg-9, .col-xs-10, .col-sm-10, .col-md-10, .col-lg-10, .col-xs-11, .col-sm-11, .col-md-11, .col-lg-11, .col-xs-12, .col-sm-12, .col-md-12, .col-lg-12 {
   position: relative;
+  margin-right: 0;
   min-height: 1px;
   padding-right: 15px;
   padding-left: 15px;
@@ -938,7 +981,7 @@ pre code {
     width: 91.66666667%;
   }
   .col-sm-10 {
-    width: 83.33333333%;
+    width: 79%;
   }
   .col-sm-9 {
     width: 75%;
@@ -962,7 +1005,7 @@ pre code {
     width: 25%;
   }
   .col-sm-2 {
-    width: 16.66666667%;
+    width: 21%;
   }
   .col-sm-1 {
     width: 8.33333333%;
@@ -1121,7 +1164,7 @@ pre code {
     width: 25%;
   }
   .col-md-2 {
-    width: 16.66666667%;
+    width: 20%;
   }
   .col-md-1 {
     width: 8.33333333%;
@@ -1810,10 +1853,11 @@ fieldset[disabled] .checkbox-inline {
 }
 .input-sm {
   height: 30px;
-  padding: 5px 10px;
+  padding: 5px 0px;
   font-size: 12px;
   line-height: 1.5;
   border-radius: 3px;
+
 }
 select.input-sm {
   height: 30px;
@@ -2024,13 +2068,7 @@ select[multiple].input-lg {
   border: 1px solid transparent;
   border-radius: 4px;
 }
-.btn:focus,
-.btn:active:focus,
-.btn.active:focus {
-  outline: thin dotted;
-  outline: 5px auto -webkit-focus-ring-color;
-  outline-offset: -2px;
-}
+
 .btn:hover,
 .btn:focus {
   color: #333;
@@ -3771,13 +3809,15 @@ select[multiple].input-group-sm > .input-group-btn > .btn {
 .navbar-toggle {
   position: relative;
   float: right;
-  padding: 9px 10px;
+  width: 40px;
+  padding: 5px 5px;
   margin-top: 8px;
-  margin-right: 15px;
+  margin-right: 5px;
+  margin-left: 5px;
   margin-bottom: 8px;
   background-color: transparent;
   background-image: none;
-  border: 1px solid transparent;
+
   border-radius: 4px;
 }
 .navbar-toggle:focus {
@@ -4144,8 +4184,8 @@ select[multiple].input-group-sm > .input-group-btn > .btn {
 }
 .pagination {
   display: inline-block;
-  padding-left: 0;
-  margin: 20px 0;
+  padding-left: 10;
+  margin:  0px 0  20px 0;
   border-radius: 4px;
 }
 .pagination > li {
@@ -4772,7 +4812,7 @@ a.list-group-item-danger.active:focus {
   margin-bottom: 20px;
   background-color: #fff;
   border: 1px solid transparent;
-  border-radius: 4px;
+  border-radius: 10px;
   -webkit-box-shadow: 0 1px 1px rgba(0, 0, 0, .05);
           box-shadow: 0 1px 1px rgba(0, 0, 0, .05);
 }
@@ -4780,13 +4820,13 @@ a.list-group-item-danger.active:focus {
   padding: 15px;
 }
 .panel-body-ticket {
-  padding: 2px;
+  padding: 0px;
 }
 .panel-heading {
   padding: 10px 15px;
   border-bottom: 1px solid transparent;
-  border-top-left-radius: 3px;
-  border-top-right-radius: 3px;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
 }
 .panel-heading > .dropdown .dropdown-toggle {
   color: inherit;

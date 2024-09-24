@@ -67,6 +67,8 @@ if (!isset($_SESSION["user_id"])) {
       <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>USER</title>
+    <link href="assets/js/DataTables/datatables.min.css" rel="stylesheet">
+
 	<!-- BOOTSTRAP STYLES-->
     <link href="assets/css/bootstrap.css" rel="stylesheet" />
   <!-- FONTAWESOME STYLES-->
@@ -164,40 +166,11 @@ if (!isset($_SESSION["user_id"])) {
                         </li>
 
                         <li>
-                            <a class="active-menu" href="ticket.php">
-                            <i class="fa fa-ticket" style="font-size: 36px; color: rgb(255, 255, 255)"></i> TICKET <span class="fa arrow"></span>
-                        </a>
-                        <ul class="nav nav-second-level">
-
-
+                            <a href="create-ticket.php">
+                            <i class="fa fa-plus" style="font-size: 36px; color: rgb(255, 255, 255)"></i> CREATE TICKET </a>
+                            </li>
                             <li>
-                                <a href="create-ticket.php"><i class="fa fa-plus"></i>CREATE NEW TICKET</a>
-                            </li>
-                          <li>
-                              <a href="ticket-pending.php"><i class="fa fa-refresh"></i>PENDING TICKET</a>
-                          </li>
-
-                          <li>
-                              <a href="ticket-inprocess.php"><i class="fa fa-spinner"></i> IN PROCESS</a>
-                          </li>
-
-                          <li>
-                            <a href="ticket-returned.php"><i class="fa fa-undo"></i> RETURNED TICKET</a>
-                            </li>
-
-                            <li>
-                            <a href="ticket-finished.php"><i class="fa fa-check"></i> COMPLETE TICKET</a>
-                            </li>
-                      </ul>
-                    </li> 
-                    <li>
-                        <a href="history.php"><i class="bx bx-history" style="font-size:36px"></i> HISTORY </a>
-                    </li>
-						   <li  >
-                            <a href="downloadableform.php"><i class="fa fa-download" style="font-size:36px"></i> DOWNLOADABLE FORM </a>
-                    </li>	
-                    <li>
-                        <a href="about.php"><i class="fa fa-question-circle" style="font-size:36px"></i> ABOUT </a>
+                        <a href="all-ticket.php"><i class="fa fa-ticket" style="font-size:36px"></i> ALL TICKET </a>
                     </li>
                 </ul>
                
@@ -208,6 +181,7 @@ if (!isset($_SESSION["user_id"])) {
         <div id="page-wrapper" >
             <div id="page-inner">
                 <div class="row">
+                    <div class="col-md-12"> <div class="col-md-12">
                     <div class="col-md-12">
                      <h2>COMPLETE TICKET</h2>   
                     </div>
@@ -292,7 +266,6 @@ if (!isset($_SESSION["user_id"])) {
                                                     </div>
                                                 </td>
                                         </tr>
-        
         <?php
         }
         ?>
@@ -306,7 +279,9 @@ if (!isset($_SESSION["user_id"])) {
          <!-- /. PAGE WRAPPER  -->
         </div>
     <!-- /. WRAPPER -->
-    <!-- SCRIPTS - AT THE BOTTOM TO REDUCE THE LOAD TIME -->
+            </div>
+ 
+     <!-- SCRIPTS - AT THE BOTTOM TO REDUCE THE LOAD TIME -->
     <!-- JQUERY SCRIPTS -->
     <script src="assets/js/jquery-1.10.2.js"></script>
     <!-- BOOTSTRAP SCRIPTS -->
@@ -315,13 +290,12 @@ if (!isset($_SESSION["user_id"])) {
     <script src="assets/js/jquery.metisMenu.js"></script>
     <!-- DATA TABLE SCRIPTS -->
     <script src="assets/js/dataTables/jquery.dataTables.js"></script>
-    <script src="assets/js/dataTables/dataTables.bootstrap.js"></script>
+    <script src="assets/js/dataTables/dataTables.min.js"></script>
     <script>
         $(document).ready(function () {
             $('#dataTables-example').dataTable();
         });
     </script>
-
 <!-- Loading Screen -->    
 <script>
     document.addEventListener('DOMContentLoaded', () => {
@@ -343,6 +317,7 @@ function fetchData() {
 }
 
 </script>
+
 
     
     <!-- CUSTOM SCRIPTS -->

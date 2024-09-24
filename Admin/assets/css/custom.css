@@ -18,21 +18,21 @@ body {
 
  #wrapper {
     width: 100%;
-    background:#202020;
+    background:#2e1b1b;
 }
 
 #page-wrapper {
     padding: 15px 15px;
-    min-height: 600px;
-    background:#F3F3F3;
-   
+    min-height: 900px;
+    background:#eae5e5;
 }
 #page-inner {
     width:100%;
     margin:10px 20px 10px 0px;
-    background-color:#fff!important;
+    background-color:#f7f7f2!important;
     padding:10px;
-    min-height:auto;
+    min-height:900px;
+    border-radius: 10px;
 }
 
 .text-center {
@@ -42,7 +42,7 @@ body {
     border:1px solid #f3f3f3;
 }
 h2 {
-    color: #f00;
+    color: rgb(127, 42, 42);;
 }
 h4 {
     padding-top:10px;
@@ -56,7 +56,7 @@ border-radius: 0px;
 }
 p {
     font-size:16px;
-    line-height:25px;
+    line-height:5px;
     padding-top:20px;
 }
 /*==============================================
@@ -67,28 +67,63 @@ p {
 
 }
    .noti-box {
-min-height: 100px;
-padding: 20px;
+
+min-height: 75px;
+padding: 15px;
+line-height: 50px;
+background-color:#f8e9dd;
 }
 
     .noti-box .icon-box {
 display: block;
 float: left;
-margin: 0 15px 10px 0;
-width: 70px;
-height: 70px;
-line-height: 75px;
+margin: 0 10px 10px 0;
+width: 45px;
+height: 45px;
+line-height: 50px;
 vertical-align: middle;
 text-align: center;
 font-size: 40px;
 }
 .text-box p{
-    margin: 0 0 3px;
+    margin: 0 0 0px;
 }
 .main-text {
-    font-size: 35px;
-    font-weight:600;
+  font-weight: 600;
 }
+@media (max-width: 100000px) {
+  .main-text {
+      font-size: 25px;
+  }
+}@media (max-width: 1900px) {
+  .main-text {
+      font-size: 18px;
+  }
+}
+@media (max-width: 1200px) {
+  .main-text {
+      font-size: 25px;
+  }
+}
+
+@media (max-width: 992px) {
+  .main-text {
+      font-size: 18px;
+  }
+}
+
+@media (max-width: 768px) {
+  .main-text {
+      font-size: 18px;
+  }
+}
+
+@media (max-width: 576px) {
+  .main-text {
+      font-size: 18px;
+  }
+}
+
 .set-icon {
     -webkit-border-radius: 50px;
 -moz-border-radius: 50px;
@@ -116,7 +151,7 @@ color: #fff;
         color: #fff;
         }
         .bg-color-yellow {
-            background-color: #f3f315;
+            background-color: #d7d757;
             color: #fff;
             }  
             .bg-color-orange {
@@ -195,17 +230,23 @@ max-width:170px;
 
 .navbar-cls-top .navbar-brand {
 	color: #fff;
-background: #C90000;
-width: 260px;
+background: #6b0200 (5 7% 46%);
+width: 230px;
 text-align: center;
 height: 60px;
 font-size: 30px;
 font-weight: 700;
 }
 .active-menu {
-    background-color:#C90000!important;
+    background-color:#6b0200 !important;
+    color: white !important;
+    
 }
-
+.active-menu:hover {
+  background-color:#780e0c !important;
+  color: white !important;
+  
+} 
 .arrow {
     float: right;
 }
@@ -239,7 +280,7 @@ font-weight: 700;
 }
 .sidebar-collapse .nav > li > a {
 	color:#fff;
-	background:#202020;
+	background:#2e1b1b;
 	text-shadow:none;
 	
 }
@@ -289,17 +330,17 @@ font-weight: 700;
 }
 .navbar-side {
 	border:none;
-	background-color: #202020;
+	background-color: #350200;
 	
 }
 .navbar-cls-top {
-	background:#4D4D4D;
+	background: #6b0200 !important;
 	border-bottom:none;
 	
 }
 .navbar-cls-top .navbar-brand:hover {
 
-background: #C90000;
+background: #7e0806;
 color:#fff;
 
 }
@@ -309,12 +350,13 @@ border:0px solid black;
      
 }
 .navbar-header {
-    background: #A70303;
+    background: #6b0200 (54, 79%, 46%);
 }
 
 
 .ticket-dropdown-menu {
     display: none; /* Hidden by default */
+    width: auto;
 }
 
 .ticket-dropdown-menu.show {
@@ -324,7 +366,7 @@ border:0px solid black;
 
 
 .navbar-default .navbar-toggle:hover, .navbar-default .navbar-toggle:focus {
-background-color: #B40101;
+background-color: #C90000;
 }
 .navbar-default .navbar-toggle {
 border-color: #fff;
@@ -354,28 +396,40 @@ line-height: 1.428571429;
 /*==============================================
     MEDIA QUERIES     
     =============================================*/
- 
- @media(min-width:768px) {
-     #page-wrapper{
-               margin: 0 0 0 260px;
-        padding: 15px 30px;
-        min-height: 1200px;
-		
-    }
-	
-	
-    .navbar-side {
-        z-index: 1;
-        position: absolute;
-        width: 260px;
-    }
 
-   .navbar {
- border-radius: 0px; 
-}
-   
-}
+  @media(min-width:760px) {
+      #page-wrapper{
+                margin: 0 0 0 230px;
+          padding: 15px 30px;
+          min-height: 800;
+          
+      }
+    
+      .calendarf{ 
+        min-height:655px;
+        height:auto;
+      }
+      .navbar-side {
+          z-index: 1;
+          position: absolute;
+          width: 230px;
+          
+      }
 
+    .navbar {
+  border-radius: 0px; 
+  }
+    
+  }
+
+
+  @media(min-width:1920px) {
+    .calendarf{
+      height:710px;
+    }
+  }
+
+  
 /* calendar 2 */
 
 /* styles.css */
@@ -418,9 +472,12 @@ body {
 	max-width: 900px;
 	margin: 0 auto;
 	overflow: auto;
-	box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.2);
+  border-width: 4px;
+	border-radius: 10px;
 	display: flex;
 	justify-content: space-between;
+  outline: 1.5px solid rgb(226, 226, 226);
+  margin-bottom: 15px
 }
 
 /* Event section styling */
@@ -440,7 +497,7 @@ body {
 }
 
 #event-section h3 {
-	color: green;
+	color: rgb(106, 26, 26);
 	font-size: 18px;
 	margin: 0;
 }
@@ -505,7 +562,7 @@ body {
 }
 
 #reminder-section h3 {
-	color: green;
+	color: rgb(106, 26, 26);
 	font-size: 18px;
 	margin: 0;
 }
@@ -549,7 +606,7 @@ body {
 
 .table-calendar td,
 .table-calendar th {
-	padding: 39px;
+	padding: 2.2vw;
 	border: 1px solid #e2e2e2;
 	text-align: center;
 	vertical-align: top;
@@ -568,18 +625,18 @@ body {
 
 /* Day-specific styling */
 .date-picker:nth-child(1) {
-	color: red;
-	/* Sunday */
+	color: maroon;
+	
 }
 
-.date-picker:nth-child(6) {
-	color: red;
-	/* Friday */
+.date-picker:nth-child(7) {
+	color: maroon;
+
 }
 
 /* Hover effect for date cells */
 .date-picker:hover {
-	background-color: green;
+	background-color: goldenrod;
 	color: white;
 	cursor: pointer;
 }
@@ -635,8 +692,8 @@ body {
 }
 
 .rating-label {
-    width: 40px;
-    margin-right: 10px;
+  
+    margin-right: -30px;
 }
 
 .rating-count {
@@ -645,12 +702,14 @@ body {
 
 .progress-container {
     flex-grow: 1; 
+    border-radius: 10px;
 }
 
 .progress-bar {
     width: 22.8%; /* Adjust based on rating */
     background-color: #ff9900;
     height: 20px; /* Adjust height as needed */
+    border-radius: 10px;
 }
 
 .csat-container {
@@ -661,8 +720,8 @@ body {
   
   .csat-label {
     color: #5cb85c; /* Light green color for the label */
-    font-size: 28px;
-    margin-bottom: 10px;
+    font-size: 23px;
+    margin-bottom: 6px;
   }
   
   .csat-percentage {
@@ -682,40 +741,56 @@ body {
   }
   
   .nps-label {
-    width: 100px; /* Adjust width as needed */
+    width: 100px; 
     margin-right: 10px;
   }
   
   .nps-progress-container {
     flex-grow: 1;
+    margin-right: 30px;
+    background-color: #f2f2f2;
+    border-radius: 10px;
+    
   }
   
   .nps-progress-bar {
-    height: 10px; /* Adjust height as needed */
-    border-radius: 5px; /* Add rounded corners */
+    height: 15px;
+    border-radius: 10px;
+    flex: 1;
+    background: #f0f0f0;
+    position: relative;
+
+    
   }
   
   /* Emojis (you might use image icons instead) */
   .nps-emoji {
-    font-size: 24px; /* Adjust size as needed */
-    margin-right: 10px;
+    font-size: 30px; /* Adjust size as needed */
+    margin-right: 20px;
   }
+
+  .nps-rating-count {
+    width: 50px;
+}
 
 
   .rating-bar {
     display: flex;
     align-items: center;
     margin-bottom: 10px;
+    margin-right: 0px;
 }
 .rating-label {
     width: 150px;
+    margin-left: 15px;
 }
 .progress-container {
     flex: 1;
     background: #f0f0f0;
     margin: 0 10px;
     position: relative;
-    height: 20px;
+    height: 15px;
+    
 }
 .progress-bar {
     height: 100%;
@@ -733,18 +808,98 @@ body {
     height: 350px;
     overflow-y:scroll;
     overflow-x:hidden;
+
 }
 
 
+.event {
+    background-color: #ffd700;
+    padding: 2px;
+    border-radius: 3px;
+    margin-top: 2px;
+    font-size: 0.8em;
+}
 
 
+/*sidebar test collapse*/
 
-.avatar{
-    width:200px;
-    height:200px;
-    }
+.asidebar{
+    width: 50px;
+    height: 100vh;
+    display: grid;
+    justify-content: center;
+    background: black;
+    overflow-x: hidden;
+    transition: all .5s;
+}
+
+.asidebar a{
+    display: grid;
+    justify-content: center;
+    text-align: center;
+    text-decoration: none;
+    color: gray;
+    font-weight: bold;
+    font-size: 1.5rem;
+    grid-template-columns: 50px 1fr;
+}
+.asidebar span.number{
+    width: 50px;
+    text-align: center;
+}
+.asidebar span.text{
+    font-size: 1rem;
+    display: none;
+    height: 20px;
+    padding: 5px;
+    color: rgba(25, 190, 25, 0.356);
+    border-left: 1px solid rgba(255, 255, 255, 0.089);
+    margin-bottom: 5px;
+}
+
+.asidebar-btn{
+    background:gray;
+    width: 30px;
+    height: 30px;
+    display: grid;
+    padding: 2px;
+    justify-self: center;
+    align-items: center;
+    margin-top: 10px;
+    border-radius: 5px;
+}
+.asidebar.open .sidebar-btn{
+    justify-self: right;
+}
+.asidebar-btn span{
+    width: 95%;
+    height: 5px;
+    display: block;
+    border-radius: 1px;
+    background: rgba(0, 0, 0, 0.918);
+}
+.asidebar.open{
+    width: 250px;
+}
+.asidebar.open span.text{
+    display: inline-block;
+}
+.acontent{
+    display: grid;
+    justify-content: center;
+    align-items: center;
+    padding: 10px;
+}
+.acontent p{
+    font-size: 1rem;
+
+}
+
+/*sidebar test collapse end*/
+
 
 /*change profile*/
+
 #upload_label {
     cursor: pointer;
     position: absolute;
@@ -756,6 +911,7 @@ body {
   #upload_label:focus {
     color: #222;
   }
+
   .avatar {
     width: 150px;
     height: 150px;
@@ -876,3 +1032,172 @@ body {
     padding: 0;
     text-align: center;
   }
+
+
+
+
+  
+  .avatar2 {
+    width: 150px;
+    height: 150px;
+    border-radius: 10%;
+    border: 2px solid #8a7f7f;
+    margin: 10px auto;
+    position: relative;
+    overflow: hidden;
+    z-index: 2;
+    transform: translateZ(0);
+    transition: border-color 200ms;
+  }
+  .avata2--upload-error {
+    border-color: #f73c3c;
+    animation: shakeNo 300ms 1 forwards;
+  }
+  @keyframes shakeNo {
+    20%,
+    60% {
+      transform: translateX(6px);
+    }
+    40%,
+    80% {
+      transform: translate(-6px);
+    }
+  }
+  .avatar2:hover .avatar_upload,
+  .avatar2--hover .avatar _upload {
+    opacity: 1;
+  }
+  .avatar2:hover .upload_label,
+  .avatar2--hover .upload_label {
+    display: block;
+  }
+  #preview::after {
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    text-align: center;
+    z-index: -1;
+    line-height: 150px;
+    color: #999;
+  }
+  .avatar2_img--loading {
+    opacity: 0;
+  }
+  .avatar2_img {
+    width: 100%;
+    height: auto;
+    animation: inPop 250ms 150ms 1 forwards
+      cubic-bezier(0.175, 0.885, 0.32, 1.175);
+    transform: scale(0);
+    opacity: 0;
+  }
+  @keyframes inPop {
+    100% {
+      transform: scale(1);
+      opacity: 1;
+    }
+  }
+  .avatar2_img--rotate90 {
+    transform: rotate(90deg);
+  }
+  .avatar2_upload {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    text-align: center;
+    height: 100%;
+    background: #000;
+    background: rgba(0, 0, 0, 0.4);
+    display: flex;
+    align-items: center;
+    opacity: 0;
+    transition: opacity 500ms;
+  }
+/* Center the text and slider */
+.text-center {
+  text-align: center;
+}
+
+/* The switch container */
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 60px;
+  height: 34px;
+  vertical-align: middle; /* Align with the labels */
+  margin: 0 15px; /* Spacing between the slider and the texts */
+}
+
+/* Hide the checkbox input */
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+/* The slider */
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: maroon;
+  transition: 0.4s;
+  border-radius: 34px;
+}
+
+/* Circle inside the slider */
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 26px;
+  width: 26px;
+  left: 4px;
+  bottom: 4px;
+  background-color: white;
+  transition: 0.4s;
+  border-radius: 50%;
+}
+
+/* When the checkbox is checked, change background */
+input:checked + .slider {
+  background-color: gold;
+}
+
+/* Move the circle when checked */
+input:checked + .slider:before {
+  transform: translateX(26px);
+}
+
+/* Style the OFF and ON labels */
+.status-text {
+  font-size: 16px;
+  display: inline-block;
+  width: 35px; /* Keeps space consistent */
+  text-align: center; /* Centers the text inside */
+  vertical-align: middle;
+  color: gray;
+}
+
+/* Highlight the active label */
+input:checked ~ #status-text-on {
+  color: black;
+}
+
+input:not(:checked) ~ #status-text-off {
+  color: black;
+}
+
+input:checked ~ #status-text-off {
+  color: lightgray;
+}
+
+input:not(:checked) ~ #status-text-on {
+  color: lightgray;
+}
+

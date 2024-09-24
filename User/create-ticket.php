@@ -1,3 +1,4 @@
+
 <?php
 include_once("../connection/conn.php");
 $pdoConnect = connection();
@@ -59,6 +60,9 @@ if (!isset($_SESSION["user_id"])) {
     }
 }
 
+
+
+
 if(isset($_GET['error']) && $_GET['error'] == 1) {
     // Set your error message here
     $errorMessage = "Cannot proceed with your request. Please check your submission carefully.";
@@ -68,6 +72,19 @@ if(isset($_GET['error']) && $_GET['error'] == 1) {
             window.location.href = 'create-ticket.php';
         };
     </script>";
+}
+
+$pdoUserQuery = "SELECT * from settings WHERE id = 1";
+$pdoResult = $pdoConnect->prepare($pdoUserQuery);
+$pdoResult->execute();
+
+$settingsData = $pdoResult->fetch(PDO::FETCH_ASSOC);
+$acceptTickets = $settingsData['accept_tickets'];
+
+if ($acceptTickets == "off") {
+    $displayForm = false;
+} else {
+    $displayForm = true;
 }
 ?>
 
@@ -139,50 +156,18 @@ if(isset($_GET['error']) && $_GET['error'] == 1) {
                     <li class="text-center">
                         <img src="data:image/jpeg;base64,<?php echo $P_PBase64?>" class="user-image img-responsive" />
                     </li>
-				
-					
                     <li>
                         <a href="dashboard.php"><i class="bx bxs-dashboard fa" style="font-size:36px;color:rgb(255, 255, 255)"></i>  DASHBOARD </a>
                     </li>
-
                     <li>
                         <a href="profile.php"><i class="bx bx-user" style="font-size:36px;color:rgb(255, 255, 255)"></i> PROFILE </a>
                         </li>
 
                         <li>
-                            <a class="active-menu" href="ticket.php">
-                            <i class="fa fa-ticket" style="font-size: 36px; color: rgb(255, 255, 255)"></i> TICKET <span class="fa arrow"></span>
-                        </a>
-                        <ul class="nav nav-second-level">
-
+                            <a class="active-menu" href="create-ticket.php"><i class="fa fa-plus" style="font-size: 36px; color: rgb(255, 255, 255)"></i> CREATE TICKET </a>
+                            </li>
                             <li>
-                                <a href="create-ticket.php"><i class="fa fa-plus"></i>CREATE NEW TICKET</a>
-                            </li>
-                          <li>
-                              <a href="ticket-pending.php"><i class="fa fa-refresh"></i>PENDING TICKET</a>
-                          </li>
-
-                          <li>
-                              <a href="ticket-inprocess.php"><i class="fa fa-spinner"></i> IN PROCESS</a>
-                          </li>
-
-                          <li>
-                            <a href="ticket-returned.php"><i class="fa fa-undo"></i> RETURNED TICKET</a>
-                            </li>
-
-                            <li>
-                            <a href="ticket-finished.php"><i class="fa fa-check"></i> COMPLETE TICKET</a>
-                            </li>
-                      </ul>
-                    </li> 
-                    <li>
-                        <a href="history.php"><i class="bx bx-history" style="font-size:36px"></i> HISTORY </a>
-                    </li>
-						   <li  >
-                            <a href="downloadableform.php"><i class="fa fa-download" style="font-size:36px"></i> DOWNLOADABLE FORM </a>
-                    </li>	
-                    <li>
-                        <a href="about.php"><i class="fa fa-question-circle" style="font-size:36px"></i> ABOUT </a>
+                        <a href="all-ticket.php"><i class="fa fa-ticket" style="font-size:36px"></i> ALL TICKET </a>
                     </li>
                 </ul>
                
@@ -192,25 +177,64 @@ if(isset($_GET['error']) && $_GET['error'] == 1) {
         <!-- /. NAV SIDE  -->
         <div id="page-wrapper" >
             <div id="page-inner">
+
+
+            <div>
                 <div class="row">
+                    <div class="col-md-12"> <div class="col-md-12">
                     <div class="col-md-12">
-                     <h2> CREATE NEW TICKET</h2>   
+                     <h2> CREATE TICKET</h2>   
                     </div>
                 </div>
 
+            
 
                 <div class="container-center">
                     <div class="modal-header">
                         <img src="assets/pic/head.png" alt="Technical support for DHVSU students">  
+
+
+
+
+                        <?php
+
+// Set the user's ID (assuming you have it from session or login)
+$user_id = $_SESSION['user_id']; // Make sure user_id is properly set in the session
+
+// Get the current date
+$current_date = date('Y-m-d');
+
+// Query to check if the user has already submitted a ticket today
+$query = "SELECT * FROM tb_tickets WHERE user_id = :user_id and DATE(created_date) = :current_date";
+$stmt = $pdoConnect->prepare($query); // Assuming you're using PDO
+$stmt->execute(['user_id'=> $user_id, 'current_date' => $current_date]);
+
+// Check if a row was found
+if ($stmt->rowCount() > 0) {
+    // User has already submitted a ticket today, display the message
+    echo '
+      <div class="container-create">
+    <div>
+        <p>&nbsp&nbsp&nbsp<i class=" fa fa-exclamation-circle fa-sm">&nbsp&nbsp&nbsp&nbsp&nbsp</i>You can only submit a ticket once per day. Please try again tomorrow</p>
+    </div>
+    </div>';
+} else {
+    // No ticket submitted today, display the form
+    ?>
+
                 <div class="container-create">
+                <div id="ticket-message" style="display: none;">
+    <p>&nbsp&nbsp&nbsp<i class=" fa fa-exclamation-circle fa-sm">&nbsp&nbsp&nbsp&nbsp&nbsp</i>The MIS is currently not accepting tickets at the moment. Please try again during office hours.</p>
+</div>
 
-<form class="issue-form" action="ticket-submit.php" method="POST" enctype="multipart/form-data">
 
+                <form class="issue-form" id="issueForm" action="ticket-submit.php" method="POST" enctype="multipart/form-data" style="display: none;">
+ 
                         <div class="form-group">
                             <label for="category">ISSUE</label>
                             <select id="category" name="category" class="form-control dropdown" required>
-                                <option value="">SELECT PROBLEM</option>
                                 <!--
+                                <option value="">SELECT PROBLEM</option>
                                 <option value="DHVSU EMAIL">DHVSU EMAIL</option>
                                 <option value="DHVSU PORTAL">DHVSU PORTAL</option>
                                 <option value="DHVSU SMS">DHVSU SMS</option>
@@ -266,12 +290,16 @@ if(isset($_GET['error']) && $_GET['error'] == 1) {
                         </main>
                     </div>
                 </div>
-
+                
             <div class="modal-footer">
                 <button type="submit" class="btn btn-primary">SUBMIT</Input>
             </div>
 
 </form>
+
+<?php
+}
+?>
                 </div>
         </div>
                  <!-- /. ROW  -->
@@ -279,9 +307,12 @@ if(isset($_GET['error']) && $_GET['error'] == 1) {
                         
              <!-- /. PAGE INNER  -->
             </div>
+            </div>
          <!-- /. PAGE WRAPPER  -->
         </div>
     <!-- /. WRAPPER -->
+    <?php require_once ('../footer.php')?>
+
     <!-- SCRIPTS - AT THE BOTTOM TO REDUCE THE LOAD TIME -->
     <!-- JQUERY SCRIPTS -->
     <script src="assets/js/jquery-1.10.2.js"></script>
@@ -295,11 +326,12 @@ if(isset($_GET['error']) && $_GET['error'] == 1) {
     <!-- CUSTOM SCRIPTS -->
     <script src="assets/js/custom.js"></script>
     <!--preview-->
-<script>
-    // Modal confirm button to handle form submission
-    document.getElementById('confirmBtn').addEventListener('click', function() {
-        const consentYes = document.querySelector('input[name="consent"][value="yes"]');
-        const consentNo = document.querySelector('input[name="consent"][value="no"]');
+
+    <script>
+        document.getElementById('imageInput').addEventListener('change', function(event) {
+            const file = event.target.files[0];
+            const maxSize = 6 * 1024 * 1024; // 6MB in bytes
+            const allowedTypes = ['image/png', 'image/jpeg', 'image/jpg'];
 
         if (consentYes.checked) {
             // If consent is given, submit the form
@@ -368,9 +400,48 @@ function populateDropdown(fileName, dropdownId) {
         .catch(error => console.error(`Error fetching the text file (${fileName}):`, error));
 }
 // Pass the PHP variable to JavaScript
-var identity = "<?php echo $identity; ?>";
+// Function to populate the dropdown
+function populateDropdown(url, dropdownId) {
+    var dropdown = document.getElementById(dropdownId);
+    // Clear existing options
+    dropdown.innerHTML = '';
 
-// Now you can make a condition based on the identity value
+    // Add the "NONE" option as the first option
+    var noneOption = document.createElement('option');
+    noneOption.value = 'Select an issue';
+    noneOption.text = 'Select an issue';
+    dropdown.add(noneOption);
+
+    // Fetch options from the provided URL
+    fetch(url)
+        .then(response => response.text())
+        .then(data => {
+            var options = data.split('\n');
+            options.forEach(option => {
+                if (option.trim()) {
+                    var opt = document.createElement('option');
+                    opt.value = option.trim();
+                    opt.text = option.trim();
+                    dropdown.add(opt);
+                }
+            });
+        })
+        .catch(error => console.error('Error populating dropdown:', error));
+}
+
+// Function to validate the form
+function validateForm(event) {
+    var categorySelect = document.getElementById('category');
+    var selectedValue = categorySelect.value;
+    
+    if (selectedValue === "Select an issue") {
+        event.preventDefault(); // Prevent form submission
+        alert("Please select the issue you want to report.");
+    }
+}
+
+// Populate the dropdown based on identity
+var identity = "<?php echo $identity; ?>";
 if (identity === "Employee") {
     populateDropdown('../issue-template/employee-issue.txt', 'category');
 } else if (identity === "Student") {
@@ -379,122 +450,11 @@ if (identity === "Employee") {
 // Call the function to populate the dropdowns
 
     </script>
-<script>
-// Get elements
-const cropzoneBox = document.getElementsByClassName("dropzone-box")[0];
-const inputFiles = document.querySelector(".dropzone-area input[type='file']");
-const dropZoneElement = inputFiles.closest(".dropzone-area");
-const maxSize = 6 * 1024 * 1024; // 6MB size limit
-const allowedTypes = ['image/png', 'image/jpeg', 'image/jpg']; // Allowed file types
-
-// Update dropzone file list
-const updateDropzoneFileList = (dropzoneElement, file) => {
-    let dropzoneFileMessage = dropzoneElement.querySelector(".message");
-    dropzoneFileMessage.innerHTML = `${file.name}, ${file.size} bytes`;
-
-    // Create and display image preview
-    if (file.type.startsWith('image/')) {
-        const reader = new FileReader();
-        reader.onload = (e) => {
-            let img = document.createElement('img');
-            img.src = e.target.result;
-
-            // Apply the CSS class to the image
-            img.classList.add('dropzone-image');
-
-            // Remove existing preview if any
-            const existingImg = dropzoneElement.querySelector('img');
-            if (existingImg) {
-                dropzoneElement.removeChild(existingImg);
-            }
-
-            dropZoneElement.appendChild(img);
-        };
-        reader.readAsDataURL(file);
-    }
-};
-
-// Validate file size and type
-const validateFile = (file) => {
-    const sizeError = document.getElementById('sizeError');
-    const typeError = document.getElementById('typeError');
-
-    if (file.size > maxSize) {
-        sizeError.textContent = 'File size exceeds 6MB limit.';
-        return false;
-    } else {
-        sizeError.textContent = '';
-    }
-
-    if (!allowedTypes.includes(file.type)) {
-        typeError.textContent = 'Only PNG, JPG, and JPEG files are allowed.';
-        return false;
-    } else {
-        typeError.textContent = '';
-    }
-
-    return true;
-};
-
-// Handle file selection
-inputFiles.addEventListener("change", (e) => {
-    const file = inputFiles.files[0];
-    if (file && validateFile(file)) {
-        updateDropzoneFileList(dropZoneElement, file);
-    } else {
-        // Reset file input if validation fails
-        inputFiles.value = '';
-    }
-});
-
-// Handle drag events
-["dragover", "dragleave", "dragend"].forEach((type) => {
-    dropZoneElement.addEventListener(type, (e) => {
-        if (type === "dragover") {
-            e.preventDefault();
-            dropZoneElement.classList.add("dropzone--over");
-        } else {
-            dropZoneElement.classList.remove("dropzone--over");
-        }
-    });
-});
-
-// Handle drop event
-dropZoneElement.addEventListener("drop", (e) => {
-    e.preventDefault();
-    const file = e.dataTransfer.files[0];
-    if (file && validateFile(file)) {
-        inputFiles.files = e.dataTransfer.files; // Update the input file list
-        updateDropzoneFileList(dropZoneElement, file);
-    } else {
-        // Reset file input if validation fails
-        inputFiles.value = '';
-    }
-    dropZoneElement.classList.remove("dropzone--over");
-});
-
-// Reset event
-cropzoneBox.addEventListener("reset", () => {
-    let dropzoneFileMessage = dropZoneElement.querySelector(".message");
-    dropzoneFileMessage.innerHTML = "No Files Selected";
-
-    // Remove image preview
-    const existingImg = dropZoneElement.querySelector('img');
-    if (existingImg) {
-        dropZoneElement.removeChild(existingImg);
-    }
-});
-
-// Submit event
-cropzoneBox.addEventListener("submit", (e) => {
-    e.preventDefault();
-    const myFile = document.getElementById("upload-file");
-    console.log(myFile.files);
-});
-
-</script>
 </body>
 </html>
+
+
+
 
 <hidden style="display: none;">
         #imagePreview {

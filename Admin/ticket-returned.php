@@ -36,6 +36,22 @@ if (!isset($_SESSION["admin_number"])) {
         $ticket_user = "Employee";
     }
 
+    // for displaying system details
+    $query = $pdoConnect->prepare("SELECT system_name, short_name, system_logo, system_cover FROM settings WHERE id = :id");
+    $query->execute(['id' => 1]);
+    $Datas = $query->fetch(PDO::FETCH_ASSOC);
+    $sysName = $Datas['system_name'] ?? '';
+    $shortName = $Datas['short_name'] ?? '';
+     $systemCover = $Datas['system_cover'];
+     $S_L = $Datas['system_logo'];
+     $S_LBase64 = '';
+     if (!empty($S_L)) {
+         $base64Image = base64_encode($S_L);
+         $imageType = 'image/png'; // Default MIME type
+         $S_LBase64 = 'data:' . $imageType . ';base64,' . $base64Image;
+     }
+ // for displaying system details //end 
+
 try {
 
     $pdoCountQuery = "SELECT * FROM tb_tickets";
@@ -76,10 +92,16 @@ try {
 <head>
       <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>DHVSU MIS - HelpHub</title>
+
+    <title><?php echo $sysName?></title>
+    <link rel="icon" href="<?php echo htmlspecialchars($S_LBase64, ENT_QUOTES, 'UTF-8'); ?>" type="image/*">
+
   
 	<!-- BOOTSTRAP STYLES-->
     <link href="assets/css/bootstrap.css" rel="stylesheet" />
+
+    
+    <link href="assets/js/DataTables/datatables.min.css" rel="stylesheet">
      <!-- FONTAWESOME STYLES-->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
      <!-- MORRIS CHART STYLES-->
@@ -103,12 +125,14 @@ try {
          <?php include 'nav.php'; ?>
         <!-- /. NAV SIDE  -->
         <div id="page-wrapper" >
-            <div id="page-inner">
-                <div class="row">
+
+        <div id="page-inner" style="min-height: 800px;">
+
+               
+
                     <div class="col-md-12">
                      <h2>Returned Tickets</h2>   
-                        <h5>Welcome Jhon Deo , Love to see you back. </h5>
-                       
+                     <hr> 
                     </div>
                 </div>
                  <!-- /. ROW  -->
@@ -187,8 +211,11 @@ $pdoExec = $pdoResult->execute();
 
             </div>
             <div class="container"></div>
-            <div class="modal-body">
+            <div class="modal-body"> <h3>Return Reason</h3>
+                                <textarea class="form-control" disabled style="height:148px; resize:none; overflow:auto;"><?php echo htmlspecialchars($resolution); ?></textarea>
+                                <br><br>
                                           <div class="row">
+                                         
                                 <div class="col-md-6">
                                     <h3>User Information</h3>
                                     <form role="form">
@@ -275,9 +302,7 @@ $pdoExec = $pdoResult->execute();
                                     
                                         </div>
                                 </div>
-                                <h3>Return Reason</h3>
-                                <textarea class="form-control" disabled style="height:148px; resize:none; overflow:auto;"><?php echo htmlspecialchars($resolution); ?></textarea>
-                                <br><br>
+                                
                             </div>
             </div>
         </div>
@@ -320,6 +345,7 @@ $pdoExec = $pdoResult->execute();
                  <hr />
                
     </div>
+    <?php require_once('../footer.php') ?> 
              <!-- /. PAGE INNER  -->
             </div>
          <!-- /. PAGE WRAPPER  -->
@@ -335,7 +361,49 @@ $pdoExec = $pdoResult->execute();
     <script src="assets/js/jquery.metisMenu.js"></script>
     <!-- DATA TABLE SCRIPTS -->
     <script src="assets/js/dataTables/jquery.dataTables.js"></script>
-    <script src="assets/js/dataTables/dataTables.bootstrap.js"></script>
+    <script src="assets/js/dataTables/dataTables.min.js"></script>
+    <script>
+    $(document).ready(function() {
+        $('#dataTables-example').DataTable({
+            "order": [
+                [0, 'asc']],
+
+            "columnDefs": [     
+                {   
+                    "width": "8%", 
+                    "targets": [0],  // Target Age column
+                    "visible": true // Hide Age column
+                },   
+                {   
+                    "width": "20%", 
+                    "targets": [1],  // Target Age column
+                    "visible": true // Hide Age column
+                },
+                {   
+                    "width": "15%", 
+                    "targets": [2],  // Target Age column
+                    "visible": true, // Hide Age column
+                    "className": "dt-left"  
+
+                }, 
+                {   
+                    "width": "40%", 
+                    "targets": [3],  // Target Age column
+                    "visible": true, // Hide Age column
+                    "className": "dt-left"  
+                    
+                },
+                {   
+                    "width": "5%", 
+                    "targets": [4],  // Target Age column
+                    "visible": true // Hide Age column
+                    
+                },
+                
+            ]
+        });
+    });
+</script>
         <script>
             $(document).ready(function () {
                 $('#dataTables-example').dataTable();

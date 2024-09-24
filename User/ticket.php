@@ -64,37 +64,11 @@
                     </li>
                     
                     <li>
-                        <a href="#">
-                            <i class="fa fa-ticket" style="font-size: 36px; color: rgb(255, 255, 255)"></i> TICKET <span class="fa arrow"></span>
-                        </a>
-                        <ul class="nav nav-second-level">
-
-
-                            <li>
-                                <a href="create-ticket.php"><i class="fa fa-plus"></i>CREATE NEW TICKET</a>
+                            <a lass="active-menu" href="create-ticket.php">
+                            <i class="fa fa-plus" style="font-size: 36px; color: rgb(255, 255, 255)"></i> CREATE TICKET </a>
                             </li>
                             <li>
-                                <a href="ticket-pending.php"><i class="fa fa-refresh"></i>PENDING TICKET</a>
-                            </li>
-                            <li>
-                                <a href="ticket-inprocess.php"><i class="fa fa-spinner"></i> IN PROCESS</a>
-                            </li>
-                            <li>
-                                <a href="ticket-returned.php"><i class="fa fa-undo"></i> RETURNED TICKET</a>
-                            </li>
-                            <li>
-                                <a href="ticket-finished.php"><i class="fa fa-check"></i> COMPLETE TICKET</a>
-                            </li>
-                        </ul>
-                        </li>
-                    <li>
-                        <a href="history.php"><i class="bx bx-history" style="font-size:36px"></i> HISTORY </a>
-                    </li>
-                    <li>
-                        <a href="downloadbleform.php"><i class="fa fa-download" style="font-size:36px"></i> DOWNLOADABLE FORM </a>
-                    </li>
-                    <li>
-                        <a href="about.php"><i class="fa fa-question-circle" style="font-size:36px"></i> ABOUT </a>
+                        <a href="all-ticket.php"><i class="fa fa-ticket" style="font-size:36px"></i> ALL TICKET </a>
                     </li>
                 </ul>
             </div>
@@ -104,6 +78,7 @@
         <div id="page-wrapper">
             <div id="page-inner">
                 <div class="row">
+                    <div class="col-md-12"> <div class="col-md-12">
                     <div class="col-md-12">
                         <h2> TICKETS </h2>
                     </div>
@@ -113,6 +88,7 @@
             <!-- /. PAGE INNER -->
         </div>
         <!-- /. PAGE WRAPPER -->
+        <?php require_once ('../footer.php')?>
     </div>
     <!-- /. WRAPPER -->
     <!-- SCRIPTS -AT THE BOTTOM TO REDUCE THE LOAD TIME -->

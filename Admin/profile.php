@@ -38,26 +38,44 @@ if (!isset($_SESSION["admin_number"])) {
         // Handle the case where no results are found
         echo "No Admin found with the given student number.";
     }
+     // for displaying system details
+     $query = $pdoConnect->prepare("SELECT system_name, short_name, system_logo, system_cover FROM settings WHERE id = :id");
+     $query->execute(['id' => 1]);
+     $Datas = $query->fetch(PDO::FETCH_ASSOC);
+     $sysName = $Datas['system_name'] ?? '';
+     $shortName = $Datas['short_name'] ?? '';
+      $systemCover = $Datas['system_cover'];
+      $S_L = $Datas['system_logo'];
+      $S_LBase64 = '';
+      if (!empty($S_L)) {
+          $base64Image = base64_encode($S_L);
+          $imageType = 'image/png'; // Default MIME type
+          $S_LBase64 = 'data:' . $imageType . ';base64,' . $base64Image;
+      }
+  // for displaying system details //end
 }
 ?>
 
 <!DOCTYPE html>
 <html lang="en">
 <head>
-      <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>DHVSU MIS - HelpHub</title>
-  
-	<!-- BOOTSTRAP STYLES-->
-    <link href="assets/css/bootstrap.css" rel="stylesheet" />
-     <!-- FONTAWESOME STYLES-->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
-     <!-- MORRIS CHART STYLES-->
-    <link href="assets/js/morris/morris-0.4.3.min.css" rel="stylesheet" />
-        <!-- CUSTOM STYLES-->
-    <link href="assets/css/custom.css" rel="stylesheet" />
-     <!-- GOOGLE FONTS-->
-   <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css' />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title><?php echo $sysName?></title>
+    <link rel="icon" href="<?php echo htmlspecialchars($S_LBase64, ENT_QUOTES, 'UTF-8'); ?>" type="image/*">
+
+    <!-- BOOTSTRAP STYLES -->
+    <link href="assets/css/bootstrap.css" rel="stylesheet">
+  <!-- FONTAWESOME STYLES-->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <!-- CUSTOM STYLES -->
+    <link href="assets/css/custom.css" rel="stylesheet">
+    <!-- GOOGLE FONTS -->
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
+    <!-- TABLE STYLES -->
+    <link href="assets/css/dataTables.bootstrap.css" rel="stylesheet">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
 </head>
 
 <body>
@@ -74,12 +92,7 @@ if (!isset($_SESSION["admin_number"])) {
                             <h1 class="text-primary"></h1>
                             <hr>
                             <div class="row">
-                                <nav aria-label="breadcrumb" class="main-breadcrumb">
-                                    <ol class="breadcrumb">
-                                      <li class="breadcruMB"><a href="index.php">HOME</a></li>
-                                      <li class="breadcrumb-item active" aria-current="page">PROFILE</li>
-                                    </ol>
-                                  </nav>
+                               
                                 <!-- left column -->
                                 <div class="col-md-3">
                                     <div class="text-center">
@@ -91,7 +104,7 @@ if (!isset($_SESSION["admin_number"])) {
         
                                 <!-- edit form column -->
                                 <div class="col-md-9 personal-info">
-                                    <div> <h3>PERSONAL INFORMATION</h3>
+                                    <div>
                                     </div>
                                     <form class="form-horizontal" role="form">
                                         <div class="form-group">
@@ -126,16 +139,16 @@ if (!isset($_SESSION["admin_number"])) {
                                         </div>
                                        
                         
-                                        <div class="modal-footer">	
-                                            <a href="edit-profile.php"><button type="button" class="btn btn-primary">UPDATE INFORMATION</button></a>
-                                        </div>
+                                       
                                         
 
 
 
                                         
                                                 </div>
-                                            </div>
+                                            </div><div class="modal-footer">	
+                                            <a href="edit-profile.php"><button type="button" class="btn btn-primary">UPDATE INFORMATION</button></a>
+                                        </div>
                                         </div>
                                     </form>
                                 </div>

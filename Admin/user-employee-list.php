@@ -30,6 +30,23 @@ if (!isset($_SESSION["admin_number"])) {
         echo "No student found with the given student number.";
     }
 
+    // for displaying system details
+    $query = $pdoConnect->prepare("SELECT system_name, short_name, system_logo, system_cover FROM settings WHERE id = :id");
+    $query->execute(['id' => 1]);
+    $Datas = $query->fetch(PDO::FETCH_ASSOC);
+    $sysName = $Datas['system_name'] ?? '';
+    $shortName = $Datas['short_name'] ?? '';
+     $systemCover = $Datas['system_cover'];
+     $S_L = $Datas['system_logo'];
+     $S_LBase64 = '';
+     if (!empty($S_L)) {
+         $base64Image = base64_encode($S_L);
+         $imageType = 'image/png'; // Default MIME type
+         $S_LBase64 = 'data:' . $imageType . ';base64,' . $base64Image;
+     }
+ // for displaying system details //end
+    
+
 try {
 
     $pdoCountQuery = "SELECT * FROM tb_tickets";
@@ -70,10 +87,16 @@ try {
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>DHVSU MIS - HelpHub</title>
+
+    <title><?php echo $sysName?></title>
+    <link rel="icon" href="<?php echo htmlspecialchars($S_LBase64, ENT_QUOTES, 'UTF-8'); ?>" type="image/*">
+
   
 	<!-- BOOTSTRAP STYLES-->
     <link href="assets/css/bootstrap.css" rel="stylesheet" />
+
+    
+    <link href="assets/js/DataTables/datatables.min.css" rel="stylesheet">
      <!-- FONTAWESOME STYLES-->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
      <!-- MORRIS CHART STYLES-->
@@ -113,18 +136,18 @@ try {
         <!-- /. NAV SIDE  -->
         <div id="page-wrapper" >
             <div id="page-inner">
-                <div class="row">
+              
                     <div class="col-md-9">
                      <h2>User Employee List</h2>
-                     <h5>This page shows all the DHVSU Employee Accounts (except MIS Employees).</h5>             
+                     <!--<h5>This page shows all the DHVSU Employee Accounts (except MIS Employees).</h5>   -->           
                     </div>
                     <div class="card-tools col-md-3">
-			<a href="action\add-employee.php" class="btn btn-flat btn-primary" style="float: right;"><span class="fas fa-plus"></span>  Create New</a>
-		</div>
+			<a href="action\add-employee.php" class="btn btn-flat btn-primary" style="float: right; margin-top:15px;"><span class="fas fa-plus"></span>  Create New</a>
+	
                 </div>
                  <!-- /. ROW  -->
-                 <div class="row">
-                <div class="col-md-12">
+            
+                <div class="col-md-12"><hr>
                     <!-- Advanced Tables -->
                     <div class="panel panel-default">
                         <div class="panel-heading">
@@ -143,7 +166,6 @@ $pdoExec = $pdoResult->execute();
                                     <thead>
                                         <tr>
                                             <th>User Id</th>
-                                            <th>Avatar</th>
                                             <th>Full Name</th>
                                             <th>Campus</th>
                                             <th>Year & Section</th>
@@ -161,7 +183,7 @@ $pdoExec = $pdoResult->execute();
             ?>
                     <tr class='odd gradeX'>
                     <td><?php echo htmlspecialchars($user_id); ?></td>
-                    <td class="py-1 px-2 align-middle"><img src="data:image/jpeg;base64,<?php echo $P_PBase64?>" class="img-avatar img-thumbnail p-0 border-2" alt="user_avatar"></td>
+                  
                     <td><?php echo htmlspecialchars($name); ?></td>
                     <td><?php echo htmlspecialchars($campus); ?></td>
                     <td><?php echo htmlspecialchars($year_section); ?></td>
@@ -273,15 +295,15 @@ $pdoExec = $pdoResult->execute();
                         </div>
                     </div>
                     </div>
+                    </div> <?php require_once('../footer.php') ?> 
                     </div>
-                    </div>
+                   
                     <!--End Advanced Tables -->
                             
                         </div>
                     </div>
                 </div>
             </div>
-                 <hr />
                
     </div>
              <!-- /. PAGE INNER  -->
@@ -299,7 +321,7 @@ $pdoExec = $pdoResult->execute();
     <script src="assets/js/jquery.metisMenu.js"></script>
     <!-- DATA TABLE SCRIPTS -->
     <script src="assets/js/dataTables/jquery.dataTables.js"></script>
-    <script src="assets/js/dataTables/dataTables.bootstrap.js"></script>
+    <script src="assets/js/dataTables/dataTables.min.js"></script>
         <script>
             $(document).ready(function () {
                 $('#dataTables-example').dataTable();

@@ -155,6 +155,7 @@ try {
 
 <body>
     <div id="wrapper">
+        
         <nav class="navbar navbar-default navbar-cls-top " role="navigation" style="margin-bottom: 0">
             <div class="navbar-header">
                 <button type="button" class="navbar-toggle" data-toggle="collapse"
@@ -191,65 +192,40 @@ try {
                     <li class="text-center">
                         <!--<img src="data:image/jpeg;base64,<?php //echo $P_PBase64?>" class="user-image img-responsive" />-->
                         <img src="data:image/jpeg;base64,<?php echo $P_PBase64?>" class="user-image img-responsive" />
-                    </li>
-
-
-
+                    </li>   
                     <li>
                         <a class="active-menu" href="dashboard.php"><i class="bx bxs-dashboard fa" style="font-size:36px;color:rgb(255, 255, 255)"></i> DASHBOARD </a>
                     </li>
                     <li>
                         <a href="profile.php"><i class="bx bx-user" style="font-size:36px;color:rgb(255, 255, 255)"></i> PROFILE </a>
                     </li>
-                    <li>
-                      <a href="#"><i class="fa fa-ticket" style="font-size:36px;color:rgb(255, 255, 255)"></i> TICKET <span class="fa arrow"></span></a>
-                      <ul class="nav nav-second-level">
-
-                        <li>
-                          <a href="create-ticket.php"><i class="fa fa-plus"></i>CREATE NEW TICKET</a>
-                      </li>
-                          <li>
-                              <a href="ticket-pending.php"><i class="fa fa-refresh"></i>PENDING TICKET</a>
-                          </li>
-                          <li>
-                              <a href="ticket-inprocess.php"><i class="fa fa-spinner"></i> IN PROCESS</a>
-                          </li>
-                          <li>
-                              <a href="ticket-returned.php"><i class="fa fa-undo"></i> RETURNED TICKET</a>
-                          </li>
-                          <li>
-                              <a href="ticket-finished.php"><i class="fa fa-check"></i> COMPLETE TICKET</a>
-                                </li>
-                            </ul>
-                        </li>
-                    <li>
-                        <a href="history.php"><i class="bx bx-history" style="font-size:36px"></i> HISTORY </a>
+                 <li>  
+                 <a href="create-ticket.php"><i class="fa fa-plus" style="font-size: 36px"></i> CREATE TICKET </a>
+                 </li>
+                 <li>
+                        <a href="all-ticket.php"><i class="fa fa-ticket" style="font-size:36px"></i> ALL TICKET </a>
                     </li>
-                    <li>
-                        <a href="downloadableform.php"><i class="fa fa-download" style="font-size:36px"></i> DOWNLOADABLE FORMS </a>
-                    </li>
-                    <li>
-                      <a href="about.php"><i class="fa fa-question-circle" style="font-size:36px"></i> ABOUT </a>
-                  </li>
                 </ul>
             </div>
         </nav>
 
         <!-- /. NAV SIDE  -->
-        <div id="page-wrapper">
+        <div id="page-wrapper" >
             <div id="page-inner">
-                <div class="row">
+
+            <div class="row">
+            <div class="col-md-12">   <div class="col-md-12">
+
                     <div class="col-md-12">
-                        <h2>DASHBOARD</h2>
-                        <h5>Welcome back, <?php echo $firstName?>!</h5>
+                     <h2>DASHBOARD</h2>   
+                     <hr> 
                     </div>
                 </div>
                 <!-- /. ROW  -->
-                <hr />
                 <div class="row">
-                    <div class="col-md-4 col-sm-6 col-xs-6">
+                    <div class="col-md-2 col-sm-5 col-xs-3">
                         <div class="panel panel-back noti-box">
-                            <span class="icon-box bg-color-red set-icon">
+                            <span class="icon-box bg-color-blue set-icon">
                                 <i class="fa fa-ticket"></i>
                             </span>
                             <div class="text-box">
@@ -258,10 +234,10 @@ try {
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-4 col-sm-6 col-xs-6">
+                    <div class="col-md-2 col-sm-5 col-xs-3">
                         <div class="panel panel-back noti-box">
-                            <span class="icon-box bg-color-green set-icon">
-                                <i class="fa fa-undo"></i>
+                            <span class="icon-box bg-color-black set-icon">
+                                <i class="fa fa-reply"></i>
                             </span>
                             <div class="text-box">
                                 <p class="main-text"><?php echo $returnedTickets?></p>
@@ -269,10 +245,10 @@ try {
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-4 col-sm-6 col-xs-6">
+                    <div class="col-md-2 col-sm-5 col-xs-3">
                         <div class="panel panel-back noti-box">
-                            <span class="icon-box bg-color-blue set-icon">
-                                <i class="fa fa-bell-o"></i>
+                            <span class="icon-box bg-color-violet set-icon">
+                                <i class="fa fa-bell"></i>
                             </span>
                             <div class="text-box">
                                 <p class="main-text"><?php echo $dueTickets?></p>
@@ -280,10 +256,10 @@ try {
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-6 col-sm-6 col-xs-6">
+                    <div class="col-md-2 col-sm-5 col-xs-3">
                         <div class="panel panel-back noti-box">
-                            <span class="icon-box bg-color-brown set-icon">
-                                <i class="fa fa-spinner"></i>
+                            <span class="icon-box bg-color-yellow set-icon">
+                                <i class="fa fa-hourglass-half"></i>
                             </span>
                             <div class="text-box">
                                 <p class="main-text"><?php echo $pendingTickets?></p>
@@ -291,10 +267,10 @@ try {
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-6 col-sm-6 col-xs-6">
+                    <div class="col-md-2 col-sm-5 col-xs-3">
                         <div class="panel panel-back noti-box">
-                            <span class="icon-box bg-color-black set-icon">
-                                <i class="fa fa-check-circle-o"></i>
+                            <span class="icon-box bg-color-red set-icon">
+                                <i class="fa fa-check"></i>
                             </span>
                             <div class="text-box">
                                 <p class="main-text"><?php echo $completedTickets?></p>
@@ -303,73 +279,26 @@ try {
                         </div>
                     </div>
                 </div>
-                <div id="page-inner">
-                    <div class="row">
-                        <div class="col-md-12">
-                            <h2>CALENDAR</h2>
-                        </div>
-                    </div>
-                 <!-- /. Calendar  -->   
-                 <div class="col-md-20">
-                  <div class="wrapper">
-     <div class="container-calendar">
-       <div id="right">
-          <h3 id="monthAndYear"></h3>
-         <div class="button-container-calendar">
-           <button id="previous"
-               onclick="previous()">
-             ‹
-           </button>
-          
-           <button id="next"
-               onclick="next()">
-             ›
-           </button>
-         </div>
-         <table class="table-calendar"
-           id="calendar"
-           data-lang="en">
-           <thead id="thead-month"></thead>
-           <!-- Table body for displaying the calendar -->
-           <tbody id="calendar-body"></tbody>
-         </table>
-         <div class="footer-container-calendar">
-           <label for="month">Jump To: </label>
-           <!-- Dropdowns to select a specific month and year -->
-           <select id="month" onchange="jump()">
-             <option value=0>Jan</option>
-             <option value=1>Feb</option>
-             <option value=2>Mar</option>
-             <option value=3>Apr</option>
-             <option value=4>May</option>
-             <option value=5>Jun</option>
-             <option value=6>Jul</option>
-             <option value=7>Aug</option>
-             <option value=8>Sep</option>
-             <option value=9>Oct</option>
-             <option value=10>Nov</option>
-             <option value=11>Dec</option>
-           </select>
-           <!-- Dropdown to select a specific year -->
-           <select id="year" onchange="jump()"></select>
-         </div>
-       </div>
-     </div>
-   </div>
 
-   <a id="astroid-backtotop" class="circle" href="#"><i class="fas fa-arrow-circle-up"></i></a>
-   <!-- Include the JavaScript file for the calendar functionality -->
-   <script src="assets/js/script.js"></script>
-   
+                <?php
+// Assuming you have a way to track the user's role
+$role = $identity// 'admin' or 'user'
+// Pass the role to the iframe URL or JavaScript
+?>
+                 <iframe class="panel panel-default" src="../FullCalendar-BS3-PHP-MySQL-master/index.php" style="width: 100%; min-height:700px; border-radius: 10px; margin-bottom:8px"></iframe>
+
                 <!-- /. ROW  -->
             </div>
             <!-- /. PAGE INNER  -->
+            <?php require_once ('../footer.php')?>
         </div>
         <!-- /. PAGE WRAPPER  -->
     </div>
-
-
     <!-- /. WRAPPER  -->
+            </div>
+            </div>
+
+
     <!-- SCRIPTS -AT THE BOTTOM TO REDUCE THE LOAD TIME-->
     <!-- JQUERY SCRIPTS -->
     <script src="assets/js/jquery-1.10.2.js"></script>

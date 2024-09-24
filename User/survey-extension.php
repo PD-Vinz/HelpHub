@@ -67,44 +67,19 @@
                         <a href="profile.php"><i class="bx bx-user" style="font-size:36px;color:rgb(255, 255, 255)"></i> PROFILE </a>
                     </li>
                     <li>
-                        <a href="#"><i class="fa fa-ticket" style="font-size:36px;color:rgb(255, 255, 255)"></i> TICKET <span class="fa arrow"></span></a>
-                        <ul class="nav nav-second-level">
-
-                            <li>
-                                <a href="create-ticket.php"><i class="fa fa-plus"></i>CREATE NEW TICKET</a>
+                            <a href="create-ticket.php">
+                            <i class="fa fa-plus" style="font-size: 36px; color: rgb(255, 255, 255)"></i> CREATE TICKET </a>
                             </li>
                             <li>
-                                <a href="ticket-pending.php"><i class="fa fa-refresh"></i>PENDING TICKET</a>
-                            </li>
-                            <li>
-                                <a href="ticket-inprocess.php"><i class="fa fa-spinner"></i> IN PROCESS</a>
-                            </li>
-                            <li>
-                                <a href="ticket-returned.php"><i class="fa fa-undo"></i> RETURNED TICKET</a>
-                            </li>
-                            <li>
-                                <a href="ticket-finished.php"><i class="fa fa-check"></i> COMPLETE TICKET</a>
-                            </li>
-                        </ul>
+                        <a href="all-ticket.php"><i class="fa fa-ticket" style="font-size:36px"></i> ALL TICKET </a>
                     </li>
-                    <li>
-                        <a href="history.php"><i class="bx bx-history" style="font-size:36px"></i> HISTORY </a>
-                    </li>
-                    <li>
-                        <a href="downloadableform.php"><i class="fa fa-download" style="font-size:36px"></i> DOWNLOADABLE FORMS </a>
-                    </li>
-                    <li>
-                        <a href="about.php"><i class="fa fa-question-circle" style="font-size:36px"></i> ABOUT </a>
-                    </li>
-
-                    
-                </ul>
             </div>
         </nav>
         <!-- /. NAV SIDE  -->
         <div id="page-wrapper">
             <div id="page-inner">
                 <div class="row">
+                    <div class="col-md-12"> <div class="col-md-12">
                     <div class="col-md-12">
                         <h2>SURVEY FORM</h2>
                     </div>
@@ -143,6 +118,17 @@
 </script>
 
 <form id="surveyForm" action="php/survey-finished.php?id=<?php echo $_GET['id']?>&taken=<?php echo $_GET['taken']?>" method="post" onsubmit="processForm(event)">
+   <!-- <input type="text" name="cc1" value="<?php echo $_POST['cc1']?>" hidden>
+    <input type="text" name="cc2" value="<?php echo $_POST['cc2']?>" hidden>
+    <input type="text" name="cc3" value="<?php echo $_POST['cc3']?>" hidden>
+    <input type="text" name="sqd0" value="<?php echo $_POST['sqd0']?>" hidden>
+    <input type="text" name="sqd1" value="<?php echo $_POST['sqd1']?>" hidden>
+    <input type="text" name="sqd2" value="<?php echo $_POST['sqd2']?>" hidden>
+    <input type="text" name="sqd3" value="<?php echo $_POST['sqd3']?>" hidden>
+    <input type="text" name="sqd4" value="<?php echo $_POST['sqd4']?>" hidden>
+    <input type="text" name="sqd6" value="<?php echo $_POST['sqd6']?>" hidden>
+    <input type="text" name="sqd7" value="<?php echo $_POST['sqd7']?>" hidden>
+    <input type="text" name="sqd8" value="<?php echo $_POST['sqd8']?>" hidden>-->
     <input type="text" name="overall_satisfaction" value="<?php echo $_POST['overall_satisfaction']?>" hidden>
     <input type="text" name="service_rating" value="<?php echo $_POST['service_rating']?>" hidden>
     <input type="text" name="service_expectations" value="<?php echo $_POST['service_expectations']?>" hidden>
@@ -157,12 +143,12 @@
         <small id="like-remaining-characters" class="form-text text-muted">255 characters remaining</small>
     </div>
     <div class="question">
-        <label for="improve">What areas do you think need improvement?</label>
+        <label for="improve">What areas do you think could be improved?</label>
         <textarea id="improve" name="improve" rows="4" maxlength="255" oninput="improveRemainingCharacters()" required></textarea>
         <small id="improve-remaining-characters" class="form-text text-muted">255 characters remaining</small>
     </div>
     <div class="question">
-        <label for="comments">Any additional comments or suggestions?</label>
+        <label for="comments">Comments or suggestions on how we can improve our service?</label>
         <textarea id="comments" name="comments" rows="4" maxlength="255" oninput="commentsRemainingCharacters()" required></textarea>
         <small id="comments-remaining-characters" class="form-text text-muted">255 characters remaining</small>
     </div>
@@ -181,6 +167,7 @@
         <!-- /. PAGE WRAPPER  -->
     </div>
     <!-- /. WRAPPER  -->
+    <?php require_once ('../footer.php')?>
     <!-- SCRIPTS -AT THE BOTTOM TO REDUCE THE LOAD TIME-->
     <!-- JQUERY SCRIPTS -->
     <script src="assets/js/jquery-1.10.2.js"></script>

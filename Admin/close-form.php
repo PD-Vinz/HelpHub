@@ -29,7 +29,22 @@ if (!isset($_SESSION["admin_number"])) {
         // Handle the case where no results are found
         echo "No student found with the given student number.";
     }
-
+     // for displaying system details
+     $query = $pdoConnect->prepare("SELECT system_name, short_name, system_logo, system_cover FROM settings WHERE id = :id");
+     $query->execute(['id' => 1]);
+     $Datas = $query->fetch(PDO::FETCH_ASSOC);
+     $sysName = $Datas['system_name'] ?? '';
+     $shortName = $Datas['short_name'] ?? '';
+      $systemCover = $Datas['system_cover'];
+      $S_L = $Datas['system_logo'];
+      $S_LBase64 = '';
+      if (!empty($S_L)) {
+          $base64Image = base64_encode($S_L);
+          $imageType = 'image/png'; // Default MIME type
+          $S_LBase64 = 'data:' . $imageType . ';base64,' . $base64Image;
+      }
+  // for displaying system details //end
+ 
 try {
 
     $pdoCountQuery = "SELECT * FROM tb_tickets";
@@ -80,7 +95,7 @@ $screenshotBase64 = base64_encode($screenshot);
 <head>
       <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>DHVSU MIS - HelpHub</title>
+    <title><?php echo $sysName?></title>
   
 	<!-- BOOTSTRAP STYLES-->
     <link href="assets/css/bootstrap.css" rel="stylesheet" />
@@ -120,7 +135,7 @@ $screenshotBase64 = base64_encode($screenshot);
             <div id="page-inner">
                 <div class="row">
                     <div class="col-md-12">
-                     <h2>Close Ticket #<?php echo htmlspecialchars($ticket_id); ?></h2>   
+                     <h2>Resolve Ticket</h2>   
                         <!---<h5>Welcome <?php //echo $Name?> , Love to see you back. </h5>-->
                     </div>
                 </div>              
@@ -174,21 +189,20 @@ $screenshotBase64 = base64_encode($screenshot);
             </div>
         </div>
         <div class="form-group row">
-
-                <div class="modal-footer">	
-                <a href="#" data-dismiss="modal" class="btn" onclick="history.back()">Back</a>
-                <a data-toggle="modal" href="#myModalTransfer" class="btn btn-primary">Close</a>
-                </div>
-                
+        <div class="col-md-9">
+                                        </div>
+                                        <div class="col-md-2">
+            <a href="javascript:history.back()" data-dismiss="modal" class="btn">Cancel</a>
+                <a data-toggle="modal" href="#myModalTransfer" class="btn btn-primary">Resolve</a>
                 <div class="modal fade" id="myModalTransfer">
                     <div class="modal-dialog modal-dialog3">
                         <div class="modal-content">
                             <div class="modal-header">
                                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                                <h4 class="modal-title">Close Ticket</h4>
+                                <h4 class="modal-title">Resolve Ticket</h4>
                             </div>
                             <div class="modal-body">
-                                Confirm Closing ticket
+                                Confirm resolving ticket
                             </div>
                             <div class="modal-footer">
                                 <button data-dismiss="modal" class="btn">Cancel</button>
