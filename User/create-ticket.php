@@ -103,7 +103,6 @@ if ($acceptTickets == "off") {
     <link href="assets/css/custom.css" rel="stylesheet" />
      <!-- GOOGLE FONTS-->
    <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css' />
-   <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
    <style>
         #imagePreview {
             display: flex;
@@ -221,19 +220,20 @@ input[type="file"]::file-selector-button {
                 <ul class="nav" id="main-menu">
                     <li class="text-center">
                         <img src="data:image/jpeg;base64,<?php echo $P_PBase64?>" class="user-image img-responsive" />
+                        <h3 style="color:white;"><?php echo $Name?></h3>
                     </li>
                     <li>
-                        <a href="dashboard.php"><i class="bx bxs-dashboard fa" style="font-size:36px;color:rgb(255, 255, 255)"></i>  DASHBOARD </a>
+                        <a href="dashboard.php"><i class="fa fa-dashboard fa-xl" style="font-size:24px;color:rgb(255, 255, 255)"></i>  DASHBOARD </a>
                     </li>
                     <li>
-                        <a href="profile.php"><i class="bx bx-user" style="font-size:36px;color:rgb(255, 255, 255)"></i> PROFILE </a>
+                        <a href="profile.php"><i class="fa fa-user fa-xl" style="font-size:24px;color:rgb(255, 255, 255)"></i> PROFILE </a>
                         </li>
 
                         <li>
-                            <a class="active-menu" href="create-ticket.php"><i class="fa fa-plus" style="font-size: 36px; color: rgb(255, 255, 255)"></i> CREATE TICKET </a>
+                            <a class="active-menu" href="create-ticket.php"><i class="fa fa-plus fa-xl" style="font-size: 24px; color: rgb(255, 255, 255)"></i> CREATE TICKET </a>
                             </li>
                             <li>
-                        <a href="all-ticket.php"><i class="fa fa-ticket" style="font-size:36px"></i> ALL TICKET </a>
+                        <a href="all-ticket.php"><i class="fa fa-ticket fa-xl" style="font-size:24px"></i> ALL TICKET </a>
                     </li>
                 </ul>
                
@@ -315,18 +315,16 @@ input[type="file"]::file-selector-button {
 
 </form>
                 </div>
-        </div>
+</div>
                  <!-- /. ROW  -->
-                 
-                        
+                </div>
              <!-- /. PAGE INNER  -->
-            </div>
             </div>
          <!-- /. PAGE WRAPPER  -->
         </div>
     <!-- /. WRAPPER -->
     <?php require_once ('../footer.php')?>
-
+            </div>
     <!-- SCRIPTS - AT THE BOTTOM TO REDUCE THE LOAD TIME -->
     <!-- JQUERY SCRIPTS -->
     <script src="assets/js/jquery-1.10.2.js"></script>

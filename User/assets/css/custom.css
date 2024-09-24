@@ -18,7 +18,7 @@ body {
 
  #wrapper {
     width: 100%;
-    background:#202020;
+    background:#2e1b1b;
 }
 
 #page-wrapper {
@@ -70,6 +70,8 @@ p {
    .noti-box {
 min-height: 120px;
 padding: 20px;
+line-height: 50px;
+background-color: #f8e9dd;
 }
 
     .noti-box .icon-box {
@@ -84,7 +86,7 @@ text-align: center;
 font-size: 40px;
 }
 .text-box p{
-    margin: 0 0 3px;
+    margin: 0 0 0px;
 }
 .main-text {
     font-size: 35px;
@@ -355,7 +357,7 @@ font-weight: 700;
 }
 .sidebar-collapse .nav > li > a {
 	color:#fff;
-	background:#202020;
+	background:#2e1b1b;
 	text-shadow:none;
 	
 }
@@ -405,17 +407,17 @@ font-weight: 700;
 }
 .navbar-side {
 	border:none;
-	background-color: #202020;
+	background-color: #350200;
 	
 }
 .navbar-cls-top {
-	background:#4D4D4D;
+	background:#6b0200 !important;
 	border-bottom:none;
 	
 }
 .navbar-cls-top .navbar-brand:hover {
 
-background: #C90000;
+background: #7e0806;
 color:#fff;
 
 }
@@ -425,10 +427,10 @@ border:0px solid black;
      
 }
 .navbar-header {
-    background: #A70303;
+    background: #6b0200 (54, 79%, 46%);
 }
 .navbar-default .navbar-toggle:hover, .navbar-default .navbar-toggle:focus {
-background-color: #B40101;
+    background-color: #C90000;
 }
 .navbar-default .navbar-toggle {
 border-color: #fff;
