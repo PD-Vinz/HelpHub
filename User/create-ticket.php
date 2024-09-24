@@ -1,3 +1,4 @@
+
 <?php
 include_once("../connection/conn.php");
 $pdoConnect = connection();
@@ -258,10 +259,42 @@ input[type="file"]::file-selector-button {
                 <div class="container-center">
                     <div class="modal-header">
                         <img src="assets/pic/head.png" alt="Technical support for DHVSU students">  
+
+
+
+
+                        <?php
+
+// Set the user's ID (assuming you have it from session or login)
+$user_id = $_SESSION['user_id']; // Make sure user_id is properly set in the session
+
+// Get the current date
+$current_date = date('Y-m-d');
+
+// Query to check if the user has already submitted a ticket today
+$query = "SELECT * FROM tb_tickets WHERE user_id = :user_id and DATE(created_date) = :current_date";
+$stmt = $pdoConnect->prepare($query); // Assuming you're using PDO
+$stmt->execute(['user_id'=> $user_id, 'current_date' => $current_date]);
+
+// Check if a row was found
+if ($stmt->rowCount() > 0) {
+    // User has already submitted a ticket today, display the message
+    echo '
+      <div class="container-create">
+    <div>
+        <p>&nbsp&nbsp&nbsp<i class=" fa fa-exclamation-circle fa-sm">&nbsp&nbsp&nbsp&nbsp&nbsp</i>You can only submit a ticket once per day. Please try again tomorrow</p>
+    </div>
+    </div>';
+} else {
+    // No ticket submitted today, display the form
+    ?>
+
                 <div class="container-create">
                 <div id="ticket-message" style="display: none;">
     <p>&nbsp&nbsp&nbsp<i class=" fa fa-exclamation-circle fa-sm">&nbsp&nbsp&nbsp&nbsp&nbsp</i>The MIS is currently not accepting tickets at the moment. Please try again during office hours.</p>
 </div>
+
+
                 <form class="issue-form" id="issueForm" action="ticket-submit.php" method="POST" enctype="multipart/form-data" style="display: none;">
  
                         <div class="form-group">
@@ -314,6 +347,10 @@ input[type="file"]::file-selector-button {
             </div>
 
 </form>
+
+<?php
+}
+?>
                 </div>
         </div>
                  <!-- /. ROW  -->
@@ -497,4 +534,7 @@ document.getElementById('issueForm').addEventListener('submit', validateForm);
    </script>
 </body>
 </html>
+
+
+
 
