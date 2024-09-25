@@ -390,7 +390,7 @@ $pdoExec = $pdoResult->execute();
                     "visible": true // Hide Age column
                 },
                 {   
-                    "width": "15%", 
+                    "width": "16%", 
                     "targets": [2],  // Target Age column
                     "visible": true // Hide Age column
                 },

@@ -148,8 +148,7 @@ try {
           <div class="dropdown-menu" role="menu">
             <a class="dropdown-item" href="profile.php"><span class="fa fa-user"></span> MY ACCOUNT</a>
             <hr style="margin-top: 5px; margin-bottom: 5px;">
-            <a class="dropdown-item" href="settings.php"><span class="fa fa-gear"></span> SETTINGS</a>
-            <hr style="margin-top: 5px; margin-bottom: 5px;">
+
             <a class="dropdown-item" href="logout.php"><span class="fa fa-sign-out"></span> LOG OUT </a>
           </div>
         </nav>
@@ -194,7 +193,7 @@ try {
                     <div class="col-md-2 col-sm-5 col-xs-3">
                         <div class="panel panel-back noti-box">
                             <span class="icon-box bg-color-blue set-icon">
-                                <i class="fa fa-ticket"></i>
+                                <i class="fa fa-ticket fa-xs"></i>
                             </span>
                             <div class="text-box">
                                 <p class="main-text"><?php echo $allTickets?></p>
@@ -205,7 +204,7 @@ try {
                     <div class="col-md-2 col-sm-5 col-xs-3">
                         <div class="panel panel-back noti-box">
                             <span class="icon-box bg-color-black set-icon">
-                                <i class="fa fa-reply"></i>
+                                <i class="fa fa-reply fa-xs"></i>
                             </span>
                             <div class="text-box">
                                 <p class="main-text"><?php echo $returnedTickets?></p>
@@ -216,7 +215,7 @@ try {
                     <div class="col-md-2 col-sm-5 col-xs-3">
                         <div class="panel panel-back noti-box">
                             <span class="icon-box bg-color-violet set-icon">
-                                <i class="fa fa-bell"></i>
+                                <i class="fa fa-bell fa-xs"></i>
                             </span>
                             <div class="text-box">
                                 <p class="main-text"><?php echo $dueTickets?></p>
@@ -227,7 +226,7 @@ try {
                     <div class="col-md-2 col-sm-5 col-xs-3">
                         <div class="panel panel-back noti-box">
                             <span class="icon-box bg-color-yellow set-icon">
-                                <i class="fa fa-hourglass-half"></i>
+                                <i class="fa fa-hourglass-half fa-xs"></i>
                             </span>
                             <div class="text-box">
                                 <p class="main-text"><?php echo $pendingTickets?></p>
@@ -238,7 +237,7 @@ try {
                     <div class="col-md-2 col-sm-5 col-xs-3">
                         <div class="panel panel-back noti-box">
                             <span class="icon-box bg-color-red set-icon">
-                                <i class="fa fa-check"></i>
+                                <i class="fa fa-check fa-xs"></i>
                             </span>
                             <div class="text-box">
                                 <p class="main-text"><?php echo $completedTickets?></p>

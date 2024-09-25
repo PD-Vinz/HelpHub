@@ -68,7 +68,7 @@ try {
     $pdoResult->execute();
     $returnedTickets = $pdoResult->rowCount();
 
-    $pdoCountQuery = "SELECT * FROM tb_tickets WHERE status = 'Completed'";
+    $pdoCountQuery = "SELECT * FROM tb_tickets WHERE status = 'Resolved'";
     $pdoResult = $pdoConnect->prepare($pdoCountQuery);
     $pdoResult->execute();
     $completedTickets = $pdoResult->rowCount();
@@ -128,7 +128,7 @@ try {
             <div id="page-inner" style="min-height: 800px;">
                 
                     <div class="col-md-12">
-                     <h2>Closed Tickets</h2>   
+                     <h2>Resolved Tickets</h2>   
                      <hr>
                     </div>
               
@@ -142,7 +142,7 @@ try {
                         <div class="panel-body-ticket">
                             <div class="table-responsive">
                             <?php
-$status = ["Completed", "Transferred"];
+$status = ["Resolved", "Transferred"];
 
 $pdoQuery = "SELECT * FROM tb_tickets WHERE status IN (:status1, :status2) AND user_type = :user ORDER BY `finished_date` DESC";
 $pdoResult = $pdoConnect->prepare($pdoQuery);
@@ -158,7 +158,7 @@ $pdoExec = $pdoResult->execute();
                                         <tr>
                                             <th>Employee</th>
                                             <th>Status</th>
-                                            <th>Date Completed</th>
+                                            <th>Date Resolved</th>
                                             <th>Ticket ID</th>
                                             <th>Issue</th>
                                             
@@ -191,7 +191,7 @@ $pdoExec = $pdoResult->execute();
                                         <!--<tr class="gradeU">
                                             <td>Bojji</td>
                                             <td>May 1, 2024 - 12:13 pm</td>
-                                            <td>Closed</td>
+                                            <td>Resolved</td>
                                             <td>123441</td>
                                             <td>DHVSU Email</td>
                                            <td>lorem ipsum yada yada yadyayayd a dyad  daydyay da d y</td>
@@ -205,7 +205,7 @@ $pdoExec = $pdoResult->execute();
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                	<h4 class="modal-title">Closed Ticket</h4>
+                	<h4 class="modal-title">Resolved Ticket</h4>
 
             </div>
             <div class="container"></div>
@@ -229,7 +229,7 @@ $pdoExec = $pdoResult->execute();
                                         </div>
                                        
                                         <div class="form-group">
-                                            <label>Closed‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ </label>
+                                            <label>Resolved‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ </label>
                                             <input class="form-control" value="<?php echo htmlspecialchars($finished_date); ?>" disabled/>
                                           
                                         </div>
@@ -478,7 +478,7 @@ $pdoExec = $pdoResult->execute();
                     "visible": true // Hide Age column
                 },   
                 {   
-                    "width": "15%", 
+                    "width": "16%", 
                     "targets": [2],  // Target Age column
                     "visible": true // Hide Age column
                 },

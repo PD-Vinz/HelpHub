@@ -990,7 +990,7 @@ if (!isset($_SESSION["admin_number"])) {
         "width": "17%",
         "targets": [3, 5], // Adjust width for column 2
       }, {
-        "width": "13%",
+        "width": "16%",
         "targets": [4], // Adjust width for column 3
       }, {
         "width": "15%",
