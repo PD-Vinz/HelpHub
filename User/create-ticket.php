@@ -1,4 +1,3 @@
-
 <?php
 include_once("../connection/conn.php");
 $pdoConnect = connection();
@@ -60,9 +59,6 @@ if (!isset($_SESSION["user_id"])) {
     }
 }
 
-
-
-
 if(isset($_GET['error']) && $_GET['error'] == 1) {
     // Set your error message here
     $errorMessage = "Cannot proceed with your request. Please check your submission carefully.";
@@ -74,17 +70,28 @@ if(isset($_GET['error']) && $_GET['error'] == 1) {
     </script>";
 }
 
-$pdoUserQuery = "SELECT * from settings WHERE id = 1";
-$pdoResult = $pdoConnect->prepare($pdoUserQuery);
-$pdoResult->execute();
+$user_id = $_SESSION['user_id']; // Make sure user_id is properly set in the session
 
-$settingsData = $pdoResult->fetch(PDO::FETCH_ASSOC);
-$acceptTickets = $settingsData['accept_tickets'];
+// Get the current date
+$current_date = date('Y-m-d');
 
-if ($acceptTickets == "off") {
-    $displayForm = false;
-} else {
-    $displayForm = true;
+// Query to check if the user has already submitted a ticket today
+$query = "SELECT * FROM tb_tickets WHERE user_number = :user_id and DATE(created_date) = :current_date";
+$stmt = $pdoConnect->prepare($query); // Assuming you're using PDO
+$stmt->bindParam(':user_id', $user_id);
+$stmt->bindParam(':current_date', $current_date);
+$stmt->execute();
+
+// Check if a row was found
+if ($stmt->rowCount() > 0) {
+    // User has already submitted a ticket today, display the message
+    $errorMessage = "You can only submit a ticket once per day. Please try again tomorrow";
+        echo "<script type='text/javascript'>
+            window.onload = function() {
+                alert('$errorMessage');
+                window.location.href = 'index.php';
+            };
+        </script>";
 }
 ?>
 
@@ -178,70 +185,29 @@ if ($acceptTickets == "off") {
         <!-- /. NAV SIDE  -->
         <div id="page-wrapper" >
             <div id="page-inner">
-
-
-            <div>
                 <div class="row">
-                    <div class="col-md-12"> <div class="col-md-12">
                     <div class="col-md-12">
-                     <h2> CREATE TICKET</h2>   
+                     <h2> CREATE NEW TICKET</h2>   
                     </div>
                 </div>
 
-            
 
                 <div class="container-center">
                     <div class="modal-header">
                         <img src="assets/pic/head.png" alt="Technical support for DHVSU students">  
-
-
-
-
-                        <?php
-
-// Set the user's ID (assuming you have it from session or login)
-$user_id = $_SESSION['user_id']; // Make sure user_id is properly set in the session
-
-// Get the current date
-$current_date = date('Y-m-d');
-
-// Query to check if the user has already submitted a ticket today
-$query = "SELECT * FROM tb_tickets WHERE user_number = :user_id and DATE(created_date) = :current_date";
-$stmt = $pdoConnect->prepare($query); // Assuming you're using PDO
-$stmt->execute(['user_id'=> $user_id, 'current_date' => $current_date]);
-
-// Check if a row was found
-if ($stmt->rowCount() > 0) {
-    // User has already submitted a ticket today, display the message
-    echo '
-      <div class="container-create">
-    <div>
-        <p>&nbsp&nbsp&nbsp<i class=" fa fa-exclamation-circle fa-sm">&nbsp&nbsp&nbsp&nbsp&nbsp</i>You can only submit a ticket once per day. Please try again tomorrow</p>
-    </div>
-    </div>';
-} else {
-    // No ticket submitted today, display the form
-    ?>
-
                 <div class="container-create">
-                <div id="ticket-message" style="display: none;">
-    <p>&nbsp&nbsp&nbsp<i class=" fa fa-exclamation-circle fa-sm">&nbsp&nbsp&nbsp&nbsp&nbsp</i>The MIS is currently not accepting tickets at the moment. Please try again during office hours.</p>
-</div>
 
+<form class="issue-form" action="ticket-submit.php" method="POST" enctype="multipart/form-data">
 
-                <form class="issue-form" id="issueForm" action="ticket-submit.php" method="POST" enctype="multipart/form-data" style="display: none;">
- 
                         <div class="form-group">
                             <label for="category">ISSUE</label>
                             <select id="category" name="category" class="form-control dropdown" required>
-
                                 <option value="">SELECT PROBLEM</option>
                                 <!--
                                 <option value="DHVSU EMAIL">DHVSU EMAIL</option>
                                 <option value="DHVSU PORTAL">DHVSU PORTAL</option>
                                 <option value="DHVSU SMS">DHVSU SMS</option>
                                 -->
-
                             </select>
                         </div>
 
@@ -293,27 +259,22 @@ if ($stmt->rowCount() > 0) {
                         </main>
                     </div>
                 </div>
-                
+
             <div class="modal-footer">
                 <button type="submit" class="btn btn-primary">SUBMIT</Input>
             </div>
 
 </form>
-
-<?php
-}
-?>
                 </div>
-</div>
+        </div>
                  <!-- /. ROW  -->
-                </div>
+                 
+                        
              <!-- /. PAGE INNER  -->
             </div>
          <!-- /. PAGE WRAPPER  -->
         </div>
     <!-- /. WRAPPER -->
-    <?php require_once ('../footer.php')?>
-            </div>
     <!-- SCRIPTS - AT THE BOTTOM TO REDUCE THE LOAD TIME -->
     <!-- JQUERY SCRIPTS -->
     <script src="assets/js/jquery-1.10.2.js"></script>
@@ -327,7 +288,6 @@ if ($stmt->rowCount() > 0) {
     <!-- CUSTOM SCRIPTS -->
     <script src="assets/js/custom.js"></script>
     <!--preview-->
-
 <script>
     // Modal confirm button to handle form submission
     document.getElementById('confirmBtn').addEventListener('click', function() {
@@ -344,14 +304,6 @@ if ($stmt->rowCount() > 0) {
             alert('Please select an option before proceeding.');
         }
     });
-
-    var displayForm = <?php echo $displayForm ? 'true' : 'false'; ?>;
-    if (!displayForm) {
-        document.getElementById('ticket-message').style.display = 'block';
-    } else {
-        document.getElementById('issueForm').style.display = 'block';
-    }
-
 </script>
     <script>
     function adjustHeight() {
@@ -409,54 +361,15 @@ function populateDropdown(fileName, dropdownId) {
         .catch(error => console.error(`Error fetching the text file (${fileName}):`, error));
 }
 // Pass the PHP variable to JavaScript
-// Function to populate the dropdown
-function populateDropdown(url, dropdownId) {
-    var dropdown = document.getElementById(dropdownId);
-    // Clear existing options
-    dropdown.innerHTML = '';
-
-    // Add the "NONE" option as the first option
-    var noneOption = document.createElement('option');
-    noneOption.value = 'Select an issue';
-    noneOption.text = 'Select an issue';
-    dropdown.add(noneOption);
-
-    // Fetch options from the provided URL
-    fetch(url)
-        .then(response => response.text())
-        .then(data => {
-            var options = data.split('\n');
-            options.forEach(option => {
-                if (option.trim()) {
-                    var opt = document.createElement('option');
-                    opt.value = option.trim();
-                    opt.text = option.trim();
-                    dropdown.add(opt);
-                }
-            });
-        })
-        .catch(error => console.error('Error populating dropdown:', error));
-}
-
-// Function to validate the form
-function validateForm(event) {
-    var categorySelect = document.getElementById('category');
-    var selectedValue = categorySelect.value;
-    
-    if (selectedValue === "Select an issue") {
-        event.preventDefault(); // Prevent form submission
-        alert("Please select the issue you want to report.");
-    }
-}
-
-// Populate the dropdown based on identity
 var identity = "<?php echo $identity; ?>";
+
+// Now you can make a condition based on the identity value
 if (identity === "Employee") {
     populateDropdown('../issue-template/employee-issue.txt', 'category');
 } else if (identity === "Student") {
     populateDropdown('../issue-template/student-issue.txt', 'category');
 }
-
+// Call the function to populate the dropdowns
 
     </script>
 <script>
@@ -572,12 +485,83 @@ cropzoneBox.addEventListener("submit", (e) => {
     console.log(myFile.files);
 });
 
-// Add form validation
-document.getElementById('issueForm').addEventListener('submit', validateForm);
-   </script>
+</script>
 </body>
 </html>
 
+<hidden style="display: none;">
+        #imagePreview {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-top: 10px;
+            overflow: hidden; /* Ensure that the container handles overflow */
+            border: 1px solid #ddd;
+            max-width: 100%; /* Full width of the container */
+            max-height: 720px; /* Set a max height for the preview area */
+        }
+        #imagePreview img {
+            max-width: 100%;
+            max-height: 100%;
+            width: auto; /* Let the image maintain its aspect ratio */
+            height: auto; /* Let the image maintain its aspect ratio */
+        }
+        .error {
+            color: red;
+        }
 
+        .modal-body p {
+            line-height: 1.5;
+            margin-bottom: 10px;
+        }
 
+        .modal-body h1 {
+            line-height: 1.2;
+            margin-bottom: 15px;
+        }
+        
+        .modal-footer {
+            display: flex;
+            justify-content: flex-end;
+            padding: 0px;
+            border-top: 1px solid #ccc;
+        }
 
+        /* Hide the "No file chosen" text*/ 
+input[type="file"]::file-selector-button {
+    visibility: hidden;
+}
+
+/* Customize the button appearance (optional) */
+.custom-file {
+    position: relative;
+    overflow: hidden;
+    display: inline-block;
+}
+
+.custom-file input[type="file"] {
+    position: absolute;
+    top: 0;
+    right: 0;
+    margin: 0;
+    padding: 0;
+    font-size: 20px;
+    cursor: pointer;
+    opacity: 0;
+}
+
+.custom-file::before {
+    content: 'Choose file';
+    display: inline-block;
+    background-color: #007bff;
+    color: white;
+    padding: 5px 10px;
+    border: 1px solid #007bff;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.custom-file:hover::before {
+    background-color: #0056b3;
+}
+</hidden>

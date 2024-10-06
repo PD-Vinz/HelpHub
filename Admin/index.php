@@ -23,8 +23,13 @@ if (!isset($_SESSION["admin_number"])) {
 
     if ($Data) {
         $Name = $Data['f_name'];
+        $lname = $Data['l_name'];
         $Position = $Data['position'];
         $U_T = $Data['user_type'];
+        $P_P = $Data['profile_picture'];
+
+        $P_PBase64 = base64_encode($P_P);
+
 
         $nameParts = explode(' ', $Name);
         $firstName = $nameParts[0];

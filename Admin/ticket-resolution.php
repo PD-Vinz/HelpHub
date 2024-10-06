@@ -133,19 +133,19 @@ if ($interval->y == 0){
                         $Duration = $interval->s . "Seconds"  ;
                     }
                 } else {
-                    $Duration = $interval->i . "Minutes, " . $interval->s . "Seconds"  ;
+                    $Duration = $interval->i . " Minutes, ";
                 }
             } else {
-                $Duration = $interval->h . "Hours, " . $interval->i . "Minutes, " . $interval->s . "Seconds"  ;
+                $Duration = $interval->h . " Hours, " . $interval->i . " Minutes, ";
             }
         } else {
-            $Duration = $interval->d . "Days, " . $interval->h . "Hours, " . $interval->i . "Minutes, " . $interval->s . "Seconds,"  ;
+            $Duration = $interval->d . " Days, " . $interval->h . " Hours, " . $interval->i . " Minutes, ";
         }
     } else {
-        $Duration = $interval->m . "Months, " . $interval->d . "Days, " . $interval->h . "Hours, " . $interval->i . "Minutes, " . $interval->s . "Seconds"  ;
+        $Duration = $interval->m . " Months, " . $interval->d . " Days, " . $interval->h . " Hours, " . $interval->i . " Minutes, " ;
     }
 } else {
-    $Duration = $interval->y . "Years, " . $interval->m . "Months, " . $interval->d . "Days, " . $interval->h . "Hours, " . $interval->i . "Minutes, " . $interval->s . "Seconds"  ;
+    $Duration = $interval->y . " Years, " . $interval->m . " Months, " . $interval->d . " Days, " . $interval->h . " Hours, " . $interval->i . " Minutes, ";
 }
 
 

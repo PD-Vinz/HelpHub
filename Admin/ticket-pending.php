@@ -133,8 +133,10 @@ if (isset($_GET['failed']) && $_GET['failed'] == "true") {
             object-fit: contain; /* Ensure the image is contained within the modal */
         }
     </style>
+    
 </head>
 <body>
+
     <div id="wrapper">
         <!-- NAV SIDE  -->
          <?php include 'nav.php'; ?> 
@@ -376,6 +378,8 @@ $pdoExec = $pdoResult->execute();
             </div><?php include '../footer.php' ?>
                
     </div>
+
+
              <!-- /. PAGE INNER  -->
             </div>
          <!-- /. PAGE WRAPPER  -->

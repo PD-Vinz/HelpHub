@@ -1,36 +1,31 @@
+
+
 <?php
+$id = $_SESSION["admin_number"];
+   
+$pdoUserQuery = "SELECT * FROM mis_employees WHERE admin_number = :number";
+$pdoResult = $pdoConnect->prepare($pdoUserQuery);
+$pdoResult->bindParam(':number', $id);
+$pdoResult->execute();
 
-// Check if the session variable is set
-if (!isset($_SESSION["admin_number"])) {
-    header("Location: ../index.php");
-    exit(); // Prevent further execution after redirection
-} else {
-    $id = $_SESSION["admin_number"];
+$Data = $pdoResult->fetch(PDO::FETCH_ASSOC);
 
-    $pdoUserQuery = "SELECT * FROM mis_employees WHERE admin_number = :number";
-    $pdoResult = $pdoConnect->prepare($pdoUserQuery);
-    $pdoResult->bindParam(':number', $id);
-    $pdoResult->execute();
-
-
+if ($Data) {
     $Name = $Data['f_name'];
     $lname = $Data['l_name'];
+    $Position = $Data['position'];
+    $U_T = $Data['user_type'];
     $P_P = $Data['profile_picture'];
 
     $P_PBase64 = base64_encode($P_P);
 
-    
-    if ($Data) {
-        $Name = $Data['f_name'];
-        $Position = $Data['position'];
-        $U_T = $Data['user_type'];
 
-        $nameParts = explode(' ', $Name);
-        $firstName = $nameParts[0];
-      } else {
-        // Handle the case where no results are found
-        echo "User not found";
-    }
+    $nameParts = explode(' ', $Name);
+    $firstName = $nameParts[0];
+} else {
+    // Handle the case where no results are found
+    echo "No student found with the given student number.";
+}
 
 try {
 
@@ -72,12 +67,129 @@ try {
     echo "Error: " . $e->getMessage();
 }
 
-}
+
 
 
 
 
 ?>
+
+<style>
+    /* Styles for the loading screen */
+#loading-screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(255, 255, 255, 0.95);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    z-index: 9999;
+}
+
+.spinner {
+    border: 16px solid #FFD700; /* Light grey */
+    border-top: 16px solid #800000; /* Blue */
+    border-radius: 50%;
+    width: 120px;
+    height: 120px;
+    animation: spin 2s linear infinite;
+}
+
+/* Animation for the spinner */
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+</style>
+<div id="loading-screen">
+        <div class="spinner"></div>
+        <p>Loading...</p>
+</div>
+<!-- Loading Screen -->    
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+    // Simulate data fetching
+    fetchData().then(() => {
+        // Hide loading screen and show content
+        document.getElementById('loading-screen').style.display = 'none';
+        document.getElementById('content').style.display = 'block';
+    });
+
+    // Show the loading screen when the page reloads
+    window.addEventListener('beforeunload', () => {
+        document.getElementById('loading-screen').style.display = 'flex';
+    });
+});
+
+function fetchData() {
+    return new Promise((resolve) => {
+        // Simulate a delay for data fetching (e.g., 2 seconds)
+        setTimeout(() => {
+            resolve();
+        }, 500);
+    });
+}
+
+</script>
+
+<style>
+      	/* Basic styling for the "Back to Top" button */
+#astroid-backtotop {
+    display: none; /* Hide button by default */
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: 50px;
+    height: 50px;
+    background-color: #007bff;
+    color: white;
+    border-radius: 50%;
+    text-align: center;
+    line-height: 50px; /* Center icon vertically */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    font-size: 24px;
+    cursor: pointer;
+    z-index: 1000; /* Make sure button is above other content */
+    transition: opacity 0.3s ease;
+  }
+  
+  #astroid-backtotop:hover {
+    background-color: #0056b3;
+  }
+  
+  /* Show the button when scrolling */
+  body.scroll-active #astroid-backtotop {
+    display: inline;
+  }
+
+  span {
+  content: "\0021";
+}
+</style>
+<a id="astroid-backtotop" class="circle" href="#"><i class="fas fa-arrow-circle-up"></i></a>
+                <script>
+// Smooth scroll to top
+document.getElementById('astroid-backtotop').addEventListener('click', function(event) {
+  event.preventDefault(); // Prevent default anchor behavior
+  window.scrollTo({
+      top: 0,
+      behavior: 'smooth' // Smooth scrolling
+  });
+});
+
+// Show button when scrolled down
+window.addEventListener('scroll', function() {
+  if (window.scrollY > 100) {
+      document.body.classList.add('scroll-active');
+  } else {
+      document.body.classList.remove('scroll-active');
+  }
+});
+    </script>
 
 <nav class="navbar navbar-default navbar-cls-top " role="navigation" style="margin-bottom: 0">
     <div class="navbar-header">  
@@ -172,22 +284,22 @@ $currentFile = basename($_SERVER['PHP_SELF']);
     </a>
     <ul class="nav nav-second-level ticket-dropdown-menu <?= $employeeDropdownOpen ? 'in' : '' ?>"> <!-- Keep open if active -->
     <li>
-            <a class="<?= ($currentFile == 'ticketdash.php' && $_GET['id'] == 2) ? 'active-menu' : '' ?>" href="/Admin/ticketdash.php?id=2">
+            <a class="<?= ($currentFile == 'ticketdash.php' && $_GET['id'] == 2) ? 'active-menu' : '' ?>" href="ticketdash.php?id=2">
                 &nbsp;&nbsp;<i class="fa fa-ticket fa-xl" aria-hidden="true"></i>All Tickets
             </a>
         </li>
         <li>
-            <a class="<?= ($currentFile == 'ticket-pending.php' && $_GET['id'] == 2) ? 'active-menu' : '' ?>" href="/Admin/ticket-pending.php?id=2">
+            <a class="<?= ($currentFile == 'ticket-pending.php' && $_GET['id'] == 2) ? 'active-menu' : '' ?>" href="ticket-pending.php?id=2">
                 &nbsp;&nbsp;<i class="fa fa-hourglass-half fa-xl" aria-hidden="true"></i>Pending Tickets
             </a>
         </li>
         <li>
-            <a class="<?= ($currentFile == 'ticket-opened.php' && $_GET['id'] == 2) ? 'active-menu' : '' ?>" href="/Admin/ticket-opened.php?id=2">
+            <a class="<?= ($currentFile == 'ticket-opened.php' && $_GET['id'] == 2) ? 'active-menu' : '' ?>" href="ticket-opened.php?id=2">
                 &nbsp;&nbsp;<i class="fa fa-envelope-open fa-xl" aria-hidden="true"></i>Opened Tickets
             </a>
         </li>
         <li>
-            <a class="<?= ($currentFile == 'ticket-closed.php' && $_GET['id'] == 2) ? 'active-menu' : '' ?>" href="/Admin/ticket-closed.php?id=2">
+            <a class="<?= ($currentFile == 'ticket-closed.php' && $_GET['id'] == 2) ? 'active-menu' : '' ?>" href="ticket-closed.php?id=2">
                 &nbsp;&nbsp;<i class="fa-solid fa-check-to-slot fa-xl"></i>Closed Tickets
             </a>
         </li>
@@ -246,7 +358,7 @@ $currentFile = basename($_SERVER['PHP_SELF']);
                     </a>
                 </li>
                         <li>
-                            <a class="<?= $currentFile == 'issues.php' ? 'active-menu' : '' ?>" href="issues.php">
+                            <a class="<?= $currentFile == 'response-templates.php' ? 'active-menu' : '' ?>" href="response-templates.php">
                                 <i class="fa fa-comment-dots"></i> Response Templates
                             </a>
                         </li>

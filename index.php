@@ -38,11 +38,11 @@ if (isset($_POST['login'])) {
         $username = $_POST["username"];
         $pass = $_POST["password"];
 
-//        if ($username == $pass) {
-//            $_SESSION["first-time"] = $username;
-//            header("Location: first-time/verify.php");
-//            exit(); // Prevent further execution after redirection
-//        }
+        if ($username == $pass) {
+            $_SESSION["first-time"] = $username;
+            header("Location: first-time/verify.php");
+            exit(); // Prevent further execution after redirection
+        }
 
         // Check in student_user table
         $pdoUserQuery = "SELECT * FROM student_user WHERE user_id = :username AND password = :pass";
@@ -108,7 +108,7 @@ if (isset($_POST['login'])) {
 ?>
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" oncontextmenu="return false;">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -127,7 +127,7 @@ if (isset($_POST['login'])) {
         <br>
         
         <div class="form-group">
-            <input type="text" name="username" required placeholder="Username">
+            <input type="text" name="username" required placeholder="Username" autocomplete="off">
         </div>
         <div class="form-group">
             <input type="password" name="password" id="myInput" required placeholder="Password" autocomplete="off">

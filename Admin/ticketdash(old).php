@@ -20,6 +20,7 @@ if (!isset($_SESSION["admin_number"])) {
 
     if ($Data) {
         $Name = $Data['f_name'];
+        $LName = $Data['l_name'];
         $Position = $Data['position'];
         $U_T = $Data['user_type'];
 
@@ -35,34 +36,34 @@ if (!isset($_SESSION["admin_number"])) {
     } elseif (isset($_GET["id"]) && $_GET["id"] == 2) {
         $ticket_user = "Employee";
     }
+    
+// for displaying system details
+$query = $pdoConnect->prepare("SELECT system_name, short_name, system_logo, system_cover FROM settings WHERE id = :id");
+$query->execute(['id' => 1]);
+$Datas = $query->fetch(PDO::FETCH_ASSOC);
+$sysName = $Datas['system_name'] ?? '';
+$shortName = $Datas['short_name'] ?? '';
+$systemCover = $Datas['system_cover'];
+$S_L = $Datas['system_logo'];
+$S_LBase64 = '';
+if (!empty($S_L)) {
+    $base64Image = base64_encode($S_L);
+    $imageType = 'image/png'; // Default MIME type
+    $S_LBase64 = 'data:' . $imageType . ';base64,' . $base64Image;
+}
+// for displaying system details //end
 
-    // for displaying system details
-    $query = $pdoConnect->prepare("SELECT system_name, short_name, system_logo, system_cover FROM settings WHERE id = :id");
-    $query->execute(['id' => 1]);
-    $Datas = $query->fetch(PDO::FETCH_ASSOC);
-    $sysName = $Datas['system_name'] ?? '';
-    $shortName = $Datas['short_name'] ?? '';
-    $systemCover = $Datas['system_cover'];
-    $S_L = $Datas['system_logo'];
-    $S_LBase64 = '';
-    if (!empty($S_L)) {
-        $base64Image = base64_encode($S_L);
-        $imageType = 'image/png'; // Default MIME type
-        $S_LBase64 = 'data:' . $imageType . ';base64,' . $base64Image;
-    }
-    // for displaying system details //end
     try {
 
         $pdoCountQuery = "SELECT * FROM tb_tickets";
         $pdoResult = $pdoConnect->prepare($pdoCountQuery);
         $pdoResult->execute();
         $allTickets = $pdoResult->rowCount();
-
+    
         $pdoCountQuery = "SELECT * FROM tb_tickets WHERE status = 'Pending' && user_type = :user";
         $pdoResult = $pdoConnect->prepare($pdoCountQuery);
         $pdoResult->bindParam(':user', $ticket_user, PDO::PARAM_STR);
         $pdoResult->execute();
-
         $pendingTickets = $pdoResult->rowCount();
 
         $pdoCountQuery = "SELECT * FROM tb_tickets WHERE status = 'Processing' && user_type = :user";
@@ -70,52 +71,53 @@ if (!isset($_SESSION["admin_number"])) {
         $pdoResult->bindParam(':user', $ticket_user, PDO::PARAM_STR);
         $pdoResult->execute();
         $openedTickets = $pdoResult->rowCount();
-
+    
         $pdoCountQuery = "SELECT * FROM tb_tickets WHERE status = 'Returned' && user_type = :user";
         $pdoResult = $pdoConnect->prepare($pdoCountQuery);
         $pdoResult->bindParam(':user', $ticket_user, PDO::PARAM_STR);
         $pdoResult->execute();
         $returnedTickets = $pdoResult->rowCount();
-
+    
         $pdoCountQuery = "SELECT * FROM tb_tickets WHERE status = 'Resolved' && user_type = :user";
         $pdoResult = $pdoConnect->prepare($pdoCountQuery);
         $pdoResult->bindParam(':user', $ticket_user, PDO::PARAM_STR);
         $pdoResult->execute();
         $completedTickets = $pdoResult->rowCount();
-
+    
         $pdoCountQuery = "SELECT * FROM tb_tickets WHERE Priority = 'YES' && user_type = :user";
         $pdoResult = $pdoConnect->prepare($pdoCountQuery);
         $pdoResult->bindParam(':user', $ticket_user, PDO::PARAM_STR);
         $pdoResult->execute();
         $dueTickets = $pdoResult->rowCount();
-
+    
     } catch (PDOException $e) {
         echo "Error: " . $e->getMessage();
     }
+
 }
 ?>
 
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
-
 <head>
-    <meta charset="utf-8" />
+      <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title><?php echo $sysName ?></title>
     <link rel="icon" href="<?php echo htmlspecialchars($S_LBase64, ENT_QUOTES, 'UTF-8'); ?>" type="image/*">
-
-    <!-- BOOTSTRAP STYLES-->
+  
+	<!-- BOOTSTRAP STYLES-->
     <link href="assets/css/bootstrap.css" rel="stylesheet" />
-
-    <link href="assets/js/DataTables/datatables.min.css" rel="stylesheet">
-    <!-- FONTAWESOME STYLES-->
+     <!-- FONTAWESOME STYLES-->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
-    <!-- MORRIS CHART STYLES-->
+     <!-- MORRIS CHART STYLES-->
     <link href="assets/js/morris/morris-0.4.3.min.css" rel="stylesheet" />
-    <!-- CUSTOM STYLES-->
+        <!-- CUSTOM STYLES-->
     <link href="assets/css/custom.css" rel="stylesheet" />
-    <!-- GOOGLE FONTS-->
-    <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css' />
+     <!-- GOOGLE FONTS-->
+   <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css' />
+
+   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
 <style>
         .modal-dialog {
             max-width: 80%; /* Adjust the modal width as needed */
@@ -130,23 +132,109 @@ if (!isset($_SESSION["admin_number"])) {
             object-fit: contain; /* Ensure the image is contained within the modal */
         }
 </style>
+<style>
+      	/* Basic styling for the "Back to Top" button */
+#astroid-backtotop {
+    display: none; /* Hide button by default */
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: 50px;
+    height: 50px;
+    background-color: #007bff;
+    color: white;
+    border-radius: 50%;
+    text-align: center;
+    line-height: 50px; /* Center icon vertically */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    font-size: 24px;
+    cursor: pointer;
+    z-index: 1000; /* Make sure button is above other content */
+    transition: opacity 0.3s ease;
+  }
+  
+  #astroid-backtotop:hover {
+    background-color: #0056b3;
+  }
+  
+  /* Show the button when scrolling */
+  body.scroll-active #astroid-backtotop {
+    display: inline;
+  }
 
+  span {
+  content: "\0021";
+}
+</style>
+<style>
+    /* Styles for the loading screen */
+#loading-screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(255, 255, 255, 0.9);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    z-index: 9999;
+}
+
+.spinner {
+    border: 16px solid #FFD700; /* Light grey */
+    border-top: 16px solid #800000; /* Blue */
+    border-radius: 50%;
+    width: 120px;
+    height: 120px;
+    animation: spin 2s linear infinite;
+}
+
+/* Animation for the spinner */
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+</style>
 </head>
-
 <body>
+    <div id="loading-screen">
+        <div class="spinner"></div>
+        <p>Loading...</p>
+    </div>
+    <!-- Loading Screen -->    
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+    // Simulate data fetching
+    fetchData().then(() => {
+        // Hide loading screen and show content
+        document.getElementById('loading-screen').style.display = 'none';
+        document.getElementById('content').style.display = 'block';
+    });
+});
+
+function fetchData() {
+    return new Promise((resolve) => {
+        // Simulate a delay for data fetching (e.g., 2 seconds)
+        setTimeout(() => {
+            resolve();
+        }, 500);
+    });
+}
+
+</script>
     <div id="wrapper">
         <!-- NAV SIDE  -->
-        <?php include 'nav.php'; ?>
+         <?php include 'nav.php'; ?>
         <!-- /. NAV SIDE  -->
-        <div id="page-wrapper">
+        <div id="page-wrapper" >
             <div id="page-inner">
-
                 <div class="col-md-12">
                     <h2>All Tickets</h2>
 
                     <hr>
                 </div>
-
 
                 <div class="col-md-2 col-sm-6 col-xs-6">
                     <div class="panel panel-back noti-box">
@@ -176,13 +264,11 @@ if (!isset($_SESSION["admin_number"])) {
                             <i class="fa fa-check fa-xs" aria-hidden="true"></i>
                         </span>
                         <div class="text-box">
-                            <p class="main-text"><?php echo $completedTickets ?> Closed</p>
+                            <p class="main-text"><?php echo $completedTickets ?> Resolved</p>
                             <!-- <p class="text-muted">Tickets</p> -->
                         </div>
                     </div>
                 </div>
-
-
                 <div class="col-md-2 col-sm-6 col-xs-6">
                     <div class="panel panel-back noti-box">
                         <span class="icon-box bg-color-black set-icon">
@@ -197,7 +283,7 @@ if (!isset($_SESSION["admin_number"])) {
                 <div class="col-md-2 col-sm-6 col-xs-6">
                     <div class="panel panel-back noti-box">
                         <span class="icon-box bg-color-blue set-icon">
-                            <i class="fa fa-upload fa-xs" aria-hidden="true"></i>
+                            <i class="fa fa-exclamation-circle" aria-hidden="true"></i>
                         </span>
                         <div class="text-box">
                             <p class="main-text"><?php echo $dueTickets ?> Priority</p>
@@ -205,108 +291,104 @@ if (!isset($_SESSION["admin_number"])) {
                         </div>
                     </div>
                 </div>
+                
+                 <!-- /. ROW  -->
+            <div class="row">
+                <div class="col-md-12">
+                    <!-- Advanced Tables -->
+                    <div class="panel panel-default">
 
-                <!-- /. ROW  -->
-                <div class="row">
-                    <div class="col-md-12">
-                        <div class="col-md-12">
-                            <!-- Advanced Tables -->
-                            <div class="panel panel-default">
+                        <div class="panel-body-ticket">
+                            <div class="table-responsive">
+                                <table class="table table-striped table-bordered table-hover" id="dataTables-example">
+                                    <thead>
+                                        <tr>
+                                            <th>Priority</th>
+                                            <th>Ticket ID</th>
+                                            <th>Status</th>
+                                            <th>Employee</th>
+                                            <th>Date Submitted</th>
+                                            <th>Name</th>
+                                            <th>Issue</th>
+                                            <th>Details</th>
+                                            
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+            <?php
 
-                                <div class="panel-body-ticket">
-                                    <div class="table-responsive">
-                                        <table class="table table-striped table-bordered table-hover" id="dataTables-example">
-                                            <thead>
-                                                <tr>
-                                                    <th>Priority</th>
-                                                    <th>Ticket ID</th>
-                                                    <th>Status</th>
-                                                    <th>Employee</th>
-                                                    <th>Date Submitted</th>
-                                                    <th>Name</th>
-                                                    <th>Issue</th>
-                                                    <th>Details</th>
-                                                </tr>
-                                            </thead>
-                                         
-                                                <?php
+                $pdoQuery = "SELECT * FROM tb_tickets WHERE user_type = :user";
+                $pdoResult = $pdoConnect->prepare($pdoQuery);
+                $pdoResult->bindParam(':user', $ticket_user, PDO::PARAM_STR);
+                $pdoExec = $pdoResult->execute();
+                while ($row = $pdoResult->fetch(PDO::FETCH_ASSOC)){
+                    $statusClass = ($row['status'] === 'Resolved') ? 'success' : (($row['status'] === 'Pending') ? 'danger' : (($row['status'] === 'Transferred') ? 'info' : (($row['status'] === 'Processing') ? 'warning' : '')));
 
-                                                $pdoQuery = "SELECT * FROM tb_tickets WHERE user_type = :user";
-                                                $pdoResult = $pdoConnect->prepare($pdoQuery);
-                                                $pdoResult->bindParam(':user', $ticket_user, PDO::PARAM_STR);
-                                                $pdoExec = $pdoResult->execute();
-                                                while ($row = $pdoResult->fetch(PDO::FETCH_ASSOC)) {
-                                                    $statusClass = ($row['status'] === 'Resolved') ? 'success' : (($row['status'] === 'Pending') ? 'danger' : (($row['status'] === 'Transferred') ? 'info' : (($row['status'] === 'Processing') ? 'warning' : '')));
-                                                    
-                                                    $createdDate = new DateTime($row['created_date']);
-                                                    $now = new DateTime();
-                                                    $interval = $now->diff($createdDate);
-                                                    $hoursElapsed = $interval->h + ($interval->days * 24);
+                    extract($row);
+                    $screenshotBase64 = base64_encode($screenshot);
+                    if ($priority == "YES") {
+                    $priorityIcon = '<i class="fa fa-exclamation-circle" aria-hidden="true"></i>'; 
+                    }
 
-                                                    $priorityIcon = '';
-                                                    if (in_array($row['status'], ['Pending', 'Processing']) && $hoursElapsed >= 48) {
-                                                        $priorityIcon = '<i class="fa fa-exclamation-circle" aria-hidden="true"></i>';
-                                                    }
-
-                                                    extract($row);
-                                                    $screenshotBase64 = base64_encode($screenshot);
-                                                    ?>
-
-                                                    <tr class='odd gradeX <?php echo $statusClass?>'>
-                                                    <td><?php echo $priorityIcon; ?></td>
-                                                    <td><?php echo htmlspecialchars($ticket_id); ?></td>
-                                                    <td><?php echo htmlspecialchars($status); ?></td>
-                                                    <td><?php echo htmlspecialchars($employee); ?></td>
-                                                    <td><?php echo htmlspecialchars($created_date); ?></td>
-                                                    <td><?php echo htmlspecialchars($full_name); ?></td>
-                                                    <td><?php echo htmlspecialchars($issue); ?></td>
-
-
-                                                                      
+                    ?>
+                    <tr class='odd gradeX <?php echo $statusClass?>'>
+                    <td><?php
+                        if ($priority == "YES") {
+                            echo $priorityIcon; 
+                        }
+                    ?></td>
+                    <td><?php echo htmlspecialchars($ticket_id); ?></td>
+                    <td><?php echo htmlspecialchars($status); ?></td>
+                    <td><?php echo htmlspecialchars($employee); ?></td>
+                    <td><?php echo htmlspecialchars($created_date); ?></td>
+                    <td><?php echo htmlspecialchars($full_name); ?></td>
+                    <td><?php echo htmlspecialchars($issue); ?></td>
+                    
     <?php if ( $status === 'Pending'): ?>
-        <td>
+                    <td>
 
-            <div class='panel-body-ticket'>
-                <button class='btn btn-primary btn-xs' data-toggle='modal' data-target='#PendingModal<?php echo $ticket_id; ?>'>
-                    View Pending
-                </button>
-            </div>
-            
-        </td>
-<?php elseif ( $status === 'Processing'): ?>
-        <td>
+                        <div class='panel-body-ticket'>
+                            <button class='btn btn-primary btn-xs' data-toggle='modal' data-target='#PendingModal<?php echo $ticket_id; ?>'>
+                                View Pending
+                            </button>
+                        </div>
+                        
+                    </td>
+    <?php elseif ( $status === 'Processing'): ?>
+                    <td>
 
-            <div class='panel-body-ticket'>
-                <button class='btn btn-primary btn-xs' data-toggle='modal' data-target='#ProcessingModal<?php echo $ticket_id; ?>'>
-                    View Processing
-                </button>
-            </div>
-            
-        </td>
-<?php elseif ( $status === 'Returned'): ?>
-        <td>
+                        <div class='panel-body-ticket'>
+                            <button class='btn btn-primary btn-xs' data-toggle='modal' data-target='#ProcessingModal<?php echo $ticket_id; ?>'>
+                                View Processing
+                            </button>
+                        </div>
+                        
+                    </td>
+    <?php elseif ( $status === 'Returned'): ?>
+                    <td>
 
-            <div class='panel-body-ticket'>
-                <button class='btn btn-primary btn-xs' data-toggle='modal' data-target='#ReturnModal<?php echo $ticket_id; ?>'>
-                    View Returned
-                </button>
-            </div>
-            
-        </td>   
-<?php elseif ( $status === 'Resolved'): ?>
-        <td>
+                        <div class='panel-body-ticket'>
+                            <button class='btn btn-primary btn-xs' data-toggle='modal' data-target='#ReturnModal<?php echo $ticket_id; ?>'>
+                                View Returned
+                            </button>
+                        </div>
+                        
+                    </td>   
+    <?php elseif ( $status === 'Resolved'): ?>
+                    <td>
 
-            <div class='panel-body-ticket'>
-                <button class='btn btn-primary btn-xs' data-toggle='modal' data-target='#ResolvedModal<?php echo $ticket_id; ?>'>
-                    View Resolved
-                </button>
-            </div>
-            
-        </td>              
-<?php endif; ?>
+                        <div class='panel-body-ticket'>
+                            <button class='btn btn-primary btn-xs' data-toggle='modal' data-target='#ResolvedModal<?php echo $ticket_id; ?>'>
+                                View Resolved
+                            </button>
+                        </div>
+                        
+                    </td>              
+    <?php endif; ?>
 
-        </tr>
-                      <!-- Pending Ticket -->    
+                    </tr>
+                              </div>
+<!-- Pending Ticket -->    
 <div class="modal fade" id="PendingModal<?php echo $ticket_id; ?>" >
     <div class="modal-dialog">
         <div class="modal-content">
@@ -843,68 +925,73 @@ if (!isset($_SESSION["admin_number"])) {
         </div>
         
     </div>
-</div>                    
-                                <!-- form general example -->
-                                </tr>
-                                <?php }  ?>
-                                </tbody>
-
-                                
+</div>
+                              <!-- form general example -->
+                                        </tr>
+                                    </tbody>
+            <?php
+                }
+            ?>
                                 </table>
                             </div>
-
+                            
                         </div>
                     </div>
                     <!--End Advanced Tables -->
                 </div>
             </div>
+                 <hr />
+               <!-- /. ROW  -->
+               <div class="row">                     
+                      
+               <div class="col-md-4 col-sm-4 col-xs-4">                     
+           <div class="panel panel-default">
+               <div class="panel-heading">
+                   Age
+               </div>
+               <div class="panel-body">
+                   <div id="morris-donut-chart"></div>
+               </div>
+           </div>            
+       </div>
+       <div class="col-md-4 col-sm-4 col-xs-4">                     
+           <div class="panel panel-default">
+               <div class="panel-heading">
+                   Gender
+               </div>
+               <div class="panel-body">
+                   <div id="morris-donut-chart2"></div>
+               </div>
+           </div>            
+       </div>
+       <div class="col-md-4 col-sm-4 col-xs-4">                     
+           <div class="panel panel-default">
+               <div class="panel-heading">
+                   Campus
+               </div>
+               <div class="panel-body">
+                   <div id="morris-donut-chart3"></div>
+               </div>
+           </div>            
+       </div>
+      
+      
+  </div>
 
-            <!-- /. ROW  -->
-            <div class="col-md-12">
+  <a id="astroid-backtotop" class="circle" href="#"><i class="fas fa-arrow-circle-up"></i></a>
 
-                <div class="col-md-4 col-sm-4 col-xs-4">
-                    <div class="panel panel-default">
-                        <div class="panel-heading">
-                            Age
-                        </div>
-                        <div class="panel-body">
-                            <div id="morris-donut-chart"></div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-4 col-sm-4 col-xs-4">
-                    <div class="panel panel-default">
-                        <div class="panel-heading">
-                            Gender
-                        </div>
-                        <div class="panel-body">
-                            <div id="morris-donut-chart2"></div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-4 col-sm-4 col-xs-4">
-                    <div class="panel panel-default">
-                        <div class="panel-heading">
-                            Campus
-                        </div>
-                        <div class="panel-body">
-                            <div id="morris-donut-chart3"></div>
-                        </div>
-                    </div>
-                </div>
-                
-            </div>
-        </div>
-        <!-- /. PAGE INNER  -->
-    </div><?php include '../footer.php' ?>
-    <!-- /. PAGE WRAPPER  -->
     </div>
-    <!-- /. WRAPPER  -->
-    <!-- SCRIPTS -AT THE BOTTOM TO REDUCE THE LOAD TIME-->
+             <!-- /. PAGE INNER  -->
+            </div>
+         <!-- /. PAGE WRAPPER  -->
+        </div>
 
+     <!-- /. WRAPPER  -->
+    <!-- SCRIPTS -AT THE BOTTOM TO REDUCE THE LOAD TIME-->
+  
     <!-- JQUERY SCRIPTS -->
     <script src="assets/js/jquery-1.10.2.js"></script>
-    <!-- BOOTSTRAP SCRIPTS -->
+      <!-- BOOTSTRAP SCRIPTS -->
     <script src="assets/js/bootstrap.min.js"></script>
     <!-- METISMENU SCRIPTS -->
     <script src="assets/js/jquery.metisMenu.js"></script>
@@ -912,121 +999,65 @@ if (!isset($_SESSION["admin_number"])) {
     <script src="assets/js/morris/raphael-2.1.0.min.js"></script>
     <script src="assets/js/morris/morris.js"></script>
 
-    <script>
-        $(document).ready(function() {
-            // Function to create a donut chart
-            function createDonutChart(elementId, dataUrl) {
-                $.getJSON(dataUrl, function(data) {
-                    if (data.error) {
-                        console.error('Error fetching data:', data.error);
-                    } else {
-                        Morris.Donut({
-                            element: elementId,
-                            data: data
-                        });
-                    }
-                }).fail(function(jqxhr, textStatus, error) {
-                    console.error('Request Failed: ' + textStatus + ', ' + error);
-                });
-            }
 
-            // Create charts with dynamic data
-            createDonutChart('morris-donut-chart', 'action/data.php?chart=age-groups&id=<?php echo $_GET['id'] ?>');
-            createDonutChart('morris-donut-chart2', 'action/data.php?chart=genders&id=<?php echo $_GET['id'] ?>');
-            createDonutChart('morris-donut-chart3', 'action/data.php?chart=locations&id=<?php echo $_GET['id'] ?>');
+<script>
+    $(document).ready(function() {
+      // Function to create a donut chart
+      function createDonutChart(elementId, dataUrl) {
+        $.getJSON(dataUrl, function(data) {
+          if (data.error) {
+            console.error('Error fetching data:', data.error);
+          } else {
+            Morris.Donut({
+              element: elementId,
+              data: data
+            });
+          }
+        }).fail(function(jqxhr, textStatus, error) {
+          console.error('Request Failed: ' + textStatus + ', ' + error);
         });
-    </script>
-
-    <!-- DATA TABLE SCRIPTS -->
-    <script>
-  $(document).ready(function() {
-    var statusOrderIndex = 0;
-    var statusOrderValues = ['Pending', 'Processing', 'Returned', 'Resolved', 'Transferred'];
-
-    $.fn.dataTable.ext.type.order['custom-status-pre'] = function(Status) {
-      switch (Status) {
-        case 'Pending':
-          return 1;
-        case 'Processing':
-          return 2;
-        case 'Returned':
-          return 3;
-        case 'Transferred':
-          return 4;
-        case 'Resolved':
-          return 5;
-        default:
-          return 6;
       }
-    };
 
-    $.fn.dataTable.ext.type.order['custom-priority-status'] = function(data, settings, row) {
-      // Get the priority icon HTML (if present)
-      var priorityIcon = $(row).find('td:eq(0) i.fa-exclamation-circle').length > 0 ? 1 : 0;
-
-      // Get the status text
-      var status = $(row).find('td:eq(2)').text();
-
-      // Use the custom-status-pre function to get the status order
-      var statusOrder = $.fn.dataTable.ext.type.order['custom-status-pre'](status);
-
-      // Return a value that determines the sorting order
-      return priorityIcon * 10 + statusOrder; // You can adjust this formula to fit your needs
-    };
-
-    $('#dataTables-example').DataTable({
-      "order": [[0, 'desc'], [2, 'asc']], // Initial sorting order
-      "columnDefs": [{
-        "targets": 0, // Target the first column (priority icon)
-        "type": "custom-priority-status", // Use the custom sort type
-      }, {
-        "targets": 2, // Target the third column (status)
-        "type": "custom-status-pre", // Use the custom sort type
-      }, {
-        "width": "6%",
-        "targets": [0], // Adjust width for priority icon column
-        "className": "text-center"
-      }, {
-        "width": "9%",
-        "targets": [2] // Adjust width for status column
-      }, {
-        "width": "10%",
-        "targets": [1], // Adjust width for columns 0 and 1
-      }, {
-        "width": "10%",
-        "targets": [2], // Adjust width for column 5
-      }, {
-        "width": "17%",
-        "targets": [3, 5], // Adjust width for column 2
-      }, {
-        "width": "13%",
-        "targets": [4], // Adjust width for column 3
-      }, {
-        "width": "15%",
-        "targets": [6], // Adjust width for column 2
-      }, {
-        "width": "5%",
-        "targets": [7], // Adjust width for column 2
-      }],
-      "drawCallback": function(settings) {
-        // Rotate the status order index on each draw
-        statusOrderIndex = (statusOrderIndex + 1) % statusOrderValues.length;
-      }
+      // Create charts with dynamic data
+      createDonutChart('morris-donut-chart', 'action/data.php?chart=age-groups&id=<?php echo $_GET['id']?>');
+      createDonutChart('morris-donut-chart2', 'action/data.php?chart=genders&id=<?php echo $_GET['id']?>');
+      createDonutChart('morris-donut-chart3', 'action/data.php?chart=locations&id=<?php echo $_GET['id']?>');
     });
-  });
 </script>
 
+ <!-- DATA TABLE SCRIPTS -->
+<script> </script>
     <!-- DATA TABLE SCRIPTS -->
     <script src="assets/js/dataTables/jquery.dataTables.js"></script>
     <script src="assets/js/dataTables/dataTables.min.js"></script>
-    <script>
-        $(document).ready(function() {
-            $('#dataTables-example').dataTable();
-        });
+        <script>
+            $(document).ready(function () {
+                $('#dataTables-example').dataTable();
+            });
     </script>
-
-    <!-- CUSTOM SCRIPTS -->
+    
+      <!-- CUSTOM SCRIPTS -->
     <script src="assets/js/custom.js"></script>
-</body>
 
+<script>
+// Smooth scroll to top
+document.getElementById('astroid-backtotop').addEventListener('click', function(event) {
+  event.preventDefault(); // Prevent default anchor behavior
+  window.scrollTo({
+      top: 0,
+      behavior: 'smooth' // Smooth scrolling
+  });
+});
+
+// Show button when scrolled down
+window.addEventListener('scroll', function() {
+  if (window.scrollY > 100) {
+      document.body.classList.add('scroll-active');
+  } else {
+      document.body.classList.remove('scroll-active');
+  }
+});
+    </script>
+</body>
 </html>
+

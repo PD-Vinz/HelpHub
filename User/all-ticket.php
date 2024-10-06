@@ -214,7 +214,7 @@ $pdoExec = $pdoResult->execute();
 // Loop through each result row
 while ($row = $pdoResult->fetch(PDO::FETCH_ASSOC)) {
     // Determine the CSS class based on the ticket status
-    $statusClass = ($row['status'] === 'Completed') ? 'success' :
+    $statusClass = ($row['status'] === 'Resolved') ? 'success' :
                   (($row['status'] === 'Pending') ? 'danger' :
                   (($row['status'] === 'Transferred') ? 'info' :
                   (($row['status'] === 'Processing') ? 'warning' : '')));
