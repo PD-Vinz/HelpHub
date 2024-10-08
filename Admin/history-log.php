@@ -88,7 +88,7 @@ try {
 
     <title><?php echo $sysName?></title>
     <link rel="icon" href="<?php echo htmlspecialchars($S_LBase64, ENT_QUOTES, 'UTF-8'); ?>" type="image/*">
-
+    <link href="assets/js/DataTables/datatables.min.css" rel="stylesheet">
 	<!-- BOOTSTRAP STYLES-->
     <link href="assets/css/bootstrap.css" rel="stylesheet" />
      <!-- FONTAWESOME STYLES-->
@@ -113,6 +113,9 @@ try {
             max-height: 70vh; /* Adjust the maximum height as needed */
             object-fit: contain; /* Ensure the image is contained within the modal */
         }
+        .align-left {
+        text-align: left !important; /* Force left alignment */
+    }
     </style>
 </head>
 <body>
@@ -136,9 +139,7 @@ try {
                 <div class="col-md-12">
                     <!-- Advanced Tables -->
                     <div class="panel panel-default">
-                        <div class="panel-heading">
-                             Advanced Tables
-                        </div>
+                       
                         <div class="panel-body-ticket">
                             <div class="table-responsive">
 
@@ -196,7 +197,8 @@ $pdoExec = $pdoResult->execute();
         </div>
      <!-- /. WRAPPER  -->
     <!-- SCRIPTS -AT THE BOTOM TO REDUCE THE LOAD TIME-->
-  
+ 
+
     <!-- JQUERY SCRIPTS -->
     <script src="assets/js/jquery-1.10.2.js"></script>
       <!-- BOOTSTRAP SCRIPTS -->
@@ -205,7 +207,16 @@ $pdoExec = $pdoResult->execute();
     <script src="assets/js/jquery.metisMenu.js"></script>
     <!-- DATA TABLE SCRIPTS -->
     <script src="assets/js/dataTables/jquery.dataTables.js"></script>
-    <script src="assets/js/dataTables/dataTables.bootstrap.js"></script>
+    <script src="assets/js/dataTables/dataTables.min.js"></script> 
+    <script>
+   $('#dataTables-example').DataTable({
+      "order": [[0, 'desc']], // Sort by the first column (Date) in descending order
+      "columnDefs": [{
+      "targets": 0, // Apply to the first column (Date)
+      "className": "align-left" // Left align the Date column
+      }]
+    });
+</script>
         <script>
             $(document).ready(function () {
                 $('#dataTables-example').dataTable();

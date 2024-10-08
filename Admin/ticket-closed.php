@@ -136,9 +136,7 @@ try {
                 <div class="col-md-12">
                     <!-- Advanced Tables -->
                     <div class="panel panel-default">
-                        <div class="panel-heading">
-                             Advanced Tables
-                        </div>
+                       
                         <div class="panel-body-ticket">
                             <div class="table-responsive">
                             <?php

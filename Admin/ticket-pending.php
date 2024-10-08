@@ -147,7 +147,7 @@ if (isset($_GET['failed']) && $_GET['failed'] == "true") {
                
                     <div class="col-md-12">
                      <h2>Pending Tickets</h2>   
-                        <h5>Welcome Jhon Deo , Love to see you back. </h5>
+                     <hr>   
                        
                     </div>
             
@@ -156,9 +156,7 @@ if (isset($_GET['failed']) && $_GET['failed'] == "true") {
                 <div class="col-md-12">
                     <!-- Advanced Tables -->
                     <div class="panel panel-default">
-                        <div class="panel-heading">
-                             Advanced Tables
-                        </div>
+                       
                         <div class="panel-body-ticket">
                             <div class="table-responsive">
 

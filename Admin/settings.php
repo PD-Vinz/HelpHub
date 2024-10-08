@@ -127,8 +127,8 @@ if (!empty($S_L)) {
                      </div>
                     
                    
-                     <div class="col-md-12 text-center "> 
-    <h3>Accept Tickets?</h3>
+                     <div class="col-md-12 "> 
+                     <div class="col-md-12 ">  <h3>Accept Tickets?</h3></div>
     <form id="acceptTicketsForm" method="POST" action="">
         <input type="hidden" name="accept_tickets" value="<?php echo $accept_tickets === 'on' ? 'off' : 'on'; ?>">
 
@@ -170,7 +170,9 @@ if (!empty($S_L)) {
 
 <form method="post" id="system-frm" role="form" enctype="multipart/form-data">
     <div class="col-md-12"><hr> 
-    <h3>System settings</h3> 
+    <div class="col-md-9"><h3>System settings</h3></div> <div class="col-md-3  text-right"><button type="button" class="btn btn-primary" data-toggle="modal" data-target="#confirmsubmits">Update</button></div>
+    <br> <br> <br>
+
         <div class="form-group">
             <label for="name" class="control-label">System Name</label>
             <input type="text" class="form-control form-control-sm" name="name" id="system_name" value="<?php echo htmlspecialchars($sysName); ?>">
@@ -193,9 +195,7 @@ if (!empty($S_L)) {
             </label>
         </div>
     </div><BR>
-</div><div class="modal-footer">
-<button type="button" class="btn btn-sm btn-primary" data-toggle="modal" data-target="#confirmsubmits">Update</button>
-            </div>
+</div>
 
     </div>
    <!-- <div class="col-md-6">

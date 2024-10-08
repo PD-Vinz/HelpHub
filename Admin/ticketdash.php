@@ -148,63 +148,67 @@ if (!isset($_SESSION["admin_number"])) {
                 </div>
 
 
-                <div class="col-md-2 col-sm-6 col-xs-6">
-                    <div class="panel panel-back noti-box">
-                        <span class="icon-box bg-color-yellow set-icon">
-                            <i class="fa fa-hourglass-half fa-xs" aria-hidden="true"></i>
-                        </span>
-                        <div class="text-box">
-                            <p class="main-text"><?php echo $pendingTickets ?> Pending</p>
-                            <!-- <p class="text-muted">Tickets</p> -->
-                        </div>
+                <div class="col-md-12">
+    
+    <div class="col-md-2 col-sm-6 col-xs-6">        
+        
+                <div class="panel panel-back noti-box">
+                    <span class="icon-box bg-color-yellow set-icon">
+                    <i class="fa fa-hourglass-half fa-xs" aria-hidden="true"></i>
+                    </span>
+                    <div class="text-box" >
+                        <p class="main-text"><?php echo $pendingTickets?></p>
+                        <p class="text-muted pp"> Pending Tickets</p>
                     </div>
+                 </div>
                 </div>
-                <div class="col-md-2 col-sm-6 col-xs-6">
-                    <div class="panel panel-back noti-box">
-                        <span class="icon-box bg-color-green set-icon">
-                            <i class="fa fa-envelope-open fa-xs" aria-hidden="true"></i>
-                        </span>
-                        <div class="text-box">
-                            <p class="main-text"><?php echo $openedTickets ?> Processing </p>
-                            <!-- <p class="text-muted">Tickets</p> -->
-                        </div>
+                        <div class="col-md-2 col-sm-6 col-xs-6">           
+                <div class="panel panel-back noti-box">
+                    <span class="icon-box bg-color-green set-icon">
+                    <i class="fa fa-envelope-open fa-xs" aria-hidden="true"></i>
+                    </span>
+                    <div class="text-box" >
+                        <p class="main-text"><?php echo $openedTickets?></p>
+                        <p class="text-muted pp"> Processing Tickets</p>
                     </div>
+                 </div>
                 </div>
-                <div class="col-md-2 col-sm-6 col-xs-6">
-                    <div class="panel panel-back noti-box">
-                        <span class="icon-box bg-color-brown set-icon">
-                            <i class="fa fa-check fa-xs" aria-hidden="true"></i>
-                        </span>
-                        <div class="text-box">
-                            <p class="main-text"><?php echo $completedTickets ?> Closed</p>
-                            <!-- <p class="text-muted">Tickets</p> -->
-                        </div>
+                        <div class="col-md-2 col-sm-6 col-xs-6">           
+                <div class="panel panel-back noti-box">
+                    <span class="icon-box bg-color-brown set-icon">
+                    <i class="fa fa-check fa-xs" aria-hidden="true"></i>
+                    </span>
+                    <div class="text-box" >
+                        <p class="main-text"><?php echo $completedTickets?></p>
+                        <p class="text-muted pp"> Resolved Tickets</p>
                     </div>
+                 </div>
                 </div>
-
-
-                <div class="col-md-2 col-sm-6 col-xs-6">
-                    <div class="panel panel-back noti-box">
-                        <span class="icon-box bg-color-black set-icon">
-                            <i class="fa fa-reply fa-xs" aria-hidden="true"></i>
-                        </span>
-                        <div class="text-box">
-                            <p class="main-text"><?php echo $returnedTickets ?> Returned</p>
-                            <!-- <p class="text-muted">Tickets</p> -->
-                        </div>
+                
+                   
+                        <div class="col-md-2 col-sm-6 col-xs-6">           
+                <div class="panel panel-back noti-box">
+                    <span class="icon-box bg-color-black set-icon">
+                    <i class="fa fa-reply fa-xs" aria-hidden="true"></i>
+                    </span>
+                    <div class="text-box" >
+                        <p class="main-text"><?php echo $returnedTickets?></p>
+                       <p class="text-muted pp"> Returned Tickets</p>
                     </div>
-                </div>
-                <div class="col-md-2 col-sm-6 col-xs-6">
-                    <div class="panel panel-back noti-box">
-                        <span class="icon-box bg-color-blue set-icon">
-                            <i class="fa fa-upload fa-xs" aria-hidden="true"></i>
-                        </span>
-                        <div class="text-box">
-                            <p class="main-text"><?php echo $dueTickets ?> Priority</p>
-                            <!-- <p class="text-muted">Tickets</p> -->
-                        </div>
+                 </div>
+                 </div>
+                        <div class="col-md-2 col-sm-6 col-xs-6">           
+                <div class="panel panel-back noti-box">
+                    <span class="icon-box bg-color-blue set-icon">
+                    <i class="fa fa-upload fa-xs" aria-hidden="true"></i>
+                    </span>
+                    <div class="text-box" >
+                        <p class="main-text"><?php echo $dueTickets?></p>
+                        <p class="text-muted pp"> Priority Tickets</p>
                     </div>
-                </div>
+                 </div>
+    <!--</a>-->
+                </div><hr>  </div> 
 
                 <!-- /. ROW  -->
                 <div class="row">
