@@ -17,6 +17,15 @@ body {
     overflow-y: hidden;
 }
 
+body.fade-in {
+    opacity: 1;
+  }
+  
+/* Fade-out effect when navigating to a new page */
+body.fade-out {
+    opacity: 0;
+  }
+
 .logo {
     margin-top: 40px;
     max-width: 300px;
@@ -48,6 +57,10 @@ h3 {
     color: #ffffff;
     font-size: 30px;
     margin-bottom: 10px;
+}
+
+h4{
+    color: #ffffff;
 }
 
 h5 {

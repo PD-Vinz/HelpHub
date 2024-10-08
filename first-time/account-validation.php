@@ -101,5 +101,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     </form>
     <a onclick="history.back()" class="forgot">Back</a>
     </div> 
+    <script src="../script.js"></script>
 </body>
 </html>

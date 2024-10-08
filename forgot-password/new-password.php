@@ -211,5 +211,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 </script>
     </div> 
+    <script src="script.js"></script>
 </body>
 </html>

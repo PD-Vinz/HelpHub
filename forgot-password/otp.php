@@ -93,7 +93,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     
         
     </form>
-    <a href="forgot_password.php" class="forgot">Back</a>
+    <a href="forgot-password.php" class="forgot">Back</a>
     </div> 
 
     <script src="script.js"></script>

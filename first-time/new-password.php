@@ -41,7 +41,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 echo "<script type='text/javascript'>
                     window.onload = function() {
                         alert('$errorMessage');
-                        window.location.href = '../index.php';
+                        window.location.href = 'fill-up-info.php';
                     };
                     </script>";
             }
@@ -60,7 +60,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 echo "<script type='text/javascript'>
                     window.onload = function() {
                         alert('$errorMessage');
-                        window.location.href = '../index.php';
+                        window.location.href = 'fill-up-info.php';
                     };
                     </script>";
             }
@@ -210,6 +210,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         return true;
     }
 </script>
+<script src="../script.js"></script>
     </div> 
 </body>
 </html>

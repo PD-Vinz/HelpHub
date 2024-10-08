@@ -255,5 +255,6 @@ input[type="submit"]:hover {
     </form>
     <a onclick="history.back()" class="forgot">Back</a>
     </div> 
+    <script src="../script.js"></script>
 </body>
 </html>

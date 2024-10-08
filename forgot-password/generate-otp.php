@@ -7,7 +7,7 @@ session_start(); // Start the session
 if (!isset($_SESSION["address"]) && !isset($_SESSION["user"])) {
     header("Location: ../index.php");
     exit(); // Prevent further execution after redirection
-} elseif (!isset($_GET['regenerate'])){
+} elseif (!isset($_GET['regenerate'])) {
     if (isset($_SESSION['otp_generated']) && $_SESSION['otp_generated'] === true) {
         header("Location: otp.php?generated=yes");
         exit;
@@ -17,7 +17,6 @@ $Address = $_SESSION["address"];
 $User = $_SESSION["user"];
 $id = $_SESSION["forgot_id"];
 
-
 // Include PHPMailer library
 require '../vendor/autoload.php';
 
@@ -25,36 +24,58 @@ require '../vendor/autoload.php';
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 
-function sendOTP($recipientEmail, $otp) {
+function sendOTP($recipientEmail, $otp, $pdoConnect) {
+    global $pdoConnect; // Ensure $pdoConnect is accessible
+    if (!filter_var($recipientEmail, FILTER_VALIDATE_EMAIL)) {
+        die('Invalid email format');
+    }
+
     $mail = new PHPMailer(true); // Create a new PHPMailer instance
+
+    $pdoQuery = "SELECT * FROM php_mailer_configuration WHERE email_purpose = 'OTP' && status = 'Active'";
+    $pdoResult = $pdoConnect->prepare($pdoQuery);
+    if (!$pdoResult->execute()) {
+        die('Error fetching mailer configuration');
+    }
+    $Data = $pdoResult->fetch(PDO::FETCH_ASSOC);
+
+    if ($Data) {
+        $host = $Data['host'];
+        $username = $Data['username'];
+        $password = $Data['password'];
+        $port = $Data['port'];
+        $address = $Data['address'];
+        $name = $Data['name'];
+    }
 
     try {
         // Server settings
-        $mail->isSMTP();                                            // Set mailer to use SMTP
-        $mail->Host       = 'smtp-relay.brevo.com';                       // Specify main and backup SMTP servers "smtp.gmail.com"
-        $mail->SMTPAuth   = true;                                   // Enable SMTP authentication
-        $mail->Username   = '7acc39001@smtp-brevo.com';                 // SMTP username
-        $mail->Password   = 'acd2zESVIwCT0Yyv';                    // SMTP password (App Password if 2FA is enabled) "zowodbzxhjochnyv"
-        $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;         // Enable TLS encryption, `ssl` also accepted
-        $mail->Port       = 587;                                    // TCP port to connect to
+        $mail->isSMTP();
+        $mail->Host = $host;
+        $mail->SMTPAuth = true;
+        $mail->Username = $username;
+        $mail->Password = $password;
+        $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
+        $mail->Port = $port;
 
         // Recipients
-        $mail->setFrom('auth.helphub@gmail.com', 'DHVSU HelpHub');
-        $mail->addAddress($recipientEmail);                         // Add a recipient
+        $mail->setFrom($address, $name);
+        $mail->addAddress($recipientEmail);
 
-        // Load the HTML template and replace $otp
-        $htmlContent = file_get_contents('template.php'); // Ensure this path is correct
-        $htmlContent = str_replace('$otp', $otp, $htmlContent);
+        // Load the HTML template and replace OTP
+        $templateFile = 'template.php';
+        if (file_exists($templateFile)) {
+            $htmlContent = file_get_contents($templateFile);
+            $htmlContent = str_replace('$otp', $otp, $htmlContent);
+        } else {
+            die('Template file not found');
+        }
 
         // Content
-        $mail->isHTML(true);                                        // Set email format to HTML
+        $mail->isHTML(true);
         $mail->Subject = 'Your One-Time Password (OTP)';
-        $mail->Body = $htmlContent; // Ensure this path is correct
-
-                                                                    //https://drive.google.com/file/d/1tTULPtMo8vufaRhxMy-ZdpshPnFSw94M/view?usp=sharing
-                                                                    //https://drive.google.com/file/d/1fXFC6pdXPFDF7PbyWIuoVhSAkfyD2J6P/view?usp=sharing
-                                                                    // "Your OTP code is: <b>$otp</b>";
-        $mail->AltBody = "Your OTP code is: $otp";                 // Plain text version for non-HTML mail clients
+        $mail->Body = $htmlContent;
+        $mail->AltBody = "Your OTP code is: $otp"; // Plain text version
 
         $mail->send();
         echo 'OTP has been sent';
@@ -70,9 +91,5 @@ function sendOTP($recipientEmail, $otp) {
 
 // Example usage
 $otp = rand(100000, 999999); // Generate a 6-digit OTP
-sendOTP($Address, $otp); // Replace with the actual recipient email
-
-
-
-
-
+sendOTP($Address, $otp, $pdoConnect); // Call with $pdoConnect
+?>

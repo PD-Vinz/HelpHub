@@ -1,31 +1,20 @@
 <?php
-
 session_start();
 
 include_once("connection/conn.php");
 $pdoConnect = connection();
-
-// Redirect to student dashboard if student session exists
-if (isset($_SESSION["user_id"])) {
-    header("Location: User/dashboard.php");
-    exit(); // Prevent further execution after redirection
-}
-
 // Redirect to admin index if admin session exists
 if (isset($_SESSION["admin_number"])) {
     header("Location: Admin/index.php");
     exit(); // Prevent further execution after redirection
 }
 
-if (isset($_GET["failed"])) {
-    $errorMessage = "Wrong Username or Password";
-        echo "<script type='text/javascript'>
-            window.onload = function() {
-                alert('$errorMessage');
-                window.location.href = 'index.php';
-            };
-            </script>";
+// Redirect to student dashboard if student session exists
+if (isset($_SESSION["user_id"]) && isset($_SESSION["user_identity"])) {
+    header("Location: User/dashboard.php");
+    exit(); // Prevent further execution after redirection
 }
+
 
  // for displaying system details
  $query = $pdoConnect->prepare("SELECT system_name, short_name, system_logo, system_cover FROM settings WHERE id = :id");
@@ -41,7 +30,7 @@ if (isset($_GET["failed"])) {
       $imageType = 'image/png'; // Default MIME type
       $S_LBase64 = 'data:' . $imageType . ';base64,' . $base64Image;
   }
-
+// for displaying system details //end
 if (isset($_POST['login'])) {
     try {
         $pdoConnect->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
@@ -55,74 +44,54 @@ if (isset($_POST['login'])) {
             exit(); // Prevent further execution after redirection
         }
 
-// Check in student_user table
+        // Check in student_user table
+        $pdoUserQuery = "SELECT * FROM student_user WHERE user_id = :username AND password = :pass";
+        $pdoResult = $pdoConnect->prepare($pdoUserQuery);
+        $pdoResult->bindParam(':username', $username);
+        $pdoResult->bindParam(':pass', $pass);
+        $pdoResult->execute();
 
-// Assuming $username and $pass contain user input
+        if ($pdoResult->rowCount() > 0) {
+            $_SESSION["user_id"] = $username;
+            $_SESSION["user_identity"] = "Student";
+            header("Location: User/dashboard.php");
+            exit(); // Prevent further execution after redirection
+        }
 
-// Query to select the hashed password from the database
-$pdoUserQuery1 = "SELECT password FROM student_user WHERE user_id = :username";
-$pdoResult1 = $pdoConnect->prepare($pdoUserQuery1);
-$pdoResult1->bindParam(':username', $username);
-$pdoResult1->execute();
+        $pdoUserQuery2 = "SELECT password FROM employee_user WHERE user_id = :username AND password = :pass";
+        $pdoResult2 = $pdoConnect->prepare($pdoUserQuery2);
+        $pdoResult2->bindParam(':username', $username);
+        $pdoResult2->bindParam(':pass', $pass);
+        $pdoResult2->execute();
 
-// Check if the user exists
-if ($pdoResult1->rowCount() > 0) {
-    // Fetch the hashed password from the database
-    $user = $pdoResult1->fetch();
-    $storedHash = $user['password'];
+        // Check if the user exists
+        if ($pdoResult2->rowCount() > 0) {
+            $_SESSION["user_id"] = $username;
+            $_SESSION["user_identity"] = "Employee";
+            header("Location: User/dashboard.php");
+            exit(); // Prevent further execution after redirection
+        }
 
-    // Verify the input password against the stored hash
-    if (password_verify($pass, $storedHash)) {
-        // Password is correct, proceed with login
-        $_SESSION["user_id"] = $username;
-        $_SESSION["user_identity"] = "Student";
-        header("Location: User/dashboard.php");
-        exit(); // Prevent further execution after redirection
-    }
-}
+        // Check in mis_employees table
+        $pdoAdminQuery = "SELECT * FROM mis_employees WHERE admin_number = :username AND password = :pass";
+        $pdoResult3 = $pdoConnect->prepare($pdoAdminQuery);
+        $pdoResult3->bindParam(':username', $username);
+        $pdoResult3->bindParam(':pass', $pass);
+        $pdoResult3->execute();
 
-// Query to select the hashed password from the database
-$pdoUserQuery2 = "SELECT password FROM employee_user WHERE user_id = :username";
-$pdoResult2 = $pdoConnect->prepare($pdoUserQuery2);
-$pdoResult2->bindParam(':username', $username);
-$pdoResult2->execute();
+        if ($pdoResult3->rowCount() > 0) {
+            $_SESSION["admin_number"] = $username;
+            include_once("priority_check.php");
 
-// Check if the user exists
-if ($pdoResult2->rowCount() > 0) {
-    // Fetch the hashed password from the database
-    $user = $pdoResult2->fetch();
-    $storedHash = $user['password'];
-
-    // Verify the input password against the stored hash
-    if (password_verify($pass, $storedHash)) {
-        // Password is correct, proceed with login
-        $_SESSION["user_id"] = $username;
-        $_SESSION["user_identity"] = "Employee";
-        header("Location: User/dashboard.php");
-        exit(); // Prevent further execution after redirection
-    }
-}
-
-// Query to select the hashed password from the database
-$pdoAdminQuery = "SELECT * FROM mis_employees WHERE admin_number = :username";
-$pdoResult3 = $pdoConnect->prepare($pdoAdminQuery);
-$pdoResult3->bindParam(':username', $username);
-$pdoResult3->execute();
-
-// Check if the user exists
-if ($pdoResult3->rowCount() > 0) {
-    // Fetch the hashed password from the database
-    $user = $pdoResult3->fetch();
-    $storedHash = $user['password'];
-
-    // Verify the input password against the stored hash
-    if (password_verify($pass, $storedHash)) {
-        // Password is correct, proceed with login
-        $_SESSION["admin_number"] = $username;
-        header("Location: Admin/index.php");
-        exit(); // Prevent further execution after redirection
-    }
-}
+                // Run priority check only once a day
+                if (!isset($_SESSION['priority_last_run']) || (time() - $_SESSION['priority_last_run']) >= 86400) {
+                    include_once("priority_check.php");
+                    $_SESSION['priority_last_run'] = time(); // Update last run time
+                }
+                
+            header("Location: Admin/index.php");
+            exit(); // Prevent further execution after redirection
+        }
 
         // If no match found in both tables
         $errorMessage = "Wrong Username or Password";
@@ -131,8 +100,7 @@ if ($pdoResult3->rowCount() > 0) {
                 alert('$errorMessage');
                 window.location.href = 'index.php';
             };
-            </script>";
-            
+        </script>";
     } catch (PDOException $error) {
         $message = '<label>Error: ' . $error->getMessage() . '</label>';
     }

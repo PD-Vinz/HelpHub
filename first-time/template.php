@@ -84,7 +84,7 @@
         </div>
         <div class="footer">
             <p>Best regards,<br>Management Information System<br>Don Honorio Ventura State University</p>
-            <p><a href="#">Visit our website</a></p>
+            <p><a href="https://dhvsuhelphub.com/">Visit our website</a></p>
         </div>
     </div>
 </body>

@@ -96,5 +96,6 @@ if (isset($_POST['forgotpass'])) {
     </form>
     <a href="../index.php" class="forgot">Back</a>
     </div> 
+    <script src="script.js"></script>
 </body>
 </html>

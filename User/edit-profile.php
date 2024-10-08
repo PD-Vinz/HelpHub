@@ -244,13 +244,13 @@ if (!isset($_SESSION["user_id"])) {
                                             </div>
                                         </div>
                                         <div class="form-group">
-                                            <label class="col-lg-3 control-label">STUDENT NUMBER</label>
+                                            <label class="col-lg-3 control-label">USER ID</label>
                                             <div class="col-lg-8">
                                                 <input class="form-control" name="id" type="text" value="<?php echo $id?>" readonly>
                                             </div>
                                         </div>
                                         <div class="form-group">
-                                            <label class="col-lg-3 control-label">STUDENT EMAIL</label>
+                                            <label class="col-lg-3 control-label">EMAIL ADDRESS</label>
                                             <div class="col-lg-8">
                                                 <input class="form-control" name="emailadd" type="text" value="<?php echo $Email_Add?>" readonly>
                                             </div>

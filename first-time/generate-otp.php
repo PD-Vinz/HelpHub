@@ -30,20 +30,41 @@ use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 
 function sendOTP($recipientEmail, $otp) {
+    global $pdoConnect; // Ensure $pdoConnect is accessible
+    if (!filter_var($recipientEmail, FILTER_VALIDATE_EMAIL)) {
+        die('Invalid email format');
+    }
+
     $mail = new PHPMailer(true); // Create a new PHPMailer instance
+
+    $pdoQuery = "SELECT * FROM php_mailer_configuration WHERE email_purpose = 'OTP' && status = 'active'";
+    $pdoResult = $pdoConnect->prepare($pdoQuery);
+    if (!$pdoResult->execute()) {
+        die('Error fetching mailer configuration');
+    }
+    $Data = $pdoResult->fetch(PDO::FETCH_ASSOC);
+
+    if ($Data) {
+        $host = $Data['host'];
+        $username = $Data['username'];
+        $password = $Data['password'];
+        $port = $Data['port'];
+        $address = $Data['address'];
+        $name = $Data['name'];
+    }
 
     try {
         // Server settings
         $mail->isSMTP();                                            // Set mailer to use SMTP
-        $mail->Host       = 'smtp-relay.brevo.com';                       // Specify main and backup SMTP servers "smtp.gmail.com"
+        $mail->Host       = $host;                       // Specify main and backup SMTP servers "smtp.gmail.com"
         $mail->SMTPAuth   = true;                                   // Enable SMTP authentication
-        $mail->Username   = '7acc39001@smtp-brevo.com';                 // SMTP username
-        $mail->Password   = 'acd2zESVIwCT0Yyv';                    // SMTP password (App Password if 2FA is enabled) "zowodbzxhjochnyv"
+        $mail->Username   = $username;                 // SMTP username
+        $mail->Password   = $password;                    // SMTP password (App Password if 2FA is enabled) "zowodbzxhjochnyv"
         $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;         // Enable TLS encryption, `ssl` also accepted
-        $mail->Port       = 587;                                    // TCP port to connect to
+        $mail->Port       = $port;                                    // TCP port to connect to
 
         // Recipients
-        $mail->setFrom('auth.helphub@gmail.com', 'DHVSU HelpHub');
+        $mail->setFrom($address, $name);
         $mail->addAddress($recipientEmail);                         // Add a recipient
 
         // Load the HTML template and replace $otp
