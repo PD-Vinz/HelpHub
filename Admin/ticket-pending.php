@@ -157,7 +157,7 @@ if (isset($_GET['failed']) && $_GET['failed'] == "true") {
                     <!-- Advanced Tables -->
                     <div class="panel panel-default">
                        
-                        <div class="panel-body-ticket">
+                        <div class="panel-body">
                             <div class="table-responsive">
 
 <?php

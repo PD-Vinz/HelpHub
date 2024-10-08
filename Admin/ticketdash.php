@@ -217,7 +217,7 @@ if (!isset($_SESSION["admin_number"])) {
                             <!-- Advanced Tables -->
                             <div class="panel panel-default">
 
-                                <div class="panel-body-ticket">
+                                <div class="panel-body">
                                     <div class="table-responsive">
                                         <table class="table table-striped table-bordered table-hover" id="dataTables-example">
                                             <thead>
@@ -994,7 +994,7 @@ if (!isset($_SESSION["admin_number"])) {
         "width": "9%",
         "targets": [2] // Adjust width for status column
       }, {
-        "width": "10%",
+        "width": "9%",
         "targets": [1], // Adjust width for columns 0 and 1
       }, {
         "width": "10%",
@@ -1022,7 +1022,7 @@ if (!isset($_SESSION["admin_number"])) {
 
     <!-- DATA TABLE SCRIPTS -->
     <script src="assets/js/dataTables/jquery.dataTables.js"></script>
-    <script src="assets/js/dataTables/dataTables.min.js"></script>
+    <script src="assets/js/dataTables/datatables.min.js"></script>
     <script>
         $(document).ready(function() {
             $('#dataTables-example').dataTable();

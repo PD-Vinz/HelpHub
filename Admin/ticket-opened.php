@@ -122,13 +122,14 @@ try {
         }
     </style>
 </head>
+
 <body>
 <div id="wrapper">
         <!-- NAV SIDE  -->
          <?php include 'nav.php'; ?> 
         <!-- /. NAV SIDE  -->
         <div id="page-wrapper" >
-        <div id="page-inner" style="min-height: 800px;">
+        <div id="page-inner" >
 
                
                     <div class="col-md-12">
@@ -141,8 +142,9 @@ try {
                 <div class="col-md-12">
                     <!-- Advanced Tables -->
                     <div class="panel panel-default">
-                       
-                        <div class="panel-body-ticket">
+                    
+                        <div class="panel-body">
+
                             <div class="table-responsive">
 
 <?php
@@ -168,6 +170,7 @@ try {
             
             
 ?>
+
                                 <table class="table table-striped table-bordered table-hover" id="dataTables-example">
                                     <thead>
                                         <tr>

@@ -135,12 +135,12 @@ try {
                     </div>
                 </div>
                  <!-- /. ROW  -->
-                 <div class="row">
+                 
                 <div class="col-md-12">
                     <!-- Advanced Tables -->
                     <div class="panel panel-default">
                        
-                        <div class="panel-body-ticket">
+                        <div class="panel-body">
                             <div class="table-responsive">
 
 <?php
@@ -177,7 +177,7 @@ $pdoExec = $pdoResult->execute();
                                     </tbody>
                                 </table>
                                 </div>
-                            </div>
+                           
                             
                         </div>
                     </div>

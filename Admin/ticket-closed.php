@@ -137,7 +137,7 @@ try {
                     <!-- Advanced Tables -->
                     <div class="panel panel-default">
                        
-                        <div class="panel-body-ticket">
+                        <div class="panel-body">
                             <div class="table-responsive">
                             <?php
 $status = ["Resolved", "Transferred"];
