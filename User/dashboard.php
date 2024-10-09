@@ -59,6 +59,23 @@ if (!isset($_SESSION["user_id"])) {
     }
     
 
+        // for displaying system details
+        $query = $pdoConnect->prepare("SELECT system_name, short_name, system_logo, system_cover FROM settings WHERE id = :id");
+        $query->execute(['id' => 1]);
+        $Datas = $query->fetch(PDO::FETCH_ASSOC);
+        $sysName = $Datas['system_name'] ?? '';
+        $shortName = $Datas['short_name'] ?? '';
+         $systemCover = $Datas['system_cover'];
+         $S_L = $Datas['system_logo'];
+         $S_LBase64 = '';
+         if (!empty($S_L)) {
+             $base64Image = base64_encode($S_L);
+             $imageType = 'image/png'; // Default MIME type
+             $S_LBase64 = 'data:' . $imageType . ';base64,' . $base64Image;
+         }
+     // for displaying system details //end
+    
+
 try {
 
     $pdoCountQuery = "SELECT * FROM tb_tickets WHERE user_number = :number";
@@ -105,22 +122,19 @@ try {
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>MIS HelpHub</title>
-    <link rel="icon" href="../img/Logo.png" type="image/png">
-    <!-- BOOTSTRAP STYLES-->
-    <link href="assets/css/bootstrap.css" rel="stylesheet" />
+    <title><?php echo $sysName?></title>
+    <link rel="icon" href="<?php echo htmlspecialchars($S_LBase64, ENT_QUOTES, 'UTF-8'); ?>" type="image/*"> 
+    <!-- BOOTSTRAP STYLES -->
+    <link href="assets/css/bootstrap.css" rel="stylesheet">
   <!-- FONTAWESOME STYLES-->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
-    <!-- MORRIS CHART STYLES-->
-    <link href="assets/css/morris/morris-0.4.3.min.css" rel="stylesheet" />
-    <!-- CUSTOM STYLES-->
-    <link href="assets/css/custom.css" rel="stylesheet" />
-    <!-- GOOGLE FONTS-->
-    <link href='https://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css' />
+    <!-- CUSTOM STYLES -->
+    <link href="assets/css/custom.css" rel="stylesheet">
+    <!-- GOOGLE FONTS -->
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
+    <!-- TABLE STYLES -->
+    <link href="assets/css/dataTables.bootstrap.css" rel="stylesheet">
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
-
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    
 <style>
       	/* Basic styling for the "Back to Top" button */
 #astroid-backtotop {
@@ -165,17 +179,16 @@ try {
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="dashboard.php">USER</a>
+                <a class="navbar-brand" href="index.php"><?php echo $shortName?></a>
             </div>
-            <div style="color: white;
-            padding: 15px 50px 5px 50px;
-            float: right;
-            font-size: 16px;"> Last access : <?php echo date('d F Y')?> &nbsp; 
+            <div style="color: white; padding: 15px 50px 5px 50px; float: right; font-size: 16px;"> Last access : <?php echo date('d F Y')?> &nbsp; 
             <div class="btn-group nav-link">
               <button type="button" class="btn btn-rounded badge badge-light dropdown-toggle dropdown-icon" data-toggle="dropdown">
-                <span class="ml-3"><?php echo $Name?></span>
+
+            <span class="ml-3"><?php echo $Name?></span>
             <span class="fa fa-caret-down">
             <span class="sr-only">Toggle Dropdown</span>
+
           </button>
           <div class="dropdown-menu" role="menu">
             <a class="dropdown-item" href="profile.php"><span class="fa fa-user"></span> MY ACCOUNT</a>
@@ -185,6 +198,7 @@ try {
             <a class="dropdown-item" href="logout.php"><span class="fa fa-sign-out"></span> LOG OUT </a>
           </div>
         </nav>
+        
         <!-- /. NAV TOP  -->
         <nav class="navbar-default navbar-side" role="navigation">
             <div class="sidebar-collapse">

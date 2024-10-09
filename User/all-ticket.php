@@ -58,6 +58,23 @@ if (!isset($_SESSION["user_id"])) {
         }
     }
 
+
+            // for displaying system details
+            $query = $pdoConnect->prepare("SELECT system_name, short_name, system_logo, system_cover FROM settings WHERE id = :id");
+            $query->execute(['id' => 1]);
+            $Datas = $query->fetch(PDO::FETCH_ASSOC);
+            $sysName = $Datas['system_name'] ?? '';
+            $shortName = $Datas['short_name'] ?? '';
+             $systemCover = $Datas['system_cover'];
+             $S_L = $Datas['system_logo'];
+             $S_LBase64 = '';
+             if (!empty($S_L)) {
+                 $base64Image = base64_encode($S_L);
+                 $imageType = 'image/png'; // Default MIME type
+                 $S_LBase64 = 'data:' . $imageType . ';base64,' . $base64Image;
+             }
+         // for displaying system details //end
+        
 }
 
 ?>
@@ -67,7 +84,8 @@ if (!isset($_SESSION["user_id"])) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>USER</title>
+    <title><?php echo $sysName?></title>
+    <link rel="icon" href="<?php echo htmlspecialchars($S_LBase64, ENT_QUOTES, 'UTF-8'); ?>" type="image/*"> 
     <link href="assets/js/DataTables/datatables.min.css" rel="stylesheet">
 
     <!-- BOOTSTRAP STYLES -->
@@ -130,7 +148,7 @@ if (!isset($_SESSION["user_id"])) {
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="dashboard.php">USER</a>
+                <a class="navbar-brand" href="index.php"><?php echo $shortName?></a>
             </div>
             <div style="color: white;
             padding: 15px 50px 5px 50px;
@@ -154,6 +172,7 @@ if (!isset($_SESSION["user_id"])) {
             <div class="sidebar-collapse">
                 <ul class="nav" id="main-menu">
                     <li class="text-center">
+                        <!--<img src="data:image/jpeg;base64,<?php //echo $P_PBase64?>" class="user-image img-responsive" />-->
                         <img src="data:image/jpeg;base64,<?php echo $P_PBase64?>" class="user-image img-responsive" />
                         <h3 style="color:white;"><?php echo $Name?></h3>
                     </li>
@@ -164,8 +183,7 @@ if (!isset($_SESSION["user_id"])) {
                         <a href="profile.php"><i class="fa fa-user fa-xl" style="font: size 24px;color:rgb(255, 255, 255)"></i> PROFILE </a>
                     </li>
                     <li>
-                            <a href="create-ticket.php">
-                            <i class="fa fa-plus fa-xl" style="font-size: 24px; color: rgb(255, 255, 255)"></i> CREATE TICKET </a>
+                            <a href="create-ticket.php"><i class="fa fa-plus fa-xl" style="font-size: 24px; color: rgb(255, 255, 255)"></i> CREATE TICKET </a>
                     </li>
                     <li>
                         <a class="active-menu" href="all-ticket.php"><i class="fa fa-ticket fa-xl" style="font-size:24px"></i> ALL TICKET </a>
