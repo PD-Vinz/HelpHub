@@ -275,15 +275,15 @@ while ($row = $pdoResult->fetch(PDO::FETCH_ASSOC)) {
                                     </div>
                                 </div>
                                 <!-- /. Advanced Tables -->
-                            </div>
+                            </div>   
                         </div>
                         <!-- /. ROW -->
-                    </div>
+                    </div> 
                     <!-- /. PAGE INNER -->
-                     </div>
+                     </div></div></div>
                 <!-- /. PAGE WRAPPER -->
-                <?php require_once ('../footer.php')?>
-       </div>
+            
+       </div><?php require_once ('../footer.php')?>
        <!-- /. WRAPPER -->
        </div>
     <!-- SCRIPTS - AT THE BOTTOM TO REDUCE THE LOAD TIME -->

@@ -273,7 +273,7 @@ if ($stmt->rowCount() > 0) {
              <!-- /. PAGE INNER  -->
             </div>
          <!-- /. PAGE WRAPPER  -->
-        </div>
+        </div><?php require_once ('../footer.php')?>
     <!-- /. WRAPPER -->
     <!-- SCRIPTS - AT THE BOTTOM TO REDUCE THE LOAD TIME -->
     <!-- JQUERY SCRIPTS -->

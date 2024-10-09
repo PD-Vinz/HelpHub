@@ -355,8 +355,8 @@ echo "<script>
                         <div class="panel-heading">
                             <h3 style="margin-top: 5px; margin-bottom:0px;">Feedback List</h3>
                         </div>
-                        <div class="panel-body-ticket scrollable-panel" >
-                            <div class="table-responsive col-md-12">
+                        <div class="panel-body scrollable-panel" >
+                            <div class="table-responsive">
 
 <?php
 $pdoQuery = "SELECT * FROM tb_survey_feedback";
@@ -366,7 +366,7 @@ $pdoExec = $pdoResult->execute();
 ?>
                                 <table class="table table-striped table-bordered table-hover" id="dataTables-example">
                                     <thead>
-                                        <tr class="btn-primary">
+                                        <tr>
                                         <th>Survey ID</th>
                                         <th>User ID</th>
                                         <th>Date & Time</th>
@@ -784,8 +784,13 @@ displayBayesData('comment', bayesData.comment);
       <script>  $(document).ready(function() {
         $('#dataTables-example').DataTable({
             "order": [
-                [0, 'des']],
-
+                [0, 'desc']],
+                "columnDefs": [
+                {   
+                    "width": "10%", 
+                    "targets": [3],  // Target Age column
+                    "visible": true // Hide Age column
+                }]
             
         });
     });
