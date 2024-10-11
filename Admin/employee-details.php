@@ -89,7 +89,7 @@ try {
       <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title><?php echo $sysName?></title>
-  
+    <link rel="icon" href="<?php echo htmlspecialchars($S_LBase64, ENT_QUOTES, 'UTF-8'); ?>" type="image/*">
 	<!-- BOOTSTRAP STYLES-->
     <link href="assets/css/bootstrap.css" rel="stylesheet" />
      <!-- FONTAWESOME STYLES-->
@@ -108,17 +108,21 @@ try {
         <!-- /. NAV SIDE  -->
         <div id="page-wrapper" >
             <div id="page-inner">
+               
                 <div class="row">
+
                     <div class="col-md-12">
-                     <h2>User Profile</h2>   
-                        <h5>Welcome Jhon Deo , Love to see you back. </h5>
+                     <h2>Employee Information</h2>   
+                        
                     </div>
                 </div>
                  <!-- /. ROW  -->
                  <hr />
-                 <div class="card card-outline card-primary">
-	<div class="card-body">
-		<div class="container-fluid col-md-6">
+                 
+                 <div class="panel panel-default">
+
+	<div class="panel-body">
+		<div class="container-fluid col-md-12">
 			<div id="msg"></div>
 
 <?php
@@ -131,8 +135,9 @@ $pdoConnect = null;
 ?>
 			<form method="post" action="action/mis-employee-update.php" id="manage-user" enctype="multipart/form-data">	
 				<!--<input type="hidden" name="userid" value="<?php //echo $pdoResult[0]['admin_number']; ?>">-->
+                <div class="col-md-6">
                 <div class="form-group col-6">
-					<label for="username">User ID</label>
+					<label for="username">Employee ID</label>
 					<input type="text" name="username" id="username" class="form-control" value="<?php echo $pdoResult[0]['admin_number'];  ?>" readonly>
 				</div>
 				<div class="form-group col-6">
@@ -180,20 +185,23 @@ $pdoConnect = null;
 
 					</select>
 				</div>
+                </div>
+                <div class="col-md-6">
 				<div class="form-group col-6">
 					<label for="" class="control-label">Avatar</label>
+                    <br>
 					<div class="custom-file">
 		              <input type="file" class="form-control" id="customFile" name="image" onchange="displayImg(this,$(this))">
 		             
 		            </div>
 				</div>
-				<div class="form-group col-6 d-flex justify-content-center">
-					<img src="data:image/jpeg;base64,<?php echo $P_PBase64?>" alt="" id="cimg" class="img-fluid img-thumbnail">
+				<div class="form-group col-6 d-flex justify-content-center " style=" text-align:center;">
+					<img src="data:image/jpeg;base64,<?php echo $P_PBase64?>" alt="" id="cimg" class="img-fluid img-thumbnail" style="width:400px; height:auto;">
 				</div>
-			
+                </div>
 		</div>
 	</div>
-	<div class="card-footer">
+	<div class="modal-footer">
 			<div class="col-md-12">
 				<div class="row">
 					<button class="btn btn-sm btn-primary mr-2" form="manage-user">Save</button>
@@ -203,6 +211,7 @@ $pdoConnect = null;
 		</div>
     </form>
 </div>
+                 </div>
 <style>
     .img-thumbnail {
     padding: 0.25rem;
@@ -223,7 +232,39 @@ $pdoConnect = null;
 .rounded-circle {
     border-radius: 50% !important;
 }
+/* Customize the button appearance (optional) */
+.custom-file {
+    position: relative;
+    overflow: hidden;
+    display: inline-block;
+}
 
+.custom-file input[type="file"] {
+    position: absolute;
+    top: 0;
+    right: 0;
+    margin: 0;
+    padding: 0;
+    font-size: 20px;
+    cursor: pointer;
+    opacity: 0;
+}
+
+.custom-file::before {
+    content: 'Choose file';
+    display: inline-block;
+    /*background-color: #007bff;
+    color: white;*/
+    padding: 5px 10px;
+    border: 1px solid #C70039 ;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.custom-file:hover::before {
+    background-color: #800000;
+    color: white;
+}
 .custom-file-input {
     position: relative;
     z-index: 2;

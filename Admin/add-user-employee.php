@@ -54,12 +54,12 @@ try {
     $next_id = "";
     // SQL to find the smallest unused 10-digit ID
     $sql = "
-        SELECT MIN(t1.admin_number + 1) AS next_id
-        FROM mis_employees t1
-        LEFT JOIN mis_employees t2 ON t1.admin_number + 1 = t2.admin_number
-        WHERE t2.admin_number IS NULL 
-        AND LENGTH(t1.admin_number) = 10
-        AND LENGTH(t1.admin_number + 1) = 10;
+        SELECT MIN(t1.user_id + 1) AS next_id
+        FROM employee_user t1
+        LEFT JOIN employee_user t2 ON t1.user_id + 1 = t2.user_id
+        WHERE t2.user_id IS NULL 
+        AND LENGTH(t1.user_id) = 10
+        AND LENGTH(t1.user_id + 1) = 10;
     ";
 
     $stmt = $pdoConnect->query($sql);
@@ -105,7 +105,7 @@ input[type="file"]::file-selector-button {
 /* Customize the button appearance (optional) */
 .custom-file {
     position: relative;
-    overflow: hidden;
+    overflow: hidden;   
     display: inline-block;
 }
 
@@ -156,28 +156,24 @@ input[type="file"]::file-selector-button {
 	<div class="panel-body">
 		<div class="container-fluid col-md-12">
 			<div id="msg"></div>
-			<form method="post" action="action\mis-employee-insert.php" id="manage-user" enctype="multipart/form-data">
+			<form method="post" action="action/add-single-userE-upload.php" id="manage-user" enctype="multipart/form-data">
             <div class="container-fluid col-md-6">
-                <div class="form-group col-6">
+            <div class="form-group col-6">
 					<label for="name">User ID</label>
-					<input type="number" name="newid" id="newid" class="form-control" value="<?php echo $next_id; ?>" disabled>
-                    <input type="hidden" name="userid" value="<?php echo $next_id; ?>">
-				</div>	
-				<div class="form-group col-6">
-					<label for="name">First Name</label>
-					<input type="text" name="firstname" id="firstname" class="form-control" required autocomplete="off">
+                    <input type="text" name="userid" class="form-control" value="" required>
 				</div>
+                
 				<div class="form-group col-6">
-					<label for="name">Last Name</label>
-					<input type="text" name="lastname" id="lastname" class="form-control" required autocomplete="off">
+					<label for="name">Name</label>
+					<input type="text" name="name" id="name" class="form-control" required>
 				</div>
                 <div class="form-group col-6">
 					<label for="name">Birthday</label>
-					<input type="date" name="birthday" id="birthday" class="form-control" required autocomplete="off">
+					<input type="date" name="birthday" id="birthday" class="form-control" required>
 				</div>
                 <div class="form-group col-6">
 					<label for="name">Age</label>
-					<input type="text" name="age" id="age" class="form-control" required autocomplete="off">
+					<input type="text" name="age" id="age" class="form-control" required >
 				</div>
                 <div class="form-group col-6">
 					<label for="sex">Sex</label>
@@ -187,25 +183,19 @@ input[type="file"]::file-selector-button {
 					</select>
 				</div>
                 <div class="form-group col-6">
-					<label for="email">Email Address</label>
-					<input type="email" name="email" id="email" class="form-control" value="" autocomplete="off" >
-				</div>
-				<div class="form-group col-6">
-					<label for="password">Password</label>
-					<input type="password" name="password" id="password" class="form-control" value="" autocomplete="off" >
+					<label for="department">Department</label>
+					<input type="text" name="department" id="department" class="form-control" required >
 				</div>
                 <div class="form-group col-6">
-					<label for="position">Position</label>
-					<select name="position" id="position" class="custom-select form-control" required>
-						
-					</select>
+					<label for="campus">Campus</label>
+					<input type="text" name="campus" id="campus" class="form-control" required >
 				</div>
-				<div class="form-group col-6">
-					<label for="type">User Type</label>
-					<select name="type" id="type" class="custom-select form-control" required>
-						
-					</select>
+                <div class="form-group col-6">
+					<label for="email">Email Address</label>
+					<input type="email" name="email" id="email" class="form-control" value="">
 				</div>
+			
+             
                 </div>
                 <div class="col-md-6">
 				<div class="form-group col-6">
@@ -373,11 +363,9 @@ function displayImg(input) {
         reader.onload = function (e) {
             $('#cimg').attr('src', e.target.result).show();
         }
-
         reader.readAsDataURL(input.files[0]);
     }
 }
-
 </script>
     </div>
     <?php require_once('../footer.php') ?> 
@@ -427,8 +415,6 @@ function populateDropdown(fileName, dropdownId) {
         .catch(error => console.error(`Error fetching the text file (${fileName}):`, error));
 }
 
-populateDropdown('admin-system-configuration/position.txt', 'position');
-populateDropdown('admin-system-configuration/usertype.txt', 'type');
 
     </script>
 </body>

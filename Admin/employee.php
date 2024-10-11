@@ -146,7 +146,7 @@ try {
 		List of MIS Employees Accounts
 		
 	</div>
-	<div class="panel-body-ticket">
+	<div class="panel-body">
                             <div class="table-responsive">
                                 <table class="table table-striped table-hover" id="dataTables-example">
                                     <thead>

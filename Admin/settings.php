@@ -128,7 +128,8 @@ if (!empty($S_L)) {
                     
                    
                      <div class="col-md-12 "> 
-                     <div class="col-md-12 ">  <h3>Accept Tickets?</h3></div>
+                     <div class="col-md-12 ">  <h3>Ticket submission toggle</h3><br></div>
+                     
     <form id="acceptTicketsForm" method="POST" action="">
         <input type="hidden" name="accept_tickets" value="<?php echo $accept_tickets === 'on' ? 'off' : 'on'; ?>">
 
