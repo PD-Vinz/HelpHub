@@ -231,58 +231,79 @@ $pdoExec = $pdoResult->execute();
 
 // Loop through each result row
 while ($row = $pdoResult->fetch(PDO::FETCH_ASSOC)) {
-    // Determine the CSS class based on the ticket status
-    $statusClass = ($row['status'] === 'Resolved') ? 'success' :
-                  (($row['status'] === 'Pending') ? 'danger' :
-                  (($row['status'] === 'Transferred') ? 'info' :
-                  (($row['status'] === 'Processing') ? 'warning' : '')));
-
     // Extract variables from the row for convenience
     extract($row);
 
-    // Render the table row
-    echo "<tr class='odd gradeX $statusClass'>";
-    echo "<td>" . htmlspecialchars($ticket_id) . "</td>";
-    echo "<td>" . htmlspecialchars($created_date) . "</td>";
-    echo "<td>" . htmlspecialchars($issue) . "</td>";
-    echo "<td>" . htmlspecialchars($employee) . "</td>";
-    echo "<td>" . htmlspecialchars($status) . "</td>";
-    echo "<td>" . htmlspecialchars($duration) . "</td>";
+    // Determine the CSS class based on the ticket status
+    $statusClass = ($row['status'] === 'Resolved') ? 'success' :
+                  (($row['status'] === 'Pending') ? 'danger' :
+                  (($row['status'] === 'Returned') ? 'info' :
+                  (($row['status'] === 'Processing') ? 'warning' : '')));
 
-    // Render the modal trigger and ticket-view link
-    echo "<td>
-            <!-- Link to ticket-view.php page -->
-            <a href='ticket-view.php?ticket_id=" . htmlspecialchars($ticket_id) . "' class='btn btn-primary btn-xs'>
-                VIEW TICKET
-            </a>
-        </div>
-    </td>";
+    ?>
+    <tr class="odd gradeX <?php echo $statusClass?>">
+        <td class="center"><?php echo htmlspecialchars($ticket_id); ?></td>
+        <td class="center"><?php echo htmlspecialchars($created_date); ?></td>
+        <td class="center"><?php echo htmlspecialchars($issue); ?></td>
+        <td class="center"><?php echo htmlspecialchars($employee); ?></td>
+        <td class="center"><?php echo htmlspecialchars($status); ?></td>
+        <td><?php echo htmlspecialchars($duration); ?></td>
+        <td>
+<?php
 
-    echo "</tr>";
+if ($status == 'Resolved') {
+// Display the button that triggers the modal
+echo '<button class="btn btn-primary btn-xs" data-toggle="modal" data-target="#myModal' . htmlspecialchars($ticket_id) . '">
+VIEW TICKET
+</button>';
 
-    // Modal content for viewing ticket details
-    echo "<div class='modal fade' id='myModal" . htmlspecialchars($ticket_id) . "' tabindex='-1' role='dialog' aria-labelledby='myModalLabel" . htmlspecialchars($ticket_id) . "' aria-hidden='true'>
-        <div class='modal-dialog' role='document'>
-            <div class='modal-content'>
-                <div class='modal-header'>
-                    <h5 class='modal-title' id='myModalLabel" . htmlspecialchars($ticket_id) . "'>Ticket #" . htmlspecialchars($ticket_id) . "</h5>
-                    <button type='button' class='close' data-dismiss='modal' aria-label='Close'>
-                        <span aria-hidden='true'>&times;</span>
-                    </button>
+} else {
+// Display the link with the button
+echo '<a href="ticket-view.php?ticket_id=' . htmlspecialchars($ticket_id) . '">
+<button class="btn btn-primary btn-xs">
+VIEW TICKET
+</button>
+</a>';
+}
+?>
+
+    <div class="modal fade" id="myModal<?php echo $ticket_id; ?>">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                    <img src="assets/pic/head.png" alt="Technical support for DHVSU students">  
                 </div>
-                <div class='modal-body'>
-                    <p>Ticket Details for #" . htmlspecialchars($ticket_id) . "</p>
-                    <p>Issue: " . htmlspecialchars($issue) . "</p>
-                    <p>Employee: " . htmlspecialchars($employee) . "</p>
-                    <p>Status: " . htmlspecialchars($status) . "</p>
-                    <p>Created Date: " . htmlspecialchars($created_date) . "</p>
-                </div>
-                <div class='modal-footer'>
-                    <button type='button' class='btn btn-secondary' data-dismiss='modal'>Close</button>
+                <div class="modal-body" style="background-color: white;"> 
+                    <h4 class="modal-title">TICKET STATUS</h4>
+                    <div class="letter">
+                        <main>
+                            <style>
+                                p {
+                                    line-height: 1.5; 
+                                    margin-bottom: 20px; 
+                                }
+                        
+                                h1 {
+                                    line-height: 1.2; 
+                                    margin-bottom: 10px; 
+                                }
+                            </style>
+                            <?php echo nl2br(htmlspecialchars($resolution)); ?>
+                        </main>
+                    
+                        <div class="modal-footer">
+                            <a href="survey.php?id=<?php echo $ticket_id; ?>"><button type="button" class="btn btn-primary">TAKE SURVEY</button></a>
+                            <a href="ticket-view.php?ticket_id=<?php echo $ticket_id; ?>"><button class='btn btn-primary'>VIEW TICKET</button></a>                                                                    </div>
                 </div>
             </div>
         </div>
-    </div>";
+    </div>
+
+
+        </td>
+    </tr>
+<?php
 }
 ?>
 

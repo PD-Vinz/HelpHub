@@ -89,6 +89,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $NewAltEmail = $_POST['altemail'];
                 $NewSex = $_POST['sex'];
                 $NewBday = $_POST['bday'];
+                $AccStat = 'Enabled';
         
                 if ($NewBday) {
                     $birthDate = new DateTime($NewBday);
@@ -98,7 +99,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     $NewAge = 0; // Set to 0 if no birthday is provided
                 }
             
-                $pdoUserQuery = "UPDATE student_user SET name = :name, birthday = :birthday, alt_email_address = :altemail, age = :age, sex = :sex WHERE user_id = :number";
+                $pdoUserQuery = "UPDATE student_user SET name = :name, birthday = :birthday, alt_email_address = :altemail, age = :age, sex = :sex, account_status = :AccStat WHERE user_id = :number";
                 $pdoResult = $pdoConnect->prepare($pdoUserQuery);
                 $pdoResult->bindParam(':number', $id);
                 $pdoResult->bindParam(':name', $NewName);
@@ -106,6 +107,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $pdoResult->bindParam(':birthday', $NewBday);
                 $pdoResult->bindParam(':age', $NewAge);
                 $pdoResult->bindParam(':sex', $NewSex);
+                $pdoResult->bindParam(':AccStat', $AccStat);
                 $pdoResult->execute();
             
                     // Set a session variable to indicate successful update
@@ -133,6 +135,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     $NewAltEmail = $_POST['altemail'];
                     $NewSex = $_POST['sex'];
                     $NewBday = $_POST['bday'];
+                    $AccStat = 'Enabled';
         
                     if ($NewBday) {
                         $birthDate = new DateTime($NewBday);
@@ -142,7 +145,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         $NewAge = 0; // Set to 0 if no birthday is provided
                     }
                 
-                    $pdoUserQuery = "UPDATE employee_user SET name = :name, birthday = :birthday, alt_email_address = :altemail, age = :age, sex = :sex WHERE user_id = :number";
+                    $pdoUserQuery = "UPDATE employee_user SET name = :name, birthday = :birthday, alt_email_address = :altemail, age = :age, sex = :sex, account_status = :AccStat WHERE user_id = :number";
                     $pdoResult = $pdoConnect->prepare($pdoUserQuery);
                     $pdoResult->bindParam(':number', $id);
                     $pdoResult->bindParam(':name', $NewName);
@@ -150,6 +153,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     $pdoResult->bindParam(':birthday', $NewBday);
                     $pdoResult->bindParam(':age', $NewAge);
                     $pdoResult->bindParam(':sex', $NewSex);
+                    $pdoResult->bindParam(':AccStat', $AccStat);
                     $pdoResult->execute();
                 
                         // Set a session variable to indicate successful update

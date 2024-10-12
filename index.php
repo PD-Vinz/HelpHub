@@ -49,18 +49,18 @@ if (isset($_POST['login'])) {
         $username = $_POST["username"];
         $pass = $_POST["password"];
 
-        if ($username == $pass) {
-            $_SESSION["first-time"] = $username;
-            header("Location: first-time/verify.php");
-            exit(); // Prevent further execution after redirection
-        }
+//        if ($username == $pass) {
+//            $_SESSION["first-time"] = $username;
+//            header("Location: first-time/verify.php");
+//            exit(); // Prevent further execution after redirection
+//        }
 
 // Check in student_user table
 
 // Assuming $username and $pass contain user input
 
 // Query to select the hashed password from the database
-$pdoUserQuery1 = "SELECT password FROM student_user WHERE user_id = :username";
+$pdoUserQuery1 = "SELECT password, account_status FROM student_user WHERE user_id = :username";
 $pdoResult1 = $pdoConnect->prepare($pdoUserQuery1);
 $pdoResult1->bindParam(':username', $username);
 $pdoResult1->execute();
@@ -70,19 +70,37 @@ if ($pdoResult1->rowCount() > 0) {
     // Fetch the hashed password from the database
     $user = $pdoResult1->fetch();
     $storedHash = $user['password'];
+    $status = $user['account_status'];
 
+    if (($status == 'Not Activated') && ($username == $pass)) {
+        $_SESSION["first-time"] = $username;
+        header("Location: first-time/verify.php");
+        exit(); // Prevent further execution after redirection
+    } else {
     // Verify the input password against the stored hash
     if (password_verify($pass, $storedHash)) {
         // Password is correct, proceed with login
+        if ($status == 'Disabled') {
+            $message = "Your account is currently deactivated. If you wish to activate your account, please proceed to the MIS Office";
+            echo "<script type='text/javascript'>
+            window.onload = function() {
+                alert('$message');
+                window.location.href = 'index.php';
+            };
+        </script>";
+            exit;
+        } else {
         $_SESSION["user_id"] = $username;
         $_SESSION["user_identity"] = "Student";
         header("Location: User/dashboard.php");
         exit(); // Prevent further execution after redirection
     }
+    }
+}
 }
 
 // Query to select the hashed password from the database
-$pdoUserQuery2 = "SELECT password FROM employee_user WHERE user_id = :username";
+$pdoUserQuery2 = "SELECT password, account_status FROM employee_user WHERE user_id = :username";
 $pdoResult2 = $pdoConnect->prepare($pdoUserQuery2);
 $pdoResult2->bindParam(':username', $username);
 $pdoResult2->execute();
@@ -92,19 +110,38 @@ if ($pdoResult2->rowCount() > 0) {
     // Fetch the hashed password from the database
     $user = $pdoResult2->fetch();
     $storedHash = $user['password'];
+    $status = $user['account_status'];
+
+    if (($status == 'Not Activated') && ($username == $pass)) {
+        $_SESSION["first-time"] = $username;
+        header("Location: first-time/verify.php");
+        exit(); // Prevent further execution after redirection
+    } else {
 
     // Verify the input password against the stored hash
     if (password_verify($pass, $storedHash)) {
+        if ($status == 'Disabled') {
+            $message = "Your account is currently deactivated. If you wish to activate your account, please proceed to the MIS Office";
+            echo "<script type='text/javascript'>
+            window.onload = function() {
+                alert('$message');
+                window.location.href = 'index.php';
+            };
+        </script>";
+            exit;
+        } else {
         // Password is correct, proceed with login
         $_SESSION["user_id"] = $username;
         $_SESSION["user_identity"] = "Employee";
         header("Location: User/dashboard.php");
         exit(); // Prevent further execution after redirection
+        }
     }
+}
 }
 
 // Query to select the hashed password from the database
-$pdoAdminQuery = "SELECT * FROM mis_employees WHERE admin_number = :username";
+$pdoAdminQuery = "SELECT password, account_status FROM mis_employees WHERE admin_number = :username";
 $pdoResult3 = $pdoConnect->prepare($pdoAdminQuery);
 $pdoResult3->bindParam(':username', $username);
 $pdoResult3->execute();
@@ -114,14 +151,33 @@ if ($pdoResult3->rowCount() > 0) {
     // Fetch the hashed password from the database
     $user = $pdoResult3->fetch();
     $storedHash = $user['password'];
+    $status = $user['account_status'];
+
+    if (($status == 'Not Activated') && ($username == $pass)) {
+        $_SESSION["first-time"] = $username;
+        header("Location: first-time/verify.php");
+        exit(); // Prevent further execution after redirection
+    } else {
 
     // Verify the input password against the stored hash
     if (password_verify($pass, $storedHash)) {
+        if ($status == 'Disabled') {
+            $message = "Your account is currently deactivated. If you wish to activate your account, please proceed to the MIS Office";
+            echo "<script type='text/javascript'>
+            window.onload = function() {
+                alert('$message');
+                window.location.href = 'index.php';
+            };
+        </script>";
+            exit;
+        } else {
         // Password is correct, proceed with login
         $_SESSION["admin_number"] = $username;
         header("Location: Admin/index.php");
         exit(); // Prevent further execution after redirection
+        }
     }
+}
 }
 
         // If no match found in both tables
@@ -146,7 +202,7 @@ if ($pdoResult3->rowCount() > 0) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>DHVSU MIS - HelpHub</title>
     <link rel="icon" href="<?php echo htmlspecialchars($S_LBase64, ENT_QUOTES, 'UTF-8'); ?>" type="image/*">
-   
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
     <link  rel="stylesheet" href="index.css">
 </head>
 <body>
@@ -159,11 +215,34 @@ if ($pdoResult3->rowCount() > 0) {
         <br>
         
         <div class="form-group">
-            <input type="text" name="username" required placeholder="Username" autocomplete="off">
+            <input type="text" name="username" required placeholder="Username" >
         </div>
-        <div class="form-group">
-            <input type="password" name="password" id="myInput" required placeholder="Password" autocomplete="off">
-        </div>
+
+<div class="form-group" style="position: relative;">
+    <input type="password" name="password" id="myInput" required placeholder="Password" autocomplete="off" style="padding-right: 30px;">
+    <button type="button" id="toggleBtn" onclick="togglePassword()" style="position: absolute; right: 10px; top: 45%; transform: translateY(-50%); border:none; background:none; cursor:pointer;">
+        <i class="fas fa-eye" id="eyeIcon"></i>
+    </button>
+</div>
+
+<script>
+    function togglePassword() {
+        var passwordField = document.getElementById('myInput');
+        var eyeIcon = document.getElementById('eyeIcon');
+
+        if (passwordField.type === 'password') {
+            passwordField.type = 'text';
+            eyeIcon.classList.remove('fa-eye');
+            eyeIcon.classList.add('fa-eye-slash');
+        } else {
+            passwordField.type = 'password';
+            eyeIcon.classList.remove('fa-eye-slash');
+            eyeIcon.classList.add('fa-eye');
+        }
+    }
+</script>
+
+<!--
         <div class="form-group">
             <input type="checkbox" id="savePassword" name="savePassword" onclick="myFunction()">
             <label for="savePassword" style="color: #2b2b2b;">Show Password</label>
@@ -178,7 +257,7 @@ if ($pdoResult3->rowCount() > 0) {
                             }
                         </script>
         </div>
-
+-->
         <input type="submit" name="login" value="Log In"  ><br>
     
         

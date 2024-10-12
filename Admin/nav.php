@@ -1,4 +1,4 @@
-
+<?php include 'loading.php'; ?>
 
 <?php
 $id = $_SESSION["admin_number"];
@@ -73,68 +73,6 @@ try {
 
 
 ?>
-
-<style>
-    /* Styles for the loading screen */
-#loading-screen {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(255, 255, 255, 0.95);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    z-index: 9999;
-}
-
-.spinner {
-    border: 16px solid #FFD700; /* Light grey */
-    border-top: 16px solid #800000; /* Blue */
-    border-radius: 50%;
-    width: 120px;
-    height: 120px;
-    animation: spin 2s linear infinite;
-}
-
-/* Animation for the spinner */
-@keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
-}
-</style>
-<div id="loading-screen">
-        <div class="spinner"></div>
-        <p>Loading...</p>
-</div>
-<!-- Loading Screen -->    
-<script>
-    document.addEventListener('DOMContentLoaded', () => {
-    // Simulate data fetching
-    fetchData().then(() => {
-        // Hide loading screen and show content
-        document.getElementById('loading-screen').style.display = 'none';
-        document.getElementById('content').style.display = 'block';
-    });
-
-    // Show the loading screen when the page reloads
-    window.addEventListener('beforeunload', () => {
-        document.getElementById('loading-screen').style.display = 'flex';
-    });
-});
-
-function fetchData() {
-    return new Promise((resolve) => {
-        // Simulate a delay for data fetching (e.g., 2 seconds)
-        setTimeout(() => {
-            resolve();
-        }, 500);
-    });
-}
-
-</script>
 
 <style>
       	/* Basic styling for the "Back to Top" button */
@@ -372,6 +310,11 @@ $currentFile = basename($_SERVER['PHP_SELF']);
         <li>
             <a class="<?= ($currentFile == 'settings.php') ? 'active-menu' : '' ?>" href="settings.php">
                 <i class="fa fa-gear fa-xl"></i> System Settings
+            </a>
+        </li>
+        <li>
+            <a class="<?= ($currentFile == 'mailer-configuration.php') ? 'active-menu' : '' ?>" href="mailer-configuration.php">
+                <i class="fa fa-gear fa-xl"></i> Mailer Settings
             </a>
         </li>
         <?php endif; ?>
