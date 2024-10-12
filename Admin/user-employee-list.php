@@ -137,23 +137,34 @@ try {
         <div id="page-wrapper" >
             <div id="page-inner">
               
-                    <div class="col-md-9">
+
+                    <div class="col-md-8">
                      <h2>User Employee List</h2>
-                     <!--<h5>This page shows all the DHVSU Employee Accounts (except MIS Employees).</h5>   -->           
+                         <!--<h5>This page shows all the DHVSU Employee Accounts (except MIS Employees).</h5>   -->        
                     </div>
-                    <div class="card-tools col-md-3">
-			<a href="action\add-employee.php" class="btn btn-flat btn-primary" style="float: right; margin-top:15px;"><span class="fas fa-plus"></span>  Create New</a>
-	
-                </div>
+                    <div class="card-tools col-md-4">
+                        <div class="col-md-6">
+			<a href="add-user-employee.php" class="btn btn-flat btn-primary" style="float: right; margin-top:15px;"><span class="fas fa-plus"></span>  Create New </a>
+		</div>
+               <div class="col-md-6">
+			<a href="action\add-employee.php" class="btn btn-flat btn-primary" style="float: right; margin-top:15px;"><span class="fas fa-plus"></span>  Upload CSV file</a>
+		</div></div>
+
+
+
+
+
+
+                  
                  <!-- /. ROW  -->
             
                 <div class="col-md-12"><hr>
                     <!-- Advanced Tables -->
                     <div class="panel panel-default">
                         <div class="panel-heading">
-                            Student's Account
+                            Employee's Account
                         </div>
-                        <div class="panel-body-ticket">
+                        <div class="panel-body">
                             <div class="table-responsive">
 
 <?php
@@ -168,7 +179,7 @@ $pdoExec = $pdoResult->execute();
                                             <th>User Id</th>
                                             <th>Full Name</th>
                                             <th>Campus</th>
-                                            <th>Year & Section</th>
+                                            <th>Department</th>
                                             <th>Gender</th>
                                             <th>Action</th>
                                         </tr>
@@ -186,7 +197,8 @@ $pdoExec = $pdoResult->execute();
                   
                     <td><?php echo htmlspecialchars($name); ?></td>
                     <td><?php echo htmlspecialchars($campus); ?></td>
-                    <td><?php echo htmlspecialchars($year_section); ?></td>
+                    <td><?php echo htmlspecialchars($department); ?></td>
+                    
                     <td><?php echo htmlspecialchars($sex); ?></td>    
                     <td align="center" class="py-1 px-2 align-middle">
 	<div class="panel-body-ticket btn-group" >
@@ -231,13 +243,13 @@ $pdoExec = $pdoResult->execute();
                                     </div>
                                     <form class="form-horizontal" role="form">
                                         <div class="form-group">
-                                            <label class="col-lg-3 control-label">STUDENT NUMBER</label>
+                                            <label class="col-lg-3 control-label">EMPLOYEE ID</label>
                                             <div class="col-lg-8">
                                                 <input class="form-control" type="text" value="<?php echo $user_id?>" disabled>
                                             </div>
                                         </div>
                                         <div class="form-group">
-                                            <label class="col-lg-3 control-label">STUDENT EMAIL</label>
+                                            <label class="col-lg-3 control-label">DHVSU EMAIL</label>
                                             <div class="col-lg-8">
                                                 <input class="form-control" type="text" value="<?php echo $email_address?>" disabled>
                                             </div>
