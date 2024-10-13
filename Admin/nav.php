@@ -59,7 +59,7 @@ try {
     $studentDropdownOpen = ($id == '1' && in_array($currentFile, ['ticketdash.php', 'ticket-pending.php', 'ticket-opened.php', 'ticket-closed.php', 'ticket-returned.php']));
     $employeeDropdownOpen = ($id == '2' && in_array($currentFile, ['ticketdash.php', 'ticket-pending.php', 'ticket-opened.php', 'ticket-closed.php', 'ticket-returned.php']));
     $userListDropdownOpen = in_array($currentFile, ['employee.php', 'user-student-list.php', 'user-employee-list.php']);
-    $systemDocsDropdownOpen = in_array($currentFile, ['templates.php', 'issues.php']);
+    $systemDocsDropdownOpen = in_array($currentFile, ['templates.php','response-templates.php', 'others.php']);
 
 
 
@@ -358,12 +358,12 @@ $currentFile = basename($_SERVER['PHP_SELF']);
                     </a>
                 </li>
                         <li>
-                            <a class="<?= $currentFile == 'response-templates.php' ? 'active-menu' : '' ?>" href="response-templates.php">
+                        <a class="<?= ($currentFile == 'response-templates.php') ? 'active-menu' : '' ?>" href="response-templates.php">
                                 <i class="fa fa-comment-dots"></i> Response Templates
                             </a>
                         </li>
                             <li>
-                                <a class="<?= $currentFile == 'others.php' ? 'active-menu' : '' ?>" href="others.php">
+                            <a class="<?= ($currentFile == 'others.php') ? 'active-menu' : '' ?>" href="others.php">
                                     <i class="fa fa-gear"></i> Others
                                 </a>
                             </li>

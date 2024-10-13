@@ -1,4 +1,69 @@
-﻿<!DOCTYPE html>
+﻿<?php
+
+include_once("../connection/conn.php");
+$pdoConnect = connection();
+
+session_start(); // Start the session
+
+// Check if the session variable is set
+if (!isset($_SESSION["user_id"])) {
+    header("Location: ../index.php");
+    exit(); // Prevent further execution after redirection
+} else {
+    $id = $_SESSION["user_id"];
+    $identity = $_SESSION["user_identity"];
+
+    if ($identity == "Student"){
+        $pdoUserQuery = "SELECT * FROM student_user WHERE user_id = :number";
+        $pdoResult = $pdoConnect->prepare($pdoUserQuery);
+        $pdoResult->bindParam(':number', $id);
+        $pdoResult->execute();
+    
+        $Data = $pdoResult->fetch(PDO::FETCH_ASSOC);
+    
+        if ($Data) {
+            $Name = $Data['name'];
+            $Department = $Data['department'];
+            $Y_S = $Data['year_section'];
+            $P_P = $Data['profile_picture'];
+    
+            $nameParts = explode(' ', $Name);
+            $firstName = $nameParts[0];
+    
+            $P_PBase64 = base64_encode($P_P);
+        } else {
+            // Handle the case where no results are found
+            echo "No student found with the given student number.";
+        }
+    } elseif ($identity == "Employee") {
+        $pdoUserQuery = "SELECT * FROM employee_user WHERE user_id = :number";
+        $pdoResult = $pdoConnect->prepare($pdoUserQuery);
+        $pdoResult->bindParam(':number', $id);
+        $pdoResult->execute();
+    
+        $Data = $pdoResult->fetch(PDO::FETCH_ASSOC);
+    
+        if ($Data) {
+            $Name = $Data['name'];
+            $Department = $Data['department'];
+            $Y_S = $Data['year_section'];
+            $P_P = $Data['profile_picture'];
+    
+            $nameParts = explode(' ', $Name);
+            $firstName = $nameParts[0];
+    
+            $P_PBase64 = base64_encode($P_P);
+        } else {
+            // Handle the case where no results are found
+            echo "No student found with the given student number.";
+        }
+    }
+
+}
+
+?>
+
+<!DOCTYPE html>
 <html>
 
 <head>
@@ -92,7 +157,7 @@
                 <div class="modal-header">
                     <img src="assets/pic/head.png" alt="Technical support for DHVSU students">  
                 <div class="container-survey">
-             <!--   <h1>
+    <h1>
   <Strong>HELP US SERVE YOU BETTER!</Strong><br><br>
   This Client Satisfaction Measurement (CSM) tracks the customer's experience of government services provided by the office, 
   Your feedback on your recently concluded transaction will help this office provide a better service.
@@ -107,7 +172,7 @@
 </h1><hr>
 
   
-<form action="survey-extension.php?id=<?php echo $_GET['id']?>&taken=<?php echo $_GET['taken']?>" method="post">
+<form action="survey-extension.php?id=<?php echo $_GET['id']?>" method="post">
  <p><strong>INSTRUCTIONS:</strong> Checkmark your answer to the <strong>Citizen's Charter (CC)</strong> questions. The Citizen's Charter is an official document that reflects the services of a 
     government agency/office including its requirements, fees, and processing lines among others.</p>
     <p><em style="color: #666666;"><strong>PANUTO: </strong>Lagyan ng tsek ang iyong sagot sa mga sumusunod na katanungan tungkol sa Citizen's Charter (CC). 
@@ -240,7 +305,7 @@
                         </div>
                      
 <hr>
-  -->
+ 
                         <div class="question">
                             <label>Overall Satisfaction</label>
                             <ul>
@@ -279,7 +344,7 @@
             </div>
         </div>
                 <!-- /. ROW  -->
-            </div>
+            </div></div></div>
             <!-- /. PAGE INNER  -->
             <?php require_once ('../footer.php')?>
         </div>

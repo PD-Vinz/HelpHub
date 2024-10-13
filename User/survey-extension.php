@@ -119,8 +119,8 @@
     }
 </script>
 
-<form id="surveyForm" action="php/survey-finished.php?id=<?php echo $_GET['id']?>&taken=<?php echo $_GET['taken']?>" method="post" onsubmit="processForm(event)">
-   <!-- <input type="text" name="cc1" value="<?php echo $_POST['cc1']?>" hidden>
+<form id="surveyForm" action="php/survey-finished.php?id=<?php echo $_GET['id']?>" method="post" onsubmit="processForm(event)">
+ <input type="text" name="cc1" value="<?php echo $_POST['cc1']?>" hidden>
     <input type="text" name="cc2" value="<?php echo $_POST['cc2']?>" hidden>
     <input type="text" name="cc3" value="<?php echo $_POST['cc3']?>" hidden>
     <input type="text" name="sqd0" value="<?php echo $_POST['sqd0']?>" hidden>
@@ -130,7 +130,7 @@
     <input type="text" name="sqd4" value="<?php echo $_POST['sqd4']?>" hidden>
     <input type="text" name="sqd6" value="<?php echo $_POST['sqd6']?>" hidden>
     <input type="text" name="sqd7" value="<?php echo $_POST['sqd7']?>" hidden>
-    <input type="text" name="sqd8" value="<?php echo $_POST['sqd8']?>" hidden>-->
+    <input type="text" name="sqd8" value="<?php echo $_POST['sqd8']?>" hidden>
     <input type="text" name="overall_satisfaction" value="<?php echo $_POST['overall_satisfaction']?>" hidden>
     <input type="text" name="service_rating" value="<?php echo $_POST['service_rating']?>" hidden>
     <input type="text" name="service_expectations" value="<?php echo $_POST['service_expectations']?>" hidden>

@@ -571,21 +571,21 @@ $pdoExec = $pdoResult->execute();
 </div>
 <div class="col-md-4">
     <div class="panel panel-default">
-        <div class="panel-heading"><h3 style="margin-top: 5px; margin-bottom:0px;">Bayes Rating Like</h3></div>
+        <div class="panel-heading"><h3 style="margin-top: 5px; margin-bottom:0px;">Like Rating</h3></div>
         <div class="panel-body" id="likeContainer"></div>
     </div>
 </div>
 
 <div class="col-md-4">
     <div class="panel panel-default">
-        <div class="panel-heading"><h3 style="margin-top: 5px; margin-bottom:0px;">Bayes Rating Improve</h3></div>
+        <div class="panel-heading"><h3 style="margin-top: 5px; margin-bottom:0px;">Improve Rating</h3></div>
         <div class="panel-body" id="improveContainer"></div>
     </div>
 </div>
 
 <div class="col-md-4">
     <div class="panel panel-default">
-        <div class="panel-heading"><h3 style="margin-top: 5px; margin-bottom:0px;">Bayes Rating Comment</h3></div>
+        <div class="panel-heading"><h3 style="margin-top: 5px; margin-bottom:0px;">Comment Rating</h3></div>
         <div class="panel-body" id="commentContainer"></div>
         
     </div>
