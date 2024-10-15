@@ -650,16 +650,19 @@ $pdoExec = $pdoResult->execute();
         <div class="panel panel-default">
             <div class="panel-heading"><h3 style="margin-top: 5px; margin-bottom:0px;">CC1</h3></div>
             <div class="panel-body">
-                <div id="morris-donut-chart1"></div>
+                <div id="morris-bar-chart1"></div>
             </div>
         </div>
     </div>
+    
+
+
 
     <div class="col-md-4">
         <div class="panel panel-default">
             <div class="panel-heading"><h3 style="margin-top: 5px; margin-bottom:0px;">CC2</h3></div>
             <div class="panel-body">
-                <div id="morris-donut-chart2"></div>
+            <div id="morris-bar-chart2"></div>
             </div>
         </div>
     </div>
@@ -668,7 +671,7 @@ $pdoExec = $pdoResult->execute();
         <div class="panel panel-default">
             <div class="panel-heading"><h3 style="margin-top: 5px; margin-bottom:0px;">CC3</h3></div>
             <div class="panel-body">
-                <div id="morris-donut-chart3"></div>
+                <div id="morris-bar-chart3"></div>
             </div>
         </div>
     </div>
@@ -968,6 +971,26 @@ displayBayesData('comment', bayesData.comment);
     createDonutChart('morris-donut-chart10', 'action/feedback-data.php?chart=sqd7');
     createDonutChart('morris-donut-chart11', 'action/feedback-data.php?chart=sqd8');
 });
+
+function createBarChart(elementId, dataUrl) {
+    $.getJSON(dataUrl, function (data) {
+        Morris.Bar({
+            element: elementId,
+            data: data,
+            xkey: 'label',   // The label field in your PHP data
+            ykeys: ['value'],  // The value field in your PHP data
+            labels: ['Count'],  // The label to display for values
+            barColors: ['#3498db'],  // Color for bars
+            hideHover: 'auto',
+            resize: true
+        });
+    });
+}
+
+createBarChart('morris-bar-chart1', 'action/feedback-data.php?chart=cc1');
+createBarChart('morris-bar-chart2', 'action/feedback-data.php?chart=cc2');
+createBarChart('morris-bar-chart3', 'action/feedback-data.php?chart=cc3');
+
 
     </script>
       <script src="assets/js/dataTables/jquery.dataTables.js"></script>
