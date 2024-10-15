@@ -278,8 +278,8 @@ $overallPositivePercentage = ($totalResponses > 0) ? ($totalPositiveResponses / 
 
 // Output the overall positive percentage
 echo "<script>
-    var overallPositivePercentage = " . json_encode($overallPositivePercentage) . ";
-    console.log('Overall Positive Percentage: ' + overallPositivePercentage + '%');
+var overallPositivePercentage = " . json_encode($overallPositivePercentage) . ";
+console.log('Overall Positive Percentage: ' + overallPositivePercentage + '%');
 </script>";
 
 
@@ -339,7 +339,7 @@ echo "<script>
       <div class="csat-container">
       <br> <br> <br>
         <span class="csat-label">Overall positive responses:</span> 
-        <div class="csat-percentage">
+        <div class="csat-percentage" style="font-size:87px;">
           <?php echo number_format($overallPositivePercentage, 2); ?>%
         </div>
  
@@ -590,6 +590,109 @@ $pdoExec = $pdoResult->execute();
         
     </div>
 </div>
+<div class="col-md-12">
+<hr>
+<h3>Citizen's Chart (CC)</h3>
+<br>
+</div>
+    <div class="col-md-4">
+        <div class="panel panel-default">
+            <div class="panel-heading"><h3 style="margin-top: 5px; margin-bottom:0px;">CC1</h3></div>
+            <div class="panel-body">
+                <div id="morris-donut-chart1"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="panel panel-default">
+            <div class="panel-heading"><h3 style="margin-top: 5px; margin-bottom:0px;">CC2</h3></div>
+            <div class="panel-body">
+                <div id="morris-donut-chart2"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="panel panel-default">
+            <div class="panel-heading"><h3 style="margin-top: 5px; margin-bottom:0px;">CC3</h3></div>
+            <div class="panel-body">
+                <div id="morris-donut-chart3"></div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-12">
+<hr>
+<h3>Service Quality Dimensions (SQD)</h3>
+<br>
+</div>
+    <div class="col-md-3">
+        <div class="panel panel-default">
+            <div class="panel-heading"><h3 style="margin-top: 5px; margin-bottom:0px;">SQD0</h3></div>
+            <div class="panel-body">
+                <div id="morris-donut-chart4"style="height:250px;"></div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="panel panel-default">
+            <div class="panel-heading"><h3 style="margin-top: 5px; margin-bottom:0px;">SQD1</h3></div>
+            <div class="panel-body">
+                <div id="morris-donut-chart5"style="height:250px;"></div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="panel panel-default">
+            <div class="panel-heading"><h3 style="margin-top: 5px; margin-bottom:0px;">SQD2</h3></div>
+            <div class="panel-body">
+                <div id="morris-donut-chart6"style="height:250px;"></div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="panel panel-default">
+            <div class="panel-heading"><h3 style="margin-top: 5px; margin-bottom:0px;">SQD3</h3></div>
+            <div class="panel-body">
+                <div id="morris-donut-chart7"style="height:250px;"></div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="panel panel-default">
+            <div class="panel-heading"><h3 style="margin-top: 5px; margin-bottom:0px;">SQD4</h3></div>
+            <div class="panel-body">
+                <div id="morris-donut-chart8"style="height:250px;"></div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="panel panel-default">
+            <div class="panel-heading"><h3 style="margin-top: 5px; margin-bottom:0px;">SQD6</h3></div>
+            <div class="panel-body">
+                <div id="morris-donut-chart9"style="height:250px;"></div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="panel panel-default">
+            <div class="panel-heading"><h3 style="margin-top: 5px; margin-bottom:0px;">SQD7</h3></div>
+            <div class="panel-body">
+                <div id="morris-donut-chart10"style="height:250px;"></div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="panel panel-default">
+            <div class="panel-heading"><h3 style="margin-top: 5px; margin-bottom:0px;">SQD8</h3></div>
+            <div class="panel-body">
+                <div id="morris-donut-chart11"style="height:250px;"></div>
+            </div>
+        </div>
+    </div>
+    
+
+</body>
 </div>
 
 <br>
@@ -778,7 +881,44 @@ displayBayesData('comment', bayesData.comment);
     <!-- METISMENU SCRIPTS -->
     <script src="assets/js/jquery.metisMenu.js"></script>
       <!-- CUSTOM SCRIPTS -->
+ <!-- MORRIS CHART SCRIPTS -->
+    <script src="assets/js/morris/raphael-2.1.0.min.js"></script>
+    <script src="assets/js/morris/morris.js"></script>
 
+
+      <script>
+       $(document).ready(function() {
+    // Function to create a donut chart
+    function createDonutChart(elementId, dataUrl) {
+        $.getJSON(dataUrl, function(data) {
+            if (data.error) {
+                console.error('Error fetching data:', data.error);
+            } else {
+                Morris.Donut({
+                    element: elementId,
+                    data: data
+                });
+            }
+        }).fail(function(jqxhr, textStatus, error) {
+            console.error('Request Failed: ' + textStatus + ', ' + error);
+        });
+    }
+
+    // Create charts for each feedback column
+    createDonutChart('morris-donut-chart1', 'action/feedback-data.php?chart=cc1');
+    createDonutChart('morris-donut-chart2', 'action/feedback-data.php?chart=cc2');
+    createDonutChart('morris-donut-chart3', 'action/feedback-data.php?chart=cc3');
+    createDonutChart('morris-donut-chart4', 'action/feedback-data.php?chart=sqd0');
+    createDonutChart('morris-donut-chart5', 'action/feedback-data.php?chart=sqd1');
+    createDonutChart('morris-donut-chart6', 'action/feedback-data.php?chart=sqd2');
+    createDonutChart('morris-donut-chart7', 'action/feedback-data.php?chart=sqd3');
+    createDonutChart('morris-donut-chart8', 'action/feedback-data.php?chart=sqd4');
+    createDonutChart('morris-donut-chart9', 'action/feedback-data.php?chart=sqd6');
+    createDonutChart('morris-donut-chart10', 'action/feedback-data.php?chart=sqd7');
+    createDonutChart('morris-donut-chart11', 'action/feedback-data.php?chart=sqd8');
+});
+
+    </script>
       <script src="assets/js/dataTables/jquery.dataTables.js"></script>
       <script src="assets/js/dataTables/dataTables.min.js"></script>
       <script>  $(document).ready(function() {

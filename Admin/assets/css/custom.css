@@ -731,7 +731,7 @@
     }
     
     .csat-percentage {
-      font-size: 83px; /* Large font size for the percentage */
+      font-size: 50px; /* Large font size for the percentage */
       font-weight: bold;
       color: #333; /* Dark gray color for the percentage */
     }
@@ -1207,4 +1207,8 @@
     color: lightgray;
   }
   
+  
+
+  /*back to top
+
   

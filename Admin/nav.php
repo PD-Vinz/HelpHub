@@ -59,7 +59,7 @@ try {
     $studentDropdownOpen = ($id == '1' && in_array($currentFile, ['ticketdash.php', 'ticket-pending.php', 'ticket-opened.php', 'ticket-closed.php', 'ticket-returned.php']));
     $employeeDropdownOpen = ($id == '2' && in_array($currentFile, ['ticketdash.php', 'ticket-pending.php', 'ticket-opened.php', 'ticket-closed.php', 'ticket-returned.php']));
     $userListDropdownOpen = in_array($currentFile, ['employee.php', 'user-student-list.php', 'user-employee-list.php']);
-    $systemDocsDropdownOpen = in_array($currentFile, ['templates.php', 'issues.php']);
+    $systemDocsDropdownOpen = in_array($currentFile, ['templates.php',  'response-templates.php', 'others.php']);
 
 
 
@@ -75,37 +75,46 @@ try {
 ?>
 
 <style>
-      	/* Basic styling for the "Back to Top" button */
-#astroid-backtotop {
-    display: none; /* Hide button by default */
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
-    width: 50px;
-    height: 50px;
-    background-color: #007bff;
-    color: white;
-    border-radius: 50%;
-    text-align: center;
-    line-height: 50px; /* Center icon vertically */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    font-size: 24px;
-    cursor: pointer;
-    z-index: 1000; /* Make sure button is above other content */
-    transition: opacity 0.3s ease;
-  }
-  
-  #astroid-backtotop:hover {
-    background-color: #0056b3;
-  }
-  
-  /* Show the button when scrolling */
-  body.scroll-active #astroid-backtotop {
-    display: inline;
-  }
+      #astroid-backtotop {
+  display: none;
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  width: 50px;
+  height: 50px;
+  background-color: #007bff;
+  color: white;
+  border-radius: 50%;
+  text-align: center;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  font-size: 24px;
+  cursor: pointer;
+  z-index: 1000;
+  transition: opacity 0.3s ease, background-color 0.3s ease; 
+  justify-content: center;
+  align-items: center;
+}
 
-  span {
-  content: "\0021";
+#astroid-backtotop:hover {
+  background-color: #0056b3;
+  text-decoration: none;
+}
+
+body.scroll-active #astroid-backtotop {
+  display: flex;
+}
+
+/* Ensure the icon is centered */
+#astroid-backtotop i {
+  display: block;
+  line-height: 1;
+}
+
+/* Reset any potential conflicting styles */
+#astroid-backtotop * {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 </style>
 <a id="astroid-backtotop" class="circle" href="#"><i class="fas fa-arrow-circle-up"></i></a>
