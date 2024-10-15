@@ -428,29 +428,9 @@ $pdoExec = $pdoResult->execute();
                                             <input class="form-control" value="<?php echo htmlspecialchars($ticket_id); ?>" disabled/>
                                              
                                         </div>
-                                        
-                                        <?php  
-                                        if ($taken == 'before'){
-                                              $whenistaken = "After Submitting Ticket";
-                                        } elseif ($taken == 'after'){
-                                              $whenistaken = "After Ticket was Completed";
-                                        }
-                                        ?>
-
-                                        <div class="form-group">
-                                            <label>Survey Taken ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ </label>
-                                            <input class="form-control" value="<?php  echo htmlspecialchars($whenistaken) ?>" disabled/>
-                                             
-                                        </div>
-
-                                        
-                                    </form>      
-                                </div>
-                                
-                                <div class="col-md-6">
-                                    <h3>Ratings And Comments</h3>
+                                    <br>
+                                        <h3>Ratings And Comments</h3>
                                     
-                                    <form role="form">
                                         <div class="form-group">
                                             <label>Overall Satisfaction‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ </label>
                                             <input class="form-control" value="<?php echo htmlspecialchars($overall_satisfaction); ?>" disabled/>
@@ -485,6 +465,77 @@ $pdoExec = $pdoResult->execute();
                                             <textarea rows="4" class="form-control" style="height:148px; resize:none; overflow:auto;" disabled><?php echo htmlspecialchars($comments); ?></textarea>
                                           
                                         </div>
+                                        
+                                    </form>      
+                                </div>
+                                
+                                <div class="col-md-6">
+                                    <h3>Citizen's Chart (CC)</h3>
+                                    
+                                    <form role="form">
+                                    <div class="form-group">
+                                            <label>CC1‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ </label>
+                                            <input class="form-control" value="<?php echo htmlspecialchars($cc1); ?>" disabled/>
+                                             
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label>CC2‎ ‎ ‎ ‎ ‎ ‎ ‎ </label>
+                                            <input class="form-control" value="<?php echo htmlspecialchars($cc2); ?>" disabled/>
+                                             
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label>CC3‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ </label>
+                                            <input class="form-control" value="<?php echo htmlspecialchars($cc3); ?>" disabled/>                                             
+                                        </div>
+                                        <br><br><br>    <br><br>
+                                        <h3>Service Quality Dimensions (SQD)</h3>
+
+
+                                        <div class="form-group">
+                                            <label>SQD0‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ </label>
+                                            <input class="form-control" value="<?php echo htmlspecialchars($sqd0); ?>" disabled/>
+                                             
+                                        </div>
+                                        <div class="form-group">
+                                            <label>SQD1‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ </label>
+                                            <input class="form-control" value="<?php echo htmlspecialchars($sqd1); ?>" disabled/>
+                                             
+                                        </div>
+                                        <div class="form-group">
+                                            <label>SQD2‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ </label>
+                                            <input class="form-control" value="<?php echo htmlspecialchars($sqd2); ?>" disabled/>
+                                             
+                                        </div>
+                                        <div class="form-group">
+                                            <label>SQD3‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ </label>
+                                            <input class="form-control" value="<?php echo htmlspecialchars($sqd3); ?>" disabled/>
+                                             
+                                        </div>
+                                        <div class="form-group">
+                                            <label>SQD4‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ </label>
+                                            <input class="form-control" value="<?php echo htmlspecialchars($sqd4); ?>" disabled/>
+                                             
+                                        </div>
+                                        <div class="form-group">
+                                            <label>SQD6‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ </label>
+                                            <input class="form-control" value="<?php echo htmlspecialchars($sqd6); ?>" disabled/>
+                                             
+                                        </div>
+                                        <div class="form-group">
+                                            <label>SQD7‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ </label>
+                                            <input class="form-control" value="<?php echo htmlspecialchars($sqd7); ?>" disabled/>
+                                             
+                                        </div>
+                                        <div class="form-group">
+                                            <label>SQD8‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ </label>
+                                            <input class="form-control" value="<?php echo htmlspecialchars($sqd8); ?>" disabled/>
+                                             
+                                        </div>
+                                        
+
+
                                     </form>
                                 </div>
                             </div>
@@ -517,7 +568,7 @@ $pdoExec = $pdoResult->execute();
                 <div class="col-md-4"> 
   <div class="panel panel-default">
     <div class="panel-heading">
-    <h3 style="margin-top: 5px; margin-bottom:0px;">"Overall Satisfaction"</h3>
+    <h3 style="margin-top: 5px; margin-bottom:0px;">Overall Satisfaction</h3>
     </div>
     <div class="panel-body" id="ratingBarsContainer">
       <div class="csat-container">
@@ -554,7 +605,7 @@ $pdoExec = $pdoResult->execute();
 <div class="col-md-4"> 
   <div class="panel panel-default">
     <div class="panel-heading">
-    <h3 style="margin-top: 5px; margin-bottom:0px;">Service Expectations</h3> 
+    <h3 style="margin-top: 5px; margin-bottom:0px;">Expectation Rating</h3> 
     </div>
     <div class="panel-body" id="expectationRatingBarsContainer">
       <div class="csat-container">
@@ -571,21 +622,21 @@ $pdoExec = $pdoResult->execute();
 </div>
 <div class="col-md-4">
     <div class="panel panel-default">
-        <div class="panel-heading"><h3 style="margin-top: 5px; margin-bottom:0px;">Bayes Rating Like</h3></div>
+        <div class="panel-heading"><h3 style="margin-top: 5px; margin-bottom:0px;">Like Rating</h3></div>
         <div class="panel-body" id="likeContainer"></div>
     </div>
 </div>
 
 <div class="col-md-4">
     <div class="panel panel-default">
-        <div class="panel-heading"><h3 style="margin-top: 5px; margin-bottom:0px;">Bayes Rating Improve</h3></div>
+        <div class="panel-heading"><h3 style="margin-top: 5px; margin-bottom:0px;">Improvement Rating</h3></div>
         <div class="panel-body" id="improveContainer"></div>
     </div>
 </div>
 
 <div class="col-md-4">
     <div class="panel panel-default">
-        <div class="panel-heading"><h3 style="margin-top: 5px; margin-bottom:0px;">Bayes Rating Comment</h3></div>
+        <div class="panel-heading"><h3 style="margin-top: 5px; margin-bottom:0px;">Comment Rating</h3></div>
         <div class="panel-body" id="commentContainer"></div>
         
     </div>

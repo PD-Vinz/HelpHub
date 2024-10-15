@@ -11,7 +11,7 @@ try {
     // Define the SQL query based on the chart type
     switch ($chartType) {
         case 'cc1':
-            // Use CASE statement to map values to labels for CC1
+ 
             $stmt = $pdoConnect->prepare("
                 SELECT 
                     CASE 
@@ -27,7 +27,7 @@ try {
             ");
             break;
             case 'cc2':
-                // Use CASE statement to map values to labels for CC1
+              
                 $stmt = $pdoConnect->prepare("
                 SELECT 
                     CASE 
@@ -44,14 +44,14 @@ try {
             ");
             break;
         case 'cc3':
-             // Use CASE statement to map values to labels for CC1
+             
              $stmt = $pdoConnect->prepare("
              SELECT 
                  CASE 
                      WHEN cc3 = 'a' THEN 'Helped very much'
-                     WHEN cc3 = 'b' THEN 'I know what a Citizen\'s Charter is but I did NOT see the office\'s Citizen\'s Charter.'
-                     WHEN cc3 = 'c' THEN 'I learned of the Citizen\'s Charter only when I saw the office\'s Citizen\'s Charter.'
-                     WHEN cc3 = 'd' THEN 'I do not know what a Citizen\'s Charter is and I did not see one in this office.'
+                     WHEN cc3 = 'b' THEN 'Somewhat helped'
+                     WHEN cc3 = 'c' THEN 'Did not help'
+                     WHEN cc3 = 'd' THEN 'N/A'
                  END AS label,
                  COUNT(*) as value 
              FROM tb_survey_feedback 
