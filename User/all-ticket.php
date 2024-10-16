@@ -177,16 +177,16 @@ if (!isset($_SESSION["user_id"])) {
                         <h3 style="color:white;"><?php echo $Name?></h3>
                     </li>
                     <li>
-                        <a href="dashboard.php"><i class="fa fa-dashboard fa-xl" style="font: size 24px;color:rgb(255, 255, 255)"></i> DASHBOARD </a>
+                        <a href="dashboard.php"><i class="fa fa-dashboard fa-xl" style="font-size: 24px;color:rgb(255, 255, 255)"></i> DASHBOARD </a>
                     </li>
                     <li>
-                        <a href="profile.php"><i class="fa fa-user fa-xl" style="font: size 24px;color:rgb(255, 255, 255)"></i> PROFILE </a>
+                        <a href="profile.php"><i class="fa fa-user fa-xl" style="font-size: 24px;color:rgb(255, 255, 255)"></i> PROFILE </a>
                     </li>
                     <li>
                             <a href="create-ticket.php"><i class="fa fa-plus fa-xl" style="font-size: 24px; color: rgb(255, 255, 255)"></i> CREATE TICKET </a>
                     </li>
                     <li>
-                        <a class="active-menu" href="all-ticket.php"><i class="fa fa-ticket fa-xl" style="font-size:24px"></i> ALL TICKET </a>
+                        <a class="active-menu" href="all-ticket.php"><i class="fa fa-ticket fa-xl" style="font-size: 24px; color: rgb(255, 255, 255)"></i> ALL TICKET </a>
                     </li>
                 </ul>
             </div>
