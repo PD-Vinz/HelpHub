@@ -112,7 +112,7 @@ if (!isset($_SESSION["admin_number"])) {
                      <!--<h5>This page shows all the DHVSU Employee Accounts (except MIS Employees).</h5>   -->           
                     </div>
                     <div class="card-tools col-md-3">
-			<a href="action\add-employee.php" class="btn btn-flat btn-primary" style="float: right; margin-top:15px;"><span class="fas fa-plus"></span>  Create New</a>
+			<a href="action\add-mailer.php" class="btn btn-flat btn-primary" style="float: right; margin-top:15px;"><span class="fas fa-plus"></span>  Create New</a>
 	
                 </div>
                  <!-- /. ROW  -->
@@ -135,7 +135,7 @@ $pdoExec = $pdoResult->execute();
                                 <table class="table table-striped table-bordered table-hover" id="dataTables-example">
                                     <thead>
                                         <tr>
-                                            <th>Name</th>
+                                            <th>Purpose</th>
                                             <th>Host</th>
                                             <th>Username</th>
                                             <th>Password</th>
@@ -231,6 +231,23 @@ while ($row = $pdoResult->fetch(PDO::FETCH_ASSOC)){
     </script>
       <!-- CUSTOM SCRIPTS -->
     <script src="assets/js/custom.js"></script>
+    <script>
+    function togglePassword(id) {
+        var passwordField = document.getElementById('password-' + id);
+        var eyeIcon = document.getElementById('eyeIcon-' + id);
+
+        if (passwordField.type === 'password') {
+            passwordField.type = 'text';
+            eyeIcon.classList.remove('fa-eye');
+            eyeIcon.classList.add('fa-eye-slash');
+        } else {
+            passwordField.type = 'password';
+            eyeIcon.classList.remove('fa-eye-slash');
+            eyeIcon.classList.add('fa-eye');
+        }
+    }
+</script>
+
     
 <?php include_once("extra/warning-modal.html");?>    
 

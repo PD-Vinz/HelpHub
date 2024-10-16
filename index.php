@@ -172,6 +172,7 @@ if ($pdoResult3->rowCount() > 0) {
             exit;
         } else {
         // Password is correct, proceed with login
+        include_once("priority_check.php");
         $_SESSION["admin_number"] = $username;
         header("Location: Admin/index.php");
         exit(); // Prevent further execution after redirection

@@ -49,8 +49,10 @@
 </div>
 <!-- Loading Screen -->    
 <script>
-    document.addEventListener('DOMContentLoaded', () => {
-        const loadingScreen = document.getElementById('loading-screen');
+document.addEventListener('DOMContentLoaded', () => {
+    const loadingScreen = document.getElementById('loading-screen');
+    const content = document.getElementById('content'); // Assuming you have a content div
+
     // Simulate data fetching
     fetchData().then(() => {
         // Fade out the loading screen once the data is ready
@@ -61,13 +63,26 @@
         }, 500); // Matches the fade-out duration
     });
 
-
     // Show the loading screen with a fade-in effect when the page reloads or navigates away
     window.addEventListener('beforeunload', () => {
         loadingScreen.style.display = 'flex'; // Ensure it's visible
         loadingScreen.classList.remove('fade-out'); // Remove fade-out if present
         loadingScreen.classList.add('fade-in'); // Apply fade-in effect
     });
+});
+
+// Handle back button or cached page load
+window.addEventListener('pageshow', function(event) {
+    const loadingScreen = document.getElementById('loading-screen');
+    const content = document.getElementById('content'); // Assuming you have a content div
+    if (event.persisted) {
+        // Page is loaded from cache (e.g., using the back button), so remove the loading screen
+        loadingScreen.classList.add('fade-out');
+        setTimeout(() => {
+        loadingScreen.style.display = 'none';
+        content.style.display = 'block';
+        }, 500); // Matches the fade-out duration
+    }
 });
 
 // Handle redirection with fade-in effect
@@ -92,5 +107,4 @@ function fetchData() {
         }, 500);
     });
 }
-
 </script>
