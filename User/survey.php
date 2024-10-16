@@ -1,4 +1,81 @@
-﻿<!DOCTYPE html>
+﻿<?php
+
+include_once("../connection/conn.php");
+$pdoConnect = connection();
+
+session_start(); // Start the session
+
+// Check if the session variable is set
+if (!isset($_SESSION["user_id"])) {
+    header("Location: ../index.php");
+    exit(); // Prevent further execution after redirection
+} else {
+    $id = $_SESSION["user_id"];
+    $identity = $_SESSION["user_identity"];
+    $query = $pdoConnect->prepare("SELECT system_name, short_name, system_logo, system_cover FROM settings WHERE id = :id");
+    $query->execute(['id' => 1]);
+    $Datas = $query->fetch(PDO::FETCH_ASSOC);
+    $sysName = $Datas['system_name'] ?? '';
+    $shortName = $Datas['short_name'] ?? '';
+     $systemCover = $Datas['system_cover'];
+     $S_L = $Datas['system_logo'];
+     $S_LBase64 = '';
+     if (!empty($S_L)) {
+         $base64Image = base64_encode($S_L);
+         $imageType = 'image/png'; // Default MIME type
+         $S_LBase64 = 'data:' . $imageType . ';base64,' . $base64Image;
+     }
+    if ($identity == "Student"){
+        $pdoUserQuery = "SELECT * FROM student_user WHERE user_id = :number";
+        $pdoResult = $pdoConnect->prepare($pdoUserQuery);
+        $pdoResult->bindParam(':number', $id);
+        $pdoResult->execute();
+    
+        $Data = $pdoResult->fetch(PDO::FETCH_ASSOC);
+    
+        if ($Data) {
+            $Name = $Data['name'];
+            $Department = $Data['department'];
+            $Y_S = $Data['year_section'];
+            $P_P = $Data['profile_picture'];
+    
+            $nameParts = explode(' ', $Name);
+            $firstName = $nameParts[0];
+    
+            $P_PBase64 = base64_encode($P_P);
+        } else {
+            // Handle the case where no results are found
+            echo "No student found with the given student number.";
+        }
+    } elseif ($identity == "Employee") {
+        $pdoUserQuery = "SELECT * FROM employee_user WHERE user_id = :number";
+        $pdoResult = $pdoConnect->prepare($pdoUserQuery);
+        $pdoResult->bindParam(':number', $id);
+        $pdoResult->execute();
+    
+        $Data = $pdoResult->fetch(PDO::FETCH_ASSOC);
+    
+        if ($Data) {
+            $Name = $Data['name'];
+            $Department = $Data['department'];
+            $Y_S = $Data['year_section'];
+            $P_P = $Data['profile_picture'];
+    
+            $nameParts = explode(' ', $Name);
+            $firstName = $nameParts[0];
+    
+            $P_PBase64 = base64_encode($P_P);
+        } else {
+            // Handle the case where no results are found
+            echo "No student found with the given student number.";
+        }
+    }
+
+}
+
+?>
+
+<!DOCTYPE html>
 <html>
 
 <head>
@@ -92,7 +169,7 @@
                 <div class="modal-header">
                     <img src="assets/pic/head.png" alt="Technical support for DHVSU students">  
                 <div class="container-survey">
-             <!--   <h1>
+    <h1>
   <Strong>HELP US SERVE YOU BETTER!</Strong><br><br>
   This Client Satisfaction Measurement (CSM) tracks the customer's experience of government services provided by the office, 
   Your feedback on your recently concluded transaction will help this office provide a better service.
@@ -107,7 +184,7 @@
 </h1><hr>
 
   
-<form action="survey-extension.php?id=<?php echo $_GET['id']?>&taken=<?php echo $_GET['taken']?>" method="post">
+<form action="survey-extension.php?id=<?php echo $_GET['id']?>" method="post">
  <p><strong>INSTRUCTIONS:</strong> Checkmark your answer to the <strong>Citizen's Charter (CC)</strong> questions. The Citizen's Charter is an official document that reflects the services of a 
     government agency/office including its requirements, fees, and processing lines among others.</p>
     <p><em style="color: #666666;"><strong>PANUTO: </strong>Lagyan ng tsek ang iyong sagot sa mga sumusunod na katanungan tungkol sa Citizen's Charter (CC). 
@@ -146,10 +223,10 @@
 
    <label>CC3. If aware of Citizen's Charter (answered codes 1-3 in CC1), how much did the Citizen's Charter help you in your Transaction?<br>Kung alam ang CC (Nag-tsek sa opsyon 1-3 sa CCI), gaano nakatulong ang CC sa transaksyon mo?</label>
                            <ul>
-                               <li><input type="radio" name="cc3" value="a" required>Helped very much (𝘚𝘰𝘣𝘳𝘢𝘯𝘨 𝘯𝘢𝘬𝘢𝘵𝘶𝘭𝘰𝘯𝘨)</li>
-                               <li><input type="radio" name="cc3" value="b" required>Somewhat helped (𝘕𝘢𝘬𝘢𝘵𝘶𝘭𝘰𝘯𝘨 𝘯𝘢𝘮𝘢𝘯)</li>
-                               <li><input type="radio" name="cc3" value="c" required>Did not help (𝘏𝘪𝘯𝘥𝘪 𝘯𝘢𝘬𝘢𝘵𝘶𝘭𝘰𝘯𝘨)</li>
-                               <li><input type="radio" name="cc3" value="d" required>N/A</li>
+                               <li><input type="radio" name="cc3" value="a" required> a. Helped very much (𝘚𝘰𝘣𝘳𝘢𝘯𝘨 𝘯𝘢𝘬𝘢𝘵𝘶𝘭𝘰𝘯𝘨)</li>
+                               <li><input type="radio" name="cc3" value="b" required> b. Somewhat helped (𝘕𝘢𝘬𝘢𝘵𝘶𝘭𝘰𝘯𝘨 𝘯𝘢𝘮𝘢𝘯)</li>
+                               <li><input type="radio" name="cc3" value="c" required> c. Did not help (𝘏𝘪𝘯𝘥𝘪 𝘯𝘢𝘬𝘢𝘵𝘶𝘭𝘰𝘯𝘨)</li>
+                               <li><input type="radio" name="cc3" value="d" required> d. N/A</li>
                            </ul>
                        </div>
 
@@ -240,7 +317,7 @@
                         </div>
                      
 <hr>
-  -->
+ 
                         <div class="question">
                             <label>Overall Satisfaction</label>
                             <ul>
@@ -279,7 +356,7 @@
             </div>
         </div>
                 <!-- /. ROW  -->
-            </div>
+            </div></div></div>
             <!-- /. PAGE INNER  -->
             <?php require_once ('../footer.php')?>
         </div>

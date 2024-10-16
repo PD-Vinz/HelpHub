@@ -278,8 +278,8 @@ $overallPositivePercentage = ($totalResponses > 0) ? ($totalPositiveResponses / 
 
 // Output the overall positive percentage
 echo "<script>
-    var overallPositivePercentage = " . json_encode($overallPositivePercentage) . ";
-    console.log('Overall Positive Percentage: ' + overallPositivePercentage + '%');
+var overallPositivePercentage = " . json_encode($overallPositivePercentage) . ";
+console.log('Overall Positive Percentage: ' + overallPositivePercentage + '%');
 </script>";
 
 
@@ -339,7 +339,7 @@ echo "<script>
       <div class="csat-container">
       <br> <br> <br>
         <span class="csat-label">Overall positive responses:</span> 
-        <div class="csat-percentage">
+        <div class="csat-percentage" style="font-size:87px;">
           <?php echo number_format($overallPositivePercentage, 2); ?>%
         </div>
  
@@ -428,29 +428,9 @@ $pdoExec = $pdoResult->execute();
                                             <input class="form-control" value="<?php echo htmlspecialchars($ticket_id); ?>" disabled/>
                                              
                                         </div>
-                                        
-                                        <?php  
-                                        if ($taken == 'before'){
-                                              $whenistaken = "After Submitting Ticket";
-                                        } elseif ($taken == 'after'){
-                                              $whenistaken = "After Ticket was Completed";
-                                        }
-                                        ?>
-
-                                        <div class="form-group">
-                                            <label>Survey Taken ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ </label>
-                                            <input class="form-control" value="<?php  echo htmlspecialchars($whenistaken) ?>" disabled/>
-                                             
-                                        </div>
-
-                                        
-                                    </form>      
-                                </div>
-                                
-                                <div class="col-md-6">
-                                    <h3>Ratings And Comments</h3>
+                                    <br>
+                                        <h3>Ratings And Comments</h3>
                                     
-                                    <form role="form">
                                         <div class="form-group">
                                             <label>Overall Satisfaction‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ </label>
                                             <input class="form-control" value="<?php echo htmlspecialchars($overall_satisfaction); ?>" disabled/>
@@ -485,6 +465,77 @@ $pdoExec = $pdoResult->execute();
                                             <textarea rows="4" class="form-control" style="height:148px; resize:none; overflow:auto;" disabled><?php echo htmlspecialchars($comments); ?></textarea>
                                           
                                         </div>
+                                        
+                                    </form>      
+                                </div>
+                                
+                                <div class="col-md-6">
+                                    <h3>Citizen's Chart (CC)</h3>
+                                    
+                                    <form role="form">
+                                    <div class="form-group">
+                                            <label>CC1‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ </label>
+                                            <input class="form-control" value="<?php echo htmlspecialchars($cc1); ?>" disabled/>
+                                             
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label>CC2‎ ‎ ‎ ‎ ‎ ‎ ‎ </label>
+                                            <input class="form-control" value="<?php echo htmlspecialchars($cc2); ?>" disabled/>
+                                             
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label>CC3‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ </label>
+                                            <input class="form-control" value="<?php echo htmlspecialchars($cc3); ?>" disabled/>                                             
+                                        </div>
+                                        <br><br><br>    <br><br>
+                                        <h3>Service Quality Dimensions (SQD)</h3>
+
+
+                                        <div class="form-group">
+                                            <label>SQD0‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ </label>
+                                            <input class="form-control" value="<?php echo htmlspecialchars($sqd0); ?>" disabled/>
+                                             
+                                        </div>
+                                        <div class="form-group">
+                                            <label>SQD1‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ </label>
+                                            <input class="form-control" value="<?php echo htmlspecialchars($sqd1); ?>" disabled/>
+                                             
+                                        </div>
+                                        <div class="form-group">
+                                            <label>SQD2‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ </label>
+                                            <input class="form-control" value="<?php echo htmlspecialchars($sqd2); ?>" disabled/>
+                                             
+                                        </div>
+                                        <div class="form-group">
+                                            <label>SQD3‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ </label>
+                                            <input class="form-control" value="<?php echo htmlspecialchars($sqd3); ?>" disabled/>
+                                             
+                                        </div>
+                                        <div class="form-group">
+                                            <label>SQD4‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ </label>
+                                            <input class="form-control" value="<?php echo htmlspecialchars($sqd4); ?>" disabled/>
+                                             
+                                        </div>
+                                        <div class="form-group">
+                                            <label>SQD6‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ </label>
+                                            <input class="form-control" value="<?php echo htmlspecialchars($sqd6); ?>" disabled/>
+                                             
+                                        </div>
+                                        <div class="form-group">
+                                            <label>SQD7‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ </label>
+                                            <input class="form-control" value="<?php echo htmlspecialchars($sqd7); ?>" disabled/>
+                                             
+                                        </div>
+                                        <div class="form-group">
+                                            <label>SQD8‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ </label>
+                                            <input class="form-control" value="<?php echo htmlspecialchars($sqd8); ?>" disabled/>
+                                             
+                                        </div>
+                                        
+
+
                                     </form>
                                 </div>
                             </div>
@@ -517,7 +568,7 @@ $pdoExec = $pdoResult->execute();
                 <div class="col-md-4"> 
   <div class="panel panel-default">
     <div class="panel-heading">
-    <h3 style="margin-top: 5px; margin-bottom:0px;">"Overall Satisfaction"</h3>
+    <h3 style="margin-top: 5px; margin-bottom:0px;">Overall Satisfaction</h3>
     </div>
     <div class="panel-body" id="ratingBarsContainer">
       <div class="csat-container">
@@ -554,7 +605,7 @@ $pdoExec = $pdoResult->execute();
 <div class="col-md-4"> 
   <div class="panel panel-default">
     <div class="panel-heading">
-    <h3 style="margin-top: 5px; margin-bottom:0px;">Service Expectations</h3> 
+    <h3 style="margin-top: 5px; margin-bottom:0px;">Expectation Rating</h3> 
     </div>
     <div class="panel-body" id="expectationRatingBarsContainer">
       <div class="csat-container">
@@ -571,25 +622,131 @@ $pdoExec = $pdoResult->execute();
 </div>
 <div class="col-md-4">
     <div class="panel panel-default">
-        <div class="panel-heading"><h3 style="margin-top: 5px; margin-bottom:0px;">Bayes Rating Like</h3></div>
+        <div class="panel-heading"><h3 style="margin-top: 5px; margin-bottom:0px;">Like Rating</h3></div>
         <div class="panel-body" id="likeContainer"></div>
     </div>
 </div>
 
 <div class="col-md-4">
     <div class="panel panel-default">
-        <div class="panel-heading"><h3 style="margin-top: 5px; margin-bottom:0px;">Bayes Rating Improve</h3></div>
+        <div class="panel-heading"><h3 style="margin-top: 5px; margin-bottom:0px;">Improvement Rating</h3></div>
         <div class="panel-body" id="improveContainer"></div>
     </div>
 </div>
 
 <div class="col-md-4">
     <div class="panel panel-default">
-        <div class="panel-heading"><h3 style="margin-top: 5px; margin-bottom:0px;">Bayes Rating Comment</h3></div>
+        <div class="panel-heading"><h3 style="margin-top: 5px; margin-bottom:0px;">Comment Rating</h3></div>
         <div class="panel-body" id="commentContainer"></div>
         
     </div>
 </div>
+<div class="col-md-12">
+<hr>
+<h3>Citizen's Chart (CC)</h3>
+<br>
+</div>
+    <div class="col-md-4">
+        <div class="panel panel-default">
+            <div class="panel-heading"><h3 style="margin-top: 5px; margin-bottom:0px;">CC1</h3></div>
+            <div class="panel-body">
+                <div id="morris-bar-chart1"></div>
+            </div>
+        </div>
+    </div>
+    
+
+
+
+    <div class="col-md-4">
+        <div class="panel panel-default">
+            <div class="panel-heading"><h3 style="margin-top: 5px; margin-bottom:0px;">CC2</h3></div>
+            <div class="panel-body">
+            <div id="morris-bar-chart2"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="panel panel-default">
+            <div class="panel-heading"><h3 style="margin-top: 5px; margin-bottom:0px;">CC3</h3></div>
+            <div class="panel-body">
+                <div id="morris-bar-chart3"></div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-12">
+<hr>
+<h3>Service Quality Dimensions (SQD)</h3>
+<br>
+</div>
+    <div class="col-md-3">
+        <div class="panel panel-default">
+            <div class="panel-heading"><h3 style="margin-top: 5px; margin-bottom:0px;">SQD0</h3></div>
+            <div class="panel-body">
+                <div id="morris-donut-chart4"style="height:250px;"></div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="panel panel-default">
+            <div class="panel-heading"><h3 style="margin-top: 5px; margin-bottom:0px;">SQD1</h3></div>
+            <div class="panel-body">
+                <div id="morris-donut-chart5"style="height:250px;"></div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="panel panel-default">
+            <div class="panel-heading"><h3 style="margin-top: 5px; margin-bottom:0px;">SQD2</h3></div>
+            <div class="panel-body">
+                <div id="morris-donut-chart6"style="height:250px;"></div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="panel panel-default">
+            <div class="panel-heading"><h3 style="margin-top: 5px; margin-bottom:0px;">SQD3</h3></div>
+            <div class="panel-body">
+                <div id="morris-donut-chart7"style="height:250px;"></div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="panel panel-default">
+            <div class="panel-heading"><h3 style="margin-top: 5px; margin-bottom:0px;">SQD4</h3></div>
+            <div class="panel-body">
+                <div id="morris-donut-chart8"style="height:250px;"></div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="panel panel-default">
+            <div class="panel-heading"><h3 style="margin-top: 5px; margin-bottom:0px;">SQD6</h3></div>
+            <div class="panel-body">
+                <div id="morris-donut-chart9"style="height:250px;"></div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="panel panel-default">
+            <div class="panel-heading"><h3 style="margin-top: 5px; margin-bottom:0px;">SQD7</h3></div>
+            <div class="panel-body">
+                <div id="morris-donut-chart10"style="height:250px;"></div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="panel panel-default">
+            <div class="panel-heading"><h3 style="margin-top: 5px; margin-bottom:0px;">SQD8</h3></div>
+            <div class="panel-body">
+                <div id="morris-donut-chart11"style="height:250px;"></div>
+            </div>
+        </div>
+    </div>
+    
+
+</body>
 </div>
 
 <br>
@@ -778,7 +935,64 @@ displayBayesData('comment', bayesData.comment);
     <!-- METISMENU SCRIPTS -->
     <script src="assets/js/jquery.metisMenu.js"></script>
       <!-- CUSTOM SCRIPTS -->
+ <!-- MORRIS CHART SCRIPTS -->
+    <script src="assets/js/morris/raphael-2.1.0.min.js"></script>
+    <script src="assets/js/morris/morris.js"></script>
 
+
+      <script>
+       $(document).ready(function() {
+    // Function to create a donut chart
+    function createDonutChart(elementId, dataUrl) {
+        $.getJSON(dataUrl, function(data) {
+            if (data.error) {
+                console.error('Error fetching data:', data.error);
+            } else {
+                Morris.Donut({
+                    element: elementId,
+                    data: data
+                });
+            }
+        }).fail(function(jqxhr, textStatus, error) {
+            console.error('Request Failed: ' + textStatus + ', ' + error);
+        });
+    }
+
+    // Create charts for each feedback column
+    createDonutChart('morris-donut-chart1', 'action/feedback-data.php?chart=cc1');
+    createDonutChart('morris-donut-chart2', 'action/feedback-data.php?chart=cc2');
+    createDonutChart('morris-donut-chart3', 'action/feedback-data.php?chart=cc3');
+    createDonutChart('morris-donut-chart4', 'action/feedback-data.php?chart=sqd0');
+    createDonutChart('morris-donut-chart5', 'action/feedback-data.php?chart=sqd1');
+    createDonutChart('morris-donut-chart6', 'action/feedback-data.php?chart=sqd2');
+    createDonutChart('morris-donut-chart7', 'action/feedback-data.php?chart=sqd3');
+    createDonutChart('morris-donut-chart8', 'action/feedback-data.php?chart=sqd4');
+    createDonutChart('morris-donut-chart9', 'action/feedback-data.php?chart=sqd6');
+    createDonutChart('morris-donut-chart10', 'action/feedback-data.php?chart=sqd7');
+    createDonutChart('morris-donut-chart11', 'action/feedback-data.php?chart=sqd8');
+});
+
+function createBarChart(elementId, dataUrl) {
+    $.getJSON(dataUrl, function (data) {
+        Morris.Bar({
+            element: elementId,
+            data: data,
+            xkey: 'label',   // The label field in your PHP data
+            ykeys: ['value'],  // The value field in your PHP data
+            labels: ['Count'],  // The label to display for values
+            barColors: ['#3498db'],  // Color for bars
+            hideHover: 'auto',
+            resize: true
+        });
+    });
+}
+
+createBarChart('morris-bar-chart1', 'action/feedback-data.php?chart=cc1');
+createBarChart('morris-bar-chart2', 'action/feedback-data.php?chart=cc2');
+createBarChart('morris-bar-chart3', 'action/feedback-data.php?chart=cc3');
+
+
+    </script>
       <script src="assets/js/dataTables/jquery.dataTables.js"></script>
       <script src="assets/js/dataTables/dataTables.min.js"></script>
       <script>  $(document).ready(function() {
