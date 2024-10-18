@@ -1,4 +1,9 @@
 <?php
+ob_start(); // Start output buffering
+
+include_once("../../connection/conn.php");
+$pdoConnect = connection();
+
 if (isset($_POST['csv_data'])) {
     // Deserialize the CSV data
     $csvData = unserialize($_POST['csv_data']);
@@ -7,14 +12,9 @@ if (isset($_POST['csv_data'])) {
     // Default profile picture path
     define('DEFAULT_PHOTO', __DIR__ . '/No-Profile.png');
 
-    // Database connection using PDO
-    $dsn = 'mysql:host=localhost;dbname=helphub';
-    $username = 'root';
-    $password = '';
+
 
     try {
-        $pdo = new PDO($dsn, $username, $password);
-        $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
         // Get the header row to construct the column names
         $headerRow = $csvData[0];
@@ -38,7 +38,7 @@ if (isset($_POST['csv_data'])) {
             implode(', ', $columns),
             implode(', ', $placeholders)
         );
-        $stmt = $pdo->prepare($sql);
+        $stmt = $pdoConnect->prepare($sql);
 
         // Loop through the CSV data and insert each row
         foreach ($csvData as $index => $data) {
@@ -85,7 +85,7 @@ if (isset($_POST['csv_data'])) {
             //echo "<br>";
 
             // Check for existing record with the same primary key
-            $checkStmt = $pdo->prepare("SELECT COUNT(*) FROM employee_user WHERE user_id = ?");
+            $checkStmt = $pdoConnect->prepare("SELECT COUNT(*) FROM employee_user WHERE user_id = ?");
             $checkStmt->execute([$data[0]]);
             $exists = $checkStmt->fetchColumn();
 
@@ -102,7 +102,7 @@ if (isset($_POST['csv_data'])) {
         }
 
         echo "Data inserted successfully.<br>";
-        header("Location: ../user-student-list.php");
+        header("Location: ../user-employee-list.php");
         // Optionally, delete the uploaded file after processing
         unlink($filePath);
         exit;
@@ -113,4 +113,5 @@ if (isset($_POST['csv_data'])) {
 } else {
     echo "No data to process.";
 }
+ob_end_flush(); // Send the output to the browser
 ?>

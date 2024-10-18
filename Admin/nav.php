@@ -162,7 +162,7 @@ window.addEventListener('scroll', function() {
           <div class="dropdown-menu" role="menu">
             <a class="dropdown-item" href="profile.php"><span class="fa fa-user"></span> My Account</a>
             <hr style="margin-top: 5px; margin-bottom: 5px;">
-            <a class="dropdown-item" href="logout.php"><span class="fas fa-sign-out-alt"></span> Logout</a>
+            <a class="dropdown-item" href="logout.php" onclick="window.open('https://forms.gle/hzqZg1SSDB23vcGCA', '_blank');"><span class="fas fa-sign-out-alt"></span> Logout</a>
           </div>
       </div>
 </div>

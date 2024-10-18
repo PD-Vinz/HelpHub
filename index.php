@@ -214,9 +214,9 @@ if ($pdoResult3->rowCount() > 0) {
         <h3 style="text-shadow: 0.3px 0.3px #18181a;">Log In</h3>
         <hr>
         <br>
-        
+
         <div class="form-group">
-            <input type="text" name="username" required placeholder="Username" >
+            <input type="text" name="username" required placeholder="User ID" >
         </div>
 
 <div class="form-group" style="position: relative;">
@@ -265,6 +265,15 @@ if ($pdoResult3->rowCount() > 0) {
     </form>
     <a href="forgot-password/forgot-password.php" class="forgot">Forgot Password?</a>
     </div> 
+
+<footer>
+    <p>&copy; 2024 HelpHub. All rights reserved.</p>
+    <p>
+        <button class="link-button" onclick="window.open('/terms-of-service.html', '_blank');">Terms of Service</button> | 
+        <button class="link-button" onclick="window.open('/privacy-policy.html', '_blank');">Privacy Policy</button>
+    </p>
+</footer>
+
 
     <script src="script.js"></script>
 </body>

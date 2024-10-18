@@ -97,6 +97,11 @@ if (!isset($_SESSION["admin_number"])) {
         border-radius:100%;
         margin: 0;
     }
+    .disabled-link {
+    color: gray; /* Change the color to indicate it's disabled */
+    pointer-events: none; /* Prevents clicking */
+    text-decoration: none; /* Optionally remove underline */
+}
 </style>
 </head>
 <body>
@@ -180,10 +185,24 @@ while ($row = $pdoResult->fetch(PDO::FETCH_ASSOC)){
 	<span class="sr-only">Toggle Dropdown</span>
 				                  </button>
 				                  <div class="dropdown-menu" role="menu">
-				                    <a class="dropdown-item" href="action\edit-response-template.php?id=<?php echo htmlspecialchars($id); ?>"><span class="fa fa-edit text-primary"></span> Edit</a>
+                                    <?php if ($status === 'Inactive'): ?>
+                                    <a class="dropdown-item" href="action\active-mailer-configuration.php?id=<?php echo htmlspecialchars($id); ?>&name=<?php echo htmlspecialchars($email_purpose); ?>"><span class="fa fa-check text-primary"></span> Set Active</a>
 				                    <div class="dropdown-divider"></div>
-				                    <a class="dropdown-item delete_data" href="action\delete-template.php?id=<?php echo htmlspecialchars($id); ?>" data-id="11"><span class="fa fa-trash text-danger"></span> Delete</a>
-				                  </div>
+                                    <?php elseif ($status === 'Active'): ?>
+                                    <a class="dropdown-item disabled-link"><span class="fa fa-check text-primary"></span> Set Active</a>
+				                    <div class="dropdown-divider"></div>
+                                    <?php endif; ?>
+
+				                    <a class="dropdown-item" href="action\edit-mailer-configuration.php?id=<?php echo htmlspecialchars($id); ?>"><span class="fa fa-edit text-primary"></span> Edit</a>
+				                    
+                                    <?php if ($status === 'Inactive'): ?>
+                                    <div class="dropdown-divider"></div>
+				                    <a class="dropdown-item delete_data" href="action\delete-mailer-configuration.php?id=<?php echo htmlspecialchars($id); ?>" data-id="11"><span class="fa fa-trash text-danger"></span> Delete</a>
+                                    <?php elseif ($status === 'Active'): ?>
+                                    <div class="dropdown-divider"></div>
+				                    <a class="dropdown-item delete_data disabled-link" data-id="11"><span class="fa fa-trash text-danger"></span> Delete</a>
+                                    <?php endif; ?>
+                                    </div>
 								  </div>
 							</td>
 						</tr>

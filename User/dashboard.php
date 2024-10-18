@@ -195,8 +195,12 @@ try {
             <hr style="margin-top: 5px; margin-bottom: 5px;">
             <a class="dropdown-item" href="new-password.php"><span class="fa fa-gear"></span> SETTINGS</a>
             <hr style="margin-top: 5px; margin-bottom: 5px;">
-            <a class="dropdown-item" href="logout.php"><span class="fa fa-sign-out"></span> LOG OUT </a>
-          </div>
+            <?php if ($identity == "Student"): ?>
+            <a class="dropdown-item" href="logout.php" onclick="window.open('https://forms.gle/hzqZg1SSDB23vcGCA', '_blank');"><span class="fa fa-sign-out"></span> LOG OUT </a>
+            <?php elseif ($identity == "Employee"): ?>
+            <a class="dropdown-item" href="logout.php" onclick="window.open('https://forms.gle/hzqZg1SSDB23vcGCA', '_blank');"><span class="fa fa-sign-out"></span> LOG OUT </a>
+            <?php endif; ?>
+            </div>
         </nav>
         
         <!-- /. NAV TOP  -->

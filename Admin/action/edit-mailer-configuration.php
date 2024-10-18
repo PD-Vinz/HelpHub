@@ -47,6 +47,40 @@ if (!isset($_SESSION["admin_number"])) {
      }
  // for displaying system details //end
 
+if (isset($_GET['id'])){
+    $phpid = filter_input(INPUT_GET, 'id', FILTER_SANITIZE_NUMBER_INT);
+
+    try {
+        $Sql = "SELECT * FROM php_mailer_configuration WHERE id = :id";
+        $Stmt = $pdoConnect->prepare($Sql);
+        $Stmt->bindParam(':id', $phpid);
+        $Stmt->execute();
+
+        $Datas = $Stmt->fetch(PDO::FETCH_ASSOC);
+
+    if ($Datas) {
+        $purpose = $Datas['email_purpose'];
+        $host = $Datas['host'];
+        $un = $Datas['username'];
+        $pass = $Datas['password'];
+        $smtp = $Datas['smtpsecure'];
+        $port = $Datas['port'];
+        $add = $Datas['address'];
+        $name = $Datas['name'];
+        $stat = $Datas['status'];
+
+        $nameParts = explode(' ', $Name);
+        $firstName = $nameParts[0];
+    } else {
+        // Handle the case where no results are found
+        echo "Bobo";
+    }
+    } catch (PDOException $e) {
+        echo "Database error: " . $e->getMessage();
+        exit;
+    }
+}
+
 
 }
 
@@ -71,25 +105,36 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $updateStmt->execute();
         }
 
-        // Prepare an insert statement
-        $sql = "INSERT INTO php_mailer_configuration (email_purpose, host, username, password, smtpsecure, port, address, name, status) 
-                VALUES (:purpose, :host, :username, :password, :smtpsecure, :port, :email, :name, :status)";
-        
-        $stmt = $pdoConnect->prepare($sql);
+        // Prepare an update statement
+$sql = "UPDATE php_mailer_configuration 
+SET email_purpose = :purpose, 
+    host = :host, 
+    username = :username, 
+    password = :password, 
+    smtpsecure = :smtpsecure, 
+    port = :port, 
+    address = :email, 
+    name = :name, 
+    status = :status 
+WHERE id = :id";
 
-        // Bind parameters
-        $stmt->bindParam(':purpose', $purpose);
-        $stmt->bindParam(':host', $host);
-        $stmt->bindParam(':username', $username);
-        $stmt->bindParam(':password', $password);
-        $stmt->bindParam(':smtpsecure', $smtpsecure);
-        $stmt->bindParam(':port', $port);
-        $stmt->bindParam(':email', $email);
-        $stmt->bindParam(':name', $name);
-        $stmt->bindParam(':status', $status); // Bind the active status
+$stmt = $pdoConnect->prepare($sql);
 
-        // Execute the insert statement
-        $stmt->execute();
+// Bind parameters
+$stmt->bindParam(':purpose', $purpose);
+$stmt->bindParam(':host', $host);
+$stmt->bindParam(':username', $username);
+$stmt->bindParam(':password', $password);
+$stmt->bindParam(':smtpsecure', $smtpsecure);
+$stmt->bindParam(':port', $port);
+$stmt->bindParam(':email', $email);
+$stmt->bindParam(':name', $name);
+$stmt->bindParam(':status', $status); // Bind the active status
+$stmt->bindParam(':id', $phpid); // Bind the ID for updating the specific record
+
+// Execute the update statement
+$stmt->execute();
+
 
         // Redirect or display success message
         header("Location: ../mailer-configuration.php"); // Redirect to a success page or similar
@@ -129,7 +174,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <div id="page-inner">
                 <div class="row">
                     <div class="col-md-12">
-                     <h2>Create New Mailer Configuration</h2>   
+                     <h2>Edit Mailer Configuration</h2>   
 
                     </div>
                 </div>
@@ -144,28 +189,28 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 <div class="form-group col-6">
 					<label for="purpose">Purpose</label>
                     <select name="purpose" id="purpose" class="custom-select form-control" required>
-                        <option value="OTP">OTP</option>
-						<option value="Notification">Notification</option>
-                        <option value="Security">Security</option>
+                        <option value="OTP" <?php echo ($purpose == 'OTP') ? 'selected' : ''; ?>>OTP</option>
+						<option value="Notification" <?php echo ($purpose == 'Notification') ? 'selected' : ''; ?>>Notification</option>
+                        <option value="Security" <?php echo ($purpose == 'Security') ? 'selected' : ''; ?>>Security</option>
 					</select>
 				</div>	
 				<div class="form-group col-6">
 					<label for="namhoste">Host</label>
-					<input type="text" name="host" id="host" class="form-control" required autocomplete="off" placeholder="ex. smtp.sample.com">
+					<input type="text" name="host" id="host" value="<?php echo htmlspecialchars($host); ?>" class="form-control" required autocomplete="off" placeholder="ex. smtp.sample.com">
 				</div>
 				<div class="form-group col-6">
 					<label for="username">Username</label>
-					<input type="text" name="username" id="username" class="form-control" required autocomplete="off">
+					<input type="text" name="username" id="username" value="<?php echo htmlspecialchars($un); ?>" class="form-control" required autocomplete="off">
 				</div>
                 <div class="form-group col-6">
 					<label for="password">Password</label>
-					<input type="text" name="password" id="password" class="form-control" required autocomplete="off">
+					<input type="text" name="password" id="password" value="<?php echo htmlspecialchars($pass); ?>" class="form-control" required autocomplete="off">
 				</div>
                 <div class="form-group col-6">
 					<label for="smtpsecure">SMTPSecure</label>
                     <select name="smtpsecure" id="smtpsecure" class="custom-select form-control" required>
-                        <option value="PHPMailer::ENCRYPTION_STARTTLS">PHPMailer::ENCRYPTION_STARTTLS</option>
-						<option value="PHPMailer::ENCRYPTION_SMTPS">PHPMailer::ENCRYPTION_SMTPS</option>
+                        <option value="PHPMailer::ENCRYPTION_STARTTLS" <?php echo ($smtp == 'PHPMailer::ENCRYPTION_STARTTLS') ? 'selected' : ''; ?>>PHPMailer::ENCRYPTION_STARTTLS</option>
+						<option value="PHPMailer::ENCRYPTION_SMTPS" <?php echo ($smtp == 'PHPMailer::ENCRYPTION_SMTPS') ? 'selected' : ''; ?>>PHPMailer::ENCRYPTION_SMTPS</option>
 					</select>
 				</div>
                 <div class="form-group col-6">
@@ -174,14 +219,18 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 				</div>
                 <div class="form-group col-6">
 					<label for="email">Email Address</label>
-					<input type="email" name="email" id="email" class="form-control" required autocomplete="off" placeholder="ex. HelpHub@email.com">
+					<input type="email" name="email" id="email"  value="<?php echo htmlspecialchars($add); ?>" class="form-control" required autocomplete="off" placeholder="ex. HelpHub@email.com">
 				</div>
                 <div class="form-group col-6">
 					<label for="name">Name</label>
-					<input type="text" name="name" id="name" class="form-control" required autocomplete="off" placeholder="ex. HelpHub">
+					<input type="text" name="name" id="name" value="<?php echo htmlspecialchars($name); ?>" class="form-control" required autocomplete="off" placeholder="ex. HelpHub">
 				</div>
                 <div class="form-group col-6">
-                    <input type="checkbox" id="active" name="active" value="active">
+                    <?php if ($stat === 'Inactive'): ?>
+                    <input type="checkbox" id="active" name="active" value="Active">
+                    <?php elseif ($stat === 'Active'): ?>
+                    <input type="checkbox" id="active" name="active" value="Active" <?php echo ($stat == 'Active') ? 'checked' : ''; ?>>
+                    <?php endif; ?>
                     <label for="active" style="color: #2b2b2b;">Set Active</label>
 				</div>
             </div>
@@ -199,7 +248,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 	<div class="modal-footer">
 			<div class="col-md-12">
 				<div class="row">
-                    <button type="button" class="btn btn-sm btn-primary mr-2" data-toggle="modal" data-target="#configModal">Add Configuration</button>
+                    <button type="button" class="btn btn-sm btn-primary mr-2" data-toggle="modal" data-target="#configModal">Update Configuration</button>
 					<a class="btn btn-sm btn-secondary" onclick="history.back()">Cancel</a>
 				</div>
 			</div>
