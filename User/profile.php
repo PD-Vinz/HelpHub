@@ -184,8 +184,18 @@ if (!isset($_SESSION["user_id"])) {
                         <hr>
                                 <!-- left column -->
                                 <div class="col-md-3">
+
+
+                                <div class="avatar" id="avatar">
+                                    <div id="preview">
+                                        <img src="data:image/jpeg;base64,<?php echo $P_PBase64?>" id="avatar-image" class="avatar_img" id="">
+                                    </div>
+                                   
+                                  </div>
+
                                     <div class="text-center">
-                                        <img src="data:image/jpeg;base64,<?php echo $P_PBase64?>" class="avatar img-circle img-thumbnail" alt="avatar">
+
+                                   
                                         <h3><?php echo $Name?></h3>
                                         <h5 style="text-transform: uppercase;"><?php echo $UserType?></h5>
                                     </div>
@@ -252,10 +262,7 @@ if (!isset($_SESSION["user_id"])) {
                                         </div>
                                         <br>
                                         <?php endif; ?>
-                                        <div class="modal-footer">	
-                                            <!--<a href="edit-profile-picture.php"><button type="button" class="btn btn-primary">CHANGE PROFILE</button></a>-->
-                                            <a href="edit-profile.php"><button type="button" class="btn btn-primary">UPDATE INFORMATION</button></a>
-                                        </div>
+                                      
                                         
 
 
@@ -266,7 +273,10 @@ if (!isset($_SESSION["user_id"])) {
                                         </div>
                                     </form>
                                 </div>
-                            </div>
+                            </div>  <div class="col-md-12"><div class="modal-footer">	
+                                            <!--<a href="edit-profile-picture.php"><button type="button" class="btn btn-primary">CHANGE PROFILE</button></a>-->
+                                            <a href="edit-profile.php"><button type="button" class="btn btn-primary">UPDATE INFORMATION</button></a>
+                                        </div></div>
                         </div>
                         <?php require_once ('../footer.php')?>
                     </div>

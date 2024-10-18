@@ -137,11 +137,7 @@ try {
      <!-- GOOGLE FONTS-->
    <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css' />
 
-   <style>
-    a {
-        color: black;
-    }
-   </style>
+
 </head>
 <body>
     <div id="wrapper">
@@ -161,7 +157,7 @@ try {
                         
                  <!-- /. ROW  -->
 
-<!--<a href="ticket-pending.php">  -->          <div class="col-md-12">
+<!--<a href="ticket-pending.php">  -->          <div class="row">
     
 <div class="col-md-2 col-sm-6 col-xs-6">        
     
@@ -221,7 +217,7 @@ try {
         </div>
      </div>
 <!--</a>-->
-    </div><hr>  </div> 
+    </div> </div> 
       
                  <!-- /. Calendar  -->   
                  <div class="col-md-12">

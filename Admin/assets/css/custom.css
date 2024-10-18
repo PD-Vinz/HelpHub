@@ -74,8 +74,9 @@
   }
      .noti-box {
   
-  min-height: 75px;
+  min-height: 100px;
   padding: 15px;
+  margin-bottom: 30px;
   line-height: 50px;
   background-color:#f8e9dd;
   }
@@ -407,7 +408,7 @@
         #page-wrapper{
                   margin: 0 0 0 230px;
             padding: 15px 30px;
-            min-height: 800;
+            min-height: 800px;
             
         }
       

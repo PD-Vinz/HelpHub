@@ -235,30 +235,30 @@ try {
             <div id="page-inner">
 
             <div class="row">
-            <div class="col-md-12">   <div class="col-md-12">
+            <div class="col-md-12"> 
 
                     <div class="col-md-12">
                      <h2>DASHBOARD</h2>   
                      <hr> 
                     </div>
-                </div>
+             
                 <!-- /. ROW  -->
                 <div class="row">
-                    <div class="col-md-2 col-sm-5 col-xs-3">
+                    <div class="col-md-2 col-sm-6 col-xs-6">
                         <div class="panel panel-back noti-box">
                             <span class="icon-box bg-color-blue set-icon">
-                                <i class="fa fa-ticket"></i>
+                                <i class="fa fa-ticket fa-xs"></i>
                             </span>
                             <div class="text-box">
                                 <p class="main-text"><?php echo $allTickets?></p>
-                                <p class="text-muted">ALL TICKET</p>
+                                <div style="width:100%"><p class="text-muted">ALL TICKET</p></div>
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-2 col-sm-5 col-xs-3">
+                    <div class="col-md-2 col-sm-6 col-xs-6">
                         <div class="panel panel-back noti-box">
                             <span class="icon-box bg-color-black set-icon">
-                                <i class="fa fa-reply"></i>
+                                <i class="fa fa-reply fa-xs"></i>
                             </span>
                             <div class="text-box">
                                 <p class="main-text"><?php echo $returnedTickets?></p>
@@ -266,10 +266,10 @@ try {
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-2 col-sm-5 col-xs-3">
+                    <div class="col-md-2 col-sm-6 col-xs-6">
                         <div class="panel panel-back noti-box">
                             <span class="icon-box bg-color-violet set-icon">
-                                <i class="fa fa-bell"></i>
+                                <i class="fa fa-bell fa-xs"></i>
                             </span>
                             <div class="text-box">
                                 <p class="main-text"><?php echo $dueTickets?></p>
@@ -277,10 +277,10 @@ try {
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-2 col-sm-5 col-xs-3">
+                    <div class="col-md-2 col-sm-6 col-xs-6">
                         <div class="panel panel-back noti-box">
                             <span class="icon-box bg-color-yellow set-icon">
-                                <i class="fa fa-hourglass-half"></i>
+                                <i class="fa fa-hourglass-half fa-xs"></i>
                             </span>
                             <div class="text-box">
                                 <p class="main-text"><?php echo $pendingTickets?></p>
@@ -288,10 +288,10 @@ try {
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-2 col-sm-5 col-xs-3">
+                    <div class="col-md-2 col-sm-6 col-xs-6">
                         <div class="panel panel-back noti-box">
                             <span class="icon-box bg-color-red set-icon">
-                                <i class="fa fa-check"></i>
+                                <i class="fa fa-check fa-xs"></i>
                             </span>
                             <div class="text-box">
                                 <p class="main-text"><?php echo $completedTickets?></p>
@@ -299,6 +299,9 @@ try {
                             </div>
                         </div>
                     </div>
+                
+                 
+                
                 </div>
 
                 <?php
@@ -307,15 +310,15 @@ $role = $identity// 'admin' or 'user'
 // Pass the role to the iframe URL or JavaScript
 ?>
                  <iframe class="panel panel-default" src="../FullCalendar-BS3-PHP-MySQL-master/index.php" style="width: 100%; min-height:700px; border-radius: 10px; margin-bottom:8px"></iframe>
-
+</div> 
                 <!-- /. ROW  -->
             </div>
             <!-- /. PAGE INNER  -->
-        </div>
+        </div>   <?php require_once ('../footer.php')?>
         <!-- /. PAGE WRAPPER  -->
     </div>
     <!-- /. WRAPPER  -->
-    <?php require_once ('../footer.php')?>
+ 
             </div>
             </div>
 
