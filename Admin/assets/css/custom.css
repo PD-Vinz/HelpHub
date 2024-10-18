@@ -875,7 +875,7 @@
       border-radius: 5px;
   }
   .asidebar.open .sidebar-btn{
-      justify-self: right;
+      justify-self: left;
   }
   .asidebar-btn span{
       width: 95%;
