@@ -18,7 +18,7 @@ body {
 
  #wrapper {
     width: 100%;
-    background:#2e1b1b;
+    background:#350200;
 }
 
 #page-wrapper {
@@ -391,8 +391,15 @@ font-size: 30px;
 font-weight: 700;
 }
 .active-menu {
-    background-color:#6b0200!important;
+  background-color:#6b0200 !important;
+  color: white !important;
+  
 }
+.active-menu:hover {
+background-color:#780e0c !important;
+color: white !important;
+
+} 
 
 .arrow {
     float: right;
@@ -427,7 +434,7 @@ font-weight: 700;
 }
 .sidebar-collapse .nav > li > a {
 	color:#fff;
-	background:#2e1b1b;
+	background:#350200;
 	text-shadow:none;
 	
 }
