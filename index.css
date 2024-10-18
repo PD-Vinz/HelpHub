@@ -181,3 +181,40 @@ input[type="submit"]:hover {
         outline: none; /* Remove outline when button is focused 
     }
 */
+
+/* Footer styling with background opacity */
+footer {
+    background-color: rgba(51, 51, 51, 0.5); /* Black with 80% opacity */
+    color: white;
+    text-align: center;
+    padding: 10px 0;
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    font-size: 14px; /* Smaller font size */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px; /* Adds space between elements */
+    transition: background-color 0.3s ease; /* Transition effect for background color */
+}
+
+.link-button {
+    background: none; /* No background */
+    border: none; /* No border */
+    color: #007bff; /* Link color */
+    font: inherit; /* Inherit font properties */
+    cursor: pointer; /* Pointer cursor on hover */
+    text-decoration: underline; /* Underline to mimic link */
+}
+
+.link-button:hover {
+    text-decoration: none; /* Remove underline on hover */
+    color: #69b2ff; /* Darker color on hover */
+}
+
+/* Footer hover effect with animation */
+footer:hover {
+    background-color: rgba(51, 51, 51, 0.9); /* Black with 90% opacity */
+}
+

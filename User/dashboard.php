@@ -195,8 +195,12 @@ try {
             <hr style="margin-top: 5px; margin-bottom: 5px;">
             <a class="dropdown-item" href="new-password.php"><span class="fa fa-gear"></span> SETTINGS</a>
             <hr style="margin-top: 5px; margin-bottom: 5px;">
-            <a class="dropdown-item" href="logout.php"><span class="fa fa-sign-out"></span> LOG OUT </a>
-          </div>
+            <?php if ($identity == "Student"): ?>
+            <a class="dropdown-item" href="logout.php" onclick="window.open('https://forms.gle/hzqZg1SSDB23vcGCA', '_blank');"><span class="fa fa-sign-out"></span> LOG OUT </a>
+            <?php elseif ($identity == "Employee"): ?>
+            <a class="dropdown-item" href="logout.php" onclick="window.open('https://forms.gle/hzqZg1SSDB23vcGCA', '_blank');"><span class="fa fa-sign-out"></span> LOG OUT </a>
+            <?php endif; ?>
+            </div>
         </nav>
         
         <!-- /. NAV TOP  -->
@@ -220,7 +224,7 @@ try {
                             <a href="create-ticket.php"><i class="fa fa-plus fa-xl" style="font-size: 24px; color: rgb(255, 255, 255)"></i> CREATE TICKET </a>
                             </li>
                             <li>
-                        <a href="all-ticket.php"><i class="fa fa-ticket fa-xl" style="font-size:24px"></i> ALL TICKET </a>
+                        <a href="all-ticket.php"><i class="fa fa-ticket fa-xl" style="font-size: 24px; color: rgb(255, 255, 255)"></i> ALL TICKET </a>
                     </li>
                 </ul>
             </div>

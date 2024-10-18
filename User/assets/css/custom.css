@@ -391,7 +391,7 @@ font-size: 30px;
 font-weight: 700;
 }
 .active-menu {
-    background-color:#C90000!important;
+    background-color:#6b0200!important;
 }
 
 .arrow {
@@ -432,7 +432,7 @@ font-weight: 700;
 	
 }
 .sidebar-collapse > .nav > li > a {
-	padding:15px 10px;
+	padding:20px 15px;
 }
 .sidebar-collapse > .nav > li {
 	border-bottom: 1px solid rgba(107, 108, 109, 0.19);
@@ -487,7 +487,7 @@ font-weight: 700;
 }
 .navbar-cls-top .navbar-brand:hover {
 
-background: #7e0806;
+background: #6b0200;
 color:#fff;
 
 }
@@ -510,7 +510,7 @@ border-color: #fff;
 background-color: #FFF;
 }
 .nav > li > a > i {
-    margin-right:10px;
+    margin-right:15px;
 }
 /*==============================================
     UI ELEMENTS STYLES     
@@ -1313,7 +1313,7 @@ ul {
 }
 
 ul li {
-    margin-bottom: 10px;
+    margin-bottom: 1px;
 }
 
 .buttons {
