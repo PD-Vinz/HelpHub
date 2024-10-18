@@ -71,18 +71,21 @@ if (!isset($_SESSION["admin_number"])) {
         <!-- /. NAV SIDE  -->
         <div id="page-wrapper" >
             <div id="page-inner">
-                <div class="row">
+              
                     <div class="col-md-9">
                      <h2>Response Templates</h2>   
-                       
+                     
                     </div>
-					<div class="card-tools col-md-3">
-			<a href="action\new-response-template.php" class="btn btn-flat btn-primary" style="float: right;"><span class="fas fa-plus"></span>  Create New</a>
-		</div>
-                </div>
+				
+
+        <div class="card-tools col-md-3">
+                        <a href="action\new-response-template.php" class="btn btn-flat btn-primary" style="float: right; margin-top:15px;">
+                            <span class="fas fa-plus"></span> Create New
+                        </a>
+        </div>
                  <!-- /. ROW  -->
-                 <div class="row">
-                 <div class="col-md-12">
+         
+                 <div class="col-md-12">  <hr>
 					<div class="panel panel-default">
 	<div class="panel-heading">
 		List of Responses
@@ -132,11 +135,11 @@ while ($row = $pdoResult->fetch(PDO::FETCH_ASSOC)){
 			</table></div>
 		</div>
 		</div>
-	</div>
+	
 </div>
-</div>
+</div><?php require_once('../footer.php') ?>
             </div>
-             
+            
     </div>
              <!-- /. PAGE INNER  -->
             </div>

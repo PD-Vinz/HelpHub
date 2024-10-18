@@ -60,8 +60,8 @@ try {
     $employeeDropdownOpen = ($id == '2' && in_array($currentFile, ['ticketdash.php', 'ticket-pending.php', 'ticket-opened.php', 'ticket-closed.php', 'ticket-returned.php']));
     $userListDropdownOpen = in_array($currentFile, ['employee.php', 'user-student-list.php', 'user-employee-list.php']);
     $systemDocsDropdownOpen = in_array($currentFile, ['templates.php',  'response-templates.php', 'others.php']);
-
-
+    $systemSettingsDropdownOpen = in_array($currentFile, ['settings.php',  'mailer-configuration.php']);
+    
 
 } catch (PDOException $e) {
     echo "Error: " . $e->getMessage();
@@ -170,7 +170,7 @@ window.addEventListener('scroll', function() {
    <!-- /. NAV TOP  -->
       
    
-   <?php
+   <l?php
 $currentFile = basename($_SERVER['PHP_SELF']);
 ?>
 
@@ -257,14 +257,14 @@ $currentFile = basename($_SERVER['PHP_SELF']);
 
         <li>
             <a class="<?= ($currentFile == 'history-log.php') ? 'active-menu' : '' ?>" href="history-log.php">
-                <i class="fa-regular fa-clock fa-xl"></i> Activity Log
+                <i class="fa-solid fa-clock fa-xl"></i> Activity Log
             </a>
         </li>
 
         <?php if (isset($U_T) && $U_T === 'Administrator'): ?>
         <li>
             <a class="<?= ($currentFile == 'feedback-analysis.php') ? 'active-menu' : '' ?>" href="feedback-analysis.php">
-                <i class="fa-regular fa-comment-dots fa-xl"></i> Feedback Analysis
+                <i class="fa-solid fa-comment-dots fa-xl"></i> Feedback Analysis
             </a>
         </li>
 
@@ -275,7 +275,7 @@ $currentFile = basename($_SERVER['PHP_SELF']);
         </li>-->
         
         <li>
-            <a href="#"><i class="fa-regular fa-user fa-xl"></i> User list <span class="fa arrow"></span></a>
+            <a href="#"><i class="fa-solid fa-users fa-xl"></i> User list <span class="fa arrow"></span></a>
             <ul class="nav nav-second-level ticket-dropdown-menu <?= $userListDropdownOpen ? 'in' : '' ?>"> 
             <li>
                     <a class="<?= ($currentFile == 'employee.php') ? 'active-menu' : '' ?>" href="employee.php">
@@ -316,6 +316,14 @@ $currentFile = basename($_SERVER['PHP_SELF']);
                             </li>
             </ul>
         </li>
+
+        <li>
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown" onclick="handleTicketDropdownToggle(event)">
+            <i class="fa-solid fa-gears fa-xl"></i> Settings <span class="fa arrow"></span>
+            </a>
+            <ul class="nav nav-second-level ticket-dropdown-menu <?= $systemSettingsDropdownOpen ? 'in' : '' ?>">
+        
+        
         <li>
             <a class="<?= ($currentFile == 'settings.php') ? 'active-menu' : '' ?>" href="settings.php">
                 <i class="fa fa-gear fa-xl"></i> System Settings
@@ -323,10 +331,19 @@ $currentFile = basename($_SERVER['PHP_SELF']);
         </li>
         <li>
             <a class="<?= ($currentFile == 'mailer-configuration.php') ? 'active-menu' : '' ?>" href="mailer-configuration.php">
-                <i class="fa fa-gear fa-xl"></i> Mailer Settings
+                <i class="fa-solid fa-envelopes-bulk fa-xl"></i> Mailer Settings
             </a>
         </li>
+            </ul>
+        </li>
+
         <?php endif; ?>
+        
+
+
+
+
+
     </ul>
 </div>
 </nav>

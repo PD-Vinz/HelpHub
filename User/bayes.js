@@ -1,222 +1,235 @@
 var Bayes = (function (Bayes) {
-    // Add a function to make arrays contain unique elements
-    Array.prototype.unique = function () {
-      var u = {}, a = [];
-      for (var i = 0, l = this.length; i < l; ++i) {
-        if (u.hasOwnProperty(this[i])) {
-          continue;
-        }
-        a.push(this[i]);
-        u[this[i]] = 1;
+  // Add a function to make arrays contain unique elements
+  Array.prototype.unique = function () {
+    var u = {}, a = [];
+    for (var i = 0, l = this.length; i < l; ++i) {
+      if (u.hasOwnProperty(this[i])) {
+        continue;
       }
-      return a;
-    };
-  
-    // Helper functions to generate keys for storing data in localStorage
-    var stemKey = function (stem, label) {
-      return '_Bayes::stem:' + stem + '::label:' + label;
-    };
-  
-    var docCountKey = function (label) {
-      return '_Bayes::docCount:' + label;
-    };
-  
-    var stemCountKey = function (stem) {
-      return '_Bayes::stemCount:' + stem;
-    };
-  
-    // Log text to console (can be removed if not needed)
-    var log = function (text) {
-      console.log(text);
-    };
-  
-    // Tokenize the input text
-    var tokenize = function (text) {
-      text = text.toLowerCase().replace(/\W/g, ' ').replace(/\s+/g, ' ').trim().split(' ').unique();
-      return text;
-    };
-  
-    // Get all registered labels
-    var getLabels = function () {
-      var labels = localStorage.getItem('_Bayes::registeredLabels');
-      if (!labels) labels = '';
-      return labels.split(',').filter(function (a) {
-        return a.length;
-      });
-    };
-  
-    // Register a label if it hasn't been registered yet
-    var registerLabel = function (label) {
-      var labels = getLabels();
-      if (labels.indexOf(label) === -1) {
-        labels.push(label);
-        localStorage.setItem('_Bayes::registeredLabels', labels.join(','));
-      }
-      return true;
-    };
-  
-    // Retrieve the count of a specific stem (word) for a specific label
-    var stemLabelCount = function (stem, label) {
-      var count = parseInt(localStorage.getItem(stemKey(stem, label)));
-      if (!count) count = 0;
-      return count;
-    };
-  
-    // Retrieve the count of the stem for labels other than the given one
-    var stemInverseLabelCount = function (stem, label) {
-      var labels = getLabels();
-      var total = 0;
-      for (var i = 0, length = labels.length; i < length; i++) {
-        if (labels[i] === label) 
-          continue;
-        total += parseInt(stemLabelCount(stem, labels[i]));
-      }
-      return total;
-    };
-  
-    // Get the total count of a specific stem
-    var stemTotalCount = function (stem) {
-      var count = parseInt(localStorage.getItem(stemCountKey(stem)));
-      if (!count) count = 0;
-      return count;
-    };
-  
-    // Get the count of documents for a specific label
-    var docCount = function (label) {
-      var count = parseInt(localStorage.getItem(docCountKey(label)));
-      if (!count) count = 0;
-      return count;
-    };
-  
-    // Get the count of documents for all other labels
-    var docInverseCount = function (label) {
-      var labels = getLabels();
-      var total = 0;
-      for (var i = 0, length = labels.length; i < length; i++) {
-        if (labels[i] === label) 
-          continue;
-        total += parseInt(docCount(labels[i]));
-      }
-      return total;
-    };
-  
-    // Increment a value in localStorage
-    var increment = function (key) {
-      var count = parseInt(localStorage.getItem(key));
-      if (!count) count = 0;
-      localStorage.setItem(key, parseInt(count) + 1);
-      return count + 1;
-    };
-  
-    // Increment the count of a specific stem for a specific label
-    var incrementStem = function (stem, label) {
-      increment(stemCountKey(stem));
-      increment(stemKey(stem, label));
-    };
-  
-    // Increment the document count for a specific label
-    var incrementDocCount = function (label) {
-      return increment(docCountKey(label));
-    };
-  
-    // Train the system with text and associate it with a specific label
-    Bayes.train = function (text, label) {
-      registerLabel(label);
-      var words = tokenize(text);
-      var length = words.length;
-  
-      for (var i = 0; i < length; i++)
-        incrementStem(words[i], label);
-      incrementDocCount(label);
-    };
-  
-    // Guess the label for the input text
-    Bayes.guess = function (text) {
-      var words = tokenize(text);
-      var length = words.length;
-      var labels = getLabels();
-      var totalDocCount = 0;
-      var docCounts = {};
-      var docInverseCounts = {};
-      var scores = {};
-      var labelProbability = {};
-  
-      for (var j = 0; j < labels.length; j++) {
-        var label = labels[j];
-        docCounts[label] = docCount(label);
-        docInverseCounts[label] = docInverseCount(label);
-        totalDocCount += parseInt(docCounts[label]);
-      }
-  
-      for (var j = 0; j < labels.length; j++) {
-        var label = labels[j];
-        var logSum = 0;
-        labelProbability[label] = docCounts[label] / totalDocCount;
-  
-        for (var i = 0; i < length; i++) {
-          var word = words[i];
-          var _stemTotalCount = stemTotalCount(word);
-          if (_stemTotalCount === 0) {
-            continue;
-          } else {
-            var wordProbability = stemLabelCount(word, label) / docCounts[label];
-            var wordInverseProbability = stemInverseLabelCount(word, label) / docInverseCounts[label];
-            var wordicity = wordProbability / (wordProbability + wordInverseProbability);
-            wordicity = ( (1 * 0.5) + (_stemTotalCount * wordicity) ) / ( 1 + _stemTotalCount );
-            if (wordicity === 0)
-              wordicity = 0.01;
-            else if (wordicity === 1)
-              wordicity = 0.99;
-          }
-  
-          logSum += (Math.log(1 - wordicity) - Math.log(wordicity));
-          log(label + "icity of " + word + ": " + wordicity);
-        }
-        scores[label] = 1 / ( 1 + Math.exp(logSum) );
-      }
-      return scores;
-    };
-  
-    // Extract the label with the highest score
-    Bayes.extractWinner = function (scores) {
-      var bestScore = 0;
-      var bestLabel = null;
-      for (var label in scores) {
-        if (scores[label] > bestScore) {
-          bestScore = scores[label];
-          bestLabel = label;
-        }
-      }
-      return {label: bestLabel, score: bestScore};
-    };
-  
-    return Bayes;
-  })(Bayes || {});
-  
-  // Clear all stored data
-  localStorage.clear();
-  
-  // Test the input text
-  var go = function go() {
-    var text = document.getElementById("test_phrase").value;
-    if (text .trim() === "") { 
-      displayError("Please enter some text");
-      return;
+      a.push(this[i]);
+      u[this[i]] = 1;
     }
-    var scores = Bayes.guess(text);
-    var winner = Bayes.extractWinner(scores);
-    document.getElementById("test_result").innerHTML = winner.label;
-    document.getElementById("test_probability").innerHTML = winner.score;
-    console.log(scores);
+    return a;
   };
-  
+
+  // Helper functions to generate keys for storing data in localStorage
+  var stemKey = function (stem, label) {
+    return '_Bayes::stem:' + stem + '::label:' + label;
+  };
+
+  var docCountKey = function (label) {
+    return '_Bayes::docCount:' + label;
+  };
+
+  var stemCountKey = function (stem) {
+    return '_Bayes::stemCount:' + stem;
+  };
+
+  // Log text to console (can be removed if not needed)
+  var log = function (text) {
+    console.log(text);
+  };
+
+  // List of common stopwords
+  var stopwords = [
+    "the", "is", "in", "and", "of", "to", "a", "with", "that", "for", "it", "on", "as", "by",
+    "this", "at", "be", "from", "or", "was", "are", "an", "which", "but", "not", "have", "has", "were",
+    "tas", "ng", "him", "sakanya", "ay", "ang"
+  ];
+
+  // Tokenize the input text and remove stopwords
+  var tokenize = function (text) {
+    text = text.toLowerCase().replace(/\W/g, ' ').replace(/\s+/g, ' ').trim().split(' ').unique();
+    return text.filter(function(word) {
+      return stopwords.indexOf(word) === -1;
+    });
+  };
+
+  // Get all registered labels
+  var getLabels = function () {
+    var labels = localStorage.getItem('_Bayes::registeredLabels');
+    if (!labels) labels = '';
+    return labels.split(',').filter(function (a) {
+      return a.length;
+    });
+  };
+
+  // Register a label if it hasn't been registered yet
+  var registerLabel = function (label) {
+    var labels = getLabels();
+    if (labels.indexOf(label) === -1) {
+      labels.push(label);
+      localStorage.setItem('_Bayes::registeredLabels', labels.join(','));
+    }
+    return true;
+  };
+
+  // Retrieve the count of a specific word for a specific label
+  var stemLabelCount = function (stem, label) {
+    var count = parseInt(localStorage.getItem(stemKey(stem, label)));
+    if (!count) count = 0;
+    return count;
+  };
+
+  // Retrieve the count of the stem for labels other than the given one
+  var stemInverseLabelCount = function (stem, label) {
+    var labels = getLabels();
+    var total = 0;
+    for (var i = 0, length = labels.length; i < length; i++) {
+      if (labels[i] === label) 
+        continue;
+      total += parseInt(stemLabelCount(stem, labels[i]));
+    }
+    return total;
+  };
+
+  // Get the total count of a specific stem
+  var stemTotalCount = function (stem) {
+    var count = parseInt(localStorage.getItem(stemCountKey(stem)));
+    if (!count) count = 0;
+    return count;
+  };
+
+  // Get the count of documents for a specific label
+  var docCount = function (label) {
+    var count = parseInt(localStorage.getItem(docCountKey(label)));
+    if (!count) count = 0;
+    return count;
+  };
+
+  // Get the count of documents for all other labels
+  var docInverseCount = function (label) {
+    var labels = getLabels();
+    var total = 0;
+    for (var i = 0, length = labels.length; i < length; i++) {
+      if (labels[i] === label) 
+        continue;
+      total += parseInt(docCount(labels[i]));
+    }
+    return total;
+  };
+
+  // Increment a value in localStorage
+  var increment = function (key) {
+    var count = parseInt(localStorage.getItem(key));
+    if (!count) count = 0;
+    localStorage.setItem(key, parseInt(count) + 1);
+    return count + 1;
+  };
+
+  // Increment the count of a specific stem for a specific label
+  var incrementStem = function (stem, label) {
+    increment(stemCountKey(stem));
+    increment(stemKey(stem, label));
+  };
+
+  // Increment the document count for a specific label
+  var incrementDocCount = function (label) {
+    return increment(docCountKey(label));
+  };
+
+  // Train the system with text and associate it with a specific label
+  Bayes.train = function (text, label) {
+    registerLabel(label);
+    var words = tokenize(text);
+    var length = words.length;
+
+    for (var i = 0; i < length; i++)
+      incrementStem(words[i], label);
+    incrementDocCount(label);
+  };
+
+  // Guess the label for the input text
+  Bayes.guess = function (text) {
+    var words = tokenize(text);
+    var length = words.length;
+    var labels = getLabels();
+    var totalDocCount = 0;
+    var docCounts = {};
+    var docInverseCounts = {};
+    var scores = {};
+    var labelProbability = {};
+
+    // Get document counts for each label
+    for (var j = 0; j < labels.length; j++) {
+      var label = labels[j];
+      docCounts[label] = docCount(label);
+      docInverseCounts[label] = docInverseCount(label);
+      totalDocCount += parseInt(docCounts[label]);
+    }
+
+    // Calculate scores for each label
+    for (var j = 0; j < labels.length; j++) {
+      var label = labels[j];
+      var logSum = 0;
+      labelProbability[label] = docCounts[label] / totalDocCount;
+
+      console.log(`\nLabel: ${label}`);  // Log the current label being evaluated
+
+      // Process each word
+      for (var i = 0; i < length; i++) {
+        var word = words[i];
+        var _stemTotalCount = stemTotalCount(word);
+
+        if (_stemTotalCount === 0) {
+          console.log(`Skipping word "${word}" (not found in training data)`);
+          continue;
+        } else {
+          var wordProbability = stemLabelCount(word, label) / docCounts[label];
+          var wordInverseProbability = stemInverseLabelCount(word, label) / docInverseCounts[label];
+          var wordicity = wordProbability / (wordProbability + wordInverseProbability);
+
+          wordicity = ((1 * 0.5) + (_stemTotalCount * wordicity)) / (1 + _stemTotalCount);
+          wordicity = Math.max(0.01, Math.min(0.99, wordicity)); // Clamp wordicity between 0.01 and 0.99
+
+          logSum += (Math.log(1 - wordicity) - Math.log(wordicity));
+
+          // Log the wordicity for each word
+          console.log(`Word: "${word}", wordicity: ${wordicity}`);
+        }
+      }
+
+      scores[label] = 1 / (1 + Math.exp(logSum));
+    }
+
+    return scores;
+  };
+
+  // Extract the label with the highest score
+  Bayes.extractWinner = function (scores) {
+    var bestScore = 0;
+    var bestLabel = null;
+    for (var label in scores) {
+      if (scores[label] > bestScore) {
+        bestScore = scores[label];
+        bestLabel = label;
+      }
+    }
+    return {label: bestLabel, score: bestScore};
+  };
+
+  return Bayes;
+})(Bayes || {});
+
+// Clear all stored data
+localStorage.clear();
+
+// Test the input text
+var go = function go() {
+  var text = document.getElementById("test_phrase").value;
+  if (text.trim() === "") { 
+    displayError("Please enter some text");
+    return;
+  }
+  var scores = Bayes.guess(text);
+  var winner = Bayes.extractWinner(scores);
+  document.getElementById("test_result").innerHTML = winner.label;
+  document.getElementById("test_probability").innerHTML = winner.score;
+  console.log(scores);
+};
   // Training data
   Bayes.train("its fine i guess. neutral", 'neutral');
-
-
-
-
-// negative train
+// negative training
 Bayes.train("bulok negative ",'negative');
 Bayes.train("Rumors of match-fixing have cast a shadow over the team's recent successes. ",'negative');
 Bayes.train("The unexpected resignation of the coach has left the team in disarray. ",'negative');
