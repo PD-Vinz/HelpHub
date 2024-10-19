@@ -129,10 +129,10 @@ try {
             <div class="row">
             <div class="col-md-12">   <div class="col-md-12">
 
-                    <div class="col-md-12">
+                   
                      <h2>Activity Logs</h2>   
                      <hr> 
-                    </div>
+               
                 </div>
                  <!-- /. ROW  -->
                  
@@ -183,8 +183,11 @@ $pdoExec = $pdoResult->execute();
                     </div>
                     <!--End Advanced Tables -->
 
-                </div></div></div>
-            </div><?php require_once('../footer.php') ?>
+                </div>
+            </div>
+        </div>
+            </div>
+            <?php require_once('../footer.php') ?>
                </div>
               
 

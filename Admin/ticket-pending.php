@@ -106,10 +106,10 @@ if (isset($_GET['failed']) && $_GET['failed'] == "true") {
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title><?php echo $sysName?></title>
     <link rel="icon" href="<?php echo htmlspecialchars($S_LBase64, ENT_QUOTES, 'UTF-8'); ?>" type="image/*">
-  
+      <link href="assets/js/DataTables/datatables.min.css" rel="stylesheet">
 	<!-- BOOTSTRAP STYLES-->
     <link href="assets/css/bootstrap.css" rel="stylesheet" />
-    <link href="assets/js/DataTables/datatables.min.css" rel="stylesheet">
+
      <!-- FONTAWESOME STYLES-->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
      <!-- MORRIS CHART STYLES-->
@@ -132,6 +132,9 @@ if (isset($_GET['failed']) && $_GET['failed'] == "true") {
             max-height: 70vh; /* Adjust the maximum height as needed */
             object-fit: contain; /* Ensure the image is contained within the modal */
         }
+        .align-left {
+        text-align: left !important; /* Force left alignment */
+    }
     </style>
     
 </head>
@@ -142,9 +145,7 @@ if (isset($_GET['failed']) && $_GET['failed'] == "true") {
          <?php include 'nav.php'; ?> 
         <!-- /. NAV SIDE  -->
         <div id="page-wrapper" >
-        <div id="page-inner" style="min-height: 800px;">
-
-               
+        <div id="page-inner" >
                     <div class="col-md-12">
                      <h2>Pending Tickets</h2>   
                      <hr>   

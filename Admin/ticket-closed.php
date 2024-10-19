@@ -125,7 +125,7 @@ try {
          <?php include 'nav.php'; ?>
         <!-- /. NAV SIDE  -->
         <div id="page-wrapper" >
-            <div id="page-inner" style="min-height: 800px;">
+            <div id="page-inner" >
                 
                     <div class="col-md-12">
                      <h2>Closed Tickets</h2>   
