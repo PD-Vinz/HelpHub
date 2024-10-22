@@ -246,70 +246,31 @@ if (!isset($_SESSION["admin_number"])) {
                                                     $now = new DateTime();
                                                     $interval = $now->diff($createdDate);
                                                     $hoursElapsed = $interval->h + ($interval->days * 24);
-
+                                                
                                                     $priorityIcon = '';
                                                     if (in_array($row['status'], ['Pending', 'Processing']) && $hoursElapsed >= 48) {
                                                         $priorityIcon = '<i class="fa fa-exclamation-circle" aria-hidden="true"></i>';
                                                     }
-
+                                                
                                                     extract($row);
                                                     $screenshotBase64 = base64_encode($screenshot);
                                                     ?>
 
                                                     <tr class='odd gradeX <?php echo $statusClass?>'>
-                                                    <td><?php echo $priorityIcon; ?></td>
-                                                    <td><?php echo htmlspecialchars($ticket_id); ?></td>
-                                                    <td><?php echo htmlspecialchars($status); ?></td>
-                                                    <td><?php echo htmlspecialchars($employee); ?></td>
-                                                    <td><?php echo htmlspecialchars($created_date); ?></td>
-                                                    <td><?php echo htmlspecialchars($full_name); ?></td>
-                                                    <td><?php echo htmlspecialchars($issue); ?></td>
-
-
-                                                                      
-    <?php if ( $status === 'Pending'): ?>
-        <td>
-
-            <div class='panel-body-ticket'>
-                <button class='btn btn-primary btn-xs' data-toggle='modal' data-target='#PendingModal<?php echo $ticket_id; ?>'>
-                    View Pending
-                </button>
-            </div>
-            
-        </td>
-<?php elseif ( $status === 'Processing'): ?>
-        <td>
-
-            <div class='panel-body-ticket'>
-                <button class='btn btn-primary btn-xs' data-toggle='modal' data-target='#ProcessingModal<?php echo $ticket_id; ?>'>
-                    View Processing
-                </button>
-            </div>
-            
-        </td>
-<?php elseif ( $status === 'Returned'): ?>
-        <td>
-
-            <div class='panel-body-ticket'>
-                <button class='btn btn-primary btn-xs' data-toggle='modal' data-target='#ReturnModal<?php echo $ticket_id; ?>'>
-                    View Returned
-                </button>
-            </div>
-            
-        </td>   
-<?php elseif ( $status === 'Resolved'): ?>
-        <td>
-
-            <div class='panel-body-ticket'>
-                <button class='btn btn-primary btn-xs' data-toggle='modal' data-target='#ResolvedModal<?php echo $ticket_id; ?>'>
-                    View Resolved
-                </button>
-            </div>
-            
-        </td>              
-<?php endif; ?>
-
-        </tr>
+                                                        <td><?php echo $priorityIcon; ?></td>
+                                                        <td><?php echo htmlspecialchars($ticket_id); ?></td>
+                                                        <td><?php echo htmlspecialchars($status); ?></td>
+                                                        <td><?php echo htmlspecialchars($employee); ?></td>
+                                                        <td><?php echo htmlspecialchars($created_date); ?></td>
+                                                        <td><?php echo htmlspecialchars($full_name); ?></td>
+                                                        <td><?php echo htmlspecialchars($issue); ?></td>
+                                                        <td>
+                                                            <button class="btn btn-primary btn-xs load-details" data-ticket-id="<?php echo $ticket_id; ?>" data-status="<?php echo $status; ?>">
+                                                                View Details
+                                                            </button>
+                                                        </td>
+                                                    </tr>
+                                                    <?php }?>
                       <!-- Pending Ticket -->    
 <div class="modal fade" id="PendingModal<?php echo $ticket_id; ?>" >
     <div class="modal-dialog">
@@ -850,7 +811,7 @@ if (!isset($_SESSION["admin_number"])) {
 </div>                    
                                 <!-- form general example -->
                                 </tr>
-                                <?php }  ?>
+      
                                 </tbody>
 
                                 
@@ -915,7 +876,99 @@ if (!isset($_SESSION["admin_number"])) {
     <!-- MORRIS CHART SCRIPTS -->
     <script src="assets/js/morris/raphael-2.1.0.min.js"></script>
     <script src="assets/js/morris/morris.js"></script>
+    <script>
+$(document).ready(function() {
+    // Existing DataTable initialization code...
 
+    // Handle click event for loading details
+    $('#dataTables-example').on('click', '.load-details', function() {
+        var ticketId = $(this).data('ticket-id');
+        var status = $(this).data('status');
+        var $button = $(this);
+
+        // Show loading indicator
+        $button.html('Loading...');
+
+        // Make AJAX request to get ticket details
+        $.ajax({
+            url: 'get-ticket-details.php', // Make sure this path is correct
+            method: 'GET',
+            data: { ticket_id: ticketId, status: status },
+            dataType: 'json',
+            success: function(response) {
+                if (response.success) {
+                    // Create or update modal with fetched details
+                    var modalId = 'ticketModal' + response.ticket_id;
+                    var $modal = $('#' + modalId);
+                    
+                    if ($modal.length === 0) {
+                        // Create new modal if it doesn't exist
+                        $('body').append(
+                            '<div class="modal fade" id="' + modalId + '" tabindex="-1" role="dialog">' +
+                                '<div class="modal-dialog" role="document">' +
+                                    '<div class="modal-content">' +
+                                        '<div class="modal-header">' +
+                                            '<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>' +
+                                            '<h4 class="modal-title">' + response.status + ' Ticket</h4>' +
+                                        '</div>' +
+                                        '<div class="modal-body">' + response.html + '</div>' +
+                                        '<div class="modal-footer">' +
+                                            getFooterButtons(response.status, response.ticket_id) +
+                                        '</div>' +
+                                    '</div>' +
+                                '</div>' +
+                            '</div>'
+                        );
+                        $modal = $('#' + modalId);
+                    } else {
+                        // Update existing modal content
+                        $modal.find('.modal-title').text(response.status + ' Ticket');
+                        $modal.find('.modal-body').html(response.html);
+                        $modal.find('.modal-footer').html(getFooterButtons(response.status, response.ticket_id));
+                    }
+
+                    // Show the modal
+                    $modal.modal('show');
+                } else {
+                    alert('Error: ' + response.message);
+                }
+
+                // Reset button text
+                $button.html('View Details');
+            },
+            error: function(jqXHR, textStatus, errorThrown) {
+                console.error('AJAX Error:', textStatus, errorThrown);
+                console.log('Response Text:', jqXHR.responseText);
+                alert('Error loading ticket details. Please check the console for more information.');
+                $button.html('View Details');
+            }
+        });
+    });
+
+    function getFooterButtons(status, ticketId) {
+        var buttons = '<a href="#" data-dismiss="modal" class="btn">Back</a>';
+        
+        switch (status) {
+            case 'Pending':
+                buttons += '<a data-toggle="modal" href="#myModal4' + ticketId + '" class="btn btn-primary">Open Ticket</a>';
+                break;
+            case 'Processing':
+                buttons += '<a data-toggle="modal" href="#myModalTransfer' + ticketId + '" class="btn btn-primary">Transfer</a>';
+                buttons += '<a data-toggle="modal" href="#myModalReturn' + ticketId + '" class="btn btn-primary">Return</a>';
+                buttons += '<a data-toggle="modal" href="#myModalClose' + ticketId + '" class="btn btn-primary">Close</a>';
+                break;
+            case 'Returned':
+                // Add buttons for Returned status if needed
+                break;
+            case 'Resolved':
+                // Add buttons for Resolved status if needed
+                break;
+        }
+        
+        return buttons;
+    }
+});
+</script>
     <script>
         $(document).ready(function() {
             // Function to create a donut chart

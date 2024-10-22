@@ -121,8 +121,7 @@ try {
     <title><?php echo $sysName?></title>
     <link rel="icon" href="<?php echo htmlspecialchars($S_LBase64, ENT_QUOTES, 'UTF-8'); ?>" type="image/*">   
 
-    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/main.min.js"></script>
-    <link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/main.min.css" rel="stylesheet" />
+
 	<!-- BOOTSTRAP STYLES-->
     <link href="assets/css/bootstrap.css" rel="stylesheet" />
      <!-- FONTAWESOME STYLES-->
@@ -157,67 +156,10 @@ try {
                         
                  <!-- /. ROW  -->
 
-<!--<a href="ticket-pending.php">  -->          <div class="row">
-    
-<div class="col-md-2 col-sm-6 col-xs-6">        
-    
-    <div class="panel panel-back noti-box">
-        <span class="icon-box bg-color-yellow set-icon">
-        <i class="fa fa-hourglass-half fa-xs" aria-hidden="true"></i>
-        </span>
-        <div class="text-box" >
-            <p class="main-text"><?php echo $pendingTickets?></p>
-            <p class="text-muted pp"> Pending Tickets</p>
-        </div>
-     </div>
-    </div>
-            <div class="col-md-2 col-sm-6 col-xs-6">           
-    <div class="panel panel-back noti-box">
-        <span class="icon-box bg-color-green set-icon">
-        <i class="fa fa-envelope-open fa-xs" aria-hidden="true"></i>
-        </span>
-        <div class="text-box" >
-            <p class="main-text"><?php echo $openedTickets?></p>
-            <p class="text-muted pp"> Processing Tickets</p>
-        </div>
-     </div>
-    </div>
-            <div class="col-md-2 col-sm-6 col-xs-6">           
-    <div class="panel panel-back noti-box">
-        <span class="icon-box bg-color-brown set-icon">
-        <i class="fa fa-check fa-xs" aria-hidden="true"></i>
-        </span>
-        <div class="text-box" >
-            <p class="main-text"><?php echo $completedTickets?></p>
-            <p class="text-muted pp"> Resolved Tickets</p>
-        </div>
-     </div>
-    </div>
-    
-       
-            <div class="col-md-2 col-sm-6 col-xs-6">           
-    <div class="panel panel-back noti-box">
-        <span class="icon-box bg-color-black set-icon">
-        <i class="fa fa-reply fa-xs" aria-hidden="true"></i>
-        </span>
-        <div class="text-box" >
-            <p class="main-text"><?php echo $returnedTickets?></p>
-           <p class="text-muted pp"> Returned Tickets</p>
-        </div>
-     </div>
-     </div>
-            <div class="col-md-2 col-sm-6 col-xs-6">           
-    <div class="panel panel-back noti-box">
-        <span class="icon-box bg-color-blue set-icon">
-        <i class="fa fa-exclamation-circle fa-xs" aria-hidden="true"></i>
-        </span>
-        <div class="text-box" >
-            <p class="main-text"><?php echo $priorityTickets?></p>
-            <p class="text-muted pp"> Priority Tickets</p>
-        </div>
-     </div>
-<!--</a>-->
-    </div> </div> 
+<!--<a href="ticket-pending.php">  -->      <div class="row" id="ticket-stats">
+                        <!-- Ticket statistics will be inserted here -->
+                    </div>
+
       
                  <!-- /. Calendar  -->   
                  <div class="col-md-12">
@@ -280,44 +222,52 @@ $role = $U_T; // 'admin' or 'user'
      
     <script src="assets/js/morris/raphael-2.1.0.min.js"></script>
     <script src="assets/js/morris/morris.js"></script>
-    <script>Morris.Line({
-                element: 'morris-line-chart',
-                data: [{
-                    y: '2006',
-                    a: 100,
-                    b: 90
-                }, {
-                    y: '2007',
-                    a: 75,
-                    b: 65
-                }, {
-                    y: '2008',
-                    a: 50,
-                    b: 40
-                }, {
-                    y: '2009',
-                    a: 75,
-                    b: 65
-                }, {
-                    y: '2010',
-                    a: 50,
-                    b: 40
-                }, {
-                    y: '2011',
-                    a: 75,
-                    b: 65
-                }, {
-                    y: '2012',
-                    a: 100,
-                    b: 90
-                }],
-                xkey: 'y',
-                ykeys: ['a', 'b'],
-                labels: ['Series A', 'Series B'],
-                hideHover: 'auto',
-                resize: true
+    <script>
+    $(document).ready(function() {
+        function updateTicketStats() {
+            $.ajax({
+                url: 'get_ticket_stats.php',
+                type: 'GET',
+                dataType: 'json',
+                success: function(data) {
+                    var statsHtml = '';
+                    var statItems = [
+                        {key: 'pending', icon: 'fa-hourglass-half', color: 'yellow', label: 'Pending Tickets'},
+                        {key: 'processing', icon: 'fa-envelope-open', color: 'green', label: 'Processing Tickets'},
+                        {key: 'resolved', icon: 'fa-check', color: 'brown', label: 'Resolved Tickets'},
+                        {key: 'returned', icon: 'fa-reply', color: 'black', label: 'Returned Tickets'},
+                        {key: 'priority', icon: 'fa-upload', color: 'blue', label: 'Priority Tickets'}
+                    ];
+
+                    statItems.forEach(function(item) {
+                        statsHtml += `
+                        <div class="col-md-2 col-sm-6 col-xs-6">
+                            <div class="panel panel-back noti-box">
+                                <span class="icon-box bg-color-${item.color} set-icon">
+                                    <i class="fa ${item.icon} fa-xs" aria-hidden="true"></i>
+                                </span>
+                                <div class="text-box">
+                                    <p class="main-text">${data[item.key]}</p>
+                                    <p class="text-muted pp">${item.label}</p>
+                                </div>
+                            </div>
+                        </div>`;
+                    });
+
+                    $('#ticket-stats').html(statsHtml);
+                },
+                error: function(xhr, status, error) {
+                    console.error("Error fetching ticket stats:", error);
+                }
             });
-           </script>
+        }
+
+        // Initial update
+        updateTicketStats();
+
+        setInterval(updateTicketStats, 30000);
+    });
+    </script>
       <!-- CUSTOM SCRIPTS -->
     <script src="assets/js/custom.js"></script>
     <script src="../helphub/FullCalendar-BS3-PHP-MySQL-master/js/fullcalendar.min.js"></script>

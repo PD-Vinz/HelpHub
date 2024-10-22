@@ -58,6 +58,8 @@ if (!isset($_SESSION["user_id"])) {
         }
     }
 
+
+
             // for displaying system details
             $query = $pdoConnect->prepare("SELECT system_name, short_name, system_logo, system_cover FROM settings WHERE id = :id");
             $query->execute(['id' => 1]);
@@ -76,6 +78,8 @@ if (!isset($_SESSION["user_id"])) {
         
 }
 
+
+
 if(isset($_GET['error']) && $_GET['error'] == 1) {
     // Set your error message here
     $errorMessage = "Cannot proceed with your request. Please check your submission carefully.";
@@ -87,28 +91,18 @@ if(isset($_GET['error']) && $_GET['error'] == 1) {
     </script>";
 }
 
-$user_id = $_SESSION['user_id']; // Make sure user_id is properly set in the session
 
-// Get the current date
-$current_date = date('Y-m-d');
+$pdoUserQuery = "SELECT * from settings WHERE id = 1";
+$pdoResult = $pdoConnect->prepare($pdoUserQuery);
+$pdoResult->execute();
 
-// Query to check if the user has already submitted a ticket today
-$query = "SELECT * FROM tb_tickets WHERE user_number = :user_id and DATE(created_date) = :current_date";
-$stmt = $pdoConnect->prepare($query); // Assuming you're using PDO
-$stmt->bindParam(':user_id', $user_id);
-$stmt->bindParam(':current_date', $current_date);
-$stmt->execute();
+$settingsData = $pdoResult->fetch(PDO::FETCH_ASSOC);
+$acceptTickets = $settingsData['accept_tickets'];
 
-// Check if a row was found
-if ($stmt->rowCount() > 0) {
-    // User has already submitted a ticket today, display the message
-    $errorMessage = "You can only submit a ticket once per day. Please try again tomorrow";
-        echo "<script type='text/javascript'>
-            window.onload = function() {
-                alert('$errorMessage');
-                window.location.href = 'index.php';
-            };
-        </script>";
+if ($acceptTickets == "off") {
+    $displayForm = false;
+} else {
+    $displayForm = true;
 }
 ?>
 
@@ -213,9 +207,48 @@ if ($stmt->rowCount() > 0) {
                 <div class="container-center">
                     <div class="modal-header">
                         <img src="assets/pic/head.png" alt="Technical support for DHVSU students">  
-                <div class="container-create">
 
-<form class="issue-form" action="ticket-submit.php" method="POST" enctype="multipart/form-data">
+
+        <?php
+     
+        $user_id = $_SESSION['user_id']; 
+
+        // Get the current date
+        $current_date = date('Y-m-d');
+
+
+        $today_start = date('Y-m-d 00:00:00');
+        $today_end = date('Y-m-d 23:59:59');
+        $query = "SELECT * FROM tb_tickets WHERE user_id = :user_id AND created_date BETWEEN :today_start AND :today_end";
+        $stmt = $pdoConnect->prepare($query);
+        $stmt->execute(['user_id' => $user_id, 'today_start' => $today_start, 'today_end' => $today_end]);
+        
+        $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+
+
+if ($stmt->rowCount() > 0) {
+
+    echo '
+      <div class="container-create">
+    <div>
+        <p>&nbsp&nbsp&nbsp<i class=" fa fa-exclamation-circle fa-sm">&nbsp&nbsp&nbsp&nbsp&nbsp</i>You can only submit a ticket once per day. Please try again tomorrow</p>
+    </div>
+    </div>';
+} else {
+ 
+    ?>
+
+
+
+<div class="container-create">
+                <div id="ticket-message" style="display: none;">
+    <p>&nbsp&nbsp&nbsp<i class=" fa fa-exclamation-circle fa-sm">&nbsp&nbsp&nbsp&nbsp&nbsp</i>The MIS is currently not accepting tickets at the moment. Please try again during office hours.</p>
+</div>
+
+
+<form class="issue-form" id="issueForm" action="ticket-submit.php" method="POST" enctype="multipart/form-data" style="display: none;">
+ 
 
                         <div class="form-group">
                             <label for="category">ISSUE</label>
@@ -283,15 +316,22 @@ if ($stmt->rowCount() > 0) {
             </div>
 
 </form>
+<?php
+}
+?>
                 </div>
         </div>
                  <!-- /. ROW  -->
                  
                         
              <!-- /. PAGE INNER  -->
-            </div>
+      
          <!-- /. PAGE WRAPPER  -->
         </div><?php require_once ('../footer.php')?>
+
+            </div>
+        </div>
+    </div>
     <!-- /. WRAPPER -->
     <!-- SCRIPTS - AT THE BOTTOM TO REDUCE THE LOAD TIME -->
     <!-- JQUERY SCRIPTS -->
@@ -305,6 +345,16 @@ if ($stmt->rowCount() > 0) {
     <script src="assets/js/dataTables/dataTables.bootstrap.js"></script>
     <!-- CUSTOM SCRIPTS -->
     <script src="assets/js/custom.js"></script>
+
+    <!--if setting is turned off/on-->
+    <script>
+    var displayForm = <?php echo $displayForm ? 'true' : 'false'; ?>;
+    if (!displayForm) {
+        document.getElementById('ticket-message').style.display = 'block';
+    } else {
+        document.getElementById('issueForm').style.display = 'block';
+    }
+</script>
     <!--preview-->
 <script>
     // Modal confirm button to handle form submission
