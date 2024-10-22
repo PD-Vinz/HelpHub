@@ -202,7 +202,7 @@ $pdoExec = $pdoResult->execute();
 				                  <div class="dropdown-menu" role="menu">
 				                    <a class="dropdown-item" data-toggle='modal' data-target='#myModal<?php echo $user_id; ?>' style="cursor:pointer"><span class="fa fa-edit text-primary"></span> View</a>
 				                    <div class="dropdown-divider"></div>
-                                    <a class="dropdown-item delete_data" href="javascript:void(0)" data-id="11" onclick="Delete()"><span class="fa fa-trash text-danger"></span> Delete</a>
+                                    <a class="dropdown-item delete_data" href="javascript:void(0)" data-id="11" onclick="Delete()"><span class="fa fa-ban text-danger"></span> Disable Account</a>
     <script>
         function Delete() {
             alert("The Delete function is currently not usable.");
@@ -294,6 +294,9 @@ $pdoExec = $pdoResult->execute();
                             
                 </div>
             </div>
+                                <div class="modal-footer">
+                                <a href="edit-user-student.php?id=<?php echo $user_id; ?>" class="btn btn-primary">Edit Account Information</a>
+                                </div>
         </div>
     </div>
 </div>

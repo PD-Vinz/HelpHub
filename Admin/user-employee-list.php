@@ -44,39 +44,6 @@ if (!isset($_SESSION["admin_number"])) {
          $imageType = 'image/png'; // Default MIME type
          $S_LBase64 = 'data:' . $imageType . ';base64,' . $base64Image;
      }
- // for displaying system details //end
-    
-
-try {
-
-    $pdoCountQuery = "SELECT * FROM tb_tickets";
-    $pdoResult = $pdoConnect->prepare($pdoCountQuery);
-    $pdoResult->execute();
-    $allTickets = $pdoResult->rowCount();
-
-    $pdoCountQuery = "SELECT * FROM tb_tickets WHERE status = 'Pending'";
-    $pdoResult = $pdoConnect->prepare($pdoCountQuery);
-    $pdoResult->execute();
-    $pendingTickets = $pdoResult->rowCount();
-
-    $pdoCountQuery = "SELECT * FROM tb_tickets WHERE status = 'Returned'";
-    $pdoResult = $pdoConnect->prepare($pdoCountQuery);
-    $pdoResult->execute();
-    $returnedTickets = $pdoResult->rowCount();
-
-    $pdoCountQuery = "SELECT * FROM tb_tickets WHERE status = 'Completed'";
-    $pdoResult = $pdoConnect->prepare($pdoCountQuery);
-    $pdoResult->execute();
-    $completedTickets = $pdoResult->rowCount();
-
-    $pdoCountQuery = "SELECT * FROM tb_tickets WHERE status = 'Due'";
-    $pdoResult = $pdoConnect->prepare($pdoCountQuery);
-    $pdoResult->execute();
-    $dueTickets = $pdoResult->rowCount();
-
-} catch (PDOException $e) {
-    echo "Error: " . $e->getMessage();
-}
 
 }
 
@@ -289,6 +256,9 @@ $pdoExec = $pdoResult->execute();
                             
                 </div>
             </div>
+                                <div class="modal-footer">
+                                <a href="edit-user-employee.php?id=<?php echo $user_id; ?>" class="btn btn-primary">Edit Account Information</a>
+                                </div>
         </div>
     </div>
 </div>

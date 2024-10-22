@@ -5,6 +5,11 @@ session_start();
 include_once("connection/conn.php");
 $pdoConnect = connection();
 
+if (isset($_SESSION["Super-Admin"])) {
+    header("Location: Super-Admin/dashboard.php");
+    exit(); // Prevent further execution after redirection
+}
+
 // Redirect to student dashboard if student session exists
 if (isset($_SESSION["user_id"])) {
     header("Location: User/dashboard.php");
@@ -204,7 +209,7 @@ if ($pdoResult3->rowCount() > 0) {
     <title>DHVSU MIS - HelpHub</title>
     <link rel="icon" href="<?php echo htmlspecialchars($S_LBase64, ENT_QUOTES, 'UTF-8'); ?>" type="image/*">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
-    <link  rel="stylesheet" href="index.css">
+    <link rel="stylesheet" href="index.css?v=<?php echo time(); ?>">
 </head>
 <body>
     <img class="logo" src="img/MIS logo.png" alt="Image">

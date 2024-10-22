@@ -55,8 +55,8 @@ try {
     // SQL to find the smallest unused 10-digit ID
     $sql = "
         SELECT MIN(t1.user_id + 1) AS next_id
-        FROM student_user t1
-        LEFT JOIN student_user t2 ON t1.user_id + 1 = t2.user_id
+        FROM employee_user t1
+        LEFT JOIN employee_user t2 ON t1.user_id + 1 = t2.user_id
         WHERE t2.user_id IS NULL 
         AND LENGTH(t1.user_id) = 10
         AND LENGTH(t1.user_id + 1) = 10;
@@ -74,6 +74,40 @@ try {
 
 } catch (PDOException $e) {
     echo "Error: " . $e->getMessage();
+}
+
+if (isset($_GET['id'])){
+    $id = $_GET['id'];
+
+    try {
+        $pdoUserQuery = "SELECT * FROM employee_user WHERE user_id = :number";
+        $pdoResult = $pdoConnect->prepare($pdoUserQuery);
+        $pdoResult->bindParam(':number', $id);
+        $pdoResult->execute();
+    
+        $Data = $pdoResult->fetch(PDO::FETCH_ASSOC);
+    
+        if ($Data) {
+            $FetchUserID = $Data['user_id'];
+            $FetchEmail = $Data['email_address'];
+            //$FetchAltEmail = $Data['alt_email_address'];
+            $FetchName = $Data['name'];
+            $FetchCampus = $Data['campus'];
+            $FetchDepartment = $Data['department']; 
+            $FetchSex = $Data['sex'];
+            $FetchBirthday = $Data['birthday'];
+            $FetchAge = $Data['age'];
+            $Avatar = $Data['profile_picture'];
+
+            $AvatarBase64 = base64_encode($Avatar);
+        } else {
+            // Handle the case where no results are found
+            echo "No student found with the given student number.";
+        }
+        
+    } catch (PDOException $e) {
+        echo "Error: " . $e->getMessage();
+    }
 }
 
 
@@ -146,7 +180,7 @@ input[type="file"]::file-selector-button {
             <div id="page-inner">
                 <div class="row">
                     <div class="col-md-12">
-                     <h2>Create New Student Account</h2>   
+                     <h2>Create New Employee Account</h2>   
 
                     </div>
                 </div>
@@ -156,31 +190,40 @@ input[type="file"]::file-selector-button {
 	<div class="panel-body">
 		<div class="container-fluid col-md-12">
 			<div id="msg"></div>
-			<form method="post" action="action/add-single-userS-upload.php" id="manage-user" enctype="multipart/form-data">
+			<form method="post" action="action/update-single-userE.php" id="manage-user" enctype="multipart/form-data">
             <div class="container-fluid col-md-6">
-                <div class="form-group col-6">
+            <div class="form-group col-6">
 					<label for="name">User ID</label>
-                    <input type="text" name="userid" class="form-control" value="" required>
-				</div>	
-                
+                    <input type="text" name="userid" class="form-control" value="<?php echo $FetchUserID?>" readonly>
+				</div>
+                <div class="form-group col-6">
+					<label for="email">Email Address</label>
+					<input type="email" name="email" id="email" class="form-control" value="<?php echo $FetchEmail?>">
+				</div>
 				<div class="form-group col-6">
 					<label for="name">Name</label>
-					<input type="text" name="name" id="name" class="form-control" required>
+					<input type="text" name="name" id="name" class="form-control" value="<?php echo $FetchName?>" required>
 				</div>
                 <div class="form-group col-6">
 					<label for="name">Birthday</label>
-					<input type="date" name="birthday" id="birthday" class="form-control" required>
+					<input type="date" name="birthday" id="birthday" class="form-control" value="<?php echo $FetchBirthday?>" required>
 				</div>
                 <div class="form-group col-6">
 					<label for="name">Age</label>
-					<input type="text" name="age" id="age" class="form-control" required >
+					<input type="text" name="age" id="age" class="form-control" value="<?php echo $FetchAge?>" required >
 				</div>
                 <div class="form-group col-6">
 					<label for="sex">Sex</label>
-					<select name="sex" id="sex" class="form-control" required>
-						<option value="Male">Male</option>
-						<option value="Female">Female</option>
+					<select name="sex" id="sex" class="custom-select form-control" required>
+						<option value="Male" <?php echo ($FetchSex == 'Male') ? 'selected' : ''; ?>>Male</option>
+						<option value="Female" <?php echo ($FetchSex == 'Female') ? 'selected' : ''; ?>>Female</option>
 					</select>
+				</div>
+                <div class="form-group col-6">
+					<label for="campus">Campus</label>
+					<select type="text" name="campus" id="campusDropdown" class="form-control" required>
+
+                    </select>
 				</div>
                 <div class="form-group col-6">
 					<label for="department">Department</label>
@@ -188,32 +231,7 @@ input[type="file"]::file-selector-button {
 
                     </select>
 				</div>
-                <div class="form-group col-6">
-					<label for="course">Course</label>
-					<select name="course" id="itemDropdown" class="form-control" required>
-                        
-                    </select>
-				</div>
-                <div class="form-group col-6">
-					<label for="year_section">Year and Section</label>
-					<input type="text" name="year_section" id="year_section" class="form-control" required >
-				</div>
-                <div class="form-group col-6">
-					<label for="campus">Campus</label>
-					<select name="campus" id="campusDropdown" class="form-control" required>
-
-                    </select>
-				</div>
-                <div class="form-group col-6">
-					<label for="email">Email Address</label>
-					<input type="email" name="email" id="email" class="form-control" value="">
-				</div>
-                <div class="form-group col-6">
-					<label for="altemail">Alternative Email Address</label>
-					<input type="email" name="altemail" id="altemail" class="form-control" value="">
-				</div>
 			
-               
                 </div>
                 <div class="col-md-6">
 				<div class="form-group col-6">
@@ -225,7 +243,7 @@ input[type="file"]::file-selector-button {
 		            </div>
 				</div>
 				<div class="form-group col-6 d-flex justify-content-center">
-					<img src="assets\img\No-Profile.png" alt="" id="cimg" class="img-fluid img-thumbnail">
+					<img src="data:image/jpeg;base64,<?php echo $AvatarBase64?>" alt="" id="cimg" class="img-fluid img-thumbnail">
 				</div>
 			</div>
 		</div>
@@ -234,7 +252,7 @@ input[type="file"]::file-selector-button {
 			<div class="col-md-12">
 				<div class="row">
 					<button class="btn btn-sm btn-primary mr-2" form="manage-user">Add Account</button>
-					<a class="btn btn-sm btn-secondary" href="user-student-list.php">Cancel</a>
+					<a class="btn btn-sm btn-secondary" href="user-employee-list.php">Cancel</a>
 				</div>
 			</div>
 		</div>
@@ -403,7 +421,7 @@ function displayImg(input) {
     <script src="assets/js/custom.js"></script>
     
     <script>
-function populateCampus(fileName, dropdownId) {
+function populateCampus(fileName, dropdownId, selectedCampus) {
     // Add a random query parameter to the file name to prevent caching
     const url = fileName + '?v=' + new Date().getTime();
     
@@ -429,29 +447,32 @@ function populateCampus(fileName, dropdownId) {
                     dropdown.appendChild(opt);
                 }
             });
+
+            // Select the option based on selectedValue
+            if (selectedCampus) {
+                dropdown.value = selectedCampus; // Set the selected option
+            }
         })
         .catch(error => console.error(`Error fetching the text file (${fileName}):`, error));
 }
 
-// Call the function to populate the category dropdown
-populateCampus('txt/campus.txt', 'campusDropdown');
-    </script>
+// Assuming you have a PHP variable $FetchCampus, output it to JavaScript
+const fetchCampus = "<?php echo $FetchCampus; ?>"; // Replace with your method to get the PHP variable
 
+// Call the function to populate the category dropdown
+populateCampus('txt/campus.txt', 'campusDropdown', fetchCampus);
+</script>
 <script>
     // Function to populate a dropdown from a specified text file
-    function populateDropdown(fileName, dropdownId) {
+    function populateDropdown(fileName, dropdownId, selectedDepartment) {
         const url = fileName + '?v=' + new Date().getTime();
         // Fetch the text file
         fetch(url)
             .then(response => response.text())
             .then(data => {
-                // Split the text data by lines
                 const options = data.split('\n');
-
-                // Get the dropdown element
                 const dropdown = document.getElementById(dropdownId);
 
-                // Iterate over each line and create an option element
                 options.forEach(option => {
                     if (option.trim() !== '') {  // Ignore empty lines
                         const opt = document.createElement('option');
@@ -461,76 +482,28 @@ populateCampus('txt/campus.txt', 'campusDropdown');
                     }
                 });
 
+                // Select the option based on selectedDepartment
+                if (selectedDepartment) {
+                    dropdown.value = selectedDepartment; // Set the selected option
+                }
+
                 // After populating, call handleCategoryChange to initialize the second dropdown
                 handleCategoryChange();
             })
             .catch(error => console.error(`Error fetching the text file (${fileName}):`, error));
     }
 
-    // Function to populate a dropdown from a specific section of a text file
-    function populateDropdownFromSection(fileName, dropdownId, sectionMarker) {
-        const url = fileName + '?v=' + new Date().getTime();
-        // Fetch the text file
-        fetch(url)
-            .then(response => response.text())
-            .then(data => {
-                // Split the text data by lines
-                const lines = data.split('\n');
-
-                // Variables to hold the section data
-                let isInSection = false;
-                const options = [];
-
-                // Iterate over each line to find the desired section
-                lines.forEach(line => {
-                    const trimmedLine = line.trim();
-
-                    // Check if the line is the section marker
-                    if (trimmedLine === sectionMarker) {
-                        isInSection = true; // Start capturing lines
-                    } else if (trimmedLine.startsWith('#')) {
-                        isInSection = false; // End capturing lines
-                    } else if (isInSection && trimmedLine !== '') {
-                        options.push(trimmedLine); // Capture lines within the section
-                    }
-                });
-
-                // Get the dropdown element
-                const dropdown = document.getElementById(dropdownId);
-
-                // Clear existing options in the dropdown
-                dropdown.innerHTML = '';
-
-                // Populate dropdown with options from the section
-                options.forEach(option => {
-                    const opt = document.createElement('option');
-                    opt.value = option;
-                    opt.textContent = option;
-                    dropdown.appendChild(opt);
-                });
-            })
-            .catch(error => console.error(`Error fetching the text file (${fileName}):`, error));
-    }
-
-    // Function to handle category change
-    function handleCategoryChange() {
-        const categoryDropdown = document.getElementById('categoryDropdown');
-        const selectedCategory = categoryDropdown.value;
-        const sectionMarker = `# ${selectedCategory}`;
-
-        // Populate the second dropdown based on the selected category
-        populateDropdownFromSection('txt/course.txt', 'itemDropdown', sectionMarker);
-    }
+    // Assuming you have a PHP variable $FetchDepartment, output it to JavaScript
+    const fetchDepartment = "<?php echo $FetchDepartment; ?>"; // Replace with your method to get the PHP variable
 
     // Call the function to populate the category dropdown
-    populateDropdown('txt/department.txt', 'categoryDropdown');
+    populateDropdown('txt/department.txt', 'categoryDropdown', fetchDepartment);
 
-     // Event listener for category dropdown change
-     document.getElementById('categoryDropdown').addEventListener('change', handleCategoryChange);
+    // Event listener for category dropdown change
+    document.getElementById('categoryDropdown').addEventListener('change', handleCategoryChange);
 
-// Initial population based on the default selection
-handleCategoryChange();
+    // Initial population based on the default selection
+    document.addEventListener('DOMContentLoaded', handleCategoryChange);
 </script>
-
 </body>
 </html>

@@ -59,7 +59,7 @@ try {
     $studentDropdownOpen = ($id == '1' && in_array($currentFile, ['ticketdash.php', 'ticket-pending.php', 'ticket-opened.php', 'ticket-closed.php', 'ticket-returned.php']));
     $employeeDropdownOpen = ($id == '2' && in_array($currentFile, ['ticketdash.php', 'ticket-pending.php', 'ticket-opened.php', 'ticket-closed.php', 'ticket-returned.php']));
     $userListDropdownOpen = in_array($currentFile, ['employee.php', 'user-student-list.php', 'user-employee-list.php']);
-    $systemDocsDropdownOpen = in_array($currentFile, ['templates.php',  'response-templates.php', 'others.php']);
+    $systemDocsDropdownOpen = in_array($currentFile, ['templates.php',  'response-templates.php', 'information-templates.php', 'others.php']);
     $systemSettingsDropdownOpen = in_array($currentFile, ['settings.php',  'mailer-configuration.php']);
     
 
@@ -162,7 +162,11 @@ window.addEventListener('scroll', function() {
           <div class="dropdown-menu" role="menu">
             <a class="dropdown-item" href="profile.php"><span class="fa fa-user"></span> My Account</a>
             <hr style="margin-top: 5px; margin-bottom: 5px;">
-            <a class="dropdown-item" href="logout.php" onclick="window.open('https://forms.gle/hzqZg1SSDB23vcGCA', '_blank');"><span class="fas fa-sign-out-alt"></span> Logout</a>
+            <?php if (!isset($_SESSION["Super-Admin"])): ?>
+                <a class="dropdown-item" href="logout.php" onclick="window.open('https://forms.gle/hzqZg1SSDB23vcGCA', '_blank');"><span class="fas fa-sign-out-alt"></span> Logout</a>
+            <?php elseif (isset($_SESSION["Super-Admin"]) && $_SESSION["Super-Admin"] === 'Log In Success'): ?>
+                <a class="dropdown-item" href="../index.php"><span class="fas fa-sign-out-alt"></span> Log Out</a>
+            <?php endif; ?>
           </div>
       </div>
 </div>
@@ -309,6 +313,11 @@ $currentFile = basename($_SERVER['PHP_SELF']);
                                 <i class="fa fa-comment-dots"></i> Response Templates
                             </a>
                         </li>
+                        <li>
+                                <a class="<?= $currentFile == 'information-templates.php' ? 'active-menu' : '' ?>" href="information-templates.php">
+                                    <i class="fa fa-info"></i> Information Templates
+                                </a>
+                            </li>
                             <li>
                                 <a class="<?= $currentFile == 'others.php' ? 'active-menu' : '' ?>" href="others.php">
                                     <i class="fa fa-gear"></i> Others

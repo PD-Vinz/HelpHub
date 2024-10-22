@@ -22,3 +22,11 @@ RewriteRule ^([^/]+)$ $1.php [L]
 #RewriteCond %{REQUEST_FILENAME} !-f
 #RewriteCond %{REQUEST_FILENAME} !-d
 #RewriteRule ^(.*)$ /Admin/index.php?/$1 [L]
+
+
+# Allow internal access (e.g., from your JavaScript or server-side code)
+# RewriteCond %{REQUEST_URI} !^/HelpHub/Admin/txt/data1.txt$ [NC]
+
+# Redirect direct access to .txt files to index.php
+# RewriteRule \.txt$ /index.php [L,R=302]
+
