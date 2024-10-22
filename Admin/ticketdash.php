@@ -87,7 +87,7 @@ if (!isset($_SESSION["admin_number"])) {
         $pdoResult = $pdoConnect->prepare($pdoCountQuery);
         $pdoResult->bindParam(':user', $ticket_user, PDO::PARAM_STR);
         $pdoResult->execute();
-        $dueTickets = $pdoResult->rowCount();
+        $priorityTickets = $pdoResult->rowCount();
 
     } catch (PDOException $e) {
         echo "Error: " . $e->getMessage();
@@ -200,10 +200,10 @@ if (!isset($_SESSION["admin_number"])) {
                         <div class="col-md-2 col-sm-6 col-xs-6">           
                 <div class="panel panel-back noti-box">
                     <span class="icon-box bg-color-blue set-icon">
-                    <i class="fa fa-upload fa-xs" aria-hidden="true"></i>
+                    <i class="fa fa-exclamation-circle fa-xs" aria-hidden="true"></i>
                     </span>
                     <div class="text-box" >
-                        <p class="main-text"><?php echo $dueTickets?></p>
+                        <p class="main-text"><?php echo $priorityTickets?></p>
                         <p class="text-muted pp"> Priority Tickets</p>
                     </div>
                  </div>

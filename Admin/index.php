@@ -94,10 +94,10 @@ try {
     $pdoResult->execute();
     $completedTickets = $pdoResult->rowCount();
 
-    $pdoCountQuery = "SELECT * FROM tb_tickets WHERE status = 'Due'";
+    $pdoCountQuery = "SELECT * FROM tb_tickets WHERE Priority = 'YES'";
     $pdoResult = $pdoConnect->prepare($pdoCountQuery);
     $pdoResult->execute();
-    $dueTickets = $pdoResult->rowCount();
+    $priorityTickets = $pdoResult->rowCount();
 
     $pdoCountQuery = "SELECT * FROM tb_tickets WHERE status = 'Transferred'";
     $pdoResult = $pdoConnect->prepare($pdoCountQuery);
@@ -159,6 +159,7 @@ try {
 <!--<a href="ticket-pending.php">  -->      <div class="row" id="ticket-stats">
                         <!-- Ticket statistics will be inserted here -->
                     </div>
+
       
                  <!-- /. Calendar  -->   
                  <div class="col-md-12">

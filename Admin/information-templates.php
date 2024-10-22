@@ -127,20 +127,25 @@ try {
             <div id="page-inner">
 
                     <div class="col-md-12">
-                     <h2>Issue Template</h2>   
+                     <h2>Information Template</h2>   
                    
                              
                  <!-- /. ROW  -->
                  <hr />
 
     <div class="textarea-container">
-        <h3>Employee Issues</h3>
+        <h3>Campus</h3>
         <textarea id="fileContent1"></textarea>
     </div>
 
     <div class="textarea-container">
-        <h3>Student Issues</h3>
+        <h3>Department</h3>
         <textarea id="fileContent2"></textarea>
+    </div>
+
+    <div class="textarea-container">
+        <h3>Courses</h3>
+        <textarea id="fileContent3"></textarea>
     </div>
         
     <button id="saveButton" class="btn btn-flat btn-primary">Save Changes</button>
@@ -161,21 +166,23 @@ try {
 
         // Load both files on page load
         window.onload = function() {
-            loadFile('../issue-template/employee-issue.txt', 'fileContent1');
-            loadFile('../issue-template/student-issue.txt', 'fileContent2');
+            loadFile('txt/campus.txt', 'fileContent1');
+            loadFile('txt/department.txt', 'fileContent2');
+            loadFile('txt/course.txt', 'fileContent3');
         };
 
         // Function to save both text files
         function saveFiles() {
             const content1 = document.getElementById('fileContent1').value;
             const content2 = document.getElementById('fileContent2').value;
+            const content3 = document.getElementById('fileContent3').value;
             
-            fetch('save.php', {
+            fetch('txt/save.php', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/x-www-form-urlencoded'
                 },
-                body: 'content1=' + encodeURIComponent(content1) + '&content2=' + encodeURIComponent(content2)
+                body: 'content1=' + encodeURIComponent(content1) + '&content2=' + encodeURIComponent(content2) + '&content3=' + encodeURIComponent(content3)
             })
             .then(response => {
                 if (response.ok) {

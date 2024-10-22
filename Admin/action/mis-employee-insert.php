@@ -43,19 +43,29 @@ try {
             $user_type = $_POST['type'];
             $email_address = $_POST['email'];
             $birthday = $_POST['birthday'];
-            $age = $_POST['age'];
             $sex = $_POST['sex'];
+            $AccStat = 'Enabled';
+
+            $hashPassword = password_hash($password, PASSWORD_ARGON2I);
+
+            if ($birthday) {
+                $birthDate = new DateTime($birthday);
+                $currentDate = new DateTime();
+                $age = $currentDate->diff($birthDate)->y; // Calculate the age in years
+            } else {
+                $age = 0; // Set to 0 if no birthday is provided
+            }
 
             // Start a transaction
             $pdoConnect->beginTransaction();
             
             // Prepare an insert statement
-            $stmt = $pdoConnect->prepare("INSERT INTO `mis_employees`(`admin_number`, `password`, `f_name`, `l_name`, `position`, `user_type`, `email_address`, `birthday`, `age`, `sex`, `profile_picture`) 
-                                        VALUES (:admin_number,:password,:f_name,:l_name,:position,:user_type,:email_address,:birthday,:age,:sex,:profile_picture)");
+            $stmt = $pdoConnect->prepare("INSERT INTO `mis_employees`(`admin_number`, `password`, `f_name`, `l_name`, `position`, `user_type`, `email_address`, `birthday`, `age`, `sex`, `profile_picture`, `account_status`) 
+                                        VALUES (:admin_number,:password,:f_name,:l_name,:position,:user_type,:email_address,:birthday,:age,:sex,:profile_picture,:accstat)");
             // Bind the blob data
 
             $stmt->bindParam(':admin_number', $admin_number, PDO::PARAM_LOB);
-            $stmt->bindParam(':password', $password, PDO::PARAM_LOB);
+            $stmt->bindParam(':password', $hashPassword, PDO::PARAM_STR);
             $stmt->bindParam(':f_name', $f_name, PDO::PARAM_LOB);
             $stmt->bindParam(':l_name', $l_name, PDO::PARAM_LOB);
             $stmt->bindParam(':position', $position, PDO::PARAM_LOB);
@@ -65,7 +75,7 @@ try {
             $stmt->bindParam(':age', $age, PDO::PARAM_LOB);
             $stmt->bindParam(':sex', $sex, PDO::PARAM_LOB);
             $stmt->bindParam(':profile_picture', $imgContent, PDO::PARAM_LOB);
-
+            $stmt->bindParam(':accstat', $AccStat, PDO::PARAM_LOB);
 
             // Execute the statement
             if ($stmt->execute()) {

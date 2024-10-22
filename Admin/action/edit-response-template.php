@@ -33,11 +33,26 @@ if (!isset($_SESSION["admin_number"])) {
 }
 
 try{
-$pdoQuery = $pdoConnect->prepare("SELECT * FROM templates WHERE template_id = :id");
-$pdoQuery->execute(array(':id' => $_GET["id"]));
-$pdoResult = $pdoQuery->fetchAll();
-$pdoConnect = null;
+    $pdoQuery = $pdoConnect->prepare("SELECT * FROM templates WHERE template_id = :id");
+    $pdoQuery->execute(array(':id' => $_GET["id"]));
+    
+    // fetchAll() returns an array of arrays, so we need to handle it accordingly
+    $pdoResult = $pdoQuery->fetchAll(PDO::FETCH_ASSOC);
+    
+    // Ensure there is at least one result
+    if (count($pdoResult) > 0) {
+        $template = $pdoResult[0];  // Get the first result
+        
+        // Now access the elements like this
+        $templateId = $template['template_id'];
+        $templateName = $template['template_name'];
+        $templateContent = $template['template_content'];
+    } else {
+        echo "No template found with the given ID.";
+    }
+    
 
+    
 } catch (PDOException $e) {
     echo "Error: " . $e->getMessage();
 }
@@ -125,9 +140,10 @@ input[type="file"]::file-selector-button {
                     </div>
                 <hr />
                 <form method="post" action="edit-response-template-update.php">
-                <input name="id" type="hidden" value="<?php echo $pdoResult[0]['template_id'];  ?>"> 
-                <input name="Name" class="name" type="text" placeholder="Template Name" autocomplete="off" value="<?php echo $pdoResult[0]['template_name'];  ?>" required>
-                <textarea name="Content" id="detailsTextarea" class="form-controlb" rows="5" required><?php echo $pdoResult[0]['template_content'];  ?></textarea>
+                    <input name="id" type="hidden" value="<?php echo $templateId; ?>">
+                    <input name="Name" class="name" type="text" placeholder="Template Name" autocomplete="off" value="<?php echo $templateName; ?>" required>
+                    <textarea name="Content" id="detailsTextarea" class="form-controlb" rows="5" required><?php echo $templateContent; ?></textarea>
+
 
                     <div class="modal-footer">	
                                 <a href="#" data-dismiss="modal" class="btn" onclick="history.back()">Back</a>
@@ -181,3 +197,5 @@ input[type="file"]::file-selector-button {
 </body>
 </html>
 
+<?php
+    $pdoConnect = null;
