@@ -1,24 +1,19 @@
 <?php
-// Database connection
-$host = 'localhost'; // Your database host
-$dbname = 'helphub'; // Your database name
-$username = ''; // Your database username
-$password = ''; // Your database password
+// File: get_events.php
+include_once("../connection/conn.php");
+require_once('../connection/bdd.php');
 
-try {
-    $pdo = new PDO("mysql:host=$host;dbname=$dbname;charset=utf8", $username, $password);
-    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+$pdoConnect = connection();
 
-    // Query to get events
-    $stmt = $pdo->query('SELECT id, event_date, event_title, event_description FROM tb_calendar');
+$start = $_GET['start'];
+$end = $_GET['end'];
 
-    // Fetch all results as an associative array
-    $events = $stmt->fetchAll(PDO::FETCH_ASSOC);
+$sql = "SELECT id, title, start, end, color FROM events WHERE start BETWEEN :start AND :end";
+$req = $pdoConnect->prepare($sql);
+$req->bindParam(':start', $start, PDO::PARAM_STR);
+$req->bindParam(':end', $end, PDO::PARAM_STR);
+$req->execute();
 
-    // Return the results as a JSON object
-    echo json_encode($events);
+$events = $req->fetchAll(PDO::FETCH_ASSOC);
 
-} catch (PDOException $e) {
-    echo json_encode(['error' => $e->getMessage()]);
-}
-?>
+echo json_encode($events);
