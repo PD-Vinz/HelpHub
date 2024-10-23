@@ -86,18 +86,18 @@ if (!isset($_SESSION["user_id"])) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?php echo $sysName?></title>
     <link rel="icon" href="<?php echo htmlspecialchars($S_LBase64, ENT_QUOTES, 'UTF-8'); ?>" type="image/*"> 
-    <link href="assets/js/DataTables/datatables.min.css" rel="stylesheet">
+    <link href="assets/js/DataTables/datatables.min.css?v=<?php echo time(); ?>" rel="stylesheet">
 
     <!-- BOOTSTRAP STYLES -->
-    <link href="assets/css/bootstrap.css" rel="stylesheet">
+    <link href="assets/css/bootstrap.css?v=<?php echo time(); ?>" rel="stylesheet">
     <!-- FONTAWESOME STYLES-->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css?v=<?php echo time(); ?>">
     <!-- CUSTOM STYLES -->
-    <link href="assets/css/custom.css" rel="stylesheet">
+    <link href="assets/css/custom.css?v=<?php echo time(); ?>" rel="stylesheet">
     <!-- GOOGLE FONTS -->
     <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
     <!-- TABLE STYLES -->
-    <link href="assets/css/dataTables.bootstrap.css" rel="stylesheet">
+    <link href="assets/css/dataTables.bootstrap.css?v=<?php echo time(); ?>" rel="stylesheet">
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
 
     <style>
