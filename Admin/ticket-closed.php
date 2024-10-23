@@ -140,7 +140,7 @@ try {
                         <div class="panel-body">
                             <div class="table-responsive">
                             <?php
-$status = ["Resolved", "Transferred"];
+$status = ["Resolved", "Returned"];
 
 $pdoQuery = "SELECT * FROM tb_tickets WHERE status IN (:status1, :status2) AND user_type = :user ORDER BY `finished_date` DESC";
 $pdoResult = $pdoConnect->prepare($pdoQuery);
@@ -180,189 +180,12 @@ $pdoExec = $pdoResult->execute();
                     <td><?php echo htmlspecialchars($duration); ?></td>
                     <td><div class='panel-body-ticket'>
                                             
-                              <button class='btn btn-primary btn-xs' data-toggle='modal' data-target='#myModal<?php echo $ticket_id; ?>'>
-                                View Details
-                              </button></td>
+                    <button class="btn btn-primary btn-xs load-details" data-ticket_id="<?php echo $ticket_id; ?>" data-status="<?php echo $status; ?>">
+                                                                View Details
+                                                            </button>
                     </tr>
             
 
-                                        <!--<tr class="gradeU">
-                                            <td>Bojji</td>
-                                            <td>May 1, 2024 - 12:13 pm</td>
-                                            <td>Closed</td>
-                                            <td>123441</td>
-                                            <td>DHVSU Email</td>
-                                           <td>lorem ipsum yada yada yadyayayd a dyad  daydyay da d y</td>
-                                            <td><div class="panel-body-ticket">
-                                            
-                              <button class="btn btn-primary btn-xs" data-toggle="modal" data-target="#myModal">
-                                View Details
-                              </button>-->
-<div class="modal fade" id="myModal<?php echo $ticket_id; ?>">
-    <div class="modal-dialog2">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                	<h4 class="modal-title">Closed Ticket</h4>
-
-            </div>
-            <div class="container"></div>
-            <div class="modal-body">
-                                          <div class="row">
-                                 <div class="col-md-4">
-                                    <h3>Closing Summary</h3>
-                                    <form role="form">
-                                       
-                                      
-                                        <div class="form-group">
-                                            <label>Employee Name </label>
-                                            <input class="form-control" value="<?php echo htmlspecialchars($employee); ?>" disabled/>
-                                             
-                                        </div>
-                                      
-                                        <div class="form-group">
-                                            <label>Opened‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ </label>
-                                            <input class="form-control" value="<?php echo htmlspecialchars($opened_date); ?>" disabled/>
-                                          
-                                        </div>
-                                       
-                                        <div class="form-group">
-                                            <label>Closed‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ </label>
-                                            <input class="form-control" value="<?php echo htmlspecialchars($finished_date); ?>" disabled/>
-                                          
-                                        </div>
-                                       
-                                        <div class="form-group">
-                                            <label>Duration‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ </label>
-                                            
-                                            <input class="form-control" value="<?php echo htmlspecialchars($duration); ?>" disabled/>
-                                             
-                                        </div>
-                                        
-                                        <div class="form-group">
-                                            <label>Resolution‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ </label>
-                                            <textarea class="form-control" disabled style="height: 378px; resize:none; overflow:auto;"><?php echo htmlspecialchars($resolution); ?></textarea>
-                                             
-                                        </div>
-                                        
-                                    </form>      
-                                </div>    <div class="col-md-4">
-                                    <h3>Ticket Details</h3>
-                                    
-                                    <form role="form">
-                                    <div class="form-group">
-                                            <label>Ticket ID‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ </label>
-                                            <input class="form-control" value="<?php echo htmlspecialchars($ticket_id); ?>" disabled/>
-                                             
-                                        </div>
-                                    <div class="form-group">
-                                            <label>Issue/Problem  ‎ ‎ ‎ ‎ ‎ ‎ ‎ </label>
-                                            <input class="form-control" value="<?php echo htmlspecialchars($issue); ?>" disabled/>
-                                             
-                                        </div>
-                                        <div class="form-group">
-                                            <label>Description ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ </label>
-                                            <textarea class="form-control" disabled style="height:148px; resize:none; overflow:auto;"><?php echo htmlspecialchars($description); ?></textarea>
-                                             
-                                        </div>
-                                        <div class="form-group">
-                                            <label>Screenshot ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ </label>
-                                            
-                                            <a href="view_image.php?id=<?php echo htmlspecialchars($ticket_id); ?>" target="_blank">
-                                                <img  src="data:image/jpeg;base64,<?php echo $screenshotBase64; ?>" alt="Screenshot" class="img-fluid">
-                                            </a>    
-                                            
-                                             
-                                        </div>
-                                    </form>
-                                </div>        
-                                <div class="col-md-4">
-                                    <h3>User Information</h3>
-                                    <form role="form">
-                                       
-                                      
-                                        <div class="form-group">
-                                            <label>Full Name‎ ‎ ‎ ‎ ‎ </label>
-                                            <input class="form-control" value="<?php echo htmlspecialchars($full_name); ?>" disabled//>
-                                             
-                                        </div>
-                                      
-                                        <div class="form-group">
-                                            <label>User ID‎ ‎ ‎ </label>
-                                            <input class="form-control" value="<?php echo htmlspecialchars($user_number); ?>" disabled/>
-                                          
-                                        </div>
-                                       
-                                        <div class="form-group">
-                                            <label>College‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ </label>
-                                            <input class="form-control" value="<?php echo htmlspecialchars($department); ?>" disabled/>
-                                          
-                                        </div>
-                                       
-                                        <div class="form-group">
-                                            <label>Course‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ </label>
-                                            <input class="form-control" value="<?php echo htmlspecialchars($course); ?>" disabled/>
-                                             
-                                        </div>
-                                        
-                                        <div class="form-group">
-                                            <label>Year & Section‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ </label>
-                                            <input class="form-control" value="<?php echo htmlspecialchars($year_section); ?>" disabled/>
-                                             
-                                        </div>
-                                        
-                                        <div class="form-group">
-                                            <label>Campus ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ </label>
-                                            <input class="form-control" value="<?php  echo htmlspecialchars($campus) ?>" disabled/>
-                                             
-                                        </div>
-
-                                        <div class="form-group">
-                                            <label>Gender ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ </label>
-                                            <input class="form-control" value="<?php echo htmlspecialchars($sex) ?>" disabled/>
-                                             
-                                        </div>
-
-                                        <div class="form-group">
-                                            <label>Age ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ </label>
-                                            <input class="form-control" value="<?php echo htmlspecialchars($age) ?>" disabled/>
-                                             
-                                        </div>
-                                    </form>      
-                                </div>
-                               
-                                
-                            </div>
-                            
-                            
-            </div>
-        </div>
-        
-    </div>
-</div>
-                              </div>
-<!--                              
-<div class="modal fade" id="myModal4">
-    <div class="modal-dialog3">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                	<h4 class="modal-title">Open Ticket</h4>
-
-            </div>
-            <div class="container"></div>
-            <div class="modal-body">Confirm opening ticket</div>
-            <div class="modal-footer">	<a href="#" data-dismiss="modal" class="btn">Cancel</a>
-	<a href="#" class="btn btn-primary">Confirm</a>
-
-            </div>
-        </div>
-    </div>
-</div>
-                          </div></td>
-                          
-                                        </tr>
-                -->
             <?php        
             }
             ?>
@@ -396,6 +219,7 @@ $pdoExec = $pdoResult->execute();
     <!-- MORRIS CHART SCRIPTS -->
     <script src="assets/js/morris/raphael-2.1.0.min.js"></script>
     <script src="assets/js/morris/morris.js"></script>
+    <script src="fetch/ticket-modal.js"></script>
 <script>
 //$(document).ready(function() {
 //  Morris.Donut({
