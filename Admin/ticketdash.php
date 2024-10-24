@@ -220,7 +220,7 @@ if (!isset($_SESSION["admin_number"])) {
 
                                 <div class="panel-body">
                                     <div class="table-responsive">
-                                        <table class="table table-striped table-bordered table-hover" id="dataTables-example">
+                                        <table class="table table-striped table-bordered table-hover" id="ticketTable">
                                             <thead>
                                                 <tr>
                                                     <th>Priority</th>
@@ -233,48 +233,9 @@ if (!isset($_SESSION["admin_number"])) {
                                                     <th>Details</th>
                                                 </tr>
                                             </thead>
-                                         <tbody>
-                                                <?php
-
-                                                $pdoQuery = "SELECT * FROM tb_tickets WHERE user_type = :user";
-                                                $pdoResult = $pdoConnect->prepare($pdoQuery);
-                                                $pdoResult->bindParam(':user', $ticket_user, PDO::PARAM_STR);
-                                                $pdoExec = $pdoResult->execute();
-                                                while ($row = $pdoResult->fetch(PDO::FETCH_ASSOC)) {
-                                                    $statusClass = ($row['status'] === 'Resolved') ? 'success' : (($row['status'] === 'Pending') ? 'danger' : (($row['status'] === 'Transferred') ? 'info' : (($row['status'] === 'Processing') ? 'warning' : '')));
-                                                    
-                                                    $createdDate = new DateTime($row['created_date']);
-                                                    $now = new DateTime();
-                                                    $interval = $now->diff($createdDate);
-                                                    $hoursElapsed = $interval->h + ($interval->days * 24);
-                                                
-                                                    $priorityIcon = '';
-                                                    if (in_array($row['status'], ['Pending', 'Processing']) && $hoursElapsed >= 48) {
-                                                        $priorityIcon = '<i class="fa fa-exclamation-circle" aria-hidden="true"></i>';
-                                                    }
-                                                
-                                                    extract($row);
-                                                    
-                                                    ?>
-
-                                                    <tr class='odd gradeX <?php echo $statusClass?>'>
-                                                        <td><?php echo $priorityIcon; ?></td>
-                                                        <td><?php echo htmlspecialchars($ticket_id); ?></td>
-                                                        <td><?php echo htmlspecialchars($status); ?></td>
-                                                        <td><?php echo htmlspecialchars($employee); ?></td>
-                                                        <td><?php echo htmlspecialchars($created_date); ?></td>
-                                                        <td><?php echo htmlspecialchars($full_name); ?></td>
-                                                        <td><?php echo htmlspecialchars($issue); ?></td>
-                                                        <td>
-                                                            <button class="btn btn-primary btn-xs load-details" data-ticket_id="<?php echo $ticket_id; ?>" data-status="<?php echo $status; ?>">
-                                                                View Details
-                                                            </button>
-                                                        </td>
-                                                    </tr>
-                                                    <?php }?>
-                  
-      
-                                </tbody>
+                                    <tbody id="ticketTableBody">
+        <!-- Table rows will be dynamically inserted here -->
+    </tbody>
 
                                 
                                 </table>
@@ -328,11 +289,12 @@ if (!isset($_SESSION["admin_number"])) {
     </div>
     <!-- /. WRAPPER  -->
     <!-- SCRIPTS -AT THE BOTTOM TO REDUCE THE LOAD TIME-->
-
+<script src="fetch/ticket-updater.js"></script>
     <!-- JQUERY SCRIPTS -->
     <script src="assets/js/jquery-1.10.2.js"></script>
     <!-- BOOTSTRAP SCRIPTS -->
     <script src="assets/js/bootstrap.min.js"></script>
+    
     <!-- METISMENU SCRIPTS -->
     <script src="assets/js/jquery.metisMenu.js"></script>
     <!-- MORRIS CHART SCRIPTS -->
@@ -365,92 +327,12 @@ if (!isset($_SESSION["admin_number"])) {
     </script>
 
     <!-- DATA TABLE SCRIPTS -->
-    <script>
-  $(document).ready(function() {
-    var statusOrderIndex = 0;
-    var statusOrderValues = ['Pending', 'Processing', 'Returned', 'Resolved', 'Transferred'];
 
-    $.fn.dataTable.ext.type.order['custom-status-pre'] = function(Status) {
-      switch (Status) {
-        case 'Pending':
-          return 1;
-        case 'Processing':
-          return 2;
-        case 'Returned':
-          return 3;
-        case 'Transferred':
-          return 4;
-        case 'Resolved':
-          return 5;
-        default:
-          return 6;
-      }
-    };
-
-    $.fn.dataTable.ext.type.order['custom-priority-status'] = function(data, settings, row) {
-      // Get the priority icon HTML (if present)
-      var priorityIcon = $(row).find('td:eq(0) i.fa-exclamation-circle').length > 0 ? 1 : 0;
-
-      // Get the status text
-      var status = $(row).find('td:eq(2)').text();
-
-      // Use the custom-status-pre function to get the status order
-      var statusOrder = $.fn.dataTable.ext.type.order['custom-status-pre'](status);
-
-      // Return a value that determines the sorting order
-      return priorityIcon * 10 + statusOrder; // You can adjust this formula to fit your needs
-    };
-
-    $('#dataTables-example').DataTable({
-      "order": [[0, 'desc'], [2, 'asc']], // Initial sorting order
-      "columnDefs": [{
-        "targets": 0, // Target the first column (priority icon)
-        "type": "custom-priority-status", // Use the custom sort type
-      }, {
-        "targets": 2, // Target the third column (status)
-        "type": "custom-status-pre", // Use the custom sort type
-      }, {
-        "width": "6%",
-        "targets": [0], // Adjust width for priority icon column
-        "className": "text-center"
-      }, {
-        "width": "9%",
-        "targets": [2] // Adjust width for status column
-      }, {
-        "width": "9%",
-        "targets": [1], // Adjust width for columns 0 and 1
-      }, {
-        "width": "10%",
-        "targets": [2], // Adjust width for column 5
-      }, {
-        "width": "17%",
-        "targets": [3, 5], // Adjust width for column 2
-      }, {
-        "width": "13%",
-        "targets": [4], // Adjust width for column 3
-      }, {
-        "width": "15%",
-        "targets": [6], // Adjust width for column 2
-      }, {
-        "width": "5%",
-        "targets": [7], // Adjust width for column 2
-      }],
-      "drawCallback": function(settings) {
-        // Rotate the status order index on each draw
-        statusOrderIndex = (statusOrderIndex + 1) % statusOrderValues.length;
-      }
-    });
-  });
-</script>
 
     <!-- DATA TABLE SCRIPTS -->
     <script src="assets/js/dataTables/jquery.dataTables.js"></script>
     <script src="assets/js/dataTables/datatables.min.js"></script>
-    <script>
-        $(document).ready(function() {
-            $('#dataTables-example').dataTable();
-        });
-    </script>
+    
 
     <!-- CUSTOM SCRIPTS -->
     <script src="assets/js/custom.js"></script>

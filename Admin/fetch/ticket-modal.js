@@ -1,6 +1,6 @@
 $(document).ready(function() {
     // Handle click event for loading details
-    $('#dataTables-example').on('click', '.load-details', function() {
+    $('#ticketTable').on('click', '.load-details', function() {
         var ticketId = $(this).data('ticket_id');
         var status = $(this).data('status');
         var $button = $(this);
