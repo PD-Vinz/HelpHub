@@ -135,17 +135,22 @@ try {
         <div id="page-wrapper" >
             <div id="page-inner">
               
-                    <div class="col-md-8">
+                    <div class="col-md-4">
                      <h2>Student List</h2>
                         
                     </div>
-                    <div class="card-tools col-md-4">
-                        <div class="col-md-6">
+    <div class="card-tools col-md-8">
+    <div class="col-md-4">
 			<a href="add-user-student.php" class="btn btn-flat btn-primary" style="float: right; margin-top:15px;"><span class="fas fa-plus"></span>  Create New </a>
 		</div>
-               <div class="col-md-6">
+    <div class="col-md-4">
 			<a href="action\add-user.php" class="btn btn-flat btn-primary" style="float: right; margin-top:15px;"><span class="fas fa-plus"></span>  Upload CSV file</a>
-		</div></div>
+		</div>
+    <div class="col-md-4">
+            <a class="btn btn-flat btn-primary" id="openModal" style="float: right; margin-top:15px;"><span class="fas fa-plus"></span>  Update Year & Section </a>
+		</div>
+    </div>
+
                  <!-- /. ROW  -->
                  
                 <div class="col-md-12"> <hr>   
@@ -184,7 +189,11 @@ $pdoExec = $pdoResult->execute();
                     extract($row);
                     $P_PBase64 = base64_encode($profile_picture);
                     $date = new DateTime($birthday);
-                    $formattedDate = $date->format('F j, Y')
+                    $formattedDate = $date->format('F j, Y');
+
+                    if ($name === 'Super Admin') {
+                        continue;
+                    }
             ?>
                     <tr class='odd gradeX'>
                     <td><?php echo htmlspecialchars($user_id); ?></td>
@@ -352,5 +361,119 @@ $pdoExec = $pdoResult->execute();
     
    
 </body>
+
+<!-- Updated Modal HTML -->
+<div id="yearSectionModal" class="modal-custom">
+    <div class="modal-content-custom">
+        <span class="close-custom">&times;</span>
+        <h2>Choose what to do.</h2>
+        <p>Reminder: This will be applied to all of the Student's account.</p>
+        <button class="modalButton-custom" id="addYearButton">Add 1</button>
+        <button class="modalButton-custom" id="deductYearButton">Deduct 1</button>
+    </div>
+</div>
+
+<style>
+/* Updated Modal Styles */
+.modal-custom {
+    display: none;
+    position: fixed;
+    z-index: 2; /* Set higher than the other modal if necessary */
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.4);
+}
+
+.modal-content-custom {
+    background-color: #fefefe;
+    margin: 15% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+    text-align: center;
+}
+
+.close-custom {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close-custom:hover,
+.close-custom:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.modalButton-custom {
+    margin: 10px;
+    padding: 10px 20px;
+}
+</style>
+
+<script>
+// Get modal element
+const yearSectionModal = document.getElementById("yearSectionModal");
+
+// Get open modal button
+const openModalButtonCustom = document.getElementById("openModal");
+
+// Get close button for this modal
+const closeButtonCustom = document.getElementsByClassName("close-custom")[0];
+
+// Get buttons
+const addYearButton = document.getElementById("addYearButton");
+const deductYearButton = document.getElementById("deductYearButton");
+
+// Listen for open click
+openModalButtonCustom.onclick = function() {
+    yearSectionModal.style.display = "block";
+}
+
+// Listen for close click
+closeButtonCustom.onclick = function() {
+    yearSectionModal.style.display = "none";
+}
+
+// Function to handle AJAX request
+function makeCustomAjaxCall(url) {
+    fetch(url)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok ' + response.statusText);
+            }
+            return response.json(); // Assuming the response is JSON
+        })
+        .then(data => {
+            console.log(data); // Handle the data received from the server
+            alert("AJAX call was successful!");
+        })
+        .catch(error => {
+            console.error('There was a problem with the fetch operation:', error);
+        });
+}
+
+// Listen for button clicks
+addYearButton.onclick = function() {
+    makeCustomAjaxCall("action/add-year-student.php"); // Change to your desired URL
+}
+
+deductYearButton.onclick = function() {
+    makeCustomAjaxCall("action/minus-year-student.php"); // Change to your desired URL
+}
+
+// Listen for outside click
+window.onclick = function(event) {
+    if (event.target === yearSectionModal) {
+        yearSectionModal.style.display = "none";
+    }
+}
+</script>
+
 </html>
 

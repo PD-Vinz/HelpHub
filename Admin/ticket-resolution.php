@@ -130,22 +130,22 @@ if ($interval->y == 0){
                     if ($interval->s == 0){
                         echo "Invalid Time";
                     } else {
-                        $Duration = $interval->s . "Seconds"  ;
+                        $Duration = $interval->s . " Seconds"  ;
                     }
                 } else {
-                    $Duration = $interval->i . " Minutes, ";
+                    $Duration = $interval->i . " Minutes";
                 }
             } else {
-                $Duration = $interval->h . " Hours, " . $interval->i . " Minutes, ";
+                $Duration = $interval->h . " Hours, " . $interval->i . " Minutes";
             }
         } else {
-            $Duration = $interval->d . " Days, " . $interval->h . " Hours, " . $interval->i . " Minutes, ";
+            $Duration = $interval->d . " Days, " . $interval->h . " Hours, " . $interval->i . " Minutes";
         }
     } else {
-        $Duration = $interval->m . " Months, " . $interval->d . " Days, " . $interval->h . " Hours, " . $interval->i . " Minutes, " ;
+        $Duration = $interval->m . " Months, " . $interval->d . " Days, " . $interval->h . " Hours, " . $interval->i . " Minutes" ;
     }
 } else {
-    $Duration = $interval->y . " Years, " . $interval->m . " Months, " . $interval->d . " Days, " . $interval->h . " Hours, " . $interval->i . " Minutes, ";
+    $Duration = $interval->y . " Years, " . $interval->m . " Months, " . $interval->d . " Days, " . $interval->h . " Hours, " . $interval->i . " Minutes";
 }
 
 

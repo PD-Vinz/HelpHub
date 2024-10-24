@@ -99,10 +99,9 @@ try {
             $pdoConnect->beginTransaction();
             
             // Prepare an insert statement
-            $stmt = $pdoConnect->prepare("INSERT INTO tb_tickets (created_date, full_name, user_id, email_address, campus, department, course, year_section, sex, age, user_type, issue, description, screenshot, consent, status) 
+            $stmt = $pdoConnect->prepare("INSERT INTO tb_tickets (created_date, full_name, user_number, email_address, campus, department, course, year_section, sex, age, user_type, issue, description, screenshot, consent, status) 
                                         VALUES (:createddate, :fullname, :usernumber, :email_address, :campus, :department, :course, :year_section, :sex, :age, :usertype, :category, :issue_description, :image, :consent, :status)");
             // Bind the blob data
-
             $stmt->bindParam(':createddate', $datetime, PDO::PARAM_LOB);
             $stmt->bindParam(':fullname', $Name, PDO::PARAM_LOB);
             $stmt->bindParam(':usernumber', $id, PDO::PARAM_LOB);

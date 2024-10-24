@@ -1,4 +1,6 @@
 ﻿<?php
+include 'loading.php';
+
 include_once("../connection/conn.php");
 $pdoConnect = connection();
 
@@ -134,10 +136,6 @@ if (!isset($_SESSION["user_id"])) {
 </head>
 
 <body>
-    <div id="loading-screen">
-        <div class="spinner"></div>
-        <p>Loading...</p>
-    </div>
     <div id="wrapper">
         <nav class="navbar navbar-default navbar-cls-top " role="navigation" style="margin-bottom: 0">
             <div class="navbar-header">
@@ -165,7 +163,16 @@ if (!isset($_SESSION["user_id"])) {
             <hr style="margin-top: 5px; margin-bottom: 5px;">
             <a class="dropdown-item" href="settings.php"><span class="fa fa-gear"></span> SETTINGS</a>
             <hr style="margin-top: 5px; margin-bottom: 5px;">
-            <a class="dropdown-item" href="logout.php"><span class="fa fa-sign-out"></span> LOG OUT </a>          </div>
+            <?php if (!isset($_SESSION["Super-Admin"])): ?>
+                <?php if ($identity == "Student"): ?>
+                <a class="dropdown-item" href="logout.php" onclick="window.open('https://forms.gle/Bf2yoFEiYE8k56Pb6', '_blank');"><span class="fa fa-sign-out"></span> LOG OUT </a>
+                <?php elseif ($identity == "Employee"): ?>
+                <a class="dropdown-item" href="logout.php" onclick="window.open('https://forms.gle/kUJQW5YTbBfKKMw37', '_blank');"><span class="fa fa-sign-out"></span> LOG OUT </a>
+                <?php endif; ?>
+            <?php elseif (isset($_SESSION["Super-Admin"]) && $_SESSION["Super-Admin"] === 'Log In Success'): ?>
+                <a class="dropdown-item" href="../index.php"><span class="fas fa-sign-out-alt"></span> Log Out</a>
+            <?php endif; ?>
+        </div>
         </nav>
         <!-- /. NAV TOP  -->
         <nav class="navbar-default navbar-side" role="navigation">
@@ -341,26 +348,6 @@ VIEW TICKET
         });
     </script>
  <?php require_once ('../footer.php')?>
-<script>
-    document.addEventListener('DOMContentLoaded', () => {
-    // Simulate data fetching
-    fetchData().then(() => {
-        // Hide loading screen and show content
-        document.getElementById('loading-screen').style.display = 'none';
-        document.getElementById('content').style.display = 'block';
-    });
-});
-
-function fetchData() {
-    return new Promise((resolve) => {
-        // Simulate a delay for data fetching (e.g., 2 seconds)
-        setTimeout(() => {
-            resolve();
-        }, 500);
-    });
-}
-
-</script>
 
     <!-- CUSTOM SCRIPTS -->
     <script src="assets/js/custom.js"></script>

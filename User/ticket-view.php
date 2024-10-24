@@ -146,7 +146,7 @@ if(isset($_GET['error']) && $_GET['error'] == 1) {
     }
     </style>
 </head>
-
+<?php include 'loading.php'; ?>
 <body>
     <div id="wrapper">
         <nav class="navbar navbar-default navbar-cls-top " role="navigation" style="margin-bottom: 0">
@@ -173,7 +173,15 @@ if(isset($_GET['error']) && $_GET['error'] == 1) {
           <div class="dropdown-menu" role="menu">
             <a class="dropdown-item" href="profile.php"><span class="fa fa-user"></span> MY ACCOUNT</a>
             <hr style="margin-top: 5px; margin-bottom: 5px;">
-            <a class="dropdown-item" href="logout.php"><span class="fa fa-sign-out"></span> LOG OUT </a>
+            <?php if (!isset($_SESSION["Super-Admin"])): ?>
+                <?php if ($identity == "Student"): ?>
+                <a class="dropdown-item" href="logout.php" onclick="window.open('https://forms.gle/Bf2yoFEiYE8k56Pb6', '_blank');"><span class="fa fa-sign-out"></span> LOG OUT </a>
+                <?php elseif ($identity == "Employee"): ?>
+                <a class="dropdown-item" href="logout.php" onclick="window.open('https://forms.gle/kUJQW5YTbBfKKMw37', '_blank');"><span class="fa fa-sign-out"></span> LOG OUT </a>
+                <?php endif; ?>
+            <?php elseif (isset($_SESSION["Super-Admin"]) && $_SESSION["Super-Admin"] === 'Log In Success'): ?>
+                <a class="dropdown-item" href="../index.php"><span class="fas fa-sign-out-alt"></span> Log Out</a>
+            <?php endif; ?>
           </div>
         </nav>
         <!-- /. NAV TOP  -->
@@ -241,59 +249,59 @@ $screenshotBase64 = base64_encode($screenshot);
                                         <div class="form-group">
                                             <label>TICKET ID‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ </label>
                                             <input class="form-control" value="<?php echo htmlspecialchars($ticket_id); ?>" disabled/>
-                                            <br><br>
+                                            
                                         </div>
                                         <div class="form-group">
                                             <label>ISSUE/PROBLEM  ‎ ‎ ‎ ‎ ‎ ‎ ‎ </label>
                                             <input class="form-control" value="<?php echo htmlspecialchars($issue); ?>" disabled/>
-                                            <br><br>
+                                            
                                         </div>
                                         <div class="form-group">
                                             <label>DESCRIPTION ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ </label>
                                             <textarea class="form-control" disabled style="height:148px; resize:none; overflow:auto;"><?php echo htmlspecialchars($description); ?></textarea>
                                             <!--<input class="form-control" value="<?php // echo htmlspecialchars($description); ?>" disabled style=""/> -->
-                                            <br><br>
+                                            
                                         </div>
                                         <div class="form-group">
                                             <label>SCREENSHOT ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ </label>
                                             <a href="view_image.php?id=<?php echo htmlspecialchars($ticket_id); ?>" target="_blank">
                                                 <img src="data:image/jpeg;base64,<?php echo $screenshotBase64; ?>" alt="Screenshot" class="img-fluid">
                                             </a>
+<br><br>
 
-
-                                            <br><br>
+                                            
                                         </div>
                     </div>
 
                     <div class="col-md-6 col-sm-6 col-xs-6">
                     <div class="form-group">
                                         <label>EMPLOYEE NAME </label>
-                                            <input class="form-control" value="<?php echo htmlspecialchars($employee); ?>" disabled/>
-                                            <br><br>
+                                            <input class="form-control" value="<?php echo !empty($employee) ? htmlspecialchars($employee) : 'No Data Available'; ?>" disabled/>
+                                            
                                         </div>
                                       
                                         <div class="form-group">
                                             <label>OPENED ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ </label>
-                                            <input class="form-control" value="<?php echo htmlspecialchars($opened_date); ?>" disabled/>
-                                         <br><br>
+                                            <input class="form-control" value="<?php echo !empty($opened_date) ? htmlspecialchars($opened_date) : 'No Data Available'; ?>" disabled/>
+                                         
                                         </div>
                                        
                                         <div class="form-group">
                                             <label>CLOSED ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ </label>
-                                            <input class="form-control" value="<?php echo htmlspecialchars($finished_date); ?>" disabled/>
-                                         <br><br>
+                                            <input class="form-control" value="<?php echo !empty($finished_date) ? htmlspecialchars($finished_date) : 'No Data Available'; ?>" disabled/>
+                                         <br>
                                         </div>
                                        
                                         <div class="form-group">
                                             <label>DURATION ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ </label>
                                             
-                                            <input class="form-control" value="<?php echo htmlspecialchars($duration); ?>" disabled/>
-                                            <br><br>
+                                            <input class="form-control" value="<?php echo !empty($duration) ? htmlspecialchars($duration) : 'No Data Available'; ?>" disabled/>
+                                            <br>
                                         </div>
                                         
                                         <div class="form-group">
                                             <label>RESOLUTION ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ </label>
-                                            <textarea class="form-control" disabled style="height: 378px; resize:none; overflow:auto;"><?php echo htmlspecialchars($resolution); ?></textarea>
+                                            <textarea class="form-control" disabled style="height: 378px; resize:none; overflow:auto;"><?php echo !empty($resolution) ? htmlspecialchars($resolution) : 'No Data Available'; ?></textarea>
                                             <br><br>
                                         </div>
 

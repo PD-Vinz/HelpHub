@@ -221,12 +221,14 @@ if ($pdoResult3->rowCount() > 0) {
         <br>
 
         <div class="form-group">
-            <input type="text" name="username" required placeholder="User ID" >
+            <input type="text" name="username" id="userid" class="input-group_input" required autocomplete="off">
+            <label for="userid" class="input-group_label">&nbsp; User ID &nbsp;</label>
         </div>
-
+        
 <div class="form-group" style="position: relative;">
-    <input type="password" name="password" id="myInput" required placeholder="Password" autocomplete="off" style="padding-right: 30px;">
-    <button type="button" id="toggleBtn" onclick="togglePassword()" style="position: absolute; right: 10px; top: 45%; transform: translateY(-50%); border:none; background:none; cursor:pointer;">
+    <input type="password" name="password" id="myInput" class="input-group_input" required autocomplete="off" style="padding-right: 30px;">
+    <label for="myInput" class="input-group_label">&nbsp; Password &nbsp;</label>
+    <button type="button" id="toggleBtn" onclick="togglePassword()" class="showPass" style="position: absolute; right: 10px; top: 45%; transform: translateY(-50%); border:none; background:none; cursor:pointer;">
         <i class="fas fa-eye" id="eyeIcon"></i>
     </button>
 </div>
@@ -263,11 +265,12 @@ if ($pdoResult3->rowCount() > 0) {
                             }
                         </script>
         </div>
--->
-        <input type="submit" name="login" value="Log In"  ><br>
+-->     
+        <input type="submit" name="login" value="Log In"  >
     
         
     </form>
+    
     <a href="forgot-password/forgot-password.php" class="forgot">Forgot Password?</a>
     </div> 
 
@@ -283,3 +286,4 @@ if ($pdoResult3->rowCount() > 0) {
     <script src="script.js"></script>
 </body>
 </html>
+

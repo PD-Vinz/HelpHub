@@ -162,6 +162,8 @@ window.addEventListener('scroll', function() {
           <div class="dropdown-menu" role="menu">
             <a class="dropdown-item" href="profile.php"><span class="fa fa-user"></span> My Account</a>
             <hr style="margin-top: 5px; margin-bottom: 5px;">
+            <a class="dropdown-item" href="change-password.php"><span class="fa fa-gear"></span> Account Settings</a>
+            <hr style="margin-top: 5px; margin-bottom: 5px;">
             <?php if (!isset($_SESSION["Super-Admin"])): ?>
                 <a class="dropdown-item" href="logout.php" onclick="window.open('https://forms.gle/hzqZg1SSDB23vcGCA', '_blank');"><span class="fas fa-sign-out-alt"></span> Logout</a>
             <?php elseif (isset($_SESSION["Super-Admin"]) && $_SESSION["Super-Admin"] === 'Log In Success'): ?>
@@ -305,22 +307,22 @@ $currentFile = basename($_SERVER['PHP_SELF']);
             <ul class="nav nav-second-level ticket-dropdown-menu <?= $systemDocsDropdownOpen ? 'in' : '' ?>">
                 <li>
                     <a class="<?= ($currentFile == 'templates.php') ? 'active-menu' : '' ?>" href="templates.php">
-                        <i class="fa fa-exclamation-triangle"></i> Issues Templates
+                    &nbsp;&nbsp;<i class="fa fa-exclamation-triangle"></i> Issues Templates
                     </a>
                 </li>
                         <li>
                             <a class="<?= $currentFile == 'response-templates.php' ? 'active-menu' : '' ?>" href="response-templates.php">
-                                <i class="fa fa-comment-dots"></i> Response Templates
+                            &nbsp;&nbsp;<i class="fa fa-comment-dots"></i> Response Templates
                             </a>
                         </li>
                         <li>
                                 <a class="<?= $currentFile == 'information-templates.php' ? 'active-menu' : '' ?>" href="information-templates.php">
-                                    <i class="fa fa-info"></i> Information Templates
+                                &nbsp;&nbsp;<i class="fa fa-info"></i> Information Templates
                                 </a>
                             </li>
                             <li>
                                 <a class="<?= $currentFile == 'others.php' ? 'active-menu' : '' ?>" href="others.php">
-                                    <i class="fa fa-gear"></i> Others
+                                &nbsp;&nbsp;<i class="fa fa-gear"></i> Others
                                 </a>
                             </li>
             </ul>
@@ -335,12 +337,12 @@ $currentFile = basename($_SERVER['PHP_SELF']);
         
         <li>
             <a class="<?= ($currentFile == 'settings.php') ? 'active-menu' : '' ?>" href="settings.php">
-                <i class="fa fa-gear fa-xl"></i> System Settings
+            &nbsp;&nbsp;<i class="fa fa-gear fa-xl"></i> System Settings
             </a>
         </li>
         <li>
             <a class="<?= ($currentFile == 'mailer-configuration.php') ? 'active-menu' : '' ?>" href="mailer-configuration.php">
-                <i class="fa-solid fa-envelopes-bulk fa-xl"></i> Mailer Settings
+            &nbsp;&nbsp;<i class="fa-solid fa-envelopes-bulk fa-xl"></i> Mailer Settings
             </a>
         </li>
             </ul>

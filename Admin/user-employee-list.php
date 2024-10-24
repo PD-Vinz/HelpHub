@@ -157,7 +157,11 @@ $pdoExec = $pdoResult->execute();
                     extract($row);
                     $P_PBase64 = base64_encode($profile_picture);
                     $date = new DateTime($birthday);
-                    $formattedDate = $date->format('F j, Y')
+                    $formattedDate = $date->format('F j, Y');
+
+                    if ($name === 'Super Admin') {
+                        continue;
+                    }
             ?>
                     <tr class='odd gradeX'>
                     <td><?php echo htmlspecialchars($user_id); ?></td>

@@ -177,18 +177,22 @@ input[type="file"]::file-selector-button {
 				</div>
                 <div class="form-group col-6">
 					<label for="sex">Sex</label>
-					<select name="sex" id="sex" class="custom-select form-control" required>
+					<select name="sex" id="sex" class=" form-control" required>
 						<option value="Male">Male</option>
 						<option value="Female">Female</option>
 					</select>
 				</div>
                 <div class="form-group col-6">
 					<label for="department">Department</label>
-					<input type="text" name="department" id="department" class="form-control" required >
+					<select name="department" id="categoryDropdown" class="form-control" required>
+
+                    </select>
 				</div>
                 <div class="form-group col-6">
 					<label for="campus">Campus</label>
-					<input type="text" name="campus" id="campus" class="form-control" required >
+					<select name="campus" id="campusDropdown" class="form-control" required>
+
+                    </select>
 				</div>
                 <div class="form-group col-6">
 					<label for="email">Email Address</label>
@@ -385,7 +389,7 @@ function displayImg(input) {
     <script src="assets/js/custom.js"></script>
     
     <script>
-function populateDropdown(fileName, dropdownId) {
+function populateCampus(fileName, dropdownId) {
     // Add a random query parameter to the file name to prevent caching
     const url = fileName + '?v=' + new Date().getTime();
     
@@ -415,7 +419,45 @@ function populateDropdown(fileName, dropdownId) {
         .catch(error => console.error(`Error fetching the text file (${fileName}):`, error));
 }
 
-
+// Call the function to populate the category dropdown
+populateCampus('txt/campus.txt', 'campusDropdown');
     </script>
+    <script>
+    // Function to populate a dropdown from a specified text file
+    function populateDropdown(fileName, dropdownId) {
+        const url = fileName + '?v=' + new Date().getTime();
+        // Fetch the text file
+        fetch(url)
+            .then(response => response.text())
+            .then(data => {
+                const options = data.split('\n');
+                const dropdown = document.getElementById(dropdownId);
+
+                options.forEach(option => {
+                    if (option.trim() !== '') {  // Ignore empty lines
+                        const opt = document.createElement('option');
+                        opt.value = option.trim();
+                        opt.textContent = option.trim();
+                        dropdown.appendChild(opt);
+                    }
+                });
+
+                // After populating, call handleCategoryChange to initialize the second dropdown
+                handleCategoryChange();
+            })
+            .catch(error => console.error(`Error fetching the text file (${fileName}):`, error));
+    }
+
+   
+
+    // Call the function to populate the category dropdown
+    populateDropdown('txt/department.txt', 'categoryDropdown');
+
+    // Event listener for category dropdown change
+    document.getElementById('categoryDropdown').addEventListener('change', handleCategoryChange);
+
+    // Initial population based on the default selection
+    document.addEventListener('DOMContentLoaded', handleCategoryChange);
+</script>
 </body>
 </html>

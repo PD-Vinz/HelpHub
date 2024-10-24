@@ -199,7 +199,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 	<div class="modal-footer">
 			<div class="col-md-12">
 				<div class="row">
-                    <button type="button" class="btn btn-sm btn-primary mr-2" data-toggle="modal" data-target="#configModal">Add Configuration</button>
+                    <button type="button" class="btn btn-sm btn-primary mr-2" id="addConfigBtn">Add Configuration</button>
 					<a class="btn btn-sm btn-secondary" onclick="history.back()">Cancel</a>
 				</div>
 			</div>
@@ -305,11 +305,45 @@ document.getElementById('test-smtp').addEventListener('click', function() {
 </div>
 
 <script>
+    // Handle the 'Add Configuration' button click event
+    document.getElementById('addConfigBtn').addEventListener('click', function(event) {
+        // Define the required fields to check
+        var requiredFields = ['#purpose', '#host', '#username', '#password', '#smtpsecure', '#port', '#email', '#name'];
+
+        // Flag to track if all fields are valid
+        var allValid = true;
+
+        // Loop through each required field and check if they are filled
+        requiredFields.forEach(function(selector) {
+            var field = document.querySelector(selector);
+
+            // If any field is empty, set the flag to false and highlight the empty field
+            if (!field.value.trim()) {
+                allValid = false;
+                field.style.borderColor = 'red';  // Highlight the empty field with red border
+            } else {
+                field.style.borderColor = '';  // Reset the border if filled
+            }
+        });
+
+        // If all fields are valid, show the modal
+        if (allValid) {
+            $('#configModal').modal('show'); // Show the modal
+        } else {
+            alert('Please fill out all required fields before submitting.');
+        }
+    });
+
+    // Handle the 'Confirm' button inside the modal
     document.getElementById('confirmAdd').addEventListener('click', function() {
-        // Submit the form when the user confirms
+        // Manually trigger form submission when 'Confirm' is clicked
         document.getElementById('manage-user').submit();
     });
 </script>
+
+
+
+
 
 
 </body>

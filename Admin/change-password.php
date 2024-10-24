@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 include_once("../connection/conn.php");
 $pdoConnect = connection();
 
@@ -15,8 +15,6 @@ if (!isset($_SESSION["admin_number"])) {
     $pdoResult = $pdoConnect->prepare($pdoUserQuery);
     $pdoResult->bindParam(':number', $id);
     $pdoResult->execute();
-
-   
 
     $Data = $pdoResult->fetch(PDO::FETCH_ASSOC);
 
@@ -56,6 +54,50 @@ if (!isset($_SESSION["admin_number"])) {
   // for displaying system details //end
  
 }
+
+// Handle form submission for password change
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $currentPassword = $_POST['current_password'];
+    $newPassword = $_POST['new_password'];
+    $retypeNewPassword = $_POST['retype_new_password'];
+
+    // Verify current password and update if valid
+    if (password_verify($currentPassword, $Data['password'])) {
+        if ($newPassword === $retypeNewPassword) {
+            $hashedPassword = password_hash($newPassword, PASSWORD_ARGON2I);
+            // Update query with proper syntax
+            $updateQuery = "UPDATE mis_employees SET password = :newPassword WHERE admin_number = :id";
+            $updateStmt = $pdoConnect->prepare($updateQuery);
+            $updateStmt->bindParam(':newPassword', $hashedPassword);
+            $updateStmt->bindParam(':id', $id);
+            $updateStmt->execute();
+
+            echo "<script type='text/javascript'>
+            window.onload = function() {
+                alert('Password updated successfully!');
+                window.location.href = 'change-password.php';
+            };
+        </script>";
+        exit;
+        } else {
+            echo "<script type='text/javascript'>
+            window.onload = function() {
+                alert('New passwords do not match.');
+                window.location.href = 'change-password.php';
+            };
+        </script>";
+        exit;
+        }
+    } else {
+        echo "<script type='text/javascript'>
+            window.onload = function() {
+                alert('Current password is incorrect.');
+                window.location.href = 'change-password.php';
+            };
+        </script>";
+        exit;
+    }
+}
 ?>
 
 <!DOCTYPE html>
@@ -90,86 +132,92 @@ if (!isset($_SESSION["admin_number"])) {
             <div id="page-inner">
                 
                     <div class="col-md-12">
-                        <h2>Edit profile</h2>          <hr>
+                        <h2>Change Password</h2>          <hr>
                         <div class="container">
                             <h1 class="text-primary"></h1>
                   
                             <div class="row">
                                
-<form class="form-horizontal" role="form" method="post" action="action\update_profile.php" enctype="multipart/form-data" onsubmit='return confirmSubmit();'>
-                                <!-- left column -->
 
-                                
-                                <div class="avatar" id="avatar">
-                                    <div id="preview">
-                                        <img src="data:image/jpeg;base64,<?php echo $P_PBase64?>" id="avatar-image" class="avatar_img" id="" alt="No Image">
-                                    </div>
-                                    <div class="avatar_upload">
-                                        <label class="upload_label">Choose
-                                            <input type="file" id="upload" name="image" accept="image/*">
-                                        </label>
-                                    </div>
-                                  </div>
-<script>    // Validate file type
-        $allowedTypes = ['image/png', 'image/jpeg', 'image/jpg'];
-        $fileType = mime_content_type($image['tmp_name']);
-        if (!in_array($fileType, $allowedTypes)) {
-            <?php echo "Only PNG, JPG, and JPEG files are allowed."; ?>
-            exit;
-        }
+<form class="form-horizontal" role="form" method="post" onsubmit='return confirmSubmit();'>
+                                        <div class="form-group">
+                                            <label class="col-lg-3 control-label">CURRENT PASSWORD</label>
+                                            <div class="col-lg-8">
+                                                <input class="form-control" type="password" name="current_password" id="old" required>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-lg-3 control-label">NEW PASSWORD</label>
+                                            <div class="col-lg-8">
+                                                <input class="form-control" type="password" name="new_password" id="new" required>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-lg-3 control-label">RE-TYPE NEW PASSWORD</label>
+                                            <div class="col-lg-8">
+                                                <input class="form-control" type="password" name="retype_new_password" id="renew" required>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                        <label class="col-lg-3 control-label" style="font-size:small;">SHOW PASSWORDS</label>
+                                        <div class="col-lg-8">
+                                        <button type="button" id="togglePassword" class="password-btn" 
+                                            onmousedown="showPassword()" onmouseup="hidePassword()" onmouseleave="hidePassword()">
+                                            <i class="fas fa-eye" id="eyeIcon"></i>
+                                        </button>
+                                        </div>
+<style>
+    .password-btn {
+        background-color: #9C0507; /* Bootstrap-like blue */
+        color: white;
+        padding: -10px -15px;
+        border: none;
+        border-radius: 5px;
+        font-size: 14px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
 
-        $imgContent = file_get_contents($image['tmp_name']);
+    .password-btn:hover {
+        background-color: none; /* Darker blue on hover */
+        color: lightgray;
+    }
+
+    .password-btn:active {
+        background-color: none; /* Even darker when pressed */
+        color: black;
+    }
+</style>
+<script>
+    function showPassword() {
+        document.getElementById("old").type = "text";
+        document.getElementById("new").type = "text";
+        document.getElementById("renew").type = "text";
+        eyeIcon.classList.remove('fa-eye');
+        eyeIcon.classList.add('fa-eye-slash');
+    }
+
+    function hidePassword() {
+        document.getElementById("old").type = "password";
+        document.getElementById("new").type = "password";
+        document.getElementById("renew").type = "password";
+        eyeIcon.classList.remove('fa-eye-slash');
+        eyeIcon.classList.add('fa-eye');
+    }
 </script>
-
-                                  <div class="nickname">
-                                    <span id="name" tabindex="4" data-key="1" contenteditable="true" onkeyup="changeAvatarName(event, this.dataset.key, this.textContent)" onblur="changeAvatarName('blur', this.dataset.key, this.textContent)" hidden></span>
-                                  </div>
-                                <!-- edit form column -->
-                                <div class="col-md-9 personal-info">
-                                    <div> <h3>PERSONAL INFORMATION</h3>
-                                    </div>
-                                        <div class="form-group">
-                                            <label class="col-lg-3 control-label">FIRST NAME</label>
-                                            <div class="col-lg-8">
-                                                <input class="form-control" name="fname" type="text" value="<?php echo $Name?>" required>
-                                            </div>
                                         </div>
-                                        <div class="form-group">
-                                            <label class="col-lg-3 control-label">LAST NAME</label>
-                                            <div class="col-lg-8">
-                                                <input class="form-control" name="lname" type="text" value="<?php echo $lname?>" required>
-                                            </div>
-                                        </div>
-                                        <div class="form-group">
-                                            <label class="col-lg-3 control-label">EMAIL ADDRESS</label>
-                                            <div class="col-lg-8">
-                                                <input class="form-control" name="emailadd" type="text" value="<?php echo $Email_Add?>" required>
-                                            </div>
-                                        </div>
-                                        <div class="form-group">
-                                            <label class="col-lg-3 control-label">GENDER</label>
-                                            <div class="col-lg-8">
-                                                <input class="form-control" name="sex" type="text" value="<?php echo $Sex?>" required>
-                                            </div>
-                                        </div>
-                                        <div class="form-group">
-                                            <label class="col-lg-3 control-label">BIRTHDAY</label>
-                                            <div class="col-lg-8">
-                                                <input class="form-control" name="bday" type="date" value="<?php echo $Bday?>" required>
-                                            </div>
-                                        </div>
+                                        
                                         <div class="modal-footer">	
-                                            <input type="submit" class="btn btn-primary" name="update" value="UPDATE PROFILE"  >
-                                            <button type="button" class="btn btn-primary" onclick="history.back()">BACK</button>
+                                            <!--<a href="edit-profile-picture.php"><button type="button" class="btn btn-primary">CHANGE PROFILE</button></a>-->
+                                            <button type="submit" class="btn btn-primary">SAVE PASSWORD</button>
+                                            <button type="button" class="btn btn-primary" onclick="history.back()">Back</button>
                                         </div>
                                         
 
 
 
                                         
-                                                </div>
-                                            </div>
-                                        </div>
+                                                
                                     </form>
                                     <script>
 function confirmSubmit() {

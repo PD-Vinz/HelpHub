@@ -119,6 +119,8 @@ if (isset($_GET['id'])){
       <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>DHVSU MIS - HelpHub</title>
+    <link rel="icon" href="<?php echo htmlspecialchars($S_LBase64, ENT_QUOTES, 'UTF-8'); ?>" type="image/*">   
+
   
 	<!-- BOOTSTRAP STYLES-->
     <link href="assets/css/bootstrap.css" rel="stylesheet" />
@@ -210,11 +212,11 @@ input[type="file"]::file-selector-button {
 				</div>
                 <div class="form-group col-6">
 					<label for="name">Age</label>
-					<input type="text" name="age" id="age" class="form-control" value="<?php echo $FetchAge?>" required >
+					<input type="text" name="age" id="age" class="form-control" value="<?php echo $FetchAge?>" readonly >
 				</div>
                 <div class="form-group col-6">
 					<label for="sex">Sex</label>
-					<select name="sex" id="sex" class="custom-select form-control" required>
+					<select name="sex" id="sex" class="form-control" required>
 						<option value="Male" <?php echo ($FetchSex == 'Male') ? 'selected' : ''; ?>>Male</option>
 						<option value="Female" <?php echo ($FetchSex == 'Female') ? 'selected' : ''; ?>>Female</option>
 					</select>
@@ -251,7 +253,7 @@ input[type="file"]::file-selector-button {
 	<div class="modal-footer">
 			<div class="col-md-12">
 				<div class="row">
-					<button class="btn btn-sm btn-primary mr-2" form="manage-user">Add Account</button>
+					<button class="btn btn-sm btn-primary mr-2" form="manage-user">Update Account</button>
 					<a class="btn btn-sm btn-secondary" href="user-employee-list.php">Cancel</a>
 				</div>
 			</div>
