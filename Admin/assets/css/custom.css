@@ -203,7 +203,7 @@
     
     .noti-box {
   
-        min-height: 90px;
+        min-height: 120px;
         height:auto;
         padding: 15px;
         line-height: 50px;
@@ -211,6 +211,7 @@
         }
         
   }
+  
   
   .set-icon {
       -webkit-border-radius: 50px;

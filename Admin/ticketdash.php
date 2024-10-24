@@ -88,7 +88,6 @@ if (!isset($_SESSION["admin_number"])) {
         $pdoResult->bindParam(':user', $ticket_user, PDO::PARAM_STR);
         $pdoResult->execute();
         $priorityTickets = $pdoResult->rowCount();
-
     } catch (PDOException $e) {
         echo "Error: " . $e->getMessage();
     }
@@ -116,21 +115,28 @@ if (!isset($_SESSION["admin_number"])) {
     <link href="assets/css/custom.css" rel="stylesheet" />
     <!-- GOOGLE FONTS-->
     <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css' />
-   
-<style>
+
+    <style>
         .modal-dialog {
-            max-width: 80%; /* Adjust the modal width as needed */
+            max-width: 80%;
+            /* Adjust the modal width as needed */
         }
+
         .modal-content {
-            overflow: hidden; /* Ensure the content doesn't overflow */
+            overflow: hidden;
+            /* Ensure the content doesn't overflow */
         }
+
         .modal-body img {
             width: 100%;
-            height: auto; /* Maintain aspect ratio */
-            max-height: 70vh; /* Adjust the maximum height as needed */
-            object-fit: contain; /* Ensure the image is contained within the modal */
+            height: auto;
+            /* Maintain aspect ratio */
+            max-height: 70vh;
+            /* Adjust the maximum height as needed */
+            object-fit: contain;
+            /* Ensure the image is contained within the modal */
         }
-</style>
+    </style>
 
 </head>
 
@@ -149,67 +155,69 @@ if (!isset($_SESSION["admin_number"])) {
                 </div>
 
 
-                <div class="col-md-12">
-    
-    <div class="col-md-2 col-sm-6 col-xs-6">        
-        
-                <div class="panel panel-back noti-box">
-                    <span class="icon-box bg-color-yellow set-icon">
-                    <i class="fa fa-hourglass-half fa-xs" aria-hidden="true"></i>
-                    </span>
-                    <div class="text-box" >
-                        <p class="main-text"><?php echo $pendingTickets?></p>
-                        <p class="text-muted pp"> Pending Tickets</p>
+                <div class="col-md-12 row">
+
+                    <div class="col-md-2 col-sm-6 col-xs-6">
+
+                        <div class="panel panel-back noti-box">
+                            <span class="icon-box bg-color-yellow set-icon">
+                                <i class="fa fa-hourglass-half fa-xs" aria-hidden="true"></i>
+                            </span>
+                            <div class="text-box">
+                                <p class="main-text"><?php echo $pendingTickets ?></p>
+                                <p class="text-muted pp"> Pending Tickets</p>
+                            </div>
+                        </div>
                     </div>
-                 </div>
+                    <div class="col-md-2 col-sm-6 col-xs-6">
+                        <div class="panel panel-back noti-box">
+                            <span class="icon-box bg-color-green set-icon">
+                                <i class="fa fa-envelope-open fa-xs" aria-hidden="true"></i>
+                            </span>
+                            <div class="text-box">
+                                <p class="main-text"><?php echo $openedTickets ?></p>
+                                <p class="text-muted pp"> Processing Tickets</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-2 col-sm-6 col-xs-6">
+                        <div class="panel panel-back noti-box">
+                            <span class="icon-box bg-color-brown set-icon">
+                                <i class="fa fa-check fa-xs" aria-hidden="true"></i>
+                            </span>
+                            <div class="text-box">
+                                <p class="main-text"><?php echo $completedTickets ?></p>
+                                <p class="text-muted pp"> Resolved Tickets</p>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="col-md-2 col-sm-6 col-xs-6">
+                        <div class="panel panel-back noti-box">
+                            <span class="icon-box bg-color-black set-icon">
+                                <i class="fa fa-reply fa-xs" aria-hidden="true"></i>
+                            </span>
+                            <div class="text-box">
+                                <p class="main-text"><?php echo $returnedTickets ?></p>
+                                <p class="text-muted pp"> Returned Tickets</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-2 col-sm-6 col-xs-6">
+                        <div class="panel panel-back noti-box">
+                            <span class="icon-box bg-color-blue set-icon">
+                                <i class="fa fa-exclamation-circle fa-xs" aria-hidden="true"></i>
+                            </span>
+                            <div class="text-box">
+                                <p class="main-text"><?php echo $priorityTickets ?></p>
+                                <p class="text-muted pp"> Priority Tickets</p>
+                            </div>
+                        </div>
+                        <!--</a>-->
+                    </div>
+                    <hr>
                 </div>
-                        <div class="col-md-2 col-sm-6 col-xs-6">           
-                <div class="panel panel-back noti-box">
-                    <span class="icon-box bg-color-green set-icon">
-                    <i class="fa fa-envelope-open fa-xs" aria-hidden="true"></i>
-                    </span>
-                    <div class="text-box" >
-                        <p class="main-text"><?php echo $openedTickets?></p>
-                        <p class="text-muted pp"> Processing Tickets</p>
-                    </div>
-                 </div>
-                </div>
-                        <div class="col-md-2 col-sm-6 col-xs-6">           
-                <div class="panel panel-back noti-box">
-                    <span class="icon-box bg-color-brown set-icon">
-                    <i class="fa fa-check fa-xs" aria-hidden="true"></i>
-                    </span>
-                    <div class="text-box" >
-                        <p class="main-text"><?php echo $completedTickets?></p>
-                        <p class="text-muted pp"> Resolved Tickets</p>
-                    </div>
-                 </div>
-                </div>
-                
-                   
-                        <div class="col-md-2 col-sm-6 col-xs-6">           
-                <div class="panel panel-back noti-box">
-                    <span class="icon-box bg-color-black set-icon">
-                    <i class="fa fa-reply fa-xs" aria-hidden="true"></i>
-                    </span>
-                    <div class="text-box" >
-                        <p class="main-text"><?php echo $returnedTickets?></p>
-                       <p class="text-muted pp"> Returned Tickets</p>
-                    </div>
-                 </div>
-                 </div>
-                        <div class="col-md-2 col-sm-6 col-xs-6">           
-                <div class="panel panel-back noti-box">
-                    <span class="icon-box bg-color-blue set-icon">
-                    <i class="fa fa-exclamation-circle fa-xs" aria-hidden="true"></i>
-                    </span>
-                    <div class="text-box" >
-                        <p class="main-text"><?php echo $priorityTickets?></p>
-                        <p class="text-muted pp"> Priority Tickets</p>
-                    </div>
-                 </div>
-    <!--</a>-->
-                </div><hr>  </div> 
 
                 <!-- /. ROW  -->
                 <div class="row">
@@ -233,109 +241,107 @@ if (!isset($_SESSION["admin_number"])) {
                                                     <th>Details</th>
                                                 </tr>
                                             </thead>
-                                    <tbody id="ticketTableBody">
-        <!-- Table rows will be dynamically inserted here -->
-    </tbody>
+                                            <tbody id="ticketTableBody"></tbody>
 
-                                
-                                </table>
+
+                                        </table>
+                                    </div>
+
+                                </div>
                             </div>
+                            <!--End Advanced Tables -->
+                        </div>
+                    </div>
 
-                        </div>
-                    </div>
-                    <!--End Advanced Tables -->
-                </div>
-            </div>
+                    <!-- /. ROW  -->
+                    <div class="col-md-12">
 
-            <!-- /. ROW  -->
-            <div class="col-md-12">
+                        <div class="col-md-4 col-sm-4 col-xs-4">
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    Age
+                                </div>
+                                <div class="panel-body">
+                                    <div id="morris-donut-chart"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4 col-sm-4 col-xs-4">
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    Gender
+                                </div>
+                                <div class="panel-body">
+                                    <div id="morris-donut-chart2"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4 col-sm-4 col-xs-4">
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    Campus
+                                </div>
+                                <div class="panel-body">
+                                    <div id="morris-donut-chart3"></div>
+                                </div>
+                            </div>
+                        </div>
 
-                <div class="col-md-4 col-sm-4 col-xs-4">
-                    <div class="panel panel-default">
-                        <div class="panel-heading">
-                            Age
-                        </div>
-                        <div class="panel-body">
-                            <div id="morris-donut-chart"></div>
-                        </div>
                     </div>
                 </div>
-                <div class="col-md-4 col-sm-4 col-xs-4">
-                    <div class="panel panel-default">
-                        <div class="panel-heading">
-                            Gender
-                        </div>
-                        <div class="panel-body">
-                            <div id="morris-donut-chart2"></div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-4 col-sm-4 col-xs-4">
-                    <div class="panel panel-default">
-                        <div class="panel-heading">
-                            Campus
-                        </div>
-                        <div class="panel-body">
-                            <div id="morris-donut-chart3"></div>
-                        </div>
-                    </div>
-                </div>
-                
-            </div>
+                <!-- /. PAGE INNER  -->
+            </div><?php include '../footer.php' ?>
+            <!-- /. PAGE WRAPPER  -->
         </div>
-        <!-- /. PAGE INNER  -->
-    </div><?php include '../footer.php' ?>
-    <!-- /. PAGE WRAPPER  -->
-    </div>
-    <!-- /. WRAPPER  -->
-    <!-- SCRIPTS -AT THE BOTTOM TO REDUCE THE LOAD TIME-->
-<script src="fetch/ticket-updater.js"></script>
-    <!-- JQUERY SCRIPTS -->
-    <script src="assets/js/jquery-1.10.2.js"></script>
-    <!-- BOOTSTRAP SCRIPTS -->
-    <script src="assets/js/bootstrap.min.js"></script>
-    
-    <!-- METISMENU SCRIPTS -->
-    <script src="assets/js/jquery.metisMenu.js"></script>
-    <!-- MORRIS CHART SCRIPTS -->
-    <script src="assets/js/morris/raphael-2.1.0.min.js"></script>
-    <script src="assets/js/morris/morris.js"></script>
-    <script src="fetch/ticket-modal.js"></script>
-    <script>
-        $(document).ready(function() {
-            // Function to create a donut chart
-            function createDonutChart(elementId, dataUrl) {
-                $.getJSON(dataUrl, function(data) {
-                    if (data.error) {
-                        console.error('Error fetching data:', data.error);
-                    } else {
-                        Morris.Donut({
-                            element: elementId,
-                            data: data
-                        });
-                    }
-                }).fail(function(jqxhr, textStatus, error) {
-                    console.error('Request Failed: ' + textStatus + ', ' + error);
-                });
-            }
+        <!-- /. WRAPPER  -->
+        <!-- SCRIPTS -AT THE BOTTOM TO REDUCE THE LOAD TIME-->
+        <script src="fetch/ticket-updater.js"></script>
+        <!-- JQUERY SCRIPTS -->
+        <script src="assets/js/jquery-1.10.2.js"></script>
+        <!-- BOOTSTRAP SCRIPTS -->
+        <script src="assets/js/bootstrap.min.js"></script>
 
-            // Create charts with dynamic data
-            createDonutChart('morris-donut-chart', 'action/data.php?chart=age-groups&id=<?php echo $_GET['id'] ?>');
-            createDonutChart('morris-donut-chart2', 'action/data.php?chart=genders&id=<?php echo $_GET['id'] ?>');
-            createDonutChart('morris-donut-chart3', 'action/data.php?chart=locations&id=<?php echo $_GET['id'] ?>');
-        });
-    </script>
+        <!-- METISMENU SCRIPTS -->
+        <script src="assets/js/jquery.metisMenu.js"></script>
+        <!-- MORRIS CHART SCRIPTS -->
+        <script src="assets/js/morris/raphael-2.1.0.min.js"></script>
+        <script src="assets/js/morris/morris.js"></script>
+        <script src="fetch/ticket-modal.js"></script>
+        <script>
+            $(document).ready(function() {
+                // Function to create a donut chart
+                function createDonutChart(elementId, dataUrl) {
+                    $.getJSON(dataUrl, function(data) {
+                        if (data.error) {
+                            console.error('Error fetching data:', data.error);
+                        } else {
+                            Morris.Donut({
+                                element: elementId,
+                                data: data
+                            });
+                        }
+                    }).fail(function(jqxhr, textStatus, error) {
+                        console.error('Request Failed: ' + textStatus + ', ' + error);
+                    });
+                }
 
-    <!-- DATA TABLE SCRIPTS -->
+                // Create charts with dynamic data
+                createDonutChart('morris-donut-chart', 'action/data.php?chart=age-groups&id=<?php echo $_GET['id'] ?>');
+                createDonutChart('morris-donut-chart2', 'action/data.php?chart=genders&id=<?php echo $_GET['id'] ?>');
+                createDonutChart('morris-donut-chart3', 'action/data.php?chart=locations&id=<?php echo $_GET['id'] ?>');
+            });
+        </script>
+
+        <!-- DATA TABLE SCRIPTS -->
 
 
-    <!-- DATA TABLE SCRIPTS -->
-    <script src="assets/js/dataTables/jquery.dataTables.js"></script>
-    <script src="assets/js/dataTables/datatables.min.js"></script>
-    
+        <!-- DATA TABLE SCRIPTS -->
+        <script src="assets/js/dataTables/jquery.dataTables.js"></script>
+        <script src="assets/js/dataTables/datatables.min.js"></script>
 
-    <!-- CUSTOM SCRIPTS -->
-    <script src="assets/js/custom.js"></script>
+
+        <!-- CUSTOM SCRIPTS -->
+        <script src="assets/js/custom.js"></script>
 </body>
 
 </html>
