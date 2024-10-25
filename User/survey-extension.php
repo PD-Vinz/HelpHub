@@ -85,19 +85,19 @@ if (!isset($_SESSION["user_id"])) {
     <title><?php echo $sysName?></title>
     <link rel="icon" href="<?php echo htmlspecialchars($S_LBase64, ENT_QUOTES, 'UTF-8'); ?>" type="image/*"> 
     <!-- BOOTSTRAP STYLES-->
-    <link href="assets/css/bootstrap.css" rel="stylesheet" />
+    <link href="assets/css/bootstrap.css?v=<?php echo time(); ?>" rel="stylesheet" />
   <!-- FONTAWESOME STYLES-->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
     <!-- MORRIS CHART STYLES-->
-    <link href="assets/js/morris/morris-0.4.3.min.css" rel="stylesheet" />
+    <link href="assets/js/morris/morris-0.4.3.min.css?v=<?php echo time(); ?>" rel="stylesheet" />
     <!-- CUSTOM STYLES-->
-    <link href="assets/css/custom.css" rel="stylesheet" />
+    <link href="assets/css/custom.css?v=<?php echo time(); ?>" rel="stylesheet" />
     <!-- GOOGLE FONTS-->
     <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css' />
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
     <script src="bayes.js"></script>
 </head>
-
+<?php include 'loading.php'; ?>
 <body>
     <div id="wrapper">
         <nav class="navbar navbar-default navbar-cls-top " role="navigation" style="margin-bottom: 0">
@@ -126,14 +126,23 @@ if (!isset($_SESSION["user_id"])) {
             <hr style="margin-top: 5px; margin-bottom: 5px;">
             <a class="dropdown-item" href="settings.php"><span class="fa fa-gear"></span> SETTINGS</a>
             <hr style="margin-top: 5px; margin-bottom: 5px;">
-            <a class="dropdown-item" href="logout.php"><span class="fa fa-sign-out"></span> LOG OUT </a>          </div>
+            <?php if (!isset($_SESSION["Super-Admin"])): ?>
+                <?php if ($identity == "Student"): ?>
+                <a class="dropdown-item" href="logout.php" onclick="window.open('https://forms.gle/Bf2yoFEiYE8k56Pb6', '_blank');"><span class="fa fa-sign-out"></span> LOG OUT </a>
+                <?php elseif ($identity == "Employee"): ?>
+                <a class="dropdown-item" href="logout.php" onclick="window.open('https://forms.gle/kUJQW5YTbBfKKMw37', '_blank');"><span class="fa fa-sign-out"></span> LOG OUT </a>
+                <?php endif; ?>
+            <?php elseif (isset($_SESSION["Super-Admin"]) && $_SESSION["Super-Admin"] === 'Log In Success'): ?>
+                <a class="dropdown-item" href="../index.php"><span class="fas fa-sign-out-alt"></span> Log Out</a>
+            <?php endif; ?>
+                  </div>
         </nav>
         <!-- /. NAV TOP  -->
         <nav class="navbar-default navbar-side" role="navigation">
             <div class="sidebar-collapse">
                 <ul class="nav" id="main-menu">
                     <li class="text-center">
-                        <img src="assets/img/find_user.png" class="user-image img-responsive" />
+                    <img src="data:image/jpeg;base64,<?php echo $P_PBase64?>" class="user-image img-responsive" />
                         <h3 style="color:white;"><?php echo $Name?></h3>
                     </li>
 
@@ -247,7 +256,9 @@ if (!isset($_SESSION["user_id"])) {
         <!-- /. PAGE WRAPPER  -->
     </div>
     <!-- /. WRAPPER  -->
-    <?php require_once ('../footer.php')?>
+    </div>
+    </div><?php require_once ('../footer.php')?>
+    </div>
     <!-- SCRIPTS -AT THE BOTTOM TO REDUCE THE LOAD TIME-->
     <!-- JQUERY SCRIPTS -->
     <script src="assets/js/jquery-1.10.2.js"></script>

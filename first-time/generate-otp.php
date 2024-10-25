@@ -37,7 +37,7 @@ function sendOTP($recipientEmail, $otp) {
 
     $mail = new PHPMailer(true); // Create a new PHPMailer instance
 
-    $pdoQuery = "SELECT * FROM php_mailer_configuration WHERE email_purpose = 'OTP' && status = 'active'";
+    $pdoQuery = "SELECT * FROM php_mailer_configuration WHERE email_purpose = 'OTP' && status = 'Active'";
     $pdoResult = $pdoConnect->prepare($pdoQuery);
     if (!$pdoResult->execute()) {
         die('Error fetching mailer configuration');

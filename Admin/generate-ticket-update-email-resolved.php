@@ -12,24 +12,50 @@ use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 
 function sendTicketConfirmation($recipientEmail, $userName, $ticketid, $status, $employee, $issue, $description, $dateCreated, $dateOpened, $dateResolved, $imageUrl, $websiteUrl) {
+    global $pdoConnect; // Ensure $pdoConnect is accessible
+    if (!filter_var($recipientEmail, FILTER_VALIDATE_EMAIL)) {
+        die('Invalid email format');
+    }
+
     $mail = new PHPMailer(true); // Create a new PHPMailer instance
+
+    $pdoQuery = "SELECT * FROM php_mailer_configuration WHERE email_purpose = 'Notification' && status = 'Active'";
+    $pdoResult = $pdoConnect->prepare($pdoQuery);
+    if (!$pdoResult->execute()) {
+        die('Error fetching mailer configuration');
+    }
+    $Data = $pdoResult->fetch(PDO::FETCH_ASSOC);
+
+    if ($Data) {
+        $host = $Data['host'];
+        $username = $Data['username'];
+        $password = $Data['password'];
+        $port = $Data['port'];
+        $address = $Data['address'];
+        $name = $Data['name'];
+    }
 
     try {
         // Server settings
         $mail->isSMTP();                                            // Set mailer to use SMTP
-        $mail->Host       = 'smtp-relay.brevo.com';                       // Specify main and backup SMTP servers
+        $mail->Host       = $host;                       // Specify main and backup SMTP servers
         $mail->SMTPAuth   = true;                                   // Enable SMTP authentication
-        $mail->Username   = '7acc39001@smtp-brevo.com';                 // SMTP username
-        $mail->Password   = 'acd2zESVIwCT0Yyv';                    // SMTP password
+        $mail->Username   = $username;                 // SMTP username
+        $mail->Password   = $password;                    // SMTP password
         $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;         // Enable TLS encryption
-        $mail->Port       = 587;                                    // TCP port to connect to
+        $mail->Port       = $port;                                    // TCP port to connect to
 
         // Recipients
-        $mail->setFrom('auth.helphub@gmail.com', 'DHVSU HelpHub');
+        $mail->setFrom($address, $name);
         $mail->addAddress($recipientEmail);                         // Add a recipient
 
         // Load the HTML template and replace placeholders
+        if ($status == "Resolved") {
         $htmlContent = file_get_contents('template-resolve.php'); // Ensure this path is correct
+        } elseif ($status == "Returned"){
+        $htmlContent = file_get_contents('template-return.php'); // Ensure this path is correct    
+        }
+
         $htmlContent = str_replace(
             ['{UserName}', '{TicketID}', '{Status}', '{Issue}', '{Employee}', '{Description}', '{DateCreated}', '{DateOpened}', '{DateResolved}', '{ImageUrl}', '{WebsiteUrl}'],
             [$userName, $ticketid, $status, $issue, $employee, $description, $dateCreated, $dateOpened, $dateResolved, $imageUrl, $websiteUrl],
@@ -38,26 +64,26 @@ function sendTicketConfirmation($recipientEmail, $userName, $ticketid, $status, 
 
         // Content
         $mail->isHTML(true);                                        // Set email format to HTML
-        $mail->Subject = 'Your issue has been resolved and your ticket is now closed.';
+        $mail->Subject = 'Your issue has been '. $status .' and your ticket is now closed.';
         $mail->Body    = $htmlContent;
 
         $mail->AltBody = "Your ticket details:\nIssue: $issue\nDescription: $description\nDate Created: $dateCreated"; // Plain text version for non-HTML mail clients
 
         $mail->send();
 
-        $USER_TYPE = $_SESSION["USER_TYPE"];
-
-        // Check USER_TYPE and redirect accordingly
-        if ($USER_TYPE == 'Student') {
-            header("Location: ticket-opened.php?id=1"); // Redirect after sending email
-            exit; // Prevent further execution after redirection
-        } elseif ($USER_TYPE == 'Employee') {
-            header("Location: ticket-opened.php?id=2"); // Redirect after sending email
-            exit; // Prevent further execution after redirection
-        } else {
-            // Handle unexpected USER_TYPE
-            echo "Unexpected user type.";
-        }
+        unset($_SESSION["Address"]);
+        unset($_SESSION["userName"]);
+        unset($_SESSION["ticketid"]);
+        unset($_SESSION["status"]);
+        unset($_SESSION["employee"]);
+        unset($_SESSION["issue"]);
+        unset($_SESSION["description"]);
+        unset($_SESSION["dateCreated"]);
+        unset($_SESSION["dateOpened"]);
+        unset($_SESSION["dateResolved"]);
+        unset($_SESSION["imageUrl"]);
+        unset($_SESSION["websiteUrl"]);
+        
     } catch (Exception $e) {
         echo "Message could not be sent. Mailer Error: {$mail->ErrorInfo}";
     }

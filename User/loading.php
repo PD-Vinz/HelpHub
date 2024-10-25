@@ -27,73 +27,20 @@
         pointer-events: none;
     }
 
-/* From Uiverse.io by satyamchaudharydev */ 
 .spinner {
- --size: 30px;
- --first-block-clr: rgba(128, 0, 0);
- --second-block-clr: rgba(255, 215, 0);
- --clr: #111;
- width: 100px;
- height: 100px;
- position: relative;
+    border: 16px solid #FFD700; /* Light grey */
+    border-top: 16px solid #800000; /* Blue */
+    border-radius: 50%;
+    width: 120px;
+    height: 120px;
+    animation: spin 2s linear infinite;
 }
 
-.spinner::after,.spinner::before {
- box-sizing: border-box;
- position: absolute;
- content: "";
- width: var(--size);
- height: var(--size);
- top: 50%;
- animation: up 2.4s cubic-bezier(0, 0, 0.24, 1.21) infinite;
- left: 50%;
- background: var(--first-block-clr);
+/* Animation for the spinner */
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
 }
-
-.spinner::after {
- background: var(--second-block-clr);
- top: calc(50% - var(--size));
- left: calc(50% - var(--size));
- animation: down 2.4s cubic-bezier(0, 0, 0.24, 1.21) infinite;
-}
-
-@keyframes down {
- 0%, 100% {
-  transform: none;
- }
-
- 25% {
-  transform: translateX(100%);
- }
-
- 50% {
-  transform: translateX(100%) translateY(100%);
- }
-
- 75% {
-  transform: translateY(100%);
- }
-}
-
-@keyframes up {
- 0%, 100% {
-  transform: none;
- }
-
- 25% {
-  transform: translateX(-100%);
- }
-
- 50% {
-  transform: translateX(-100%) translateY(-100%);
- }
-
- 75% {
-  transform: translateY(-100%);
- }
-}
-
-
 
 /*--------------------------------------------------------------------------------------*/
 
@@ -155,10 +102,10 @@
 
 </style>
 <div id="loading-screen">
-        
+        <!--
         <div class="spinner"></div>
-<!--        <p>Loading...</p>
-
+        <p>Loading...</p>
+-->
 
 <div class="loader">
   <span></span>
@@ -168,7 +115,7 @@
   <span></span>
   <span></span>
 </div>
--->
+
 </div>
 <!-- Loading Screen -->    
 <script>
@@ -236,18 +183,69 @@ function fetchData() {
 <!--
 Additional Loading CSS
 
+/* From Uiverse.io by satyamchaudharydev */ 
 .spinner {
-    border: 16px solid #FFD700; /* Light grey */
-    border-top: 16px solid #800000; /* Blue */
-    border-radius: 50%;
-    width: 120px;
-    height: 120px;
-    animation: spin 2s linear infinite;
+ --size: 30px;
+ --first-block-clr: #005bba;
+ --second-block-clr: #fed500;
+ --clr: #111;
+ width: 100px;
+ height: 100px;
+ position: relative;
 }
 
-/* Animation for the spinner */
-@keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
+.spinner::after,.spinner::before {
+ box-sizing: border-box;
+ position: absolute;
+ content: "";
+ width: var(--size);
+ height: var(--size);
+ top: 50%;
+ animation: up 2.4s cubic-bezier(0, 0, 0.24, 1.21) infinite;
+ left: 50%;
+ background: var(--first-block-clr);
+}
+
+.spinner::after {
+ background: var(--second-block-clr);
+ top: calc(50% - var(--size));
+ left: calc(50% - var(--size));
+ animation: down 2.4s cubic-bezier(0, 0, 0.24, 1.21) infinite;
+}
+
+@keyframes down {
+ 0%, 100% {
+  transform: none;
+ }
+
+ 25% {
+  transform: translateX(100%);
+ }
+
+ 50% {
+  transform: translateX(100%) translateY(100%);
+ }
+
+ 75% {
+  transform: translateY(100%);
+ }
+}
+
+@keyframes up {
+ 0%, 100% {
+  transform: none;
+ }
+
+ 25% {
+  transform: translateX(-100%);
+ }
+
+ 50% {
+  transform: translateX(-100%) translateY(-100%);
+ }
+
+ 75% {
+  transform: translateY(-100%);
+ }
 }
 -->

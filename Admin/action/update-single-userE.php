@@ -6,6 +6,17 @@ session_start(); // Start the session
 
 try {
     if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+        $user_id = $_POST['userid']; // Ensure you have the user ID to fetch the existing image
+        
+        // Retrieve the current image from the database
+        $stmt = $pdoConnect->prepare("SELECT profile_picture FROM student_user WHERE user_id = :user_id");
+        $stmt->bindParam(':user_id', $user_id);
+        $stmt->execute();
+        $existingImage = $stmt->fetchColumn();
+
+        // Initialize the image content
+        $imgContent = $existingImage ? $existingImage : file_get_contents(__DIR__ . '/No-Profile.png');
+
         // Check if a file is uploaded and there's no upload error
         if (isset($_FILES['image']) && $_FILES['image']['error'] === UPLOAD_ERR_OK) {
             $image = $_FILES['image'];
@@ -27,78 +38,66 @@ try {
 
             // Get the image content
             $imgContent = file_get_contents($image['tmp_name']);
-        } else {
-            // If no new image, retain the current one
-            // You may want to retrieve the current image from the database here
-            $user_id = $_POST['userid']; // Ensure you have the user ID to fetch the existing image
-            $stmt = $pdoConnect->prepare("SELECT profile_picture FROM student_user WHERE user_id = :user_id");
-            $stmt->bindParam(':user_id', $user_id);
-            $stmt->execute();
-            $existingImage = $stmt->fetchColumn();
-
-            // Use the existing image content if no new image was uploaded
-            $imgContent = $existingImage ? $existingImage : file_get_contents(__DIR__ . '/No-Profile.png');
         }
 
+        $name = $_POST['name'];
+        $department = $_POST['department'];
+        $email_address = $_POST['email'];
+        $campus = $_POST['campus'];    
+        $sex = $_POST['sex'];
+        $birthday = $_POST['birthday'];
 
-            $user_id = $_POST['userid'];
-            $name = $_POST['name'];
-            $department = $_POST['department'];
-            $email_address = $_POST['email'];
-            $campus = $_POST['campus'];    
-            $sex = $_POST['sex'];
-            $birthday = $_POST['birthday'];
+        if ($birthday) {
+            $birthDate = new DateTime($birthday);
+            $currentDate = new DateTime();
+            $age = $currentDate->diff($birthDate)->y; // Calculate the age in years
+        } else {
+            $age = 0; // Set to 0 if no birthday is provided
+        }
 
-            if ($birthday) {
-                $birthDate = new DateTime($birthday);
-                $currentDate = new DateTime();
-                $age = $currentDate->diff($birthDate)->y; // Calculate the age in years
-            } else {
-                $age = 0; // Set to 0 if no birthday is provided
-            }
-
-            // Start a transaction
-            $pdoConnect->beginTransaction();
-            
-            // Prepare an insert statement
-            $stmt = $pdoConnect->prepare("UPDATE `employee_user` SET
-                                            `name` = :name,
-                                            `department` = :department,
-                                            `email_address` = :email_address,
-                                            `campus` = :campus,
-                                            `sex` = :sex,
-                                            `age` = :age,
-                                            `birthday` = :birthday,
-                                            `profile_picture` = :profile_picture 
-                                        WHERE `user_id` = :user_id");
-            // Bind the blob data
-            $stmt->bindParam(':user_id', $user_id, PDO::PARAM_LOB);
-            $stmt->bindParam(':name', $name, PDO::PARAM_LOB);
-            $stmt->bindParam(':department', $department, PDO::PARAM_LOB);
-            $stmt->bindParam(':email_address', $email_address, PDO::PARAM_LOB);
-            $stmt->bindParam(':campus', $campus, PDO::PARAM_LOB);
-            $stmt->bindParam(':sex', $sex, PDO::PARAM_LOB);
-            $stmt->bindParam(':age', $age, PDO::PARAM_LOB);
-            $stmt->bindParam(':birthday', $birthday, PDO::PARAM_LOB);
-            $stmt->bindParam(':profile_picture', $imgContent, PDO::PARAM_LOB);
-
-
-            // Execute the statement
-            if ($stmt->execute()) {
-                    // Commit the transaction
-                    $pdoConnect->commit();
-
-                header("Location:../user-employee-list.php");
-                exit();
-            } else {
-                // Roll back the transaction on failure
-                $pdoConnect->rollBack();
-                header("Location: ../user-employee-list.php");
-                exit();
-            }
+        // Start a transaction
+        $pdoConnect->beginTransaction();
         
-    }
+        // Prepare an update statement
+        $stmt = $pdoConnect->prepare("UPDATE `employee_user` SET
+                                        `name` = :name,
+                                        `department` = :department,
+                                        `email_address` = :email_address,
+                                        `campus` = :campus,
+                                        `sex` = :sex,
+                                        `age` = :age,
+                                        `birthday` = :birthday" . 
+                                        (isset($_FILES['image']) && $_FILES['image']['error'] === UPLOAD_ERR_OK ? ", `profile_picture` = :profile_picture" : "") . 
+                                        " WHERE `user_id` = :user_id");
+        
+        // Bind the parameters
+        $stmt->bindParam(':user_id', $user_id);
+        $stmt->bindParam(':name', $name);
+        $stmt->bindParam(':department', $department);
+        $stmt->bindParam(':email_address', $email_address);
+        $stmt->bindParam(':campus', $campus);
+        $stmt->bindParam(':sex', $sex);
+        $stmt->bindParam(':age', $age);
+        $stmt->bindParam(':birthday', $birthday);
 
+        // Bind the profile picture only if a new image is uploaded
+        if (isset($_FILES['image']) && $_FILES['image']['error'] === UPLOAD_ERR_OK) {
+            $stmt->bindParam(':profile_picture', $imgContent, PDO::PARAM_LOB);
+        }
+
+        // Execute the statement
+        if ($stmt->execute()) {
+            // Commit the transaction
+            $pdoConnect->commit();
+            header("Location:../user-employee-list.php");
+            exit();
+        } else {
+            // Roll back the transaction on failure
+            $pdoConnect->rollBack();
+            header("Location: ../user-employee-list.php");
+            exit();
+        }
+    }
 
 } catch(PDOException $e) {
     echo "Connection failed: " . $e->getMessage();

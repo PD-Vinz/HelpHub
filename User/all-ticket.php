@@ -1,8 +1,11 @@
 ﻿<?php
+
+
 include_once("../connection/conn.php");
 $pdoConnect = connection();
 
 session_start(); // Start the session
+
 
 // Check if the session variable is set
 if (!isset($_SESSION["user_id"])) {
@@ -76,6 +79,7 @@ if (!isset($_SESSION["user_id"])) {
          // for displaying system details //end
         
 }
+include 'loading.php';
 
 ?>
 
@@ -86,18 +90,18 @@ if (!isset($_SESSION["user_id"])) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?php echo $sysName?></title>
     <link rel="icon" href="<?php echo htmlspecialchars($S_LBase64, ENT_QUOTES, 'UTF-8'); ?>" type="image/*"> 
-    <link href="assets/js/DataTables/datatables.min.css" rel="stylesheet">
+    <link href="assets/js/DataTables/datatables.min.css?v=<?php echo time(); ?>" rel="stylesheet">
 
     <!-- BOOTSTRAP STYLES -->
-    <link href="assets/css/bootstrap.css" rel="stylesheet">
+    <link href="assets/css/bootstrap.css?v=<?php echo time(); ?>" rel="stylesheet">
     <!-- FONTAWESOME STYLES-->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css?v=<?php echo time(); ?>">
     <!-- CUSTOM STYLES -->
-    <link href="assets/css/custom.css" rel="stylesheet">
+    <link href="assets/css/custom.css?v=<?php echo time(); ?>" rel="stylesheet">
     <!-- GOOGLE FONTS -->
     <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
     <!-- TABLE STYLES -->
-    <link href="assets/css/dataTables.bootstrap.css" rel="stylesheet">
+    <link href="assets/css/dataTables.bootstrap.css?v=<?php echo time(); ?>" rel="stylesheet">
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
 
     <style>
@@ -134,10 +138,6 @@ if (!isset($_SESSION["user_id"])) {
 </head>
 
 <body>
-    <div id="loading-screen">
-        <div class="spinner"></div>
-        <p>Loading...</p>
-    </div>
     <div id="wrapper">
         <nav class="navbar navbar-default navbar-cls-top " role="navigation" style="margin-bottom: 0">
             <div class="navbar-header">
@@ -165,7 +165,16 @@ if (!isset($_SESSION["user_id"])) {
             <hr style="margin-top: 5px; margin-bottom: 5px;">
             <a class="dropdown-item" href="settings.php"><span class="fa fa-gear"></span> SETTINGS</a>
             <hr style="margin-top: 5px; margin-bottom: 5px;">
-            <a class="dropdown-item" href="logout.php"><span class="fa fa-sign-out"></span> LOG OUT </a>          </div>
+            <?php if (!isset($_SESSION["Super-Admin"])): ?>
+                <?php if ($identity == "Student"): ?>
+                <a class="dropdown-item" href="logout.php" onclick="window.open('https://forms.gle/Bf2yoFEiYE8k56Pb6', '_blank');"><span class="fa fa-sign-out"></span> LOG OUT </a>
+                <?php elseif ($identity == "Employee"): ?>
+                <a class="dropdown-item" href="logout.php" onclick="window.open('https://forms.gle/kUJQW5YTbBfKKMw37', '_blank');"><span class="fa fa-sign-out"></span> LOG OUT </a>
+                <?php endif; ?>
+            <?php elseif (isset($_SESSION["Super-Admin"]) && $_SESSION["Super-Admin"] === 'Log In Success'): ?>
+                <a class="dropdown-item" href="../index.php"><span class="fas fa-sign-out-alt"></span> Log Out</a>
+            <?php endif; ?>
+        </div>
         </nav>
         <!-- /. NAV TOP  -->
         <nav class="navbar-default navbar-side" role="navigation">
@@ -341,26 +350,6 @@ VIEW TICKET
         });
     </script>
  <?php require_once ('../footer.php')?>
-<script>
-    document.addEventListener('DOMContentLoaded', () => {
-    // Simulate data fetching
-    fetchData().then(() => {
-        // Hide loading screen and show content
-        document.getElementById('loading-screen').style.display = 'none';
-        document.getElementById('content').style.display = 'block';
-    });
-});
-
-function fetchData() {
-    return new Promise((resolve) => {
-        // Simulate a delay for data fetching (e.g., 2 seconds)
-        setTimeout(() => {
-            resolve();
-        }, 500);
-    });
-}
-
-</script>
 
     <!-- CUSTOM SCRIPTS -->
     <script src="assets/js/custom.js"></script>

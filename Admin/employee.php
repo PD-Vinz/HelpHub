@@ -95,7 +95,7 @@ try {
     <!-- BOOTSTRAP STYLES -->
     <link href="assets/css/bootstrap.css" rel="stylesheet" />
 
-    <link href="assets/js/DataTables/datatables.min.css" rel="stylesheet">
+    <link href="assets/js/dataTables/datatables.min.css" rel="stylesheet">
     <!-- FONTAWESOME STYLES -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
     <!-- MORRIS CHART STYLES -->

@@ -113,20 +113,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <title><?php echo $sysName?></title>
     <link rel="icon" href="<?php echo htmlspecialchars($S_LBase64, ENT_QUOTES, 'UTF-8'); ?>" type="image/*"> 
     <!-- BOOTSTRAP STYLES -->
-    <link href="assets/css/bootstrap.css" rel="stylesheet">
+    <link href="assets/css/bootstrap.css?v=<?php echo time(); ?>" rel="stylesheet">
   <!-- FONTAWESOME STYLES-->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
     <!-- CUSTOM STYLES -->
-    <link href="assets/css/custom.css" rel="stylesheet">
+    <link href="assets/css/custom.css?v=<?php echo time(); ?>" rel="stylesheet">
     <!-- GOOGLE FONTS -->
     <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
     <!-- TABLE STYLES -->
-    <link href="assets/css/dataTables.bootstrap.css" rel="stylesheet">
+    <link href="assets/css/dataTables.bootstrap.css?v=<?php echo time(); ?>" rel="stylesheet">
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
 
     
 </head>
-
+<?php include 'loading.php'; ?>
 <body>
     <div id="wrapper">
         <nav class="navbar navbar-default navbar-cls-top " role="navigation" style="margin-bottom: 0">
@@ -155,7 +155,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <hr style="margin-top: 5px; margin-bottom: 5px;">
             <a class="dropdown-item" href="settings.php"><span class="fa fa-gear"></span> SETTINGS</a>
             <hr style="margin-top: 5px; margin-bottom: 5px;">
-            <a class="dropdown-item" href="logout.php"><span class="fa fa-sign-out"></span> LOG OUT </a>
+            <?php if (!isset($_SESSION["Super-Admin"])): ?>
+                <?php if ($identity == "Student"): ?>
+                <a class="dropdown-item" href="logout.php" onclick="window.open('https://forms.gle/Bf2yoFEiYE8k56Pb6', '_blank');"><span class="fa fa-sign-out"></span> LOG OUT </a>
+                <?php elseif ($identity == "Employee"): ?>
+                <a class="dropdown-item" href="logout.php" onclick="window.open('https://forms.gle/kUJQW5YTbBfKKMw37', '_blank');"><span class="fa fa-sign-out"></span> LOG OUT </a>
+                <?php endif; ?>
+            <?php elseif (isset($_SESSION["Super-Admin"]) && $_SESSION["Super-Admin"] === 'Log In Success'): ?>
+                <a class="dropdown-item" href="../index.php"><span class="fas fa-sign-out-alt"></span> Log Out</a>
+            <?php endif; ?>
           </div>
         </nav>
         <!-- /. NAV TOP  -->
@@ -264,6 +272,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                         <div class="modal-footer">	
                                             <!--<a href="edit-profile-picture.php"><button type="button" class="btn btn-primary">CHANGE PROFILE</button></a>-->
                                             <button type="submit" class="btn btn-primary">SAVE PASSWORD</button>
+                                            <button type="button" class="btn btn-primary" onclick="history.back()">Back</button>
                                         </div>
                                         
 

@@ -114,16 +114,16 @@ if ($acceptTickets == "off") {
     <title><?php echo $sysName?></title>
     <link rel="icon" href="<?php echo htmlspecialchars($S_LBase64, ENT_QUOTES, 'UTF-8'); ?>" type="image/*"> 
 	<!-- BOOTSTRAP STYLES-->
-    <link href="assets/css/bootstrap.css" rel="stylesheet" />
+    <link href="assets/css/bootstrap.css?v=<?php echo time(); ?>" rel="stylesheet" />
   <!-- FONTAWESOME STYLES-->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
      <!-- MORRIS CHART STYLES-->
-    <link href="assets/js/morris/morris-0.4.3.min.css" rel="stylesheet" />
+    <link href="assets/js/morris/morris-0.4.3.min.css?v=<?php echo time(); ?>" rel="stylesheet" />
         <!-- CUSTOM STYLES-->
-    <link href="assets/css/custom.css" rel="stylesheet" />
+    <link href="assets/css/custom.css?v=<?php echo time(); ?>" rel="stylesheet" />
 
         <!-- UPLOAD STYLES-->
-    <link href="assets/css/upload.css" rel="stylesheet" />
+    <link href="assets/css/upload.css?v=<?php echo time(); ?>" rel="stylesheet" />
      <!-- GOOGLE FONTS-->
    <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css' />
    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
@@ -136,7 +136,7 @@ if ($acceptTickets == "off") {
     
    </style>
 </head>
-
+<?php include 'loading.php'; ?>
 <body>
     <div id="wrapper">
         <nav class="navbar navbar-default navbar-cls-top " role="navigation" style="margin-bottom: 0">
@@ -165,8 +165,15 @@ if ($acceptTickets == "off") {
             <hr style="margin-top: 5px; margin-bottom: 5px;">
             <a class="dropdown-item" href="settings.php"><span class="fa fa-gear"></span> SETTINGS</a>
             <hr style="margin-top: 5px; margin-bottom: 5px;">
-            <a class="dropdown-item" href="logout.php"><span class="fa fa-sign-out"></span> LOG OUT </a>
-          </div>
+            <?php if (!isset($_SESSION["Super-Admin"])): ?>
+                <?php if ($identity == "Student"): ?>
+                <a class="dropdown-item" href="logout.php" onclick="window.open('https://forms.gle/Bf2yoFEiYE8k56Pb6', '_blank');"><span class="fa fa-sign-out"></span> LOG OUT </a>
+                <?php elseif ($identity == "Employee"): ?>
+                <a class="dropdown-item" href="logout.php" onclick="window.open('https://forms.gle/kUJQW5YTbBfKKMw37', '_blank');"><span class="fa fa-sign-out"></span> LOG OUT </a>
+                <?php endif; ?>
+            <?php elseif (isset($_SESSION["Super-Admin"]) && $_SESSION["Super-Admin"] === 'Log In Success'): ?>
+                <a class="dropdown-item" href="../index.php"><span class="fas fa-sign-out-alt"></span> Log Out</a>
+            <?php endif; ?>          </div>
         </nav>
         <!-- /. NAV TOP  -->
         <nav class="navbar-default navbar-side" role="navigation">
@@ -219,7 +226,7 @@ if ($acceptTickets == "off") {
 
         $today_start = date('Y-m-d 00:00:00');
         $today_end = date('Y-m-d 23:59:59');
-        $query = "SELECT * FROM tb_tickets WHERE user_id = :user_id AND created_date BETWEEN :today_start AND :today_end";
+        $query = "SELECT * FROM tb_tickets WHERE user_number = :user_id AND created_date BETWEEN :today_start AND :today_end";
         $stmt = $pdoConnect->prepare($query);
         $stmt->execute(['user_id' => $user_id, 'today_start' => $today_start, 'today_end' => $today_end]);
         
@@ -327,8 +334,8 @@ if ($stmt->rowCount() > 0) {
              <!-- /. PAGE INNER  -->
       
          <!-- /. PAGE WRAPPER  -->
-        </div><?php require_once ('../footer.php')?>
-
+       
+                </div></div><?php require_once ('../footer.php')?>
             </div>
         </div>
     </div>

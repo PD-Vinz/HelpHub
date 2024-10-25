@@ -32,8 +32,10 @@ if (!isset($_SESSION["admin_number"])) {
 
     if (isset($_GET["id"]) && $_GET["id"] == 1) {
         $ticket_user = "Student";
+        $_SESSION["WhatUser"] = $ticket_user;
     } elseif (isset($_GET["id"]) && $_GET["id"] == 2) {
         $ticket_user = "Employee";
+        $_SESSION["WhatUser"] = $ticket_user;
     }
 
     // for displaying system details
@@ -83,7 +85,7 @@ if (!isset($_SESSION["admin_number"])) {
         $pdoResult->execute();
         $completedTickets = $pdoResult->rowCount();
 
-        $pdoCountQuery = "SELECT * FROM tb_tickets WHERE Priority = 'YES' && user_type = :user";
+        $pdoCountQuery = "SELECT * FROM tb_tickets WHERE Priority = 'YES' && user_type = :user && (status = 'Pending' OR status = 'Processing')";
         $pdoResult = $pdoConnect->prepare($pdoCountQuery);
         $pdoResult->bindParam(':user', $ticket_user, PDO::PARAM_STR);
         $pdoResult->execute();
@@ -106,7 +108,7 @@ if (!isset($_SESSION["admin_number"])) {
     <!-- BOOTSTRAP STYLES-->
     <link href="assets/css/bootstrap.css" rel="stylesheet" />
 
-    <link href="assets/js/DataTables/datatables.min.css" rel="stylesheet">
+    <link href="assets/js/dataTables/datatables.min.css" rel="stylesheet">
     <!-- FONTAWESOME STYLES-->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
     <!-- MORRIS CHART STYLES-->
@@ -235,6 +237,7 @@ if (!isset($_SESSION["admin_number"])) {
             </div><?php include '../footer.php' ?>
             <!-- /. PAGE WRAPPER  -->
         </div>
+
         <!-- /. WRAPPER  -->
         <!-- SCRIPTS -AT THE BOTTOM TO REDUCE THE LOAD TIME-->
         <script src="fetch/ticket-updater.js"></script>
@@ -249,31 +252,7 @@ if (!isset($_SESSION["admin_number"])) {
         <script src="assets/js/morris/raphael-2.1.0.min.js"></script>
         <script src="assets/js/morris/morris.js"></script>
         <script src="fetch/ticket-modal.js"></script>
-        <script>
-            $(document).ready(function() {
-                // Function to create a donut chart
-                function createDonutChart(elementId, dataUrl) {
-                    $.getJSON(dataUrl, function(data) {
-                        if (data.error) {
-                            console.error('Error fetching data:', data.error);
-                        } else {
-                            Morris.Donut({
-                                element: elementId,
-                                data: data
-                            });
-                        }
-                    }).fail(function(jqxhr, textStatus, error) {
-                        console.error('Request Failed: ' + textStatus + ', ' + error);
-                    });
-                }
-
-                // Create charts with dynamic data
-                createDonutChart('morris-donut-chart', 'action/data.php?chart=age-groups&id=<?php echo $_GET['id'] ?>');
-                createDonutChart('morris-donut-chart2', 'action/data.php?chart=genders&id=<?php echo $_GET['id'] ?>');
-                createDonutChart('morris-donut-chart3', 'action/data.php?chart=locations&id=<?php echo $_GET['id'] ?>');
-            });
-        </script>
-
+     
 <script>
 $(document).ready(function() {
     function getIdFromUrl() {
@@ -340,6 +319,41 @@ $(document).ready(function() {
     setInterval(updateTicketStats, 30000);
 });
 </script>
+
+  
+
+    <script>
+        var ticket_user = "<?php echo $ticket_user; ?>";
+
+        console.log(ticket_user);  // This should print the value of ticket_user
+    </script>
+
+     <script>
+            $(document).ready(function() {
+                // Function to create a donut chart
+                function createDonutChart(elementId, dataUrl) {
+                    $.getJSON(dataUrl, function(data) {
+                        if (data.error) {
+                            console.error('Error fetching data:', data.error);
+                        } else {
+                            Morris.Donut({
+                                element: elementId,
+                                data: data
+                            });
+                        }
+                    }).fail(function(jqxhr, textStatus, error) {
+                        console.error('Request Failed: ' + textStatus + ', ' + error);
+                    });
+                }
+
+                // Create charts with dynamic data
+                createDonutChart('morris-donut-chart', 'action/data.php?chart=age-groups&id=<?php echo $_GET['id'] ?>');
+                createDonutChart('morris-donut-chart2', 'action/data.php?chart=genders&id=<?php echo $_GET['id'] ?>');
+                createDonutChart('morris-donut-chart3', 'action/data.php?chart=locations&id=<?php echo $_GET['id'] ?>');
+            });
+        </script>
+
+    
         <!-- DATA TABLE SCRIPTS -->
         <script src="assets/js/dataTables/jquery.dataTables.js"></script>
         <script src="assets/js/dataTables/datatables.min.js"></script>

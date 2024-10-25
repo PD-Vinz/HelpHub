@@ -236,7 +236,7 @@ $role = $U_T; // 'admin' or 'user'
                         {key: 'processing', icon: 'fa-envelope-open', color: 'green', label: 'Processing Tickets'},
                         {key: 'resolved', icon: 'fa-check', color: 'brown', label: 'Resolved Tickets'},
                         {key: 'returned', icon: 'fa-reply', color: 'black', label: 'Returned Tickets'},
-                        {key: 'priority', icon: 'fa-upload', color: 'blue', label: 'Priority Tickets'}
+                        {key: 'priority', icon: 'fa-exclamation-circle', color: 'blue', label: 'Priority Tickets'}
                     ];
 
                     statItems.forEach(function(item) {

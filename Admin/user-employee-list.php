@@ -63,7 +63,7 @@ if (!isset($_SESSION["admin_number"])) {
     <link href="assets/css/bootstrap.css" rel="stylesheet" />
 
     
-    <link href="assets/js/DataTables/datatables.min.css" rel="stylesheet">
+    <link href="assets/js/dataTables/datatables.min.css" rel="stylesheet">
      <!-- FONTAWESOME STYLES-->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
      <!-- MORRIS CHART STYLES-->
@@ -157,7 +157,11 @@ $pdoExec = $pdoResult->execute();
                     extract($row);
                     $P_PBase64 = base64_encode($profile_picture);
                     $date = new DateTime($birthday);
-                    $formattedDate = $date->format('F j, Y')
+                    $formattedDate = $date->format('F j, Y');
+
+                    if ($name === 'Super Admin') {
+                        continue;
+                    }
             ?>
                     <tr class='odd gradeX'>
                     <td><?php echo htmlspecialchars($user_id); ?></td>

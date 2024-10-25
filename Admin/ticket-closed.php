@@ -50,41 +50,7 @@ if (!isset($_SESSION["admin_number"])) {
       $S_LBase64 = 'data:' . $imageType . ';base64,' . $base64Image;
   }
 // for displaying system details //end
-    
-try {
 
-    $pdoCountQuery = "SELECT * FROM tb_tickets";
-    $pdoResult = $pdoConnect->prepare($pdoCountQuery);
-    $pdoResult->execute();
-    $allTickets = $pdoResult->rowCount();
-
-    $pdoCountQuery = "SELECT * FROM tb_tickets WHERE status = 'Pending'";
-    $pdoResult = $pdoConnect->prepare($pdoCountQuery);
-    $pdoResult->execute();
-    $pendingTickets = $pdoResult->rowCount();
-
-    $pdoCountQuery = "SELECT * FROM tb_tickets WHERE status = 'Returned'";
-    $pdoResult = $pdoConnect->prepare($pdoCountQuery);
-    $pdoResult->execute();
-    $returnedTickets = $pdoResult->rowCount();
-
-    $pdoCountQuery = "SELECT * FROM tb_tickets WHERE status = 'Completed'";
-    $pdoResult = $pdoConnect->prepare($pdoCountQuery);
-    $pdoResult->execute();
-    $completedTickets = $pdoResult->rowCount();
-
-    $pdoCountQuery = "SELECT * FROM tb_tickets WHERE status = 'Due'";
-    $pdoResult = $pdoConnect->prepare($pdoCountQuery);
-    $pdoResult->execute();
-    $dueTickets = $pdoResult->rowCount();
-
-    $pdoCountQuery = "SELECT * FROM tb_tickets WHERE status = 'Transferred'";
-    $pdoResult = $pdoConnect->prepare($pdoCountQuery);
-    $pdoResult->execute();
-    $transferredTickets = $pdoResult->rowCount();
-} catch (PDOException $e) {
-    echo "Error: " . $e->getMessage();
-}
 
 }
 
@@ -101,7 +67,7 @@ try {
 	<!-- BOOTSTRAP STYLES-->
     <link href="assets/css/bootstrap.css" rel="stylesheet" />
 
-    <link href="assets/js/DataTables/datatables.min.css" rel="stylesheet">
+    <link href="assets/js/dataTables/datatables.min.css" rel="stylesheet">
      <!-- FONTAWESOME STYLES-->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
      <!-- MORRIS CHART STYLES-->
@@ -181,8 +147,8 @@ $pdoExec = $pdoResult->execute();
                     <td><div class='panel-body-ticket'>
                                             
                     <button class="btn btn-primary btn-xs load-details" data-ticket_id="<?php echo $ticket_id; ?>" data-status="<?php echo $status; ?>">
-                                                                View Details
-                                                            </button>
+                        View Details
+                    </button>
                     </tr>
             
 
@@ -219,7 +185,13 @@ $pdoExec = $pdoResult->execute();
     <!-- MORRIS CHART SCRIPTS -->
     <script src="assets/js/morris/raphael-2.1.0.min.js"></script>
     <script src="assets/js/morris/morris.js"></script>
-    <script src="fetch/ticket-modal.js"></script>
+
+    <script>
+        var ticket_user = "<?php echo $ticket_user; ?>";
+
+        console.log(ticket_user);  // This should print the value of ticket_user
+    </script>
+    <script src="fetch/specific-ticket-modal.js"></script>
 <script>
 //$(document).ready(function() {
 //  Morris.Donut({

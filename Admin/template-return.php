@@ -49,7 +49,25 @@
             max-width: 150px;
             height: auto;
         }
-
+        .button-container {
+            margin-top: 30px;
+            text-align: center;
+        }
+        .button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            border-radius: 5px;
+            border: none;
+            cursor: pointer;
+        }
+        .button:hover {
+            background-color: #45a049;
+        }
     </style>
 </head>
 <body>
@@ -59,12 +77,12 @@
         </div>
 
         <h1>Dear {UserName},</h1>
-        <p>Your ticket has been opened and is currently being processed by the MIS Employee. Below are the details of your submission:</p>
+        <p>We are pleased to inform you that your ticket has been returned. Below are the final details of your submission:</p>
 
         <div class="details">
             <dl>
                 <dt>Status:</dt>
-                <dd>{Status}</dd>
+                <dd><strong></strong>{Status}</strong></dd>
                 <dt>Employee:</dt>
                 <dd>{Employee}</dd>
                 <dt>Issue:</dt>
@@ -75,6 +93,10 @@
                 <dd>{DateCreated}</dd>
                 <dt>Date Opened:</dt>
                 <dd>{DateOpened}</dd>
+                <dt>Date Resolved:</dt>
+                <dd>{DateResolved}</dd>
+                <dt>Resolution:</dt>
+                <dd>Click the View Full Details button.</dd>
             </dl>
         </div>
 
@@ -82,7 +104,12 @@
         <p><strong>Uploaded Image:</strong></p>
         <p>If you uploaded an image with your ticket, you can view it <a href="{ImageUrl}">here</a>.</p>
 
-        <p>We will get back to you shortly with further updates.</p>
+        <p>If you have any further issues or concerns, feel free to reach out to us again. We are happy to assist you.</p>
+
+        <!-- Button to redirect to the website -->
+        <div class="button-container">
+            <a href="{WebsiteUrl}" class="button">View Full Details</a>
+        </div>
 
         <div class="footer">
             <p>Best regards,</p>

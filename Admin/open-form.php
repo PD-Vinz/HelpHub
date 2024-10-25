@@ -106,8 +106,15 @@ try {
                 $_SESSION["dateOpened"] = $Data['opened_date'];
                 $_SESSION["imageUrl"] = "https://dhvsuhelphub.com/User/view_image.php?id=" . $update_id;
                 $_SESSION["websiteUrl"] = "https://dhvsuhelphub.com/";
-
-                header("Location: generate-ticket-update-email.php");
+                include 'generate-ticket-update-email.php';
+                
+                if ($Data['user_type'] == 'Student') {
+                    header("Location: ticket-opened.php?id=1"); // Redirect after sending email
+                    exit; // Prevent further execution after redirection
+                } elseif ($Data['user_type'] == 'Employee') {
+                    header("Location: ticket-opened.php?id=2"); // Redirect after sending email
+                    exit; // Prevent further execution after redirection
+                }
                 exit();
             } else {
                 // Handle the case where no results are found

@@ -180,7 +180,7 @@ h3{
 <body>
     <div id="wrapper">
         <!-- NAV SIDE  -->
-<?php include '../nav.php'?> 
+<?php include 'nav.php'?> 
 
 <script>
 // Get elements

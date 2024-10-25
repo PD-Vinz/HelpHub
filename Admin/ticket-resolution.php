@@ -85,6 +85,7 @@ if (isset($_GET["form"]) && $_GET["form"] == 'close') {
 
         $update_id = $_GET["id"];
         $status = "Resolved";
+        $_SESSION["status"] = $status;
         $FD = date('Y-m-d H:i:s');
         $_SESSION["dateResolved"] = $FD;
         $Resolution = $_POST['resolution'];
@@ -100,7 +101,7 @@ if (isset($_GET["form"]) && $_GET["form"] == 'close') {
             $_SESSION["ticketid"] = $Data['ticket_id'];
             $_SESSION["Address"] = $Data['email_address'];
             $_SESSION["userName"] = $Data['full_name'];
-            $_SESSION["status"] = $Data['status'];
+            
             $_SESSION["employee"] = $Data['employee'];
             $_SESSION["issue"] = $Data['issue'];
             $_SESSION["description"] = $Data['description'];
@@ -115,12 +116,12 @@ if (isset($_GET["form"]) && $_GET["form"] == 'close') {
         $date2 = new DateTime($OD);
 
         $interval = $date1->diff($date2);
-        echo "Years: " . $interval->y . "<br>";
-        echo "Months: " . $interval->m . "<br>";
-        echo "Days: " . $interval->d . "<br>";
-        echo "Hours: " . $interval->h . "<br>";
-        echo "Minutes: " . $interval->i . "<br>";
-        echo "Seconds: " . $interval->s . "<br>";
+        //echo "Years: " . $interval->y . "<br>";
+        //echo "Months: " . $interval->m . "<br>";
+        //echo "Days: " . $interval->d . "<br>";
+        //echo "Hours: " . $interval->h . "<br>";
+        //echo "Minutes: " . $interval->i . "<br>";
+        //echo "Seconds: " . $interval->s . "<br>";
 
 if ($interval->y == 0){
     if ($interval->m == 0){
@@ -130,22 +131,22 @@ if ($interval->y == 0){
                     if ($interval->s == 0){
                         echo "Invalid Time";
                     } else {
-                        $Duration = $interval->s . "Seconds"  ;
+                        $Duration = $interval->s . " Seconds"  ;
                     }
                 } else {
-                    $Duration = $interval->i . " Minutes, ";
+                    $Duration = $interval->i . " Minutes";
                 }
             } else {
-                $Duration = $interval->h . " Hours, " . $interval->i . " Minutes, ";
+                $Duration = $interval->h . " Hours, " . $interval->i . " Minutes";
             }
         } else {
-            $Duration = $interval->d . " Days, " . $interval->h . " Hours, " . $interval->i . " Minutes, ";
+            $Duration = $interval->d . " Days, " . $interval->h . " Hours, " . $interval->i . " Minutes";
         }
     } else {
-        $Duration = $interval->m . " Months, " . $interval->d . " Days, " . $interval->h . " Hours, " . $interval->i . " Minutes, " ;
+        $Duration = $interval->m . " Months, " . $interval->d . " Days, " . $interval->h . " Hours, " . $interval->i . " Minutes" ;
     }
 } else {
-    $Duration = $interval->y . " Years, " . $interval->m . " Months, " . $interval->d . " Days, " . $interval->h . " Hours, " . $interval->i . " Minutes, ";
+    $Duration = $interval->y . " Years, " . $interval->m . " Months, " . $interval->d . " Days, " . $interval->h . " Hours, " . $interval->i . " Minutes";
 }
 
 
@@ -191,17 +192,19 @@ if ($interval->y == 0){
         //$pdoConnect->commit();
 
         $_SESSION["imageUrl"] = "https://dhvsuhelphub.com/User/view_image.php?id=" . $update_id;
-        $_SESSION["websiteUrl"] = "https://dhvsuhelphub.com/";
+        $_SESSION["websiteUrl"] = "https://dhvsuhelphub.com/User/ticket-view.php?ticket_id=" . $update_id;
 
         if (isset($ticket_user) && $ticket_user == "Student") {
             $_SESSION["USER_TYPE"] = "Student";
-            header("Location: generate-ticket-update-email-resolved.php");
+            include 'generate-ticket-update-email-resolved.php';
+            header("Location: ticket-opened.php?id=1"); // Redirect after sending email
+            exit; // Prevent further execution after redirection
         } elseif (isset($ticket_user) && $ticket_user == "Employee") {
             $_SESSION["USER_TYPE"] = "Employee";
-            header("Location: generate-ticket-update-email-resolved.php");
+            include 'generate-ticket-update-email-resolved.php';
+            header("Location: ticket-opened.php?id=2"); // Redirect after sending email
+            exit; // Prevent further execution after redirection
         }
-        
-        header("generate-ticket-update-email-resolved.php");
     
     } catch (PDOException $e) {
         // No need for rollBack() if transactions are not used
@@ -219,7 +222,9 @@ if ($interval->y == 0){
 
         $update_id = $_GET["id"];
         $status = "Returned";
+        $_SESSION["status"] = $status;
         $FD = date('Y-m-d H:i:s');
+        $_SESSION["dateResolved"] = $FD;
         $Resolution = $_POST['resolution'];
 
         $pdoUserQuery = "SELECT * FROM tb_tickets WHERE ticket_id = :id";
@@ -229,6 +234,16 @@ if ($interval->y == 0){
         $Data = $pdoResult->fetch(PDO::FETCH_ASSOC);
         if ($Data) {
             $OD = $Data['opened_date'];
+
+            $_SESSION["ticketid"] = $Data['ticket_id'];
+            $_SESSION["Address"] = $Data['email_address'];
+            $_SESSION["userName"] = $Data['full_name'];
+            
+            $_SESSION["employee"] = $Data['employee'];
+            $_SESSION["issue"] = $Data['issue'];
+            $_SESSION["description"] = $Data['description'];
+            $_SESSION["dateCreated"] = $Data['created_date'];
+            $_SESSION["dateOpened"] = $Data['opened_date'];
         } else {
             // Handle the case where no results are found
             echo "No student found with the given student number.";
@@ -238,12 +253,12 @@ if ($interval->y == 0){
         $date2 = new DateTime($OD);
 
         $interval = $date1->diff($date2);
-        echo "Years: " . $interval->y . "<br>";
-        echo "Months: " . $interval->m . "<br>";
-        echo "Days: " . $interval->d . "<br>";
-        echo "Hours: " . $interval->h . "<br>";
-        echo "Minutes: " . $interval->i . "<br>";
-        echo "Seconds: " . $interval->s . "<br>";
+        //echo "Years: " . $interval->y . "<br>";
+        //echo "Months: " . $interval->m . "<br>";
+        //echo "Days: " . $interval->d . "<br>";
+        //echo "Hours: " . $interval->h . "<br>";
+        //echo "Minutes: " . $interval->i . "<br>";
+        //echo "Seconds: " . $interval->s . "<br>";
 
 if ($interval->y == 0){
     if ($interval->m == 0){
@@ -312,10 +327,20 @@ if ($interval->y == 0){
     
         // If not using transactions, you don't need to commit one
         //$pdoConnect->commit();
+
+        $_SESSION["imageUrl"] = "https://dhvsuhelphub.com/User/view_image.php?id=" . $update_id;
+        $_SESSION["websiteUrl"] = "https://dhvsuhelphub.com/User/ticket-view.php?ticket_id=" . $update_id;
+
         if (isset($ticket_user) && $ticket_user == "Student") {
-            header("Location: ticket-opened.php?id=1");
+            $_SESSION["USER_TYPE"] = "Student";
+            include 'generate-ticket-update-email-resolved.php';
+            header("Location: ticket-opened.php?id=1"); // Redirect after sending email
+            exit; // Prevent further execution after redirection
         } elseif (isset($ticket_user) && $ticket_user == "Employee") {
-            header("Location: ticket-opened.php?id=2");
+            $_SESSION["USER_TYPE"] = "Employee";
+            include 'generate-ticket-update-email-resolved.php';
+            header("Location: ticket-opened.php?id=2"); // Redirect after sending email
+            exit; // Prevent further execution after redirection
         }
         
     
