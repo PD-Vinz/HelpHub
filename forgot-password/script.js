@@ -5,7 +5,7 @@ window.addEventListener('load', () => {
   
   // Add fade-out effect when navigating to another page
   // For both <a> tags and form submissions
-document.querySelectorAll('a, input[type="submit"], button[type="submit"], form').forEach(element => {
+document.querySelectorAll('a').forEach(element => {
   element.addEventListener('click', function (e) {
     e.preventDefault(); // Prevent default action (link navigation or form submission)
 

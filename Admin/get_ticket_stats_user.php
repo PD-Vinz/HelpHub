@@ -33,7 +33,7 @@ try {
     }
 
     // Handle 'Priority' tickets
-    $pdoCountQuery = "SELECT COUNT(*) as count FROM tb_tickets WHERE user_type = :user_type AND DATEDIFF(NOW(), created_date) > 2";
+    $pdoCountQuery = "SELECT COUNT(*) as count FROM tb_tickets WHERE user_type = :user_type AND (status = 'Pending' OR status = 'Processing')";
     $pdoResult = $pdoConnect->prepare($pdoCountQuery);
     $pdoResult->execute(['user_type' => $ticket_user]);
     $count = $pdoResult->fetch(PDO::FETCH_ASSOC)['count'];
