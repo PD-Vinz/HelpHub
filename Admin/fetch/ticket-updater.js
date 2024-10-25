@@ -30,14 +30,17 @@ function updateTicketTable() {
                   row.className = `odd gradeX ${getStatusClass(ticket.status)}`;
 
                   row.innerHTML = `
-                     <td>
-                ${ticket.priority === "YES" 
-                    ? '<i class="fa fa-exclamation-circle text-red-500" aria-hidden="true"></i>' 
-               
-                    : ticket.priority === "NO"
-                    ? ''
-                    : escapeHtml(ticket.priority)}
-            </td>
+<td>
+    ${ticket.status.toLowerCase() === "resolved" || ticket.status.toLowerCase() === "returned"
+        ? '' // Show nothing if the ticket is resolved or returned
+        : ticket.priority === "YES" && (ticket.status.toLowerCase() === "pending" || ticket.status.toLowerCase() === "processing")
+        ? '<i class="fa fa-exclamation-circle text-red-500" aria-hidden="true"></i>' 
+        : ticket.priority === "NO"
+        ? '' 
+        : ticket.priority ? escapeHtml(ticket.priority) : '' // Show priority only if it's defined
+    }
+</td>
+
                       <td>${(ticket.ticket_id)}</td>
                       <td>${escapeHtml(ticket.status)}</td>
                       <td>${escapeHtml(ticket.employee)}</td>
