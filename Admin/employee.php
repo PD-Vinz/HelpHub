@@ -174,8 +174,13 @@ while ($row = $pdoResult->fetch(PDO::FETCH_ASSOC)){
     if ($position === 'Super Admin') {
         continue;
     }
+
+    $statusClass = ($row['account_status'] === 'Enabled') ? 'success' :
+               (($row['account_status'] === 'Disabled') ? 'danger' :
+               (($row['account_status'] === 'Not Activated') ? 'warning' : ''));
+
 ?>										
-<tr class="odd">
+<tr class="odd <?php echo $statusClass?>">
 	<td class="py-1 px-2 align-middle sorting_1 center"><?php echo htmlspecialchars($admin_number); ?></td>
 	<td class="py-1 px-2 align-middle center"><img src="data:image/jpeg;base64,<?php echo $P_PBase64?>" class="img-avatar img-thumbnail p-0 border-2" alt="user_avatar"></td>
 	<td class=""><?php echo htmlspecialchars($f_name); ?></td>
@@ -188,9 +193,27 @@ while ($row = $pdoResult->fetch(PDO::FETCH_ASSOC)){
 	<span class="sr-only">Toggle Dropdown</span>
 				                  </button>
 				                  <div class="dropdown-menu" role="menu">
-				                    <a class="dropdown-item" href="employee-details.php?id=<?php echo htmlspecialchars($admin_number); ?>"><span class="fa fa-edit text-primary"></span> Edit</a>
+				                        <a class="dropdown-item" href="employee-details.php?id=<?php echo htmlspecialchars($admin_number); ?>"><span class="fa fa-edit text-primary"></span> Edit</a>
 				                    <div class="dropdown-divider"></div>
-				                    <a class="dropdown-item delete_data" href="javascript:void(0)" data-id="11"><span class="fa fa-ban text-danger"></span> Disable</a>
+                                    <?php if ($account_status === 'Enabled'): ?>
+
+                                        <a class="dropdown-item delete_data" href="action/admin-disable-account.php?id=<?php echo htmlspecialchars($admin_number); ?>"><span class="fa fa-ban text-danger"></span> Disable</a>
+                                    
+                                    <?php elseif ($account_status === 'Disabled'): ?>
+
+                                        <a class="dropdown-item delete_data" href="action/admin-enable-account.php?id=<?php echo htmlspecialchars($admin_number); ?>"><span class="fa fa-check text-danger"></span> Enable</a>
+                                    
+                                    <?php elseif ($account_status === 'Not Activated'): ?>
+
+				                        <a class="dropdown-item delete_data disabled-link" data-id="11" onclick="Delete()"><span class="fa fa-ban text-danger"></span> Disable</a>
+                                    
+                                    <?php endif; ?>
+
+                                    <script>
+        function Delete() {
+            alert("The Delete function is currently not usable.");
+        }
+    </script>
 				                  </div>
 								  </div>
 							</td>

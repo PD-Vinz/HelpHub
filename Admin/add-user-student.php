@@ -172,10 +172,6 @@ input[type="file"]::file-selector-button {
 					<input type="date" name="birthday" id="birthday" class="form-control" required>
 				</div>
                 <div class="form-group col-6">
-					<label for="name">Age</label>
-					<input type="text" name="age" id="age" class="form-control" required >
-				</div>
-                <div class="form-group col-6">
 					<label for="sex">Sex</label>
 					<select name="sex" id="sex" class="form-control" required>
 						<option value="Male">Male</option>

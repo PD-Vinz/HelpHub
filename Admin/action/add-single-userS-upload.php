@@ -45,6 +45,7 @@ try {
             $course = $_POST['course'];
             $sex = $_POST['sex'];
             $birthday = $_POST['birthday'];
+            $user_type = "student";
 
             if ($birthday) {
                 $birthDate = new DateTime($birthday);
@@ -58,23 +59,23 @@ try {
             $pdoConnect->beginTransaction();
             
             // Prepare an insert statement
-            $stmt = $pdoConnect->prepare("INSERT INTO `student_user`(`user_id`, `password`, `name`,`department`,`year_section`,`email_address` ,`campus` ,`course`,`sex` ,`age`,`birthday`,`profile_picture`) 
-                                        VALUES (:user_id,:password,:name,:department,:year_section,:email_address,:campus,:course,:sex,:age,:birthday,:profile_picture)");
+            $stmt = $pdoConnect->prepare("INSERT INTO `student_user`(`user_id`, `password`, `name`,`department`,`year_section`,`email_address` ,`campus` ,`course`,`sex` ,`age`,`birthday`,`profile_picture`, `user_type`) 
+                                        VALUES (:user_id,:password,:name,:department,:year_section,:email_address,:campus,:course,:sex,:age,:birthday,:profile_picture,:user_type)");
             // Bind the blob data
 
-            $stmt->bindParam(':user_id', $user_id, PDO::PARAM_LOB);
-            $stmt->bindParam(':password', $user_id, PDO::PARAM_LOB);
-            $stmt->bindParam(':name', $name, PDO::PARAM_LOB);
-            $stmt->bindParam(':department', $department, PDO::PARAM_LOB);
-            $stmt->bindParam(':year_section', $year_section, PDO::PARAM_LOB);
-            $stmt->bindParam(':email_address', $email_address, PDO::PARAM_LOB);
-            $stmt->bindParam(':campus', $campus, PDO::PARAM_LOB);
-            $stmt->bindParam(':course', $course, PDO::PARAM_LOB);
-            $stmt->bindParam(':sex', $sex, PDO::PARAM_LOB);
-            $stmt->bindParam(':age', $age, PDO::PARAM_LOB);
-            $stmt->bindParam(':birthday', $birthday, PDO::PARAM_LOB);
+            $stmt->bindParam(':user_id', $user_id, PDO::PARAM_STR);
+            $stmt->bindParam(':password', $user_id, PDO::PARAM_STR);
+            $stmt->bindParam(':name', $name, PDO::PARAM_STR);
+            $stmt->bindParam(':department', $department, PDO::PARAM_STR);
+            $stmt->bindParam(':year_section', $year_section, PDO::PARAM_STR);
+            $stmt->bindParam(':email_address', $email_address, PDO::PARAM_STR);
+            $stmt->bindParam(':campus', $campus, PDO::PARAM_STR);
+            $stmt->bindParam(':course', $course, PDO::PARAM_STR);
+            $stmt->bindParam(':sex', $sex, PDO::PARAM_STR);
+            $stmt->bindParam(':age', $age, PDO::PARAM_STR);
+            $stmt->bindParam(':birthday', $birthday, PDO::PARAM_STR);
             $stmt->bindParam(':profile_picture', $imgContent, PDO::PARAM_LOB);
-
+            $stmt->bindParam(':user_type', $user_type, PDO::PARAM_STR);
 
             // Execute the statement
             if ($stmt->execute()) {

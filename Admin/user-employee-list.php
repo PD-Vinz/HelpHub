@@ -162,8 +162,12 @@ $pdoExec = $pdoResult->execute();
                     if ($name === 'Super Admin') {
                         continue;
                     }
+
+                    $statusClass = ($row['account_status'] === 'Enabled') ? 'success' :
+               (($row['account_status'] === 'Disabled') ? 'danger' :
+               (($row['account_status'] === 'Not Activated') ? 'warning' : ''));
             ?>
-                    <tr class='odd gradeX'>
+                    <tr class='odd gradeX <?php echo $statusClass?>'>
                     <td><?php echo htmlspecialchars($user_id); ?></td>
                   
                     <td><?php echo htmlspecialchars($name); ?></td>
@@ -180,8 +184,19 @@ $pdoExec = $pdoResult->execute();
 				                  <div class="dropdown-menu" role="menu">
 				                    <a class="dropdown-item" data-toggle='modal' data-target='#myModal<?php echo $user_id; ?>' style="cursor:pointer"><span class="fa fa-edit text-primary"></span> Edit</a>
 				                    <div class="dropdown-divider"></div>
-                                    <a class="dropdown-item delete_data" href="javascript:void(0)" data-id="11" onclick="Delete()"><span class="fa fa-trash text-danger"></span> Delete</a>
-    <script>
+<?php if ($account_status === 'Enabled'): ?>
+
+<a class="dropdown-item delete_data" href="action/employee-disable-account.php?id=<?php echo htmlspecialchars($user_id); ?>"><span class="fa fa-ban text-danger"></span> Disable</a>
+
+<?php elseif ($account_status === 'Disabled'): ?>
+
+<a class="dropdown-item delete_data" href="action/employee-enable-account.php?id=<?php echo htmlspecialchars($user_id); ?>"><span class="fa fa-check text-danger"></span> Enable</a>
+
+<?php elseif ($account_status === 'Not Activated'): ?>
+
+<a class="dropdown-item delete_data disabled-link" data-id="11" onclick="Delete()"><span class="fa fa-ban text-danger"></span> Disable</a>
+
+<?php endif; ?>    <script>
         function Delete() {
             alert("The Delete function is currently not usable.");
         }
