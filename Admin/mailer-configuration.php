@@ -128,7 +128,7 @@ if (!isset($_SESSION["admin_number"])) {
                         <div class="panel-heading">
                         List of All the Email Address and SMTP configuration for the Email Notifications and OTP.
                         </div>
-                        <div class="panel-body-ticket">
+                        <div class="panel-body">
                             <div class="table-responsive">
 
 <?php
