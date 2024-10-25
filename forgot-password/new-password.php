@@ -44,6 +44,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         window.location.href = '../index.php';
                     };
                     </script>";
+
+                //include 'security-update.php';
+                exit;
             }
 
             } elseif ($User == "Employee"){
@@ -63,6 +66,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         window.location.href = '../index.php';
                     };
                     </script>";
+
+                //include 'security-update.php';
+                exit;
             }
 
             } elseif ($User == "MIS Employee"){
@@ -82,6 +88,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         window.location.href = '../index.php';
                     };
                     </script>";
+
+                include 'security-update.php';
+                exit;
             }
 
             }

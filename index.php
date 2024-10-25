@@ -77,7 +77,7 @@ if ($pdoResult1->rowCount() > 0) {
     $storedHash = $user['password'];
     $status = $user['account_status'];
 
-    if (($status == 'Not Activated') && ($username == $pass)) {
+    if (($status == 'Not Activated') && ($storedHash == $pass)) {
         $_SESSION["first-time"] = $username;
         header("Location: first-time/verify.php");
         exit(); // Prevent further execution after redirection
@@ -95,6 +95,9 @@ if ($pdoResult1->rowCount() > 0) {
         </script>";
             exit;
         } else {
+            if (isset($_GET['id'])){
+                header("Location: User/User/ticket-view.php?ticket_id=" . $_GET['id']);
+            }
         $_SESSION["user_id"] = $username;
         $_SESSION["user_identity"] = "Student";
         header("Location: User/dashboard.php");
@@ -117,7 +120,7 @@ if ($pdoResult2->rowCount() > 0) {
     $storedHash = $user['password'];
     $status = $user['account_status'];
 
-    if (($status == 'Not Activated') && ($username == $pass)) {
+    if (($status == 'Not Activated') && ($storedHash == $pass)) {
         $_SESSION["first-time"] = $username;
         header("Location: first-time/verify.php");
         exit(); // Prevent further execution after redirection
@@ -158,7 +161,7 @@ if ($pdoResult3->rowCount() > 0) {
     $storedHash = $user['password'];
     $status = $user['account_status'];
 
-    if (($status == 'Not Activated') && ($username == $pass)) {
+    if (($status == 'Not Activated') && ($storedHash == $pass)) {
         $_SESSION["first-time"] = $username;
         header("Location: first-time/verify.php");
         exit(); // Prevent further execution after redirection

@@ -14,8 +14,8 @@ try {
         'priority' => 0
     ];
 
-    $statuses = ['Pending', 'Processing', 'Resolved', 'Returned', 'Due'];
-    $keys = ['pending', 'processing', 'resolved', 'returned', 'priority'];
+    $statuses = ['Pending', 'Processing', 'Resolved', 'Returned'];
+    $keys = ['pending', 'processing', 'resolved', 'returned'];
 
     foreach ($statuses as $index => $status) {
         $pdoCountQuery = "SELECT COUNT(*) as count FROM tb_tickets WHERE status = :status";
@@ -24,6 +24,13 @@ try {
         $count = $pdoResult->fetch(PDO::FETCH_ASSOC)['count'];
         $stats[$keys[$index]] = $count;
     }
+
+    // Handle priority tickets (YES in the priority column) with status either Pending or Processing
+    $pdoPriorityQuery = "SELECT COUNT(*) as count FROM tb_tickets WHERE priority = 'YES' AND (status = 'Pending' OR status = 'Processing')";
+    $pdoPriorityResult = $pdoConnect->prepare($pdoPriorityQuery);
+    $pdoPriorityResult->execute();
+    $priorityCount = $pdoPriorityResult->fetch(PDO::FETCH_ASSOC)['count'];
+    $stats['priority'] = $priorityCount;
 
     header('Content-Type: application/json');
     echo json_encode($stats);

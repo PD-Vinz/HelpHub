@@ -97,7 +97,7 @@ try {
 	<!-- BOOTSTRAP STYLES-->
     <link href="assets/css/bootstrap.css" rel="stylesheet" />
 
-    <link href="assets/js/DataTables/datatables.min.css" rel="stylesheet">
+    <link href="assets/js/dataTables/datatables.min.css" rel="stylesheet">
      <!-- FONTAWESOME STYLES-->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
      <!-- MORRIS CHART STYLES-->
@@ -196,7 +196,7 @@ try {
                     $hoursElapsed = $interval->h + ($interval->days * 24);
                 
                     $priorityIcon = '';
-                    if (in_array($row['status'], ['Processing']) && $hoursElapsed >= 48) {
+                    if ($row['priority'] == "YES") {
                         $priorityIcon = '<i class="fa fa-exclamation-circle" aria-hidden="true"></i>';
                     }
 
@@ -218,9 +218,9 @@ try {
 
                     <td>
                         <div class='panel-body-ticket'>                                    
-                              <button class='btn btn-primary btn-xs' data-toggle='modal' data-target='#myModal<?php echo $ticket_id; ?>'>
+                            <button class="btn btn-primary btn-xs load-details" data-ticket_id="<?php echo $ticket_id; ?>" data-status="<?php echo $status; ?>">
                                 View Details
-                              </button>
+                            </button>
                         </div>
                     </td>
                         
@@ -434,6 +434,14 @@ try {
     <!-- DATA TABLE SCRIPTS -->
     <script src="assets/js/dataTables/jquery.dataTables.js"></script>
     <script src="assets/js/dataTables/dataTables.min.js"></script>
+
+    <script>
+        var ticket_user = "<?php echo $ticket_user; ?>";
+
+        console.log(ticket_user);  // This should print the value of ticket_user
+    </script>
+    <script src="fetch/specific-ticket-modal.js"></script>
+
     <script>
     $(document).ready(function() {
         $('#dataTables-example').DataTable({

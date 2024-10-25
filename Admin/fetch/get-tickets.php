@@ -10,9 +10,17 @@ try {
     include_once("../../connection/conn.php");
     $pdoConnect = connection();
 
-    // Your database connection and query logic here
-    $query = "SELECT ticket_id, status, employee, created_date, full_name, issue FROM tb_tickets";
-    $stmt = $pdoConnect->query($query);
+    session_start();
+
+    $ticket_user = $_SESSION["WhatUser"];
+
+    // Prepare the query and bind the parameter
+    $query = "SELECT ticket_id, status, employee, created_date, full_name, issue FROM tb_tickets WHERE user_type = :user";
+    $stmt = $pdoConnect->prepare($query);
+    $stmt->bindParam(':user', $ticket_user, PDO::PARAM_STR);
+    $stmt->execute();
+
+    // Fetch the tickets
     $ticket = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
     // If no tickets are found, return an empty array instead of null

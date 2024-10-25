@@ -47,37 +47,6 @@ if (!isset($_SESSION["admin_number"])) {
  // for displaying system details //end
     
 
-try {
-
-    $pdoCountQuery = "SELECT * FROM tb_tickets";
-    $pdoResult = $pdoConnect->prepare($pdoCountQuery);
-    $pdoResult->execute();
-    $allTickets = $pdoResult->rowCount();
-
-    $pdoCountQuery = "SELECT * FROM tb_tickets WHERE status = 'Pending'";
-    $pdoResult = $pdoConnect->prepare($pdoCountQuery);
-    $pdoResult->execute();
-    $pendingTickets = $pdoResult->rowCount();
-
-    $pdoCountQuery = "SELECT * FROM tb_tickets WHERE status = 'Returned'";
-    $pdoResult = $pdoConnect->prepare($pdoCountQuery);
-    $pdoResult->execute();
-    $returnedTickets = $pdoResult->rowCount();
-
-    $pdoCountQuery = "SELECT * FROM tb_tickets WHERE status = 'Completed'";
-    $pdoResult = $pdoConnect->prepare($pdoCountQuery);
-    $pdoResult->execute();
-    $completedTickets = $pdoResult->rowCount();
-
-    $pdoCountQuery = "SELECT * FROM tb_tickets WHERE status = 'Due'";
-    $pdoResult = $pdoConnect->prepare($pdoCountQuery);
-    $pdoResult->execute();
-    $dueTickets = $pdoResult->rowCount();
-
-} catch (PDOException $e) {
-    echo "Error: " . $e->getMessage();
-}
-
 }
 
 $pdoQuery = "SELECT * FROM tb_tickets WHERE ticket_id = :TID";
@@ -87,6 +56,15 @@ $pdoExec = $pdoResult->execute();
 
 while ($row = $pdoResult->fetch(PDO::FETCH_ASSOC)) {
 extract($row);
+
+if ($status != "Processing"){
+    if ($_GET['user'] === "Student"){
+        header("Location: ticket-opened.php?id=1");
+        exit;
+    } elseif ($_GET['user'] === "Employee"){
+        header("Location: ticket-opened.php?id=2");
+    }
+}
 
 $screenshotBase64 = base64_encode($screenshot);
 

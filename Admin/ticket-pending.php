@@ -106,7 +106,7 @@ if (isset($_GET['failed']) && $_GET['failed'] == "true") {
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title><?php echo $sysName?></title>
     <link rel="icon" href="<?php echo htmlspecialchars($S_LBase64, ENT_QUOTES, 'UTF-8'); ?>" type="image/*">
-      <link href="assets/js/DataTables/datatables.min.css" rel="stylesheet">
+      <link href="assets/js/dataTables/datatables.min.css" rel="stylesheet">
 	<!-- BOOTSTRAP STYLES-->
     <link href="assets/css/bootstrap.css" rel="stylesheet" />
 
@@ -196,7 +196,7 @@ $pdoExec = $pdoResult->execute();
                     $hoursElapsed = $interval->h + ($interval->days * 24);
                 
                     $priorityIcon = '';
-                    if (in_array($row['status'], ['Pending']) && $hoursElapsed >= 48) {
+                    if ($row['priority'] == "YES") {
                         $priorityIcon = '<i class="fa fa-exclamation-circle" aria-hidden="true"></i>';
                     }
 
@@ -219,9 +219,10 @@ $pdoExec = $pdoResult->execute();
                     <td>
 
                         <div class='panel-body-ticket'>
-                        <button class="btn btn-primary btn-xs load-details" data-ticket_id="<?php echo $ticket_id; ?>" data-status="<?php echo $status; ?>">
-                                                                View Details
-                                                            </button>
+<button class="btn btn-primary btn-xs load-details" data-ticket_id="<?php echo $ticket_id; ?>" data-status="<?php echo $status; ?>">
+    View Details
+</button>
+
                         </div>
                         
                         </td>
@@ -263,7 +264,13 @@ $pdoExec = $pdoResult->execute();
     <!-- DATA TABLE SCRIPTS -->
     <script src="assets/js/dataTables/jquery.dataTables.js"></script>
     <script src="assets/js/dataTables/datatables.min.js"></script>
-    <script src="fetch/ticket-modal.js"></script>
+
+    <script>
+        var ticket_user = "<?php echo $ticket_user; ?>";
+
+        console.log(ticket_user);  // This should print the value of ticket_user
+    </script>
+    <script src="fetch/specific-ticket-modal.js"></script>
     <script>
     $(document).ready(function() {
         $('#dataTables-example').DataTable({

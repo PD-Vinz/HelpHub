@@ -66,7 +66,7 @@ if (!isset($_SESSION["admin_number"])) {
     <link href="assets/css/bootstrap.css" rel="stylesheet" />
 
     
-    <link href="assets/js/DataTables/datatables.min.css" rel="stylesheet">
+    <link href="assets/js/dataTables/datatables.min.css" rel="stylesheet">
      <!-- FONTAWESOME STYLES-->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
      <!-- MORRIS CHART STYLES-->
@@ -167,7 +167,16 @@ while ($row = $pdoResult->fetch(PDO::FETCH_ASSOC)){
 <tr class="odd <?php echo $statusClass?>">
 	<td class=""><?php echo htmlspecialchars($email_purpose); ?></td>
     <td class=""><?php echo htmlspecialchars($host); ?></td>
-    <td class=""><?php echo htmlspecialchars($username); ?></td>
+    <td class="">
+    <?php 
+    $max_length = 10;
+    if (strlen($username) > $max_length) {
+        echo htmlspecialchars(substr($username, 0, $max_length)) . '...';
+    } else {
+        echo htmlspecialchars($username);
+    }
+    ?>
+    </td>
     <td>
     <input type="password" id="password-<?php echo $row['id']; ?>" value="<?php echo htmlspecialchars($password); ?>" readonly style="border:none; background:transparent; width:100px;">
     <button type="button" id="toggleBtn-<?php echo $row['id']; ?>" onclick="togglePassword(<?php echo $row['id']; ?>)" style="border:none; background:none; cursor:pointer;">
@@ -175,7 +184,16 @@ while ($row = $pdoResult->fetch(PDO::FETCH_ASSOC)){
     </button>
     </td>
     <td class=""><?php echo htmlspecialchars($port); ?></td>
-    <td class=""><?php echo htmlspecialchars($address); ?></td>
+    <td class="">
+    <?php 
+    $max_length = 10;
+    if (strlen($address) > $max_length) {
+        echo htmlspecialchars(substr($address, 0, $max_length)) . '...';
+    } else {
+        echo htmlspecialchars($address);
+    }
+    ?>
+    </td>
     <td class=""><?php echo htmlspecialchars($name); ?></td>
     <td class=""><?php echo htmlspecialchars($status); ?></td>
 	<td align="center" class="py-1 px-2 align-middle">

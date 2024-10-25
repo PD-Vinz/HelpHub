@@ -32,8 +32,10 @@ if (!isset($_SESSION["admin_number"])) {
 
     if (isset($_GET["id"]) && $_GET["id"] == 1) {
         $ticket_user = "Student";
+        $_SESSION["WhatUser"] = $ticket_user;
     } elseif (isset($_GET["id"]) && $_GET["id"] == 2) {
         $ticket_user = "Employee";
+        $_SESSION["WhatUser"] = $ticket_user;
     }
 
     // for displaying system details
@@ -83,7 +85,7 @@ if (!isset($_SESSION["admin_number"])) {
         $pdoResult->execute();
         $completedTickets = $pdoResult->rowCount();
 
-        $pdoCountQuery = "SELECT * FROM tb_tickets WHERE Priority = 'YES' && user_type = :user";
+        $pdoCountQuery = "SELECT * FROM tb_tickets WHERE Priority = 'YES' && user_type = :user && (status = 'Pending' OR status = 'Processing')";
         $pdoResult = $pdoConnect->prepare($pdoCountQuery);
         $pdoResult->bindParam(':user', $ticket_user, PDO::PARAM_STR);
         $pdoResult->execute();
@@ -107,7 +109,7 @@ if (!isset($_SESSION["admin_number"])) {
     <!-- BOOTSTRAP STYLES-->
     <link href="assets/css/bootstrap.css" rel="stylesheet" />
 
-    <link href="assets/js/DataTables/datatables.min.css" rel="stylesheet">
+    <link href="assets/js/dataTables/datatables.min.css" rel="stylesheet">
     <!-- FONTAWESOME STYLES-->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
     <!-- MORRIS CHART STYLES-->
@@ -300,6 +302,12 @@ if (!isset($_SESSION["admin_number"])) {
     <!-- MORRIS CHART SCRIPTS -->
     <script src="assets/js/morris/raphael-2.1.0.min.js"></script>
     <script src="assets/js/morris/morris.js"></script>
+
+    <script>
+        var ticket_user = "<?php echo $ticket_user; ?>";
+
+        console.log(ticket_user);  // This should print the value of ticket_user
+    </script>
     <script src="fetch/ticket-modal.js"></script>
     <script>
         $(document).ready(function() {

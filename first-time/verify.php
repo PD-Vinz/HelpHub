@@ -82,7 +82,18 @@ body {
     height: 95vh; /* Set the height to cover the entire viewport */
     margin: 0;
     overflow-y: hidden;
+    opacity: 0;
+    transition: opacity 0.5s ease-in-out;
 }
+
+body.fade-in {
+    opacity: 1;
+  }
+  
+/* Fade-out effect when navigating to a new page */
+body.fade-out {
+    opacity: 0;
+  }
 
 .logo {
     margin-top: 40px;
@@ -112,9 +123,10 @@ body {
 }
 
 h3 {
-    color: #ffffff;
-    font-size: 30px;
-    margin-bottom: 10px;
+    color: #fff;
+        font-size: 26px;
+        font-weight: 600;
+        margin-bottom: 15px;
 }
 
 h5 {
@@ -125,10 +137,17 @@ h6 {
     margin-bottom: 5px;
 }
 
+p {
+        color: #fff;
+        font-size: 16px;
+        line-height: 1.5;
+        margin-bottom: 25px;
+    }
+
 .login {
     text-align: center;
     margin: 20px auto;
-    padding: 30px;
+    padding: 40px 30px;
     border-radius: 50px;
     background-color: #9C0507;
     display: block;
@@ -136,7 +155,7 @@ h6 {
     margin-right: auto;
     max-width: 500px;
     height: auto;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
 }
 
 .form-group {
@@ -238,13 +257,14 @@ input[type="submit"]:hover {
     <div class="login">
     <form action="generate-otp.php" method="post">
         <h3>First-time Log In</h3>
-
+        <hr>
+        <br>
         <p>We detected that this is your first-time log in with this account.
             To enhance your accounts security, we need you to change your password.
             We'll be sending an OTP code on your email which is to verify it is your account.
             Click the Verify Account button to continue.
         </p>
-<br>
+
         <h5>Email: <?php echo htmlspecialchars($Address);?></h5>
         <!--<h5>User Type: <?php //echo htmlspecialchars($user);?></h5>-->
         <br>
@@ -255,6 +275,6 @@ input[type="submit"]:hover {
     </form>
     <a onclick="history.back()" class="forgot">Back</a>
     </div> 
-    <script src="../script.js"></script>
+    <script src="script.js"></script>
 </body>
 </html>

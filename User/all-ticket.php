@@ -1,10 +1,11 @@
 ﻿<?php
-include 'loading.php';
+
 
 include_once("../connection/conn.php");
 $pdoConnect = connection();
 
 session_start(); // Start the session
+
 
 // Check if the session variable is set
 if (!isset($_SESSION["user_id"])) {
@@ -78,6 +79,7 @@ if (!isset($_SESSION["user_id"])) {
          // for displaying system details //end
         
 }
+include 'loading.php';
 
 ?>
 

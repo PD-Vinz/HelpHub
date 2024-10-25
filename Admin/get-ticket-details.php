@@ -64,12 +64,12 @@ function generatePendingHTML($ticket) {
     $html .= "<form role='form'>";
     $html .= "<div class='form-group'>";
             $html .= "<label>Ticket ID‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ </label>";
-            $html .= "<input class='form-control' value=" . htmlspecialchars($ticket['ticket_id']) . " disabled/>";
+            $html .= "<input class='form-control' value='" . htmlspecialchars($ticket['ticket_id']) . "' disabled/>";
          
         $html .= "</div>";
     $html .= "<div class='form-group'>";
             $html .= "<label>Issue/Problem  ‎ ‎ ‎ ‎ ‎ ‎ ‎ </label>";
-            $html .= "<input class='form-control' value=" . htmlspecialchars($ticket['issue']) . " disabled/>";
+            $html .= "<input class='form-control' value='" . htmlspecialchars($ticket['issue']) . "' disabled/>";
             $html .= "</div>";
 
             $html .= "<div class='form-group'>";
@@ -106,36 +106,36 @@ function generatePendingHTML($ticket) {
 
      $html .= " <div class='form-group'>";
       $html .= "<label>Full Name‎ ‎ ‎ ‎ ‎ </label>";
-      $html .= "<input class='form-control' value=" . htmlspecialchars($ticket['full_name']) . " disabled/>";
+      $html .= "<input class='form-control' value='" . htmlspecialchars($ticket['full_name']) . "' disabled/>";
      $html .= " </div>";
   
      $html .= " <div class='form-group'>";
        $html .= "   <label>User ID‎ ‎ ‎ </label>";
-        $html .= "  <input class='form-control' value=" . htmlspecialchars($ticket['user_id']) . " disabled/>";
+        $html .= "  <input class='form-control' value='" . htmlspecialchars($ticket['user_number']) . "' disabled/>";
     
       $html .= "</div>";
    
       $html .= "<div class='form-group'>";
       $html .= "<label>Email Address  ‎ ‎ ‎ ‎ ‎ ‎ ‎ </label>";
-      $html .= "<input class='form-control' value=" . htmlspecialchars($ticket['email_address']) . " disabled/>";
+      $html .= "<input class='form-control' value='" . htmlspecialchars($ticket['email_address']) . "' disabled/>";
       $html .= "</div>";
 
       $html .= "<div class='form-group'>";
           $html .= "<label>Gender ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ </label>";
-          $html .= "<input class='form-control' value=" . htmlspecialchars($ticket['sex']) . " disabled/>";
+          $html .= "<input class='form-control' value='" . htmlspecialchars($ticket['sex']) . "' disabled/>";
        
       $html .= "</div>";
 
       $html .= "<div class='form-group'>";
           $html .= "<label>Age ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ </label>";
-          $html .= "<input class='form-control' value=" . htmlspecialchars($ticket['age']) . " disabled/>";
+          $html .= "<input class='form-control' value='" . htmlspecialchars($ticket['age']) . "' disabled/>";
        
           $html .= "</div>";
           $html .= "</div>";
       $html .= "<div class='col-md-6'>";
       $html .= "<div class='form-group'>";
        $html .= "   <label>College‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ </label>";
-        $html .= "  <input class='form-control' value=" . htmlspecialchars($ticket['department']) . " disabled/>";
+        $html .= "  <input class='form-control' value='" . htmlspecialchars($ticket['department']) . "' disabled/>";
     
       $html .= "</div>";
 
@@ -144,18 +144,18 @@ function generatePendingHTML($ticket) {
    
       $html .= "<div class='form-group'>";
           $html .= "<label>Course‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ </label>";
-          $html .= "<input class='form-control' value=" . htmlspecialchars($ticket['course']) . " disabled/>";
+          $html .= "<input class='form-control' value='" . htmlspecialchars($ticket['course']) . "' disabled/>";
       $html .= "</div>";
       $html .= "<div class='form-group'>";
           $html .= "<label>Year & Section‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ </label>";
-          $html .= "<input class='form-control' value=" . htmlspecialchars($ticket['year_section']) . " disabled/>";
+          $html .= "<input class='form-control' value='" . htmlspecialchars($ticket['year_section']) . "' disabled/>";
       $html .= "</div>";
       }
 
       
       $html .= "<div class='form-group'>";
           $html .= "<label>Campus ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ </label>";
-          $html .= "<input class='form-control' value=" . htmlspecialchars($ticket ['campus']) . " disabled/>";
+          $html .= "<input class='form-control' value='" . htmlspecialchars($ticket ['campus']) . "' disabled/>";
        
       $html .= "</div>";
 
@@ -185,12 +185,12 @@ function generateProcessingHTML($ticket) {
     $html .= "<form role='form'>";
     $html .= "<div class='form-group'>";
             $html .= "<label>Ticket ID‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ </label>";
-            $html .= "<input class='form-control' value=" . htmlspecialchars($ticket['ticket_id']) . " disabled/>";
+            $html .= "<input class='form-control' value='" . htmlspecialchars($ticket['ticket_id']) . "' disabled/>";
          
         $html .= "</div>";
     $html .= "<div class='form-group'>";
             $html .= "<label>Issue/Problem  ‎ ‎ ‎ ‎ ‎ ‎ ‎ </label>";
-            $html .= "<input class='form-control' value=" . htmlspecialchars($ticket['issue']) . " disabled/>";
+            $html .= "<input class='form-control' value='" . htmlspecialchars($ticket['issue']) . "' disabled/>";
             $html .= "</div>";
   
             $html .= "<div class='form-group'>";
@@ -227,38 +227,38 @@ function generateProcessingHTML($ticket) {
 
      $html .= " <div class='form-group'>";
       $html .= "<label>Full Name‎ ‎ ‎ ‎ ‎ </label>";
-      $html .= "<input class='form-control' value=" . htmlspecialchars($ticket['full_name']) . " disabled/>";
+      $html .= "<input class='form-control' value='" . htmlspecialchars($ticket['full_name']) . "' disabled/>";
      $html .= " </div>";
   
      $html .= " <div class='form-group'>";
        $html .= "   <label>User ID‎ ‎ ‎ </label>";
-        $html .= "  <input class='form-control' value=" . htmlspecialchars($ticket['user_id']) . " disabled/>";
+        $html .= "  <input class='form-control' value='" . htmlspecialchars($ticket['user_number']) . "' disabled/>";
     
       $html .= "</div>";
    
 
       $html .= "<div class='form-group'>";
       $html .= "<label>Email Address ‎ ‎ ‎ ‎ ‎ ‎ ‎ </label>";
-      $html .= "<input class='form-control' value=" . htmlspecialchars($ticket['user_id']) . " disabled/>";
+      $html .= "<input class='form-control' value='" . htmlspecialchars($ticket['email_address']) . "' disabled/>";
       $html .= "</div>";
 
       
       $html .= "<div class='form-group'>";
           $html .= "<label>Gender ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ </label>";
-          $html .= "<input class='form-control' value=" . htmlspecialchars($ticket['sex']) . " disabled/>";
+          $html .= "<input class='form-control' value='" . htmlspecialchars($ticket['sex']) . "' disabled/>";
        
       $html .= "</div>";
 
       $html .= "<div class='form-group'>";
           $html .= "<label>Age ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ </label>";
-          $html .= "<input class='form-control' value=" . htmlspecialchars($ticket['age']) . " disabled/>";
+          $html .= "<input class='form-control' value='" . htmlspecialchars($ticket['age']) . "' disabled/>";
        
           $html .= "</div>";
           $html .= "</div>";
       $html .= "<div class='col-md-6'>";
       $html .= "<div class='form-group'>";
        $html .= "   <label>College‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ </label>";
-        $html .= "  <input class='form-control' value=" . htmlspecialchars($ticket['department']) . " disabled/>";
+        $html .= "  <input class='form-control' value='" . htmlspecialchars($ticket['department']) . "' disabled/>";
     
       $html .= "</div>";
 
@@ -267,18 +267,18 @@ function generateProcessingHTML($ticket) {
    
       $html .= "<div class='form-group'>";
           $html .= "<label>Course‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ </label>";
-          $html .= "<input class='form-control' value=" . htmlspecialchars($ticket['course']) . " disabled/>";
+          $html .= "<input class='form-control' value='" . htmlspecialchars($ticket['course']) . "' disabled/>";
       $html .= "</div>";
       $html .= "<div class='form-group'>";
           $html .= "<label>Year & Section‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ </label>";
-          $html .= "<input class='form-control' value=" . htmlspecialchars($ticket['year_section']) . " disabled/>";
+          $html .= "<input class='form-control' value='" . htmlspecialchars($ticket['year_section']) . "' disabled/>";
       $html .= "</div>";
       }
 
       
       $html .= "<div class='form-group'>";
           $html .= "<label>Campus ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ </label>";
-          $html .= "<input class='form-control' value=" . htmlspecialchars($ticket ['campus']) . " disabled/>";
+          $html .= "<input class='form-control' value='" . htmlspecialchars($ticket ['campus']) . "' disabled/>";
        
       $html .= "</div>";
 
@@ -307,22 +307,22 @@ function generateResolvedHTML($ticket) {
     $html .= "<form role='form'>";
     $html .= "<div class='form-group'>";
             $html .= "<label>Employee Name‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ </label>";
-            $html .= "<input class='form-control' value=" . htmlspecialchars($ticket['employee']) . " disabled/>";
+            $html .= "<input class='form-control' value='" . htmlspecialchars($ticket['employee']) . "' disabled/>";
          
         $html .= "</div>";
         $html .= "<div class='form-group'>";
         $html .= "<label>Opened Date‎ ‎ ‎ ‎ ‎ ‎ ‎ </label>";
-        $html .= "<input class='form-control' value=" . htmlspecialchars($ticket['opened_date']) . " disabled/>";
+        $html .= "<input class='form-control' value='" . htmlspecialchars($ticket['opened_date']) . "' disabled/>";
         $html .= "</div>";
 
         $html .= "<div class='form-group'>";
         $html .= "<label>Closed Date‎ ‎ ‎ ‎ ‎ ‎ ‎ </label>";
-        $html .= "<input class='form-control' value=" . htmlspecialchars($ticket['finished_date']) . " disabled/>";
+        $html .= "<input class='form-control' value='" . htmlspecialchars($ticket['finished_date']) . "' disabled/>";
         $html .= "</div>";
 
         $html .= "<div class='form-group'>";
         $html .= "<label>Duration‎ ‎ ‎ ‎ ‎ ‎ ‎ </label>";
-        $html .= "<input class='form-control' value=" . htmlspecialchars($ticket['duration']) . " disabled/>";
+        $html .= "<input class='form-control' value='" . htmlspecialchars($ticket['duration']) . "' disabled/>";
      
             $html .= "<div class='form-group'>";
             $html .= "<label>Resolution ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ </label>";
@@ -342,12 +342,12 @@ function generateResolvedHTML($ticket) {
     $html .= "<form role='form'>";
     $html .= "<div class='form-group'>";
             $html .= "<label>Ticket ID‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ </label>";
-            $html .= "<input class='form-control' value=" . htmlspecialchars($ticket['ticket_id']) . " disabled/>";
+            $html .= "<input class='form-control' value='" . htmlspecialchars($ticket['ticket_id']) . "' disabled/>";
          
         $html .= "</div>";
     $html .= "<div class='form-group'>";
             $html .= "<label>Issue/Problem  ‎ ‎ ‎ ‎ ‎ ‎ ‎ </label>";
-            $html .= "<input class='form-control' value=" . htmlspecialchars($ticket['issue']) . " disabled/>";
+            $html .= "<input class='form-control' value='" . htmlspecialchars($ticket['issue']) . "' disabled/>";
          
             $html .= "<div class='form-group'>";
             $html .= "<label>Description ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ </label>";
@@ -376,18 +376,18 @@ function generateResolvedHTML($ticket) {
     $html .= "<form role='form'>";  
      $html .= " <div class='form-group'>";
       $html .= "<label>Full Name‎ ‎ ‎ ‎ ‎ </label>";
-      $html .= "<input class='form-control' value=" . htmlspecialchars($ticket['full_name']) . " disabled/>";
+      $html .= "<input class='form-control' value='" . htmlspecialchars($ticket['full_name']) . "' disabled/>";
      $html .= " </div>";
   
      $html .= " <div class='form-group'>";
        $html .= "   <label>User ID‎ ‎ ‎ </label>";
-        $html .= "  <input class='form-control' value=" . htmlspecialchars($ticket['user_number']) . " disabled/>";
+        $html .= "  <input class='form-control' value='" . htmlspecialchars($ticket['user_number']) . "' disabled/>";
     
       $html .= "</div>";
    
       $html .= "<div class='form-group'>";
        $html .= "   <label>College‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ </label>";
-        $html .= "  <input class='form-control' value=" . htmlspecialchars($ticket['department']) . " disabled/>";
+        $html .= "  <input class='form-control' value='" . htmlspecialchars($ticket['department']) . "' disabled/>";
     
       $html .= "</div>";
 
@@ -396,30 +396,30 @@ function generateResolvedHTML($ticket) {
    
       $html .= "<div class='form-group'>";
           $html .= "<label>Course‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ </label>";
-          $html .= "<input class='form-control' value=" . htmlspecialchars($ticket['course']) . " disabled/>";
+          $html .= "<input class='form-control' value='" . htmlspecialchars($ticket['course']) . "' disabled/>";
       $html .= "</div>";
       $html .= "<div class='form-group'>";
           $html .= "<label>Year & Section‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ </label>";
-          $html .= "<input class='form-control' value=" . htmlspecialchars($ticket['year_section']) . " disabled/>";
+          $html .= "<input class='form-control' value='" . htmlspecialchars($ticket['year_section']) . "' disabled/>";
       $html .= "</div>";
       }
 
       
       $html .= "<div class='form-group'>";
           $html .= "<label>Campus ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ </label>";
-          $html .= "<input class='form-control' value=" . htmlspecialchars($ticket ['campus']) . " disabled/>";
+          $html .= "<input class='form-control' value='" . htmlspecialchars($ticket ['campus']) . "' disabled/>";
        
       $html .= "</div>";
 
       $html .= "<div class='form-group'>";
           $html .= "<label>Gender ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ </label>";
-          $html .= "<input class='form-control' value=" . htmlspecialchars($ticket['sex']) . " disabled/>";
+          $html .= "<input class='form-control' value='" . htmlspecialchars($ticket['sex']) . "' disabled/>";
        
       $html .= "</div>";
 
       $html .= "<div class='form-group'>";
           $html .= "<label>Age ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ </label>";
-          $html .= "<input class='form-control' value=" . htmlspecialchars($ticket['age']) . " disabled/>";
+          $html .= "<input class='form-control' value='" . htmlspecialchars($ticket['age']) . "' disabled/>";
        
       $html .= "</div>";
   $html .= "</form>";      
@@ -443,22 +443,22 @@ function generateReturnedHTML($ticket) {
     $html .= "<form role='form'>";
     $html .= "<div class='form-group'>";
             $html .= "<label>Employee Name‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ </label>";
-            $html .= "<input class='form-control' value=" . htmlspecialchars($ticket['employee']) . " disabled/>";
+            $html .= "<input class='form-control' value='" . htmlspecialchars($ticket['employee']) . "' disabled/>";
          
         $html .= "</div>";
         $html .= "<div class='form-group'>";
         $html .= "<label>Opened Date‎ ‎ ‎ ‎ ‎ ‎ ‎ </label>";
-        $html .= "<input class='form-control' value=" . htmlspecialchars($ticket['opened_date']) . " disabled/>";
+        $html .= "<input class='form-control' value='" . htmlspecialchars($ticket['opened_date']) . "' disabled/>";
         $html .= "</div>";
 
         $html .= "<div class='form-group'>";
         $html .= "<label>Closed Date‎ ‎ ‎ ‎ ‎ ‎ ‎ </label>";
-        $html .= "<input class='form-control' value=" . htmlspecialchars($ticket['finished_date']) . " disabled/>";
+        $html .= "<input class='form-control' value='" . htmlspecialchars($ticket['finished_date']) . "' disabled/>";
         $html .= "</div>";
 
         $html .= "<div class='form-group'>";
         $html .= "<label>Duration‎ ‎ ‎ ‎ ‎ ‎ ‎ </label>";
-        $html .= "<input class='form-control' value=" . htmlspecialchars($ticket['duration']) . " disabled/>";
+        $html .= "<input class='form-control' value='" . htmlspecialchars($ticket['duration']) . "' disabled/>";
      
             $html .= "<div class='form-group'>";
             $html .= "<label>Resolution ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ </label>";
@@ -478,12 +478,12 @@ function generateReturnedHTML($ticket) {
     $html .= "<form role='form'>";
     $html .= "<div class='form-group'>";
             $html .= "<label>Ticket ID‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ </label>";
-            $html .= "<input class='form-control' value=" . htmlspecialchars($ticket['ticket_id']) . " disabled/>";
+            $html .= "<input class='form-control' value='" . htmlspecialchars($ticket['ticket_id']) . "' disabled/>";
          
         $html .= "</div>";
     $html .= "<div class='form-group'>";
             $html .= "<label>Issue/Problem  ‎ ‎ ‎ ‎ ‎ ‎ ‎ </label>";
-            $html .= "<input class='form-control' value=" . htmlspecialchars($ticket['issue']) . " disabled/>";
+            $html .= "<input class='form-control' value='" . htmlspecialchars($ticket['issue']) . "' disabled/>";
          
             $html .= "<div class='form-group'>";
             $html .= "<label>Description ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ </label>";
@@ -512,18 +512,18 @@ function generateReturnedHTML($ticket) {
     $html .= "<form role='form'>";  
      $html .= " <div class='form-group'>";
       $html .= "<label>Full Name‎ ‎ ‎ ‎ ‎ </label>";
-      $html .= "<input class='form-control' value=" . htmlspecialchars($ticket['full_name']) . " disabled/>";
+      $html .= "<input class='form-control' value='" . htmlspecialchars($ticket['full_name']) . "' disabled/>";
      $html .= " </div>";
   
      $html .= " <div class='form-group'>";
        $html .= "   <label>User ID‎ ‎ ‎ </label>";
-        $html .= "  <input class='form-control' value=" . htmlspecialchars($ticket['user_number']) . " disabled/>";
+        $html .= "  <input class='form-control' value='" . htmlspecialchars($ticket['user_number']) . "' disabled/>";
     
       $html .= "</div>";
    
       $html .= "<div class='form-group'>";
        $html .= "   <label>College‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ </label>";
-        $html .= "  <input class='form-control' value=" . htmlspecialchars($ticket['department']) . " disabled/>";
+        $html .= "  <input class='form-control' value='" . htmlspecialchars($ticket['department']) . "' disabled/>";
     
       $html .= "</div>";
 
@@ -532,30 +532,30 @@ function generateReturnedHTML($ticket) {
    
       $html .= "<div class='form-group'>";
           $html .= "<label>Course‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ </label>";
-          $html .= "<input class='form-control' value=" . htmlspecialchars($ticket['course']) . " disabled/>";
+          $html .= "<input class='form-control' value='" . htmlspecialchars($ticket['course']) . "' disabled/>";
       $html .= "</div>";
       $html .= "<div class='form-group'>";
           $html .= "<label>Year & Section‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ </label>";
-          $html .= "<input class='form-control' value=" . htmlspecialchars($ticket['year_section']) . " disabled/>";
+          $html .= "<input class='form-control' value='" . htmlspecialchars($ticket['year_section']) . "' disabled/>";
       $html .= "</div>";
       }
 
       
       $html .= "<div class='form-group'>";
           $html .= "<label>Campus ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ </label>";
-          $html .= "<input class='form-control' value=" . htmlspecialchars($ticket ['campus']) . " disabled/>";
+          $html .= "<input class='form-control' value='" . htmlspecialchars($ticket ['campus']) . "' disabled/>";
        
       $html .= "</div>";
 
       $html .= "<div class='form-group'>";
           $html .= "<label>Gender ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ </label>";
-          $html .= "<input class='form-control' value=" . htmlspecialchars($ticket['sex']) . " disabled/>";
+          $html .= "<input class='form-control' value='" . htmlspecialchars($ticket['sex']) . "' disabled/>";
        
       $html .= "</div>";
 
       $html .= "<div class='form-group'>";
           $html .= "<label>Age ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ </label>";
-          $html .= "<input class='form-control' value=" . htmlspecialchars($ticket['age']) . " disabled/>";
+          $html .= "<input class='form-control' value='" . htmlspecialchars($ticket['age']) . "' disabled/>";
        
       $html .= "</div>";
   $html .= "</form>";      
