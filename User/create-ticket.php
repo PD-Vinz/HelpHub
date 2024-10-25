@@ -234,7 +234,7 @@ if ($acceptTickets == "off") {
 
 
 
-if ($stmt->rowCount() > 0) {
+if ($stmt->rowCount() > 5) {
 
     echo '
       <div class="container-create">
