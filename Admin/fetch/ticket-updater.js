@@ -30,7 +30,14 @@ function updateTicketTable() {
                   row.className = `odd gradeX ${getStatusClass(ticket.status)}`;
 
                   row.innerHTML = `
-                      <td>${getPriorityIcon(ticket.created_date, ticket.status)}</td>
+                     <td>
+                ${ticket.priority === "YES" 
+                    ? '<i class="fa fa-exclamation-circle text-red-500" aria-hidden="true"></i>' 
+               
+                    : ticket.priority === "NO"
+                    ? ''
+                    : escapeHtml(ticket.priority)}
+            </td>
                       <td>${(ticket.ticket_id)}</td>
                       <td>${escapeHtml(ticket.status)}</td>
                       <td>${escapeHtml(ticket.employee)}</td>

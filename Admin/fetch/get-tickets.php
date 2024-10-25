@@ -15,7 +15,7 @@ try {
     $ticket_user = $_SESSION["WhatUser"];
 
     // Prepare the query and bind the parameter
-    $query = "SELECT ticket_id, status, employee, created_date, full_name, issue FROM tb_tickets WHERE user_type = :user";
+    $query = "SELECT ticket_id, status, employee, created_date, full_name, issue, priority FROM tb_tickets WHERE user_type = :user";
     $stmt = $pdoConnect->prepare($query);
     $stmt->bindParam(':user', $ticket_user, PDO::PARAM_STR);
     $stmt->execute();
