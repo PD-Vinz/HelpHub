@@ -155,67 +155,9 @@ if (!isset($_SESSION["admin_number"])) {
                 </div>
 
 
-                <div class="col-md-12 row">
+                <div class="col-md-12 row" id="ticket-stats">
 
-                    <div class="col-md-2 col-sm-6 col-xs-6">
-
-                        <div class="panel panel-back noti-box">
-                            <span class="icon-box bg-color-yellow set-icon">
-                                <i class="fa fa-hourglass-half fa-xs" aria-hidden="true"></i>
-                            </span>
-                            <div class="text-box">
-                                <p class="main-text"><?php echo $pendingTickets ?></p>
-                                <p class="text-muted pp"> Pending Tickets</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-2 col-sm-6 col-xs-6">
-                        <div class="panel panel-back noti-box">
-                            <span class="icon-box bg-color-green set-icon">
-                                <i class="fa fa-envelope-open fa-xs" aria-hidden="true"></i>
-                            </span>
-                            <div class="text-box">
-                                <p class="main-text"><?php echo $openedTickets ?></p>
-                                <p class="text-muted pp"> Processing Tickets</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-2 col-sm-6 col-xs-6">
-                        <div class="panel panel-back noti-box">
-                            <span class="icon-box bg-color-brown set-icon">
-                                <i class="fa fa-check fa-xs" aria-hidden="true"></i>
-                            </span>
-                            <div class="text-box">
-                                <p class="main-text"><?php echo $completedTickets ?></p>
-                                <p class="text-muted pp"> Resolved Tickets</p>
-                            </div>
-                        </div>
-                    </div>
-
-
-                    <div class="col-md-2 col-sm-6 col-xs-6">
-                        <div class="panel panel-back noti-box">
-                            <span class="icon-box bg-color-black set-icon">
-                                <i class="fa fa-reply fa-xs" aria-hidden="true"></i>
-                            </span>
-                            <div class="text-box">
-                                <p class="main-text"><?php echo $returnedTickets ?></p>
-                                <p class="text-muted pp"> Returned Tickets</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-2 col-sm-6 col-xs-6">
-                        <div class="panel panel-back noti-box">
-                            <span class="icon-box bg-color-blue set-icon">
-                                <i class="fa fa-exclamation-circle fa-xs" aria-hidden="true"></i>
-                            </span>
-                            <div class="text-box">
-                                <p class="main-text"><?php echo $priorityTickets ?></p>
-                                <p class="text-muted pp"> Priority Tickets</p>
-                            </div>
-                        </div>
-                        <!--</a>-->
-                    </div>
+               
                     <hr>
                 </div>
 
@@ -332,9 +274,72 @@ if (!isset($_SESSION["admin_number"])) {
             });
         </script>
 
-        <!-- DATA TABLE SCRIPTS -->
+<script>
+$(document).ready(function() {
+    function getIdFromUrl() {
+        const urlParams = new URLSearchParams(window.location.search);
+        return urlParams.get('id');
+    }
 
+    function updateTicketStats() {
+        const id = getIdFromUrl();
+        if (!id) {
+            console.error("No id parameter found in URL");
+            $('#ticket-stats').html('<div class="alert alert-danger">Error: Invalid page URL</div>');
+            return;
+        }
 
+        $.ajax({
+            url: 'get_ticket_stats_user.php',
+            type: 'GET',
+            data: { id: id },
+            dataType: 'json',
+            success: function(data) {
+                if (data.error) {
+                    $('#ticket-stats').html(`<div class="alert alert-danger">Error: ${data.error}</div>`);
+                    return;
+                }
+
+                var statsHtml = '';
+                 var statItems = [
+                        {key: 'pending', icon: 'fa-hourglass-half', color: 'yellow', label: 'Pending Tickets'},
+                        {key: 'processing', icon: 'fa-envelope-open', color: 'green', label: 'Processing Tickets'},
+                        {key: 'resolved', icon: 'fa-check', color: 'brown', label: 'Resolved Tickets'},
+                        {key: 'returned', icon: 'fa-reply', color: 'black', label: 'Returned Tickets'},
+                        {key: 'priority', icon: 'fa-upload', color: 'blue', label: 'Priority Tickets'}
+                    ];
+
+                statItems.forEach(function(item) {
+                    statsHtml += `
+                    <div class="col-md-2 col-sm-6 col-xs-6">
+                        <div class="panel panel-back noti-box">
+                            <span class="icon-box bg-color-${item.color} set-icon">
+                                <i class="fa ${item.icon} fa-xs" aria-hidden="true"></i>
+                            </span>
+                            <div class="text-box">
+                                <p class="main-text">${data[item.key]}</p>
+                                <p class="text-muted pp">${item.label}</p>
+                            </div>
+                        </div>
+                    </div>`;
+                });
+
+                $('#ticket-stats').html(statsHtml);
+            },
+            error: function(xhr, status, error) {
+                console.error("Error fetching ticket stats:", error);
+                $('#ticket-stats').html('<div class="alert alert-danger">An error occurred while fetching ticket statistics</div>');
+            }
+        });
+    }
+
+    // Initial update
+    updateTicketStats();
+
+    // Update every 30 seconds
+    setInterval(updateTicketStats, 30000);
+});
+</script>
         <!-- DATA TABLE SCRIPTS -->
         <script src="assets/js/dataTables/jquery.dataTables.js"></script>
         <script src="assets/js/dataTables/datatables.min.js"></script>
