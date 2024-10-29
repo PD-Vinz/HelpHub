@@ -97,7 +97,7 @@ if (!isset($_SESSION["user_id"])) {
     <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css' />
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
 </head>
-
+<?php include 'loading.php'; ?>
 <body>
     <div id="wrapper">
         <nav class="navbar navbar-default navbar-cls-top " role="navigation" style="margin-bottom: 0">
@@ -109,7 +109,7 @@ if (!isset($_SESSION["user_id"])) {
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="index.php"><?php echo $shortName?></a>
+                <a class="navbar-brand" href="dashboard.php"><?php echo $shortName?></a>
             </div>
             <div style="color: white;
             padding: 15px 50px 5px 50px;
@@ -126,7 +126,15 @@ if (!isset($_SESSION["user_id"])) {
             <hr style="margin-top: 5px; margin-bottom: 5px;">
             <a class="dropdown-item" href="settings.php"><span class="fa fa-gear"></span> SETTINGS</a>
             <hr style="margin-top: 5px; margin-bottom: 5px;">
-            <a class="dropdown-item" href="logout.php"><span class="fa fa-sign-out"></span> LOG OUT </a>
+            <?php if (!isset($_SESSION["Super-Admin"])): ?>
+                <?php if ($identity == "Student"): ?>
+                <a class="dropdown-item" href="logout.php" onclick="window.open('https://forms.gle/Bf2yoFEiYE8k56Pb6', '_blank');"><span class="fa fa-sign-out"></span> LOG OUT </a>
+                <?php elseif ($identity == "Employee"): ?>
+                <a class="dropdown-item" href="logout.php" onclick="window.open('https://forms.gle/kUJQW5YTbBfKKMw37', '_blank');"><span class="fa fa-sign-out"></span> LOG OUT </a>
+                <?php endif; ?>
+            <?php elseif (isset($_SESSION["Super-Admin"]) && $_SESSION["Super-Admin"] === 'Log In Success'): ?>
+                <a class="dropdown-item" href="../index.php"><span class="fas fa-sign-out-alt"></span> Log Out</a>
+            <?php endif; ?> 
           </div>
         </nav>
         <!-- /. NAV TOP  -->

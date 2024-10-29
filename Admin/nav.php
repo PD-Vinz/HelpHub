@@ -159,17 +159,27 @@ window.addEventListener('scroll', function() {
             <span class="sr-only">Toggle Dropdown</span>
             
           </button>
-          <div class="dropdown-menu" role="menu">
-            <a class="dropdown-item" href="profile.php"><span class="fa fa-user"></span> My Account</a>
-            <hr style="margin-top: 5px; margin-bottom: 5px;">
-            <a class="dropdown-item" href="change-password.php"><span class="fa fa-gear"></span> Account Settings</a>
-            <hr style="margin-top: 5px; margin-bottom: 5px;">
-            <?php if (!isset($_SESSION["Super-Admin"])): ?>
-                <a class="dropdown-item" href="logout.php" onclick="window.open('https://forms.gle/hzqZg1SSDB23vcGCA', '_blank');"><span class="fas fa-sign-out-alt"></span> Logout</a>
-            <?php elseif (isset($_SESSION["Super-Admin"]) && $_SESSION["Super-Admin"] === 'Log In Success'): ?>
-                <a class="dropdown-item" href="../index.php"><span class="fas fa-sign-out-alt"></span> Log Out</a>
-            <?php endif; ?>
-          </div>
+          <div class="dropdown-menu dropdown-menu-right mt-2" role="menu">
+        <a class="dropdown-item d-flex align-items-center" href="profile.php">
+            <i class="fas fa-user mr-2"></i> My Account
+        </a>
+        <div class="dropdown-divider"></div>
+        
+        <a class="dropdown-item d-flex align-items-center" href="change-password.php">
+            <i class="fas fa-cog mr-2"></i> Account Settings
+        </a>
+        <div class="dropdown-divider"></div>
+        
+        <?php if (!isset($_SESSION["Super-Admin"])): ?>
+            <a class="dropdown-item d-flex align-items-center" href="logout.php" onclick="window.open('https://forms.gle/hzqZg1SSDB23vcGCA', '_blank');">
+                <i class="fas fa-sign-out-alt mr-2"></i> Logout
+            </a>
+        <?php elseif (isset($_SESSION["Super-Admin"]) && $_SESSION["Super-Admin"] === 'Log In Success'): ?>
+            <a class="dropdown-item d-flex align-items-center" href="../index.php">
+                <i class="fas fa-sign-out-alt mr-2"></i> Log Out
+            </a>
+        <?php endif; ?>
+    </div>
       </div>
 </div>
 </nav>   

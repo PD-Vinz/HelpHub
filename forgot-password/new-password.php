@@ -89,7 +89,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     };
                     </script>";
 
-                include 'security-update.php';
+                //include 'security-update.php';
                 exit;
             }
 

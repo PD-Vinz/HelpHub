@@ -121,7 +121,7 @@ if (!isset($_SESSION["admin_number"])) {
                                             </div>
                                         </div>
                                         <div class="form-group">
-                                            <label class="col-lg-3 control-label">Gender</label>
+                                            <label class="col-lg-3 control-label">SEX ASSIGN AT BIRTH</label>
                                             <div class="col-lg-8">
                                                 <input class="form-control" type="text" value="<?php echo $Sex?>" disabled>
                                             </div>
@@ -205,14 +205,13 @@ if (!isset($_SESSION["admin_number"])) {
   </div>
                                         
                                        
-                        
+<!--
                                         <div class="modal-footer">	
                                         <a href="report.php" target="_blank">
                                             <button type="button" class="btn btn-primary">View Full Report</button>
                                         </a>
                                         </div>
-                                        
-
+                                        --->
 
                             </div>
                                                 </div>

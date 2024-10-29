@@ -90,7 +90,7 @@ include 'loading.php';
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?php echo $sysName?></title>
     <link rel="icon" href="<?php echo htmlspecialchars($S_LBase64, ENT_QUOTES, 'UTF-8'); ?>" type="image/*"> 
-    <link href="assets/js/DataTables/datatables.min.css?v=<?php echo time(); ?>" rel="stylesheet">
+    <link href="assets/js/dataTables/datatables.min.css?v=<?php echo time(); ?>" rel="stylesheet">
 
     <!-- BOOTSTRAP STYLES -->
     <link href="assets/css/bootstrap.css?v=<?php echo time(); ?>" rel="stylesheet">
@@ -148,7 +148,7 @@ include 'loading.php';
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="index.php"><?php echo $shortName?></a>
+                <a class="navbar-brand" href="dashboard.php"><?php echo $shortName?></a>
             </div>
             <div style="color: white;
             padding: 15px 50px 5px 50px;
@@ -343,7 +343,7 @@ VIEW TICKET
     <script src="assets/js/jquery.metisMenu.js"></script>
     <!-- DATA TABLE SCRIPTS -->
     <script src="assets/js/dataTables/jquery.dataTables.js"></script>
-    <script src="assets/js/dataTables/dataTables.min.js"></script>
+    <script src="assets/js/dataTables/datatables.min.js"></script>
     <script>
         $(document).ready(function () {
             $('#dataTables-example').dataTable();

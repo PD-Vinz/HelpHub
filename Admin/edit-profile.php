@@ -147,9 +147,12 @@ if (!isset($_SESSION["admin_number"])) {
                                             </div>
                                         </div>
                                         <div class="form-group">
-                                            <label class="col-lg-2 control-label">GENDER</label>
+                                            <label for="category" class="col-lg-3 control-label">SEX ASSIGN AT BIRTH</label>
                                             <div class="col-lg-8">
-                                                <input class="form-control" name="sex" type="text" value="<?php echo $Sex?>" required>
+                                                <select id="category" name="sex" class="form-control dropdown" required>
+                                                    <option value="Male" <?php echo ($Sex == 'Male') ? 'selected' : ''; ?>>Male</option>
+                                                    <option value="Female" <?php echo ($Sex == 'Female') ? 'selected' : ''; ?>>Female</option>
+                                                </select>
                                             </div>
                                         </div>
                                         <div class="form-group">
@@ -214,6 +217,7 @@ function confirmSubmit() {
         });
     </script>
     <!-- CUSTOM SCRIPTS -->
+    <script src="assets/js/custom.js"></script>
     <script src="../user/assets/js/custom.js"></script>
     <script type="text/javascript" src="post.js"></script>
 </body>

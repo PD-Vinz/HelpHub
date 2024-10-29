@@ -210,7 +210,7 @@ $pdoExec = $pdoResult->execute();
     <script src="assets/js/jquery.metisMenu.js"></script>
     <!-- DATA TABLE SCRIPTS -->
     <script src="assets/js/dataTables/jquery.dataTables.js"></script>
-    <script src="assets/js/dataTables/dataTables.min.js"></script> 
+    <script src="assets/js/dataTables/datatables.min.js"></script> 
     <script>
    $('#dataTables-example').DataTable({
       "order": [[0, 'desc']], // Sort by the first column (Date) in descending order

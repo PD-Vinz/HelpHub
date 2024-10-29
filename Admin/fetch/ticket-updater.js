@@ -158,7 +158,7 @@ function escapeHtml(unsafe) {
 }
 
 // Update the table every 30 seconds
-setInterval(updateTicketTable, 10000);
+setInterval(updateTicketTable, 30000);
 
 // Initial update
 document.addEventListener('DOMContentLoaded', updateTicketTable);
