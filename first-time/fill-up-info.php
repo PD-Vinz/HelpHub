@@ -98,12 +98,19 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 } else {
                     $NewAge = 0; // Set to 0 if no birthday is provided
                 }
-            
+
+if (isset($_POST['altemail'])){
                 $pdoUserQuery = "UPDATE student_user SET name = :name, birthday = :birthday, alt_email_address = :altemail, age = :age, sex = :sex, account_status = :AccStat WHERE user_id = :number";
+} else {
+                $pdoUserQuery = "UPDATE student_user SET name = :name, birthday = :birthday, age = :age, sex = :sex, account_status = :AccStat WHERE user_id = :number";
+                }
+
                 $pdoResult = $pdoConnect->prepare($pdoUserQuery);
                 $pdoResult->bindParam(':number', $id);
                 $pdoResult->bindParam(':name', $NewName);
+if (isset($_POST['altemail'])){
                 $pdoResult->bindParam(':altemail', $NewAltEmail);
+}                 
                 $pdoResult->bindParam(':birthday', $NewBday);
                 $pdoResult->bindParam(':age', $NewAge);
                 $pdoResult->bindParam(':sex', $NewSex);
@@ -127,7 +134,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     echo "Error: " . $e->getMessage();
                     exit(); // Exit after handling the error
                 }
-        }
+        
             } elseif ($User == "Employee") {
                 
                 try{
@@ -144,12 +151,18 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     } else {
                         $NewAge = 0; // Set to 0 if no birthday is provided
                     }
-                
+                if (isset($_POST['altemail'])){
                     $pdoUserQuery = "UPDATE employee_user SET name = :name, birthday = :birthday, alt_email_address = :altemail, age = :age, sex = :sex, account_status = :AccStat WHERE user_id = :number";
+                } else {
+                    $pdoUserQuery = "UPDATE employee_user SET name = :name, birthday = :birthday, age = :age, sex = :sex, account_status = :AccStat WHERE user_id = :number";
+                }
+
                     $pdoResult = $pdoConnect->prepare($pdoUserQuery);
                     $pdoResult->bindParam(':number', $id);
                     $pdoResult->bindParam(':name', $NewName);
-                    $pdoResult->bindParam(':altemail', $NewAltEmail);
+if (isset($_POST['altemail'])){
+                $pdoResult->bindParam(':altemail', $NewAltEmail);
+}  
                     $pdoResult->bindParam(':birthday', $NewBday);
                     $pdoResult->bindParam(':age', $NewAge);
                     $pdoResult->bindParam(':sex', $NewSex);
@@ -176,7 +189,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     }
             }
             }
-
+}
 
 ?>
 

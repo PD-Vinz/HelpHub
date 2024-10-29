@@ -148,7 +148,7 @@ if ($acceptTickets == "off") {
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="index.php"><?php echo $shortName?></a>
+                <a class="navbar-brand" href="dashboard.php"><?php echo $shortName?></a>
             </div>
             <div style="color: white;
             padding: 15px 50px 5px 50px;
@@ -312,7 +312,7 @@ if ($stmt->rowCount() > 5) {
                         <input type="radio" name="consent" value="yes" required> Yes, I consent
                     </label>
                     <label>
-                        <input type="radio" name="consent" value="no" required> No, I do not consent
+                        <input type="radio" name="consent" value="no"> No, I do not consent
                     </label>
                         </main>
                     </div>
@@ -364,22 +364,18 @@ if ($stmt->rowCount() > 5) {
 </script>
     <!--preview-->
 <script>
-    // Modal confirm button to handle form submission
-    document.getElementById('confirmBtn').addEventListener('click', function() {
+    // Form submission listener to check consent before submitting
+    document.getElementById('issueForm').addEventListener('submit', function(event) {
         const consentYes = document.querySelector('input[name="consent"][value="yes"]');
         const consentNo = document.querySelector('input[name="consent"][value="no"]');
 
-        if (consentYes.checked) {
-            // If consent is given, submit the form
-            document.querySelector('.issue-form').submit();
-        } else if (consentNo.checked) {
-            // If 'No' is selected, prevent submission and alert
+        if (!consentYes.checked) {
+            event.preventDefault(); // Prevent form submission if "Yes" is not checked
             alert('You must consent to submit the ticket.');
-        } else {
-            alert('Please select an option before proceeding.');
         }
     });
 </script>
+
     <script>
     function adjustHeight() {
         const textarea = document.getElementById('issue-description');

@@ -71,8 +71,8 @@ if (!isset($_SESSION["admin_number"])) {
   <!-- FONTAWESOME STYLES-->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
     <!-- CUSTOM STYLES -->
-    <link href="assets/css/custom1.css" rel="stylesheet">
-    <link href="../admin/assets/css/custom.css" rel="stylesheet">
+    <link href="assets/css/custom.css" rel="stylesheet">
+    
     <!-- GOOGLE FONTS -->
     <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
     <!-- TABLE STYLES -->
@@ -147,9 +147,12 @@ if (!isset($_SESSION["admin_number"])) {
                                             </div>
                                         </div>
                                         <div class="form-group">
-                                            <label class="col-lg-3 control-label">GENDER</label>
+                                            <label for="category" class="col-lg-3 control-label">SEX ASSIGN AT BIRTH</label>
                                             <div class="col-lg-8">
-                                                <input class="form-control" name="sex" type="text" value="<?php echo $Sex?>" required>
+                                                <select id="category" name="sex" class="form-control dropdown" required>
+                                                    <option value="Male" <?php echo ($Sex == 'Male') ? 'selected' : ''; ?>>Male</option>
+                                                    <option value="Female" <?php echo ($Sex == 'Female') ? 'selected' : ''; ?>>Female</option>
+                                                </select>
                                             </div>
                                         </div>
                                         <div class="form-group">
@@ -213,6 +216,7 @@ function confirmSubmit() {
         });
     </script>
     <!-- CUSTOM SCRIPTS -->
+    <script src="assets/js/custom.js"></script>
     <script src="../user/assets/js/custom.js"></script>
     <script type="text/javascript" src="post.js"></script>
 </body>

@@ -128,7 +128,7 @@ if (!isset($_SESSION["admin_number"])) {
                         <div class="panel-heading">
                         List of All the Email Address and SMTP configuration for the Email Notifications and OTP.
                         </div>
-                        <div class="panel-body-ticket">
+                        <div class="panel-body">
                             <div class="table-responsive">
 
 <?php
@@ -260,7 +260,7 @@ while ($row = $pdoResult->fetch(PDO::FETCH_ASSOC)){
     <script src="assets/js/jquery.metisMenu.js"></script>
     <!-- DATA TABLE SCRIPTS -->
     <script src="assets/js/dataTables/jquery.dataTables.js"></script>
-    <script src="assets/js/dataTables/dataTables.min.js"></script>
+    <script src="assets/js/dataTables/datatables.min.js"></script>
         <script>
             $(document).ready(function () {
                 $('#dataTables-example').dataTable();

@@ -317,8 +317,13 @@ $screenshotBase64 = base64_encode($screenshot);
                     </div>
 -->
                     <?php } ?> 
-                    <div class="col-12"> 
-                        <h3>TICKET PROGRESS</h3>
+                <div class="col-12"> 
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            TICKET PROGRESS
+                        </div>
+                        <div class="panel-body">
+                                        <div class="table-responsive">
                         <table class="table table-bordered table-striped table-hover" id="dataTables-example">
                             <thead>
                                 <tr class="btn-primary">
@@ -344,9 +349,10 @@ echo "</tr>";
 }
 ?>
                             </tbody>
+                            </table>
                     </div>
-            
-                    
+            </div>
+                    </div></div>
         </div>
 </div>           
              <!-- /. PAGE INNER  -->
@@ -363,7 +369,7 @@ echo "</tr>";
     <script src="assets/js/jquery.metisMenu.js"></script>
     <!-- DATA TABLE SCRIPTS -->
     <script src="assets/js/dataTables/jquery.dataTables.js"></script>
-    <script src="assets/js/dataTables/dataTables.min.js"></script>
+    <script src="assets/js/dataTables/datatables.min.js"></script>
     <script>
         $(document).ready(function () {
             $('#dataTables-example').dataTable();

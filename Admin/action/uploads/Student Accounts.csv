@@ -1,0 +1,14 @@
+user_id,password,email_address,name,campus,department,course,year_section,sex,birthday,age,user_type
+1234567890,1234567890,1234567890@dhvsu.edu.ph,Student 1,Bacolor - Main,College of Computing Studies,Bachelor of Science in Information Technology,4G,Male,2000-01-31,24,Student
+9876543210,9876543210,9876543210@dhvsu.edu.ph,Student 2,Bacolor - Main,College of Computing Studies,Bachelor of Science in Information Technology,4G,Female,2001-12-31,23,Student
+,,,,,,,,,,,
+,,,,,,,,,,,
+,,,,,,,,,,,
+,,,,,,,,,,,
+,,,,,,,,,,,
+,,,,,,,,,,,
+,,,,,,,,,,,
+,,,,,,,,,,,
+,,,,,,,,,,,
+,,,,,,,,,,,
+,,,,,,,,,,,

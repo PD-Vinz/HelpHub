@@ -1,16 +1,16 @@
 # Enable mod_rewrite
-RewriteEngine On
+#RewriteEngine On
 
 # Hide .html extension
-RewriteCond %{REQUEST_FILENAME} !-d
-RewriteCond %{REQUEST_FILENAME}\.html -f
-RewriteRule ^([^/]+)$ $1.html [L]
+#RewriteCond %{REQUEST_FILENAME} !-d
+#RewriteCond %{REQUEST_FILENAME}\.html -f
+#RewriteRule ^([^/]+)$ $1.html [L]
 
 # Hide .php extension
-RewriteCond %{REQUEST_FILENAME} !-d
-RewriteCond %{REQUEST_FILENAME} !-f
-RewriteCond %{REQUEST_FILENAME}\.php -f
-RewriteRule ^([^/]+)$ $1.php [L]
+#RewriteCond %{REQUEST_FILENAME} !-d
+#RewriteCond %{REQUEST_FILENAME} !-f
+#RewriteCond %{REQUEST_FILENAME}\.php -f
+#RewriteRule ^([^/]+)$ $1.php [L]
 
 #RewriteCond %{REQUEST_FILENAME} !-f
 #RewriteCond %{REQUEST_FILENAME} !-d
@@ -30,3 +30,8 @@ RewriteRule ^([^/]+)$ $1.php [L]
 # Redirect direct access to .txt files to index.php
 # RewriteRule \.txt$ /index.php [L,R=302]
 
+#RewriteEngine on 
+#RewriteCond %{THE_REQUEST} /([^.]+)\.php [NC] 
+#RewriteRule ^ /%1 [NC,L,R] 
+#RewriteCond %{REQUEST_FILENAME}.php -f 
+#RewriteRule ^ %{REQUEST_URI}.php [NC,L]

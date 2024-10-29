@@ -250,7 +250,7 @@ while ($row = $pdoResult->fetch(PDO::FETCH_ASSOC)){
     <!-- DATA TABLE SCRIPTS -->
     <script src="assets/js/dataTables/jquery.dataTables.js"></script>
 
-    <script src="assets/js/dataTables/dataTables.min.js"></script>
+    <script src="assets/js/dataTables/datatables.min.js"></script>
     <script>
         $(document).ready(function () {
             $('#dataTables-example').dataTable();

@@ -994,7 +994,7 @@ createBarChart('morris-bar-chart3', 'action/feedback-data.php?chart=cc3');
 
     </script>
       <script src="assets/js/dataTables/jquery.dataTables.js"></script>
-      <script src="assets/js/dataTables/dataTables.min.js"></script>
+      <script src="assets/js/dataTables/datatables.min.js"></script>
       <script>  $(document).ready(function() {
         $('#dataTables-example').DataTable({
             "order": [

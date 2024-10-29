@@ -89,15 +89,14 @@ try {
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-      <meta charset="utf-8" />
+    <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title><?php echo $sysName?></title>
     <link rel="icon" href="<?php echo htmlspecialchars($S_LBase64, ENT_QUOTES, 'UTF-8'); ?>" type="image/*">
-  
+      <link href="assets/js/dataTables/datatables.min.css" rel="stylesheet">
 	<!-- BOOTSTRAP STYLES-->
     <link href="assets/css/bootstrap.css" rel="stylesheet" />
 
-    <link href="assets/js/dataTables/datatables.min.css" rel="stylesheet">
      <!-- FONTAWESOME STYLES-->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
      <!-- MORRIS CHART STYLES-->
@@ -120,7 +119,11 @@ try {
             max-height: 70vh; /* Adjust the maximum height as needed */
             object-fit: contain; /* Ensure the image is contained within the modal */
         }
+        .align-left {
+        text-align: left !important; /* Force left alignment */
+    }
     </style>
+    
 </head>
 
 <body>
@@ -425,7 +428,7 @@ try {
      <!-- /. WRAPPER  -->
     <!-- SCRIPTS -AT THE BOTOM TO REDUCE THE LOAD TIME-->
   
-    <!-- JQUERY SCRIPTS -->
+<!-- JQUERY SCRIPTS -->
     <script src="assets/js/jquery-1.10.2.js"></script>
       <!-- BOOTSTRAP SCRIPTS -->
     <script src="assets/js/bootstrap.min.js"></script>
@@ -433,7 +436,7 @@ try {
     <script src="assets/js/jquery.metisMenu.js"></script>
     <!-- DATA TABLE SCRIPTS -->
     <script src="assets/js/dataTables/jquery.dataTables.js"></script>
-    <script src="assets/js/dataTables/dataTables.min.js"></script>
+    <script src="assets/js/dataTables/datatables.min.js"></script>
 
     <script>
         var ticket_user = "<?php echo $ticket_user; ?>";

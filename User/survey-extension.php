@@ -109,7 +109,7 @@ if (!isset($_SESSION["user_id"])) {
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="index.php"><?php echo $shortName?></a>
+                <a class="navbar-brand" href="dashboard.php"><?php echo $shortName?></a>
             </div>
             <div style="color: white;
             padding: 15px 50px 5px 50px;

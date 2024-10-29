@@ -5,6 +5,11 @@ session_start();
 include_once("connection/conn.php");
 $pdoConnect = connection();
 
+unset($_SESSION['first-time']); // Invalidate the OTP
+unset($_SESSION['address']);
+unset($_SESSION['user']);
+unset($_SESSION['forgot_id']);
+
 if (isset($_SESSION["Super-Admin"])) {
     header("Location: Super-Admin/dashboard.php");
     exit(); // Prevent further execution after redirection
@@ -32,6 +37,28 @@ if (isset($_GET["failed"])) {
             </script>";
 }
 
+// Check if the user is locked out
+if (isset($_SESSION["lock_time"])) {
+    $current_time = time();
+    if ($current_time - $_SESSION["lock_time"] >= 300) { // 5 minutes in seconds
+        // Reset the session variable and remove lock
+        unset($_SESSION["failed-login"]);
+        unset($_SESSION["lock_time"]);
+    }
+}
+// Initialize if not set
+if (!isset($_SESSION["failed-login"])) {
+    $_SESSION["failed-login"] = 0;
+}
+if ($_SESSION["failed-login"] >= 5) {
+    // Lock the account and set the lock time
+    if (!isset($_SESSION["lock_time"])) {
+        $_SESSION["lock_time"] = time(); // Store the lock time
+    }
+    $formHidden = true; // Set a flag to hide the form
+}
+
+
  // for displaying system details
  $query = $pdoConnect->prepare("SELECT system_name, short_name, system_logo, system_cover FROM settings WHERE id = :id");
  $query->execute(['id' => 1]);
@@ -46,6 +73,8 @@ if (isset($_GET["failed"])) {
       $imageType = 'image/png'; // Default MIME type
       $S_LBase64 = 'data:' . $imageType . ';base64,' . $base64Image;
   }
+  
+ $errorMessage = '';
 
 if (isset($_POST['login'])) {
     try {
@@ -86,13 +115,15 @@ if ($pdoResult1->rowCount() > 0) {
     if (password_verify($pass, $storedHash)) {
         // Password is correct, proceed with login
         if ($status == 'Disabled') {
-            $message = "Your account is currently deactivated. If you wish to activate your account, please proceed to the MIS Office";
-            echo "<script type='text/javascript'>
-            window.onload = function() {
-                alert('$message');
-                window.location.href = 'index.php';
-            };
-        </script>";
+            $errorMessage = "Your account is currently deactivated. If you wish to activate your account, please proceed to the MIS Office";
+            //echo "<script type='text/javascript'>
+        //    window.onload = function() {
+        //        alert('$errorMessage');
+        //        window.location.href = 'index.php';
+        //    };
+        //    </script>";
+        // Increment the failed login counter
+        $_SESSION["failed-login"] = 0;
             exit;
         } else {
             if (isset($_GET['id'])){
@@ -129,13 +160,15 @@ if ($pdoResult2->rowCount() > 0) {
     // Verify the input password against the stored hash
     if (password_verify($pass, $storedHash)) {
         if ($status == 'Disabled') {
-            $message = "Your account is currently deactivated. If you wish to activate your account, please proceed to the MIS Office";
-            echo "<script type='text/javascript'>
-            window.onload = function() {
-                alert('$message');
-                window.location.href = 'index.php';
-            };
-        </script>";
+            $errorMessage = "Your account is currently deactivated. If you wish to activate your account, please proceed to the MIS Office";
+            //echo "<script type='text/javascript'>
+        //    window.onload = function() {
+        //        alert('$errorMessage');
+        //        window.location.href = 'index.php';
+        //    };
+        //    </script>";
+        // Increment the failed login counter
+        $_SESSION["failed-login"] = 0;
             exit;
         } else {
         // Password is correct, proceed with login
@@ -170,13 +203,15 @@ if ($pdoResult3->rowCount() > 0) {
     // Verify the input password against the stored hash
     if (password_verify($pass, $storedHash)) {
         if ($status == 'Disabled') {
-            $message = "Your account is currently deactivated. If you wish to activate your account, please proceed to the MIS Office";
-            echo "<script type='text/javascript'>
-            window.onload = function() {
-                alert('$message');
-                window.location.href = 'index.php';
-            };
-        </script>";
+            $errorMessage = "Your account is currently deactivated. If you wish to activate your account, please proceed to the MIS Office";
+            //echo "<script type='text/javascript'>
+        //    window.onload = function() {
+        //        alert('$errorMessage');
+        //        window.location.href = 'index.php';
+        //    };
+        //    </script>";
+        // Increment the failed login counter
+        $_SESSION["failed-login"] = 0;
             exit;
         } else {
         // Password is correct, proceed with login
@@ -191,12 +226,14 @@ if ($pdoResult3->rowCount() > 0) {
 
         // If no match found in both tables
         $errorMessage = "Wrong Username or Password";
-        echo "<script type='text/javascript'>
-            window.onload = function() {
-                alert('$errorMessage');
-                window.location.href = 'index.php';
-            };
-            </script>";
+        //echo "<script type='text/javascript'>
+        //    window.onload = function() {
+        //        alert('$errorMessage');
+        //        window.location.href = 'index.php';
+        //    };
+        //    </script>";
+        // Increment the failed login counter
+        $_SESSION["failed-login"]++;
             
     } catch (PDOException $error) {
         $message = '<label>Error: ' . $error->getMessage() . '</label>';
@@ -218,9 +255,16 @@ if ($pdoResult3->rowCount() > 0) {
     <img class="logo" src="img/MIS logo.png" alt="Image">
 
     <div class="login">
-    <form method="post">
+<?php if (!isset($formHidden)): // Check if the form should be displayed ?>
+    <form method="post" autocomplete="off">
         <h3 style="text-shadow: 0.3px 0.3px #18181a;">Log In</h3>
         <hr>
+        <!-- Error message display -->
+        <?php if (($errorMessage) && !empty($errorMessage)): ?>
+                <div id="error-message" class="error-message" style="color: red;">
+                    <h4><?php echo htmlspecialchars($errorMessage); ?></h4>
+                </div>
+        <?php endif; ?>
         <br>
 
         <div class="form-group">
@@ -269,12 +313,61 @@ if ($pdoResult3->rowCount() > 0) {
                         </script>
         </div>
 -->     
-        <input type="submit" name="login" value="Log In"  >
+        <input type="submit" name="login" id="login" value="Log In"  >
     
         
     </form>
     
     <a href="forgot-password/forgot-password.php" class="forgot">Forgot Password?</a>
+    
+<?php else: ?>
+    <?php 
+    // Calculate remaining time for display
+    $remainingTime = 300; // 5 minutes in seconds
+    if (isset($_SESSION["lock_time"])) {
+        $current_time = time();
+        $timeElapsed = $current_time - $_SESSION["lock_time"];
+        $remainingTime = max(0, 300 - $timeElapsed); // Ensure it doesn't go below 0
+    }
+    $minutes = floor($remainingTime / 60);
+    $seconds = $remainingTime % 60;
+    ?>
+    <style>
+        .timer-message {
+            margin-top: 20px;
+            font-size: 1.5em;
+            color: #d9534f; /* Bootstrap danger color */
+        }
+        #timer {
+            font-weight: bold;
+            font-size: 2em;
+            color: #f39c12; /* Bootstrap warning color */
+        }
+    </style>
+    <p class="timer-message">Multiple failed login attempts. Please try again in <span id="timer"><?php echo sprintf("%d:%02d", $minutes, $seconds); ?></span>.</p>
+    
+    <script>
+        // Set the remaining time from PHP
+        let timeLeft = <?php echo $remainingTime; ?>;
+
+        const timerElement = document.getElementById('timer');
+        
+        const countdown = setInterval(() => {
+            const minutes = Math.floor(timeLeft / 60);
+            const seconds = timeLeft % 60;
+
+            timerElement.textContent = `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+            timeLeft--;
+
+            if (timeLeft < 0) {
+                clearInterval(countdown);
+                // Reload the page
+                window.location.reload();
+            }
+        }, 1000);
+    </script>
+<?php endif; ?>
+        
     </div> 
 
 <footer>

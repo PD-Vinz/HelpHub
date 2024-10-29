@@ -71,7 +71,40 @@ if (!isset($_SESSION["user_id"])) {
         }
     }
 
+
+
+$ticket_survey_id = filter_input(INPUT_GET, 'id', FILTER_SANITIZE_STRING);  // Sanitize input
+
+// Prepare the query
+$query = "SELECT * FROM tb_survey_feedback WHERE ticket_id = :ticket_id";
+$stmt = $pdoConnect->prepare($query);
+
+// Bind the parameter with the correct placeholder
+$stmt->bindParam(':ticket_id', $ticket_survey_id, PDO::PARAM_STR);
+
+// Execute the statement
+$stmt->execute();
+
+$results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+if ($stmt->rowCount() > 0) {
+    // If a matching ticket_id is found, alert the user and redirect
+    $errorMessage = "You have already completed the survey for this ticket.";
+    echo "<script type='text/javascript'>
+            window.onload = function() {
+                alert('$errorMessage');
+                window.location.href = 'all-ticket.php';
+            };
+          </script>";
+    exit;
+} else {
+    // Continue with the survey if no record is found
+    // Add your further survey logic here
 }
+
+}
+
+
 
 ?>
 
@@ -107,7 +140,7 @@ if (!isset($_SESSION["user_id"])) {
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="index.php"><?php echo $shortName?></a>
+                <a class="navbar-brand" href="dashboard.php"><?php echo $shortName?></a>
             </div>
             <div style="color: white;
             padding: 15px 50px 5px 50px;

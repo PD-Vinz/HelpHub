@@ -202,7 +202,7 @@ input[type="file"]::file-selector-button {
 				</div>
                 <div class="form-group col-6">
 					<label for="email">Email Address</label>
-					<input type="email" name="email" id="email" class="form-control" value="">
+					<input type="email" name="email" id="email" class="form-control" value="" required>
 				</div>
                 <div class="form-group col-6">
 					<label for="altemail">Alternative Email Address</label>
