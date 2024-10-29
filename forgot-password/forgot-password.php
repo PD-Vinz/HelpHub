@@ -84,14 +84,18 @@ if (isset($_POST['forgotpass'])) {
 
     <div class="login">
     <form method="post">
-        <h3>Forgot Password?</h3>
-
+        <h3>Find your account</h3>
+        <hr>
+      
+    <h4>Enter your ID to change your password</h4>
+    
         <div class="form-group">
-            <input type="number" name="userid" required placeholder="Enter User ID">
+            <input class="input-group_input" type="text" name="userid" required placeholder="Enter User ID" > 
+            
         </div> 
 
         <input type="submit" name="forgotpass" value="Send"  ><br>
-    
+        
         
     </form>
     <a href="../index.php" class="forgot">Back</a>

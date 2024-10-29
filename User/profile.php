@@ -130,7 +130,7 @@ if (!isset($_SESSION["user_id"])) {
             <div style="color: white;
             padding: 15px 50px 5px 50px;
             float: right;
-            font-size: 16px;"> Last access : <?php echo date('d F Y')?> &nbsp; 
+            font-size: 16px;">
             <div class="btn-group nav-link">
               <button type="button" class="btn btn-rounded badge badge-light dropdown-toggle dropdown-icon" data-toggle="dropdown">
                 <span class="ml-3"><?php echo $Name?></span>
@@ -186,7 +186,7 @@ if (!isset($_SESSION["user_id"])) {
         <div id="page-wrapper">
             <div id="page-inner">
                 <div class="row">
-                    <div class="col-md-12"> <div class="col-md-12">
+                    <div class="col-md-12">
                     <div class="col-md-12">
                         <h2>PROFILE</h2>
                         <hr>
@@ -280,16 +280,16 @@ if (!isset($_SESSION["user_id"])) {
                                             </div>
                                         </div>
                                     </form>
-                                </div>
-                            </div>  <div class="col-md-12"><div class="modal-footer">	
+                                </div><div class="col-md-12"><div class="modal-footer">	
                                             <!--<a href="edit-profile-picture.php"><button type="button" class="btn btn-primary">CHANGE PROFILE</button></a>-->
                                             <a href="edit-profile.php"><button type="button" class="btn btn-primary">UPDATE INFORMATION</button></a>
                                         </div></div>
+                            </div>     <?php require_once ('../footer.php')?> 
                         </div>
-                        <?php require_once ('../footer.php')?>
-                    </div>
+                      
                 </div>
-            </div>
+      
+                    </div>    </div>
         </div>
         
                         

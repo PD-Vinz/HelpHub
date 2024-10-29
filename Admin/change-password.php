@@ -219,6 +219,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                         
                                                 
                                     </form>
+                            </div></div>
                                     <script>
 function confirmSubmit() {
     return confirm("Please confirm that the data you are submitting are true and correct.");}
@@ -226,7 +227,7 @@ function confirmSubmit() {
                                 </div>
                            
                         </div>
-                        <hr>
+                        
                         <?php include '../footer.php' ?> 
                     </div>
                 </div>

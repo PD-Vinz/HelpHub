@@ -153,7 +153,7 @@ if ($acceptTickets == "off") {
             <div style="color: white;
             padding: 15px 50px 5px 50px;
             float: right;
-            font-size: 16px;"> Last access : <?php echo date('d F Y')?> &nbsp; 
+            font-size: 16px;">
             <div class="btn-group nav-link">
               <button type="button" class="btn btn-rounded badge badge-light dropdown-toggle dropdown-icon" data-toggle="dropdown">
                 <span class="ml-3"><?php echo $Name?></span>
@@ -206,8 +206,10 @@ if ($acceptTickets == "off") {
             <div id="page-inner">
                 <div class="row">
                     <div class="col-md-12">
+                    <div class="col-md-12">
                      <h2> CREATE NEW TICKET</h2>   
-                    </div>
+                   <hr>   </div>
+                  
                 </div>
 
 
@@ -239,7 +241,7 @@ if ($stmt->rowCount() > 5) {
     echo '
       <div class="container-create">
     <div>
-        <p>&nbsp&nbsp&nbsp<i class=" fa fa-exclamation-circle fa-sm">&nbsp&nbsp&nbsp&nbsp&nbsp</i>You can only submit a ticket once per day. Please try again tomorrow</p>
+        <p>&nbsp&nbsp&nbsp<i class=" fa fa-exclamation-circle fa-sm">&nbsp&nbsp&nbsp&nbsp&nbsp</i>You can only submit a maximum of five(5) tickets per day. Please try again tomorrow</p>
     </div>
     </div>';
 } else {
@@ -335,8 +337,8 @@ if ($stmt->rowCount() > 5) {
       
          <!-- /. PAGE WRAPPER  -->
        
-                </div></div><?php require_once ('../footer.php')?>
-            </div>
+                </div></div>
+            </div><?php require_once ('../footer.php')?>
         </div>
     </div>
     <!-- /. WRAPPER -->

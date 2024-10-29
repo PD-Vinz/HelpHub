@@ -152,7 +152,7 @@ if (!isset($_SESSION["user_id"])) {
             <div style="color: white;
             padding: 15px 50px 5px 50px;
             float: right;
-            font-size: 16px;"> Last access : <?php echo date('d F Y')?> &nbsp; 
+            font-size: 16px;">
             <div class="btn-group nav-link">
               <button type="button" class="btn btn-rounded badge badge-light dropdown-toggle dropdown-icon" data-toggle="dropdown">
                 <span class="ml-3"><?php echo $Name?></span>

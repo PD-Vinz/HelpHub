@@ -181,7 +181,7 @@ try {
                 </button>
                 <a class="navbar-brand" href="dashboard.php"><?php echo $shortName?></a>
             </div>
-            <div style="color: white; padding: 15px 50px 5px 50px; float: right; font-size: 16px;"> Last access : <?php echo date('d F Y')?> &nbsp; 
+            <div style="color: white; padding: 15px 50px 5px 50px; float: right; font-size: 16px;">
             <div class="btn-group nav-link">
               <button type="button" class="btn btn-rounded badge badge-light dropdown-toggle dropdown-icon" data-toggle="dropdown">
 
@@ -244,7 +244,7 @@ try {
                     <div class="col-md-12">
                      <h2>DASHBOARD</h2>   
                      <hr> 
-                    </div>
+                   
              
                 <!-- /. ROW  -->
                 <div class="row">
@@ -316,7 +316,7 @@ $role = $identity// 'admin' or 'user'
                  <iframe class="panel panel-default" src="../FullCalendar-BS3-PHP-MySQL-master/index.php" style="width: 100%; min-height:700px; border-radius: 10px; margin-bottom:8px"></iframe>
 </div> 
                 <!-- /. ROW  -->
-            </div>
+            </div></div>
             <!-- /. PAGE INNER  -->
         </div>   <?php require_once ('../footer.php')?>
         <!-- /. PAGE WRAPPER  -->

@@ -672,7 +672,14 @@ height:200px;
         -ms-flex-wrap: nowrap;
         flex-wrap: nowrap
     }
-    
+    .btn-primary {
+      color: #fff;
+      background-color: rgb(164, 53, 51)
+  }
+  .btn-primary:hover {
+    color: #fff;
+    background-color: rgb(192, 92, 90)
+}
     @media (min-width: 768px) {
         .wmin-md-400 {
             min-width: 400px !important
@@ -681,7 +688,7 @@ height:200px;
     
     .btn-primary {
         color: #fff;
-        background-color: #2196f3
+        background-color: rgb(164, 53, 51)
     }
     
     .btn-labeled>b {
