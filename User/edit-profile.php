@@ -238,10 +238,10 @@ if (!isset($_SESSION["user_id"])) {
                 <div class="row">
                     <div class="col-md-12"> <div class="col-md-12">
                     <div class="col-md-12">
-                        <h2>PROFILE</h2>
+                        <h2>PROFILE</h2> <hr>
                         <div class="container">
                             <h1 class="text-primary"></h1>
-                            <hr>
+                           
                           
 <form class="form-horizontal" role="form" method="post" action="update_profile.php" enctype="multipart/form-data" onsubmit='return confirmSubmit();'>
                                 <!-- left column -->
@@ -255,28 +255,28 @@ if (!isset($_SESSION["user_id"])) {
                                         </label>
                                     </div>
                                   </div>
-
+<br>
                                   <div class="nickname">
                                     <span id="name" tabindex="4" data-key="1" contenteditable="true" onkeyup="changeAvatarName(event, this.dataset.key, this.textContent)" onblur="changeAvatarName('blur', this.dataset.key, this.textContent)" hidden></span>
                                   </div>
                                 <!-- edit form column -->
-                                <div class="col-md-9 personal-info">
-                                    <div> <h3>PERSONAL INFORMATION</h3>
+                                <div class="col-md-12 personal-info">
+                                    <div> 
                                     </div>
                                         <div class="form-group">
-                                            <label class="col-lg-3 control-label">NAME</label>
+                                            <label class="col-lg-2 control-label">NAME</label>
                                             <div class="col-lg-8">
                                                 <input class="form-control" name="name" type="text" value="<?php echo $Name?>" required>
                                             </div>
                                         </div>
                                         <div class="form-group">
-                                            <label class="col-lg-3 control-label">USER ID</label>
+                                            <label class="col-lg-2 control-label">USER ID</label>
                                             <div class="col-lg-8">
                                                 <input class="form-control" name="id" type="text" value="<?php echo $id?>" readonly>
                                             </div>
                                         </div>
                                         <div class="form-group">
-                                            <label class="col-lg-3 control-label">EMAIL ADDRESS</label>
+                                            <label class="col-lg-2 control-label">EMAIL ADDRESS</label>
                                             <div class="col-lg-8">
                                                 <input class="form-control" name="emailadd" type="text" value="<?php echo $Email_Add?>" readonly>
                                             </div>
@@ -291,47 +291,47 @@ if (!isset($_SESSION["user_id"])) {
                                             </div>
                                         </div>
                                         <div class="form-group">
-                                            <label class="col-lg-3 control-label">BIRTHDAY</label>
+                                            <label class="col-lg-2 control-label">BIRTHDAY</label>
                                             <div class="col-lg-8">
                                                 <input class="form-control" name="bday" type="date" value="<?php echo $Bday?>" required>
                                             </div>
                                         </div>
                                         <div class="form-group">
-                                            <label class="col-lg-3 control-label">AGE</label>
+                                            <label class="col-lg-2 control-label">AGE</label>
                                             <div class="col-lg-8">
                                                 <input class="form-control" name="age" type="text" value="<?php echo $Age?>" readonly>
                                             </div>
                                         </div>
 
                                         <div class="form-group">
-                                            <label class="col-lg-3 control-label">CAMPUS </label>
+                                            <label class="col-lg-2 control-label">CAMPUS </label>
                                             <div class="col-lg-8">
                                                 <input class="form-control" name="campus" type="text" value="<?php echo $Campus?>" readonly >
                                             </div>
                                         </div>
                                         <div class="form-group">
-                                            <label class="col-lg-3 control-label">DEPARTMENT </label>
+                                            <label class="col-lg-2 control-label">DEPARTMENT </label>
                                             <div class="col-lg-8">
                                                 <input class="form-control" name="dept" type="text" value="<?php echo $Department?>" readonly >
                                             </div>
                                         </div>
                                         <?php if ( $identity === 'Student'): ?>
                                         <div class="form-group">
-                                            <label class="col-lg-3 control-label">COURSE </label>
+                                            <label class="col-lg-2 control-label">COURSE </label>
                                             <div class="col-lg-8">
                                                 <input class="form-control" name="course" type="text" value="<?php echo $Course?>" readonly >
                                             </div>
                                         </div>
                                         <div class="form-group">
-                                            <label class="col-lg-3 control-label">YEAR AND SECTION </label>
+                                            <label class="col-lg-2 control-label">YEAR AND SECTION </label>
                                             <div class="col-lg-8">
                                                 <input class="form-control" name="ys" type="text" value="<?php echo $Y_S?>" readonly >
                                             </div>
                                         </div>
                                         <?php endif; ?>
                                         <div class="modal-footer">	
-                                            <input type="submit" class="btn btn-primary" name="update" value="UPDATE PROFILE"  >
-                                            <a href="profile.php"><button type="button" class="btn btn-primary">BACK</button></a>
+                                            <a href="profile.php"><button type="button" class="btn btn-primary">BACK</button></a> <input type="submit" class="btn btn-primary" name="update" value="UPDATE PROFILE"  >
+                                           
                                         </div>
                                         
 

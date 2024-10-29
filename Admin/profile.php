@@ -85,12 +85,13 @@ if (!isset($_SESSION["admin_number"])) {
         <div id="page-wrapper">
             <div id="page-inner">
                 <div class="row">
-                    <div class="col-md-12">
-                        <h2>PROFILE</h2>
-
+                <div class="col-md-12">
+                     <div class="col-md-12">
+                        <h2>Profile</h2>
+    <hr>
                         <div class="container">
                             <h1 class="text-primary"></h1>
-                            <hr>
+                        
                             <div class="row">
                                
                                 <!-- left column -->
@@ -108,13 +109,13 @@ if (!isset($_SESSION["admin_number"])) {
                                     </div>
                                     <form class="form-horizontal" role="form">
                                         <div class="form-group">
-                                            <label class="col-lg-3 control-label">USER ID</label>
+                                            <label class="col-lg-3 control-label">User ID</label>
                                             <div class="col-lg-8">
                                                 <input class="form-control" type="text" value="<?php echo $user_ID?>" disabled>
                                             </div>
                                         </div>
                                         <div class="form-group">
-                                            <label class="col-lg-3 control-label">EMAIL ADDRESS</label>
+                                            <label class="col-lg-3 control-label">Email address</label>
                                             <div class="col-lg-8">
                                                 <input class="form-control" type="text" value="<?php echo $Email_Add?>" disabled>
                                             </div>
@@ -126,13 +127,13 @@ if (!isset($_SESSION["admin_number"])) {
                                             </div>
                                         </div>
                                         <div class="form-group">
-                                            <label class="col-lg-3 control-label">BIRTHDAY</label>
+                                            <label class="col-lg-3 control-label">Birthday</label>
                                             <div class="col-lg-8">
                                                 <input class="form-control" type="text" value="<?php echo $formattedDate?>" disabled>
                                             </div>
                                         </div>
                                         <div class="form-group">
-                                            <label class="col-lg-3 control-label">AGE</label>
+                                            <label class="col-lg-3 control-label">Age</label>
                                             <div class="col-lg-8">
                                                 <input class="form-control" type="text" value="<?php echo $Age?>" disabled>
                                             </div>
@@ -147,22 +148,24 @@ if (!isset($_SESSION["admin_number"])) {
                                         
                                                 </div>
                                             </div><div class="modal-footer">	
-                                            <a href="edit-profile.php"><button type="button" class="btn btn-primary">UPDATE INFORMATION</button></a>
+                                            <a href="edit-profile.php"><button type="button" class="btn btn-primary">Update information</button></a>
                                         </div>
                                         </div>
                                     </form>
                                 </div>
-                            </div>
+                            
                         
                         <hr>
-            <div class="panel panel-default">
-                <div class="row">
-                    <div class="col-md-12">
+                      
+             <div class="col-md-12">
+                <hr>
+                    <div class="col-md-12 panel panel-default">
+                       
                         <h2>Employee Report</h2>
-
+  <hr>
                         <div class="container">
                             <h1 class="text-primary"></h1>
-                            <hr>
+                          
                             <div class="row">
                                 
                             <div class="row">                     
@@ -210,14 +213,13 @@ if (!isset($_SESSION["admin_number"])) {
                                         </div>
                                         --->
 
-
-
+                            </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
+                            </div><?php require_once('../footer.php') ?>
                         </div>
                     </div>
                 </div>
@@ -308,6 +310,6 @@ if (!isset($_SESSION["admin_number"])) {
     <script>
       $.widget.bridge('uibutton', $.ui.button)
     </script>
-    <?php require_once('../footer.php') ?>
+    
 </body>
 </html>

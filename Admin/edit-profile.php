@@ -71,8 +71,8 @@ if (!isset($_SESSION["admin_number"])) {
   <!-- FONTAWESOME STYLES-->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
     <!-- CUSTOM STYLES -->
+
     <link href="assets/css/custom.css" rel="stylesheet">
-    
     <!-- GOOGLE FONTS -->
     <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
     <!-- TABLE STYLES -->
@@ -88,7 +88,8 @@ if (!isset($_SESSION["admin_number"])) {
         <!-- /. NAV SIDE -->
         <div id="page-wrapper">
             <div id="page-inner">
-                
+            <div class="row">
+            <div class="col-md-12">
                     <div class="col-md-12">
                         <h2>Edit profile</h2>          <hr>
                         <div class="container">
@@ -100,7 +101,7 @@ if (!isset($_SESSION["admin_number"])) {
                                 <!-- left column -->
 
                                 
-                                <div class="avatar" id="avatar">
+                                <div class="avatar" id="avatar" style="align-content:center;">
                                     <div id="preview">
                                         <img src="data:image/jpeg;base64,<?php echo $P_PBase64?>" id="avatar-image" class="avatar_img" id="" alt="No Image">
                                     </div>
@@ -121,27 +122,26 @@ if (!isset($_SESSION["admin_number"])) {
         $imgContent = file_get_contents($image['tmp_name']);
 </script>
 
-                                  <div class="nickname">
+                                  <div class="row">
                                     <span id="name" tabindex="4" data-key="1" contenteditable="true" onkeyup="changeAvatarName(event, this.dataset.key, this.textContent)" onblur="changeAvatarName('blur', this.dataset.key, this.textContent)" hidden></span>
                                   </div>
                                 <!-- edit form column -->
-                                <div class="col-md-9 personal-info">
-                                    <div> <h3>PERSONAL INFORMATION</h3>
-                                    </div>
+                                <div class="col-md-12 personal-info ">
+                               <br>
                                         <div class="form-group">
-                                            <label class="col-lg-3 control-label">FIRST NAME</label>
+                                            <label class="col-lg-2 control-label">FIRST NAME</label>
                                             <div class="col-lg-8">
                                                 <input class="form-control" name="fname" type="text" value="<?php echo $Name?>" required>
                                             </div>
                                         </div>
                                         <div class="form-group">
-                                            <label class="col-lg-3 control-label">LAST NAME</label>
+                                            <label class="col-lg-2 control-label">LAST NAME</label>
                                             <div class="col-lg-8">
                                                 <input class="form-control" name="lname" type="text" value="<?php echo $lname?>" required>
                                             </div>
                                         </div>
                                         <div class="form-group">
-                                            <label class="col-lg-3 control-label">EMAIL ADDRESS</label>
+                                            <label class="col-lg-2 control-label">EMAIL ADDRESS</label>
                                             <div class="col-lg-8">
                                                 <input class="form-control" name="emailadd" type="text" value="<?php echo $Email_Add?>" required>
                                             </div>
@@ -156,14 +156,15 @@ if (!isset($_SESSION["admin_number"])) {
                                             </div>
                                         </div>
                                         <div class="form-group">
-                                            <label class="col-lg-3 control-label">BIRTHDAY</label>
+                                            <label class="col-lg-2 control-label">BIRTHDAY</label>
                                             <div class="col-lg-8">
                                                 <input class="form-control" name="bday" type="date" value="<?php echo $Bday?>" required>
                                             </div>
                                         </div>
-                                        <div class="modal-footer">	
-                                            <input type="submit" class="btn btn-primary" name="update" value="UPDATE PROFILE"  >
+                                        <div class="modal-footer">	 
                                             <button type="button" class="btn btn-primary" onclick="history.back()">BACK</button>
+                                            <input type="submit" class="btn btn-primary" name="update" value="UPDATE PROFILE"  >
+                                           
                                         </div>
                                         
 
@@ -180,8 +181,8 @@ function confirmSubmit() {
 </script>                                    
                                 </div>
                            
-                        </div>
-                        <hr>
+                        </div></div></div>
+                    
                         <?php include '../footer.php' ?> 
                     </div>
                 </div>
