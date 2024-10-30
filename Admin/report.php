@@ -38,6 +38,21 @@ if (!isset($_SESSION["admin_number"])) {
         // Handle the case where no results are found
         echo "No Admin found with the given student number.";
     }
+
+         // for displaying system details
+         $query = $pdoConnect->prepare("SELECT system_name, short_name, system_logo, system_cover FROM settings WHERE id = :id");
+         $query->execute(['id' => 1]);
+         $Datas = $query->fetch(PDO::FETCH_ASSOC);
+         $sysName = $Datas['system_name'] ?? '';
+         $shortName = $Datas['short_name'] ?? '';
+          $systemCover = $Datas['system_cover'];
+          $S_L = $Datas['system_logo'];
+          $S_LBase64 = '';
+          if (!empty($S_L)) {
+              $base64Image = base64_encode($S_L);
+              $imageType = 'image/png'; // Default MIME type
+              $S_LBase64 = 'data:' . $imageType . ';base64,' . $base64Image;
+          }
 }
 ?>
 
@@ -47,7 +62,8 @@ if (!isset($_SESSION["admin_number"])) {
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>DHVSU MIS - HelpHub</title>
+    <title><?php echo $sysName?></title>
+    <link rel="icon" href="<?php echo htmlspecialchars($S_LBase64, ENT_QUOTES, 'UTF-8'); ?>" type="image/*"> 
     <link rel="stylesheet" href="assets/css/report.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
@@ -70,7 +86,7 @@ if (!isset($_SESSION["admin_number"])) {
     <main>
         <!-- Sample Table -->
         <section>
-            <h2>Section 1: Working Durations </h2>
+            <h2>Section 1: Working Durations (<?php echo date("F");?>)</h2>
             <table>
                 <thead>
                     <tr>
@@ -105,33 +121,33 @@ if (!isset($_SESSION["admin_number"])) {
 
         <!-- Pie Chart Section -->
         <section>
-            <h2>Section 2: Pie Chart</h2>
+            <h2>Section 2: Total Tickets (<?php echo date("F");?>)</h2>
             <canvas id="pieChart"></canvas>
         </section>
 
         <!-- Line Chart Section -->
         <section>
-            <h2>Section 3: Line Chart</h2>
+            <h2>Section 3: Total Tickets (Yearly)</h2>
             <canvas id="lineChart"></canvas>
         </section>
     </main>
 
     <footer>
         <p>Footer Information</p>
-    </footer>
+    
 
     <button onclick="window.print()">Print this page</button>
-
+    </footer>
     <script>
         // Pie chart configuration
         const pieCtx = document.getElementById('pieChart').getContext('2d');
         const pieChart = new Chart(pieCtx, {
             type: 'pie',
             data: {
-                labels: ['Sales', 'Profit'],
+                labels: ['Student Tickets', 'Employee Tickets'],
                 datasets: [{
-                    label: '2022 Data',
-                    data: [150000, 50000],
+                    label: '2024 Data',
+                    data: [50, 100],
                     backgroundColor: ['#FF6384', '#36A2EB'],
                     hoverOffset: 4
                 }]
@@ -143,15 +159,15 @@ if (!isset($_SESSION["admin_number"])) {
         const lineChart = new Chart(lineCtx, {
             type: 'line',
             data: {
-                labels: ['2020', '2021', '2022'],
+                labels: ['2022', '2023', '2024'],
                 datasets: [{
-                    label: 'Sales',
-                    data: [100000, 120000, 150000],
+                    label: 'Student Tickets',
+                    data: [45, 75, 60],
                     borderColor: '#36A2EB',
                     fill: false
                 }, {
-                    label: 'Profit',
-                    data: [30000, 35000, 50000],
+                    label: 'Employee Tickets',
+                    data: [60, 95, 100],
                     borderColor: '#FF6384',
                     fill: false
                 }]

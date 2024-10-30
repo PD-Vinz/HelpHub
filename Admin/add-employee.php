@@ -156,7 +156,7 @@ input[type="file"]::file-selector-button {
 	<div class="panel-body">
 		<div class="container-fluid col-md-12">
 			<div id="msg"></div>
-			<form method="post" action="action\mis-employee-insert.php" id="manage-user" enctype="multipart/form-data">
+<form method="post" action="action\mis-employee-insert.php" id="manage-user" enctype="multipart/form-data" onsubmit='return validateForm();'>
             <div class="container-fluid col-md-6">
                 <div class="form-group col-6">
 					<label for="name">User ID</label>
@@ -165,19 +165,34 @@ input[type="file"]::file-selector-button {
 				</div>	
 				<div class="form-group col-6">
 					<label for="name">First Name</label>
-					<input type="text" name="firstname" id="firstname" class="form-control" required autocomplete="off">
-				</div>
+					<input type="text" name="firstname" id="fname" class="form-control" required autocomplete="off">
+                    <span id="fnameError" style="color: red;"></span>
+                </div>
 				<div class="form-group col-6">
 					<label for="name">Last Name</label>
-					<input type="text" name="lastname" id="lastname" class="form-control" required autocomplete="off">
-				</div>
+					<input type="text" name="lastname" id="lname" class="form-control" required autocomplete="off">
+                    <span id="lnameError" style="color: red;"></span>
+                </div>
                 <div class="form-group col-6">
 					<label for="name">Birthday</label>
-					<input type="date" name="birthday" id="birthday" class="form-control" required autocomplete="off">
+					<input type="date" name="birthday" id="bdayInput" class="form-control" required>
 				</div>
+<script>
+    const bdayInput = document.getElementById("bdayInput");
+
+    // Calculate minimum date (100 years ago from today)
+    const minDate = new Date();
+    minDate.setFullYear(minDate.getFullYear() - 100);
+    bdayInput.min = minDate.toISOString().split("T")[0];
+
+    // Calculate maximum date (18 years ago from today)
+    const maxDate = new Date();
+    maxDate.setFullYear(maxDate.getFullYear() - 10);
+    bdayInput.max = maxDate.toISOString().split("T")[0];
+</script>  
                 <div class="form-group col-6">
 					<label for="sex">Sex</label>
-					<select name="sex" id="sex" class="custom-select form-control" required>
+					<select name="sex" id="sex" class="form-control dropdown" required>
 						<option value="Male">Male</option>
 						<option value="Female">Female</option>
 					</select>
@@ -227,6 +242,57 @@ input[type="file"]::file-selector-button {
 			</div>
 		</div>
     </form>
+<script>
+    const fnameInput = document.getElementById('fname');
+    const lnameInput = document.getElementById('lname');
+    const fnameError = document.getElementById('fnameError');
+    const lnameError = document.getElementById('lnameError');
+    const nameRegex = /^[a-zA-ZÀ-ÿ\s'.-]+$/;
+    const maxLength = 100; // Set maximum length
+
+    // Function to validate the name
+    function validateName(input, errorElement) {
+        const name = input.value.trim();
+
+        if (name === "") {
+            errorElement.textContent = 'Name is required.';
+            input.style.borderColor = 'red';
+            return false;
+        } else if (!nameRegex.test(name)) {
+            errorElement.textContent = 'Please enter a valid name (letters, spaces, hyphens, apostrophes, and periods only).';
+            input.style.borderColor = 'red';
+            return false;
+        } else if (name.length > maxLength) {
+            errorElement.textContent = `Name must be ${maxLength} characters or fewer.`;
+            input.style.borderColor = 'red';
+            return false;
+        } else {
+            input.style.borderColor = '';
+            errorElement.textContent = ''; // Clear error if valid
+            return true;
+        }
+    }
+
+    // Function to confirm submission
+    function confirmSubmit() {
+        return confirm("Please make sure that the data you are submitting is true. Are you sure you want to proceed?");
+    }
+
+    // Main function to validate form before submission
+    function validateForm() {
+        const isFnameValid = validateName(fnameInput, fnameError);
+        const isLnameValid = validateName(lnameInput, lnameError);
+        
+        if (!isFnameValid || !isLnameValid) {
+            return false; // Prevent form submission if any validation fails
+        }
+        return confirmSubmit(); // Show confirmation dialog if all are valid
+    }
+
+    // Live validation feedback
+    fnameInput.addEventListener('input', () => validateName(fnameInput, fnameError));
+    lnameInput.addEventListener('input', () => validateName(lnameInput, lnameError));
+</script>
 </div>
 <style>
     .img-thumbnail {

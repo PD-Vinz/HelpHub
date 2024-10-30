@@ -205,13 +205,13 @@ if (!isset($_SESSION["admin_number"])) {
   </div>
                                         
                                        
-<!--
+
                                         <div class="modal-footer">	
                                         <a href="report.php" target="_blank">
                                             <button type="button" class="btn btn-primary">View Full Report</button>
                                         </a>
                                         </div>
-                                        --->
+                                        
 
                             </div>
                                                 </div>

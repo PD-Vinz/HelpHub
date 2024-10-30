@@ -97,7 +97,7 @@ if (!isset($_SESSION["admin_number"])) {
                   
                             <div class="row">
                                
-<form class="form-horizontal" role="form" method="post" action="action\update_profile.php" enctype="multipart/form-data" onsubmit='return confirmSubmit();'>
+<form class="form-horizontal" role="form" method="post" action="action\update_profile.php" enctype="multipart/form-data" onsubmit="return validateForm();">
                                 <!-- left column -->
 
                                 
@@ -131,13 +131,15 @@ if (!isset($_SESSION["admin_number"])) {
                                         <div class="form-group">
                                             <label class="col-lg-2 control-label">FIRST NAME</label>
                                             <div class="col-lg-8">
-                                                <input class="form-control" name="fname" type="text" value="<?php echo $Name?>" required>
+                                                <input class="form-control" name="fname" id="fname" type="text" value="<?php echo $Name?>" required autocomplete="off">
+                                                <span id="fnameError" style="color: red;"></span>
                                             </div>
                                         </div>
                                         <div class="form-group">
                                             <label class="col-lg-2 control-label">LAST NAME</label>
                                             <div class="col-lg-8">
-                                                <input class="form-control" name="lname" type="text" value="<?php echo $lname?>" required>
+                                                <input class="form-control" name="lname" id="lname" type="text" value="<?php echo $lname?>" required autocomplete="off">
+                                                <span id="lnameError" style="color: red;"></span>
                                             </div>
                                         </div>
                                         <div class="form-group">
@@ -147,7 +149,7 @@ if (!isset($_SESSION["admin_number"])) {
                                             </div>
                                         </div>
                                         <div class="form-group">
-                                            <label for="category" class="col-lg-3 control-label">SEX ASSIGN AT BIRTH</label>
+                                            <label for="category" class="col-lg-2 control-label">SEX ASSIGN AT BIRTH</label>
                                             <div class="col-lg-8">
                                                 <select id="category" name="sex" class="form-control dropdown" required>
                                                     <option value="Male" <?php echo ($Sex == 'Male') ? 'selected' : ''; ?>>Male</option>
@@ -158,9 +160,22 @@ if (!isset($_SESSION["admin_number"])) {
                                         <div class="form-group">
                                             <label class="col-lg-2 control-label">BIRTHDAY</label>
                                             <div class="col-lg-8">
-                                                <input class="form-control" name="bday" type="date" value="<?php echo $Bday?>" required>
+                                                <input class="form-control" name="bday" type="date" value="<?php echo $Bday?>" required id="bdayInput">
                                             </div>
                                         </div>
+<script>
+    const bdayInput = document.getElementById("bdayInput");
+
+    // Calculate minimum date (100 years ago from today)
+    const minDate = new Date();
+    minDate.setFullYear(minDate.getFullYear() - 100);
+    bdayInput.min = minDate.toISOString().split("T")[0];
+
+    // Calculate maximum date (18 years ago from today)
+    const maxDate = new Date();
+    maxDate.setFullYear(maxDate.getFullYear() - 10);
+    bdayInput.max = maxDate.toISOString().split("T")[0];
+</script>                                       
                                         <div class="modal-footer">	 
                                             <button type="button" class="btn btn-primary" onclick="history.back()">BACK</button>
                                             <input type="submit" class="btn btn-primary" name="update" value="UPDATE PROFILE"  >
@@ -175,10 +190,53 @@ if (!isset($_SESSION["admin_number"])) {
                                             </div>
                                         </div>
                                     </form>
-                                    <script>
-function confirmSubmit() {
-    return confirm("Please confirm that the data you are submitting are true and correct.");}
-</script>                                    
+<script>
+    const fnameInput = document.getElementById('fname');
+    const lnameInput = document.getElementById('lname');
+    const fnameError = document.getElementById('fnameError');
+    const lnameError = document.getElementById('lnameError');
+    const nameRegex = /^[a-zA-ZÀ-ÿ\s'.-]+$/;
+    const maxLength = 100; // Set maximum length
+
+    // Function to validate the name
+    function validateName(input, errorElement) {
+        const name = input.value.trim();
+
+        if (name === "") {
+            errorElement.textContent = 'Name is required.';
+            return false;
+        } else if (!nameRegex.test(name)) {
+            errorElement.textContent = 'Please enter a valid name (letters, spaces, hyphens, apostrophes, and periods only).';
+            return false;
+        } else if (name.length > maxLength) {
+            errorElement.textContent = `Name must be ${maxLength} characters or fewer.`;
+            return false;
+        } else {
+            errorElement.textContent = ''; // Clear error if valid
+            return true;
+        }
+    }
+
+    // Function to confirm submission
+    function confirmSubmit() {
+        return confirm("Please make sure that the data you are submitting is true. Are you sure you want to proceed?");
+    }
+
+    // Main function to validate form before submission
+    function validateForm() {
+        const isFnameValid = validateName(fnameInput, fnameError);
+        const isLnameValid = validateName(lnameInput, lnameError);
+        
+        if (!isFnameValid || !isLnameValid) {
+            return false; // Prevent form submission if any validation fails
+        }
+        return confirmSubmit(); // Show confirmation dialog if all are valid
+    }
+
+    // Live validation feedback
+    fnameInput.addEventListener('input', () => validateName(fnameInput, fnameError));
+    lnameInput.addEventListener('input', () => validateName(lnameInput, lnameError));
+</script>                                
                                 </div>
                            
                         </div></div></div>

@@ -158,19 +158,79 @@ input[type="file"]::file-selector-button {
 			<div id="msg"></div>
 			<form method="post" action="action/add-single-userE-upload.php" id="manage-user" enctype="multipart/form-data">
             <div class="container-fluid col-md-6">
-            <div class="form-group col-6">
+    <style>
+        .availability-message {
+            color: green;
+            display: none; /* Hidden by default */
+        }
+        .unavailable {
+            color: red;
+        }
+    </style>
+                <div class="form-group col-6">
 					<label for="name">User ID</label>
-                    <input type="text" name="userid" class="form-control" value="" required>
-				</div>
-                
+                    <input type="number" name="userid" id="userid" class="form-control" value="" required oninput="checkUserId()">
+                    <div id="availabilityMessage" class="availability-message"></div>
+                </div>
+<script>
+    function checkUserId() {
+        const useridInput = document.getElementById('userid');
+        const availabilityMessage = document.getElementById('availabilityMessage');
+
+        const userId = useridInput.value.trim();
+        const userType = "Employee"; // Set this to the actual user type you want to send
+
+        if (userId.length === 0) {
+            availabilityMessage.style.display = 'none'; // Hide message if input is empty
+            return;
+        } else if (userId.length >= 15) {
+            availabilityMessage.textContent = 'Max ID length is only 15';
+            availabilityMessage.classList.add('unavailable');
+            availabilityMessage.style.display = 'block';
+            return; // Add return to stop execution if max length is reached
+        } else {
+            const xhr = new XMLHttpRequest();
+            xhr.open("GET", "fetch/does-id-already-exist.php?userid=" + encodeURIComponent(userId) + "&usertype=" + encodeURIComponent(userType), true);
+            xhr.onload = function() {
+                if (xhr.status === 200) {
+                    const response = JSON.parse(xhr.responseText);
+                    if (response.available) {
+                        availabilityMessage.textContent = 'User ID is available!';
+                        availabilityMessage.classList.remove('unavailable');
+                        availabilityMessage.style.display = 'block';
+                    } else {
+                        availabilityMessage.textContent = 'User ID is already taken.';
+                        availabilityMessage.classList.add('unavailable');
+                        availabilityMessage.style.display = 'block';
+                    }
+                }
+            };
+            xhr.send(); // Move this inside the else block
+        }
+    }
+</script>                
 				<div class="form-group col-6">
 					<label for="name">Name</label>
-					<input type="text" name="name" id="name" class="form-control" required>
-				</div>
+					<input type="text" name="name" id="nameInput" class="form-control" required>
+                    <span id="nameError" style="color: red;"></span>
+                </div>
                 <div class="form-group col-6">
 					<label for="name">Birthday</label>
-					<input type="date" name="birthday" id="birthday" class="form-control" required>
+					<input type="date" name="birthday" id="bdayInput" class="form-control" required>
 				</div>
+<script>
+    const bdayInput = document.getElementById("bdayInput");
+
+    // Calculate minimum date (100 years ago from today)
+    const minDate = new Date();
+    minDate.setFullYear(minDate.getFullYear() - 100);
+    bdayInput.min = minDate.toISOString().split("T")[0];
+
+    // Calculate maximum date (18 years ago from today)
+    const maxDate = new Date();
+    maxDate.setFullYear(maxDate.getFullYear() - 10);
+    bdayInput.max = maxDate.toISOString().split("T")[0];
+</script> 
                 <div class="form-group col-6">
 					<label for="sex">Sex</label>
 					<select name="sex" id="sex" class=" form-control" required>
@@ -221,6 +281,47 @@ input[type="file"]::file-selector-button {
 			</div>
 		</div>
     </form>
+<script>
+    const nameInput = document.getElementById('nameInput');
+    const nameError = document.getElementById('nameError');
+    const nameRegex = /^[a-zA-ZÀ-ÿ\s'.-]+$/;
+    const maxLength = 100; // Set maximum length
+
+    // Function to validate the name
+    function validateName() {
+        const name = nameInput.value.trim();
+
+        if (name === "") {
+            nameError.textContent = 'Name is required.';
+            return false;
+        } else if (!nameRegex.test(name)) {
+            nameError.textContent = 'Please enter a valid name (letters, spaces, hyphens, apostrophes, and periods only).';
+            return false;
+        } else if (name.length >= maxLength) {
+            nameError.textContent = `Name must be ${maxLength} characters or fewer.`;
+            return false;
+        } else {
+            nameError.textContent = ''; // Clear error if valid
+            return true;
+        }
+    }
+
+    // Function to confirm submission
+    function confirmSubmit() {
+        return confirm("Please make sure that the data you are submitting is true. Are you sure you want to proceed?");
+    }
+
+    // Main function to validate form before submission
+    function validateForm() {
+        if (!validateName()) {
+            return false; // Prevent form submission if name validation fails
+        }
+        return confirmSubmit(); // Show confirmation dialog if name is valid
+    }
+
+    // Live validation feedback
+    nameInput.addEventListener('input', validateName);
+</script>
 </div>
 <style>
     .img-thumbnail {

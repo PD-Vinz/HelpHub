@@ -226,7 +226,7 @@ if (!isset($_SESSION["user_id"])) {
                                             </div>
                                         </div>
                                         <div class="form-group">
-                                            <label class="col-lg-3 control-label">GENDER</label>
+                                            <label class="col-lg-3 control-label">SEX ASSIGN AT BIRTH</label>
                                             <div class="col-lg-8">
                                                 <input class="form-control" type="text" value="<?php echo $Sex?>" disabled>
                                             </div>

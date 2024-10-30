@@ -243,7 +243,7 @@ if (!isset($_SESSION["user_id"])) {
                             <h1 class="text-primary"></h1>
                            
                           
-<form class="form-horizontal" role="form" method="post" action="update_profile.php" enctype="multipart/form-data" onsubmit='return confirmSubmit();'>
+<form class="form-horizontal" role="form" method="post" action="update_profile.php" enctype="multipart/form-data" onsubmit='return validateForm();'>
                                 <!-- left column -->
                                 <div class="avatar" id="avatar">
                                     <div id="preview">
@@ -266,7 +266,8 @@ if (!isset($_SESSION["user_id"])) {
                                         <div class="form-group">
                                             <label class="col-lg-2 control-label">NAME</label>
                                             <div class="col-lg-8">
-                                                <input class="form-control" name="name" type="text" value="<?php echo $Name?>" required>
+                                                <input class="form-control" name="name" id="nameInput" type="text" value="<?php echo $Name?>" required autocomplete="off">
+                                                <span id="nameError" style="color: red;"></span>
                                             </div>
                                         </div>
                                         <div class="form-group">
@@ -282,7 +283,7 @@ if (!isset($_SESSION["user_id"])) {
                                             </div>
                                         </div>
                                         <div class="form-group">
-                                            <label for="category" class="col-lg-3 control-label">SEX ASSIGN AT BIRTH</label>
+                                            <label for="category" class="col-lg-2 control-label">SEX ASSIGN AT BIRTH</label>
                                             <div class="col-lg-8">
                                                 <select id="category" name="sex" class="form-control dropdown" required>
                                                     <option value="Male" <?php echo ($Sex == 'Male') ? 'selected' : ''; ?>>Male</option>
@@ -293,9 +294,22 @@ if (!isset($_SESSION["user_id"])) {
                                         <div class="form-group">
                                             <label class="col-lg-2 control-label">BIRTHDAY</label>
                                             <div class="col-lg-8">
-                                                <input class="form-control" name="bday" type="date" value="<?php echo $Bday?>" required>
+                                                <input class="form-control" name="bday" type="date" value="<?php echo $Bday?>" required id="bdayInput">
                                             </div>
                                         </div>
+<script>
+    const bdayInput = document.getElementById("bdayInput");
+
+    // Calculate minimum date (100 years ago from today)
+    const minDate = new Date();
+    minDate.setFullYear(minDate.getFullYear() - 100);
+    bdayInput.min = minDate.toISOString().split("T")[0];
+
+    // Calculate maximum date (18 years ago from today)
+    const maxDate = new Date();
+    maxDate.setFullYear(maxDate.getFullYear() - 10);
+    bdayInput.max = maxDate.toISOString().split("T")[0];
+</script>
                                         <div class="form-group">
                                             <label class="col-lg-2 control-label">AGE</label>
                                             <div class="col-lg-8">
@@ -342,10 +356,48 @@ if (!isset($_SESSION["user_id"])) {
                                             </div>
                                         </div>
                                     </form>
-                                    <script>
-function confirmSubmit() {
-    return confirm("Please make sure that the data you are submitting are true. Are you sure you want to proceed?");}
-</script>                                    
+<script>
+    const nameInput = document.getElementById('nameInput');
+    const nameError = document.getElementById('nameError');
+    const nameRegex = /^[a-zA-ZÀ-ÿ\s'.-]+$/;
+    const maxLength = 100; // Set maximum length
+
+    // Function to validate the name
+    function validateName() {
+        const name = nameInput.value.trim();
+
+        if (name === "") {
+            nameError.textContent = 'Name is required.';
+            return false;
+        } else if (!nameRegex.test(name)) {
+            nameError.textContent = 'Please enter a valid name (letters, spaces, hyphens, apostrophes, and periods only).';
+            return false;
+        } else if (name.length >= maxLength) {
+            nameError.textContent = `Name must be ${maxLength} characters or fewer.`;
+            return false;
+        } else {
+            nameError.textContent = ''; // Clear error if valid
+            return true;
+        }
+    }
+
+    // Function to confirm submission
+    function confirmSubmit() {
+        return confirm("Please make sure that the data you are submitting is true. Are you sure you want to proceed?");
+    }
+
+    // Main function to validate form before submission
+    function validateForm() {
+        if (!validateName()) {
+            return false; // Prevent form submission if name validation fails
+        }
+        return confirmSubmit(); // Show confirmation dialog if name is valid
+    }
+
+    // Live validation feedback
+    nameInput.addEventListener('input', validateName);
+</script>
+                    
                                 </div>
                             </div>
                         </div>
