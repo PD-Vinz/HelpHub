@@ -27,6 +27,16 @@ body.fade-in {
 body.fade-out {
     opacity: 0;
   }
+  
+  /* Add this to your CSS file */
+.error-message {
+    opacity: 1;
+    transition: opacity 1s ease-out; /* Adjust the duration as needed */
+}
+
+.error-message.fade-out {
+    opacity: 0;
+}
 
 .logo {
     margin-top: 40px;
@@ -59,9 +69,12 @@ h3 {
     color: #ffffff;
     font-size: 30px;
     margin-bottom: 10px;
+    
 }
+
 h4{
     color: #ffffff;
+    margin:15px;
 }
 
 h5 {
@@ -69,14 +82,21 @@ h5 {
 }
 
 h6 {
+    color: #ffffff;
     margin-bottom: 5px;
 }
-
+a{
+      color: #bc9702;
+}
+a:hover{
+    color: #FFCC00;
+}
 .login {
     text-align: center;
     margin: 20px auto;
     padding: 30px;
-    border-radius: 50px;
+    padding-top: 15px;
+    border-radius: 25px;
     background-color: #9C0507;
     display: block;
     margin-left: auto;
@@ -88,6 +108,48 @@ h6 {
 
 .form-group {
     margin-bottom: 20px;
+    position: relative;
+}
+
+.input-group_input {
+    color: #ffffff;
+    padding: 10px;
+    border: none;
+    border-radius: 4px;
+    outline: 2px solid #fff;
+    transition: outline-color 250ms;
+    background-color: transparent;
+}
+
+.input-group_input:focus {
+    outline-color: #9C0507;
+    box-shadow: 0 0 5px 5px rgba(128, 0, 0, 0.25), 0 0 10px 5px rgba(255, 215, 0, 0.25);
+    transition: box-shadow 0.3s ease, outline-color 1s ease, transform 0.3s ease;
+}
+
+.input-group_label {
+    position: absolute;
+    top: 0;
+    left: 0;
+    transform: translate(10px, 10px);
+    transform-origin: left;
+    color: #ffffff;
+    background-color: transparent;
+    transition: transform 200ms;
+    cursor: text;
+    
+}
+::placeholder {
+    color: rgb(242, 236, 236);
+    opacity: 1; /* Firefox */
+  }
+  
+.input-group_input:focus + .input-group_label,
+.input-group_input:valid + .input-group_label {
+    transform: translate(20px, -12px) scale(0.9);
+    color: #fff;
+    background-color: #9C0507;
+    transition: background-color 0.3s ease, color 0.3s ease, transform 0.3s ease;
 }
 
 input[type="text"],
@@ -138,14 +200,48 @@ input[type="submit"]:hover {
 
 }
 
+#eyeIcon {
+    color: #ffffff;
+}
 
 .forgot {
-    color: #0866ff;
+    color: #e1be5f;
     font-size: 14px;
     font-weight: 500;
+    text-shadow: 0.3px 0.3px #18181a;
     cursor: pointer;
-    text-decoration: none;                                  
+    text-decoration: none;
+    transition: color 0.3s ease, font-size 0.3s ease, transform 0.3s ease;                                    
 }
+
+.forgot:hover {
+    color: #dac99a;
+    font-size: 15px;
+    transition: color 0.3s ease, font-size 0.3s ease, transform 0.3s ease;                             
+}
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+  -webkit-box-shadow: 0 0 0 30px #9C0507 inset !important;
+  -webkit-text-fill-color: #ffffff !important;
+  transition: background-color 5000s ease-in-out 0s;
+
+}
+
+
+
+.input-group_input:autofill + .input-group_label,
+.input-group_input:autofill:hover + .input-group_label,
+.input-group_input:autofill:focus + .input-group_label,
+.input-group_input:autofill:active + .input-group_label {
+    font-family: inherit;
+  transform: translate(20px, -12px) scale(0.9);
+  color: #fff;
+  background-color: #9C0507;
+  transition: background-color 0.3s ease, color 0.3s ease, transform 0.3s ease;
+} 
 
 /*
     input[type="text"],
@@ -178,8 +274,71 @@ input[type="submit"]:hover {
     }
 */
 
-input[type="number"]::-webkit-outer-spin-button,
-input[type="number"]::-webkit-inner-spin-button {
-    -webkit-appearance: none;
-    margin: 0;
+/* Footer styling with background opacity */
+footer {
+    background-color: rgba(51, 51, 51, 0.5); /* Black with 50% opacity */
+    color: white;
+    text-align: center;
+    padding: 10px 0;
+    position: fixed; /* Fixes the footer at the bottom */
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    font-size: 14px; /* Smaller font size */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px; /* Adds space between elements */
+    transition: background-color 0.3s ease; /* Transition effect for background color */
+    z-index: 1000; /* Ensures it stays on top of other elements */
 }
+
+.link-button {
+    background: none; /* No background */
+    border: none; /* No border */
+    color: #007bff; /* Link color */
+    font: inherit; /* Inherit font properties */
+    cursor: pointer; /* Pointer cursor on hover */
+    text-decoration: underline; /* Underline to mimic link */
+}
+
+.link-button:hover {
+    text-decoration: none; /* Remove underline on hover */
+    color: #69b2ff; /* Darker color on hover */
+}
+
+/* Footer hover effect with animation */
+footer:hover {
+    background-color: rgba(51, 51, 51, 0.9); /* Black with 90% opacity */
+}
+
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+  -webkit-box-shadow: 0 0 0 30px #9C0507 inset !important;
+  -webkit-text-fill-color: #ffffff !important;
+  transition: background-color 5000s ease-in-out 0s;
+
+}
+
+
+
+.input-group_input:autofill + .input-group_label,
+.input-group_input:autofill:hover + .input-group_label,
+.input-group_input:autofill:focus + .input-group_label,
+.input-group_input:autofill:active + .input-group_label {
+    font-family: inherit;
+  transform: translate(20px, -12px) scale(0.9);
+  color: #fff;
+  background-color: #9C0507;
+  transition: background-color 0.3s ease, color 0.3s ease, transform 0.3s ease;
+}
+
+
+
+
+
+
+

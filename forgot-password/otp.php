@@ -80,10 +80,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <div class="login">
     <form method="post">
         <h3>OTP Verification</h3>
+<hr>
+        <h4 style="margin-bottom:0px;">We've sent a verification code to <h5><?php echo htmlspecialchars($Address);?></h5></h4>
 
-        <h4>We've sent a verification code to <h5><?php echo htmlspecialchars($Address);?></h5></h4>
-
-        <h6>Resend Code?<a href="generate-otp.php?regenerate=true">Click Here</a></h6>
+        <h6>Resend Code? <a href="generate-otp.php?regenerate=true">Click Here</a></h6>
 
         <div class="form-group">
             <input type="text" name="otp" required pattern="\d{6}" placeholder="Enter Code" maxlength="6">
