@@ -30,6 +30,32 @@ if (!isset($_SESSION["admin_number"])) {
         echo "No student found with the given student number.";
     }
 
+    try {
+        $next_id = "";
+        // SQL to find the smallest unused 10-digit ID
+        $sql = "
+            SELECT MIN(t1.admin_number + 1) AS next_id
+            FROM mis_employees t1
+            LEFT JOIN mis_employees t2 ON t1.admin_number + 1 = t2.admin_number
+            WHERE t2.admin_number IS NULL 
+            AND LENGTH(t1.admin_number) = 10
+            AND LENGTH(t1.admin_number + 1) = 10;
+        ";
+    
+        $stmt = $pdoConnect->query($sql);
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+    
+        if ($result && $result['next_id']) {
+            // Check if the next_id has 10 digits
+            $next_id = str_pad($result['next_id'], 10, '0', STR_PAD_LEFT);
+        } else {
+            echo "No unused IDs found or the table is empty.";
+        }
+    
+    } catch (PDOException $e) {
+        echo "Error: " . $e->getMessage();
+    }
+
 
     // for displaying system details
     $query = $pdoConnect->prepare("SELECT system_name, short_name, system_logo, system_cover FROM settings WHERE id = :id");
@@ -50,33 +76,6 @@ if (!isset($_SESSION["admin_number"])) {
 
 }
 
-try {
-    $next_id = "";
-    // SQL to find the smallest unused 10-digit ID
-    $sql = "
-        SELECT MIN(t1.admin_number + 1) AS next_id
-        FROM mis_employees t1
-        LEFT JOIN mis_employees t2 ON t1.admin_number + 1 = t2.admin_number
-        WHERE t2.admin_number IS NULL 
-        AND LENGTH(t1.admin_number) = 10
-        AND LENGTH(t1.admin_number + 1) = 10;
-    ";
-
-    $stmt = $pdoConnect->query($sql);
-    $result = $stmt->fetch(PDO::FETCH_ASSOC);
-
-    if ($result && $result['next_id']) {
-        // Check if the next_id has 10 digits
-        $next_id = str_pad($result['next_id'], 10, '0', STR_PAD_LEFT);
-    } else {
-        echo "No unused IDs found or the table is empty.";
-    }
-
-} catch (PDOException $e) {
-    echo "Error: " . $e->getMessage();
-}
-
-
 ?>
 
 <!DOCTYPE html>
@@ -84,7 +83,10 @@ try {
 <head>
       <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>DHVSU MIS - HelpHub</title>
+    <title><?php echo $sysName?></title>
+    <link rel="icon" href="<?php echo htmlspecialchars($S_LBase64, ENT_QUOTES, 'UTF-8'); ?>" type="image/*">   
+
+
   
 	<!-- BOOTSTRAP STYLES-->
     <link href="assets/css/bootstrap.css" rel="stylesheet" />
@@ -163,16 +165,33 @@ input[type="file"]::file-selector-button {
 					<input type="number" name="newid" id="newid" class="form-control" value="<?php echo $next_id; ?>" disabled>
                     <input type="hidden" name="userid" value="<?php echo $next_id; ?>">
 				</div>	
+
 				<div class="form-group col-6">
 					<label for="name">First Name</label>
-					<input type="text" name="firstname" id="fname" class="form-control" required autocomplete="off">
-                    <span id="fnameError" style="color: red;"></span>
+					<input class="form-control" name="first_name" id="firstNameInput" type="text" required autocomplete="off" maxlength="100">
+                    <span id="firstNameError" style="color: red; font-size:smaller;"></span>
                 </div>
 				<div class="form-group col-6">
 					<label for="name">Last Name</label>
-					<input type="text" name="lastname" id="lname" class="form-control" required autocomplete="off">
-                    <span id="lnameError" style="color: red;"></span>
+					<input class="form-control" name="last_name" id="lastNameInput" type="text"required autocomplete="off" maxlength="50">
+                    <span id="lastNameError" style="color: red; font-size:smaller;"></span>
                 </div>
+                <div class="form-group col-6">
+					<label for="name">Middle Name</label>
+					<input class="form-control" name="middle_name" id="middleNameInput" type="text" autocomplete="off" maxlength="50">
+                    <span id="middleNameError" style="color: red; font-size:smaller;"></span>
+                </div>
+                <div class="form-group col-6">
+					<label for="name">Middle Initial</label>
+					<input class="form-control" name="middle_initial" id="middleInitialInput" type="text" autocomplete="off" maxlength="1">
+                    <span id="middleInitialError" style="color: red; font-size:smaller;"></span>
+                </div>
+                <div class="form-group col-6">
+					<label for="name">Ext. Name</label>
+					<input class="form-control" name="ext_name" id="extNameInput" type="text" autocomplete="off" maxlength="2">
+                    <span id="extNameError" style="color: red; font-size:smaller;"></span>
+                </div>
+
                 <div class="form-group col-6">
 					<label for="name">Birthday</label>
 					<input type="date" name="birthday" id="bdayInput" class="form-control" required>
@@ -191,7 +210,7 @@ input[type="file"]::file-selector-button {
     bdayInput.max = maxDate.toISOString().split("T")[0];
 </script>  
                 <div class="form-group col-6">
-					<label for="sex">Sex</label>
+					<label for="sex">Sex Assigned At Birth</label>
 					<select name="sex" id="sex" class="form-control dropdown" required>
 						<option value="Male">Male</option>
 						<option value="Female">Female</option>
@@ -199,21 +218,26 @@ input[type="file"]::file-selector-button {
 				</div>
                 <div class="form-group col-6">
 					<label for="email">Email Address</label>
-					<input type="email" name="email" id="email" class="form-control" value="" autocomplete="off" >
+                    <input class="form-control" name="email" id="emailadd" type="text" required placeholder="DHVSU Email" oninput="validateEmail()">
+                    <span id="emailError" style="color: red; font-size:smaller;"></span>
+				</div>
+                <div class="form-group col-6">
+					<label for="email">Alternative Email Address</label>
+					<input type="email" name="altemail" id="email" class="form-control" value="" placeholder="Personal Email">
 				</div>
 				<div class="form-group col-6">
 					<label for="password">Password</label>
-					<input type="password" name="password" id="password" class="form-control" value="" autocomplete="off" >
+					<input type="password" name="password" id="password" class="form-control" value="" autocomplete="off" required>
 				</div>
                 <div class="form-group col-6">
 					<label for="position">Position</label>
-					<select name="position" id="position" class="custom-select form-control" required>
+					<select name="position" id="position" class="form-control dropdown" required>
 						
 					</select>
 				</div>
 				<div class="form-group col-6">
 					<label for="type">User Type</label>
-					<select name="type" id="type" class="custom-select form-control" required>
+					<select name="type" id="type" class="form-control dropdown" required>
 						
 					</select>
 				</div>
@@ -243,55 +267,97 @@ input[type="file"]::file-selector-button {
 		</div>
     </form>
 <script>
-    const fnameInput = document.getElementById('fname');
-    const lnameInput = document.getElementById('lname');
-    const fnameError = document.getElementById('fnameError');
-    const lnameError = document.getElementById('lnameError');
-    const nameRegex = /^[a-zA-ZÀ-ÿ\s'.-]+$/;
-    const maxLength = 100; // Set maximum length
+const inputs = {
+    firstName: {
+        input: document.getElementById('firstNameInput'),
+        error: document.getElementById('firstNameError'),
+        required: true
+    },
+    lastName: {
+        input: document.getElementById('lastNameInput'),
+        error: document.getElementById('lastNameError'),
+        required: true
+    },
+    middleName: {
+        input: document.getElementById('middleNameInput'),
+        error: document.getElementById('middleNameError'),
+        required: false
+    },
+    middleInitial: {
+        input: document.getElementById('middleInitialInput'),
+        error: document.getElementById('middleInitialError'),
+        required: false
+    },
+    extName: {
+        input: document.getElementById('extNameInput'),
+        error: document.getElementById('extNameError'),
+        required: false
+    },
+    email: {
+        input: document.getElementById('emailadd'), // Assuming email input has ID 'emailadd'
+        error: document.getElementById('emailError'), // Assuming error span has ID 'emailError'
+        required: true,
+        domain: "@dhvsu.edu.ph"
+    }
+};
 
-    // Function to validate the name
-    function validateName(input, errorElement) {
-        const name = input.value.trim();
+const nameRegex = /^[a-zA-ZÀ-ÿ\s'.-]+$/;
+const maxLength = 100;
 
-        if (name === "") {
-            errorElement.textContent = 'Name is required.';
-            input.style.borderColor = 'red';
+// Function to validate a single field
+function validateField(field) {
+    const value = field.input.value.trim();
+    
+    // Required field check
+    if (field.required && value === "") {
+        field.error.textContent = 'This field is required.';
+        return false;
+    }
+
+    // Email-specific validation
+    if (field.input === inputs.email.input) {
+        if (!value.endsWith(inputs.email.domain)) {
+            field.error.textContent = `Please enter a valid DHVSU email (example${inputs.email.domain}).`;
             return false;
-        } else if (!nameRegex.test(name)) {
-            errorElement.textContent = 'Please enter a valid name (letters, spaces, hyphens, apostrophes, and periods only).';
-            input.style.borderColor = 'red';
+        }
+    } else {
+        // Name validation
+        if (value && !nameRegex.test(value)) {
+            field.error.textContent = 'Please enter a valid value (letters, spaces, hyphens, apostrophes, and periods only).';
             return false;
-        } else if (name.length > maxLength) {
-            errorElement.textContent = `Name must be ${maxLength} characters or fewer.`;
-            input.style.borderColor = 'red';
+        } else if (value.length > maxLength) {
+            field.error.textContent = `This field must be ${maxLength} characters or fewer.`;
             return false;
-        } else {
-            input.style.borderColor = '';
-            errorElement.textContent = ''; // Clear error if valid
-            return true;
         }
     }
 
-    // Function to confirm submission
-    function confirmSubmit() {
-        return confirm("Please make sure that the data you are submitting is true. Are you sure you want to proceed?");
-    }
+    field.error.textContent = ''; // Clear error if valid
+    return true;
+}
 
-    // Main function to validate form before submission
-    function validateForm() {
-        const isFnameValid = validateName(fnameInput, fnameError);
-        const isLnameValid = validateName(lnameInput, lnameError);
-        
-        if (!isFnameValid || !isLnameValid) {
-            return false; // Prevent form submission if any validation fails
+// Main function to validate all fields before form submission
+function validateForm() {
+    let isValid = true;
+
+    for (const key in inputs) {
+        if (!validateField(inputs[key])) {
+            isValid = false;
         }
-        return confirmSubmit(); // Show confirmation dialog if all are valid
     }
 
-    // Live validation feedback
-    fnameInput.addEventListener('input', () => validateName(fnameInput, fnameError));
-    lnameInput.addEventListener('input', () => validateName(lnameInput, lnameError));
+    return isValid ? confirmSubmit() : false; // Show confirmation dialog if all fields are valid
+}
+
+// Function to confirm submission
+function confirmSubmit() {
+    return confirm("Please make sure that the data you are submitting is true. Are you sure you want to proceed?");
+}
+
+// Attach live validation feedback to each input
+for (const key in inputs) {
+    inputs[key].input.addEventListener('input', () => validateField(inputs[key]));
+}
+
 </script>
 </div>
 <style>

@@ -23,7 +23,27 @@ if (!isset($_SESSION["admin_number"])) {
 
     if ($Data) {
         $Name = $Data['f_name'];
-        $lname = $Data['l_name'];
+        $LastName = $Data['l_name'];
+        $MiddleName = $Data['m_name'];
+        $MiddleInitial = $Data['m_initial'];
+        $ExtensionName = $Data['ext_name'];
+
+// Check if there's a middle name or initial
+if (!empty($MiddleInitial)) {
+$Name .= " " . $MiddleInitial . ".";
+} elseif (!empty($MiddleName)) {
+$Name .= " " . $MiddleName;
+}
+
+// Add last name if it exists
+if (!empty($LastName)) {
+$Name .= " " . $LastName;
+}
+
+// Add extension name if it exists (e.g., Jr., Sr., III)
+if (!empty($ExtensionName)) {
+$Name .= " " . $ExtensionName . ".";
+}
         $Position = $Data['position'];
         $U_T = $Data['user_type'];
         $P_P = $Data['profile_picture'];

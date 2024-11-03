@@ -184,7 +184,7 @@ input[type="file"]::file-selector-button {
         if (userId.length === 0) {
             availabilityMessage.style.display = 'none'; // Hide message if input is empty
             return;
-        } else if (userId.length >= 15) {
+        } else if (userId.length >= 16) {
             availabilityMessage.textContent = 'Max ID length is only 15';
             availabilityMessage.classList.add('unavailable');
             availabilityMessage.style.display = 'block';
@@ -210,12 +210,33 @@ input[type="file"]::file-selector-button {
         }
     }
 </script>
-                
+                				
 				<div class="form-group col-6">
-					<label for="name">Name</label>
-					<input type="text" name="name" id="nameInput" class="form-control" required autocomplete="off">
-                    <span id="nameError" style="color: red;"></span>
+					<label for="name">First Name</label>
+					<input class="form-control" name="first_name" id="firstNameInput" type="text" required autocomplete="off" maxlength="100" >
+                    <span id="firstNameError" style="color: red; font-size:smaller;"></span>
                 </div>
+				<div class="form-group col-6">
+					<label for="name">Last Name</label>
+					<input class="form-control" name="last_name" id="lastNameInput" type="text"required autocomplete="off" maxlength="50" >
+                    <span id="lastNameError" style="color: red; font-size:smaller;"></span>
+                </div>
+                <div class="form-group col-6">
+					<label for="name">Middle Name</label>
+					<input class="form-control" name="middle_name" id="middleNameInput" type="text" autocomplete="off" maxlength="50" >
+                    <span id="middleNameError" style="color: red; font-size:smaller;"></span>
+                </div>
+                <div class="form-group col-6">
+					<label for="name">Middle Initial</label>
+					<input class="form-control" name="middle_initial" id="middleInitialInput" type="text" autocomplete="off" maxlength="1">
+                    <span id="middleInitialError" style="color: red; font-size:smaller;"></span>
+                </div>
+                <div class="form-group col-6">
+					<label for="name">Ext. Name</label>
+					<input class="form-control" name="ext_name" id="extNameInput" type="text" autocomplete="off" maxlength="2">
+                    <span id="extNameError" style="color: red; font-size:smaller;"></span>
+                </div>
+
                 <div class="form-group col-6">
 					<label for="name">Birthday</label>
 					<input type="date" name="birthday" id="bdayInput" class="form-control" required autocomplete="off">
@@ -260,15 +281,16 @@ input[type="file"]::file-selector-button {
 				</div>
                 <div class="form-group col-6">
 					<label for="year_section">Year and Section</label>
-					<input type="text" name="year_section" id="year_section" class="form-control" required autocomplete="off">
+					<input type="text" name="year_section" id="year_section" class="form-control" required autocomplete="off" maxlength="5">
 				</div>
                 <div class="form-group col-6">
 					<label for="email">Email Address</label>
-					<input type="email" name="email" id="email" class="form-control" value="" required  autocomplete="off">
-				</div>
+					<input type="email" name="email" id="emailadd" class="form-control" value="" required  autocomplete="off" required placeholder="DHVSU Email"  oninput="validateEmail()">
+                    <span id="emailError" style="color: red; font-size:smaller;"></span>
+                </div>
                 <div class="form-group col-6">
 					<label for="altemail">Alternative Email Address</label>
-					<input type="email" name="altemail" id="altemail" class="form-control" value=""  autocomplete="off">
+					<input type="email" name="altemail" id="altemail" class="form-control" value=""  autocomplete="off" placeholder="Personal Email">
 				</div>
 			
                
@@ -298,45 +320,97 @@ input[type="file"]::file-selector-button {
 		</div>
     </form>
 <script>
-    const nameInput = document.getElementById('nameInput');
-    const nameError = document.getElementById('nameError');
-    const nameRegex = /^[a-zA-ZÀ-ÿ\s'.-]+$/;
-    const maxLength = 100; // Set maximum length
+const inputs = {
+    firstName: {
+        input: document.getElementById('firstNameInput'),
+        error: document.getElementById('firstNameError'),
+        required: true
+    },
+    lastName: {
+        input: document.getElementById('lastNameInput'),
+        error: document.getElementById('lastNameError'),
+        required: true
+    },
+    middleName: {
+        input: document.getElementById('middleNameInput'),
+        error: document.getElementById('middleNameError'),
+        required: false
+    },
+    middleInitial: {
+        input: document.getElementById('middleInitialInput'),
+        error: document.getElementById('middleInitialError'),
+        required: false
+    },
+    extName: {
+        input: document.getElementById('extNameInput'),
+        error: document.getElementById('extNameError'),
+        required: false
+    },
+    email: {
+        input: document.getElementById('emailadd'), // Assuming email input has ID 'emailadd'
+        error: document.getElementById('emailError'), // Assuming error span has ID 'emailError'
+        required: true,
+        domain: "@dhvsu.edu.ph"
+    }
+};
 
-    // Function to validate the name
-    function validateName() {
-        const name = nameInput.value.trim();
+const nameRegex = /^[a-zA-ZÀ-ÿ\s'.-]+$/;
+const maxLength = 100;
 
-        if (name === "") {
-            nameError.textContent = 'Name is required.';
+// Function to validate a single field
+function validateField(field) {
+    const value = field.input.value.trim();
+    
+    // Required field check
+    if (field.required && value === "") {
+        field.error.textContent = 'This field is required.';
+        return false;
+    }
+
+    // Email-specific validation
+    if (field.input === inputs.email.input) {
+        if (!value.endsWith(inputs.email.domain)) {
+            field.error.textContent = `Please enter a valid DHVSU email (example${inputs.email.domain}).`;
             return false;
-        } else if (!nameRegex.test(name)) {
-            nameError.textContent = 'Please enter a valid name (letters, spaces, hyphens, apostrophes, and periods only).';
+        }
+    } else {
+        // Name validation
+        if (value && !nameRegex.test(value)) {
+            field.error.textContent = 'Please enter a valid value (letters, spaces, hyphens, apostrophes, and periods only).';
             return false;
-        } else if (name.length >= maxLength) {
-            nameError.textContent = `Name must be ${maxLength} characters or fewer.`;
+        } else if (value.length > maxLength) {
+            field.error.textContent = `This field must be ${maxLength} characters or fewer.`;
             return false;
-        } else {
-            nameError.textContent = ''; // Clear error if valid
-            return true;
         }
     }
 
-    // Function to confirm submission
-    function confirmSubmit() {
-        return confirm("Please make sure that the data you are submitting is true. Are you sure you want to proceed?");
-    }
+    field.error.textContent = ''; // Clear error if valid
+    return true;
+}
 
-    // Main function to validate form before submission
-    function validateForm() {
-        if (!validateName()) {
-            return false; // Prevent form submission if name validation fails
+// Main function to validate all fields before form submission
+function validateForm() {
+    let isValid = true;
+
+    for (const key in inputs) {
+        if (!validateField(inputs[key])) {
+            isValid = false;
         }
-        return confirmSubmit(); // Show confirmation dialog if name is valid
     }
 
-    // Live validation feedback
-    nameInput.addEventListener('input', validateName);
+    return isValid ? confirmSubmit() : false; // Show confirmation dialog if all fields are valid
+}
+
+// Function to confirm submission
+function confirmSubmit() {
+    return confirm("Please make sure that the data you are submitting is true. Are you sure you want to proceed?");
+}
+
+// Attach live validation feedback to each input
+for (const key in inputs) {
+    inputs[key].input.addEventListener('input', () => validateField(inputs[key]));
+}
+
 </script>
 </div>
 <style>

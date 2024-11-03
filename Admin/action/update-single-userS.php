@@ -41,10 +41,18 @@ try {
         }
 
         $user_id = $_POST['userid'];
-        $name = $_POST['name'];
+
+        $Fname = $_POST['first_name'];
+        $Lname = $_POST['last_name'];
+        $Mname = $_POST['middle_name'];
+        $Minitial = $_POST['middle_initial'];
+        $Extname = $_POST['ext_name'];
+
         $department = $_POST['department'];
         $year_section = $_POST['year_section'];
         $email_address = $_POST['email'];
+        $alt_email_address = $_POST['altemail'];
+
         $campus = $_POST['campus'];
         $course = $_POST['course'];
         $sex = $_POST['sex'];
@@ -63,10 +71,15 @@ try {
         
         // Prepare an update statement
         $stmt = $pdoConnect->prepare("UPDATE `student_user` SET 
-                                        `name` = :name,
+                                        `first_name` = :first_name,
+                                        `last_name` = :last_name, 
+                                        `middle_name` = :middle_name, 
+                                        `middle_initial` = :middle_initial, 
+                                        `ext_name` = :ext_name,
                                         `department` = :department,
                                         `year_section` = :year_section,
                                         `email_address` = :email_address,
+                                        `alt_email_address` = :alt_email_address,
                                         `campus` = :campus,
                                         `course` = :course,
                                         `sex` = :sex,
@@ -77,10 +90,15 @@ try {
         
         // Bind the parameters
         $stmt->bindParam(':user_id', $user_id, PDO::PARAM_STR);
-        $stmt->bindParam(':name', $name, PDO::PARAM_STR);
+        $stmt->bindParam(':first_name', $Fname, PDO::PARAM_STR);
+        $stmt->bindParam(':last_name', $Lname, PDO::PARAM_STR);
+        $stmt->bindParam(':middle_name', $Mname, PDO::PARAM_STR);
+        $stmt->bindParam(':middle_initial', $Minitial, PDO::PARAM_STR);
+        $stmt->bindParam(':ext_name', $Extname, PDO::PARAM_STR);
         $stmt->bindParam(':department', $department, PDO::PARAM_STR);
         $stmt->bindParam(':year_section', $year_section, PDO::PARAM_STR);
         $stmt->bindParam(':email_address', $email_address, PDO::PARAM_STR);
+        $stmt->bindParam(':alt_email_address', $alt_email_address, PDO::PARAM_STR);
         $stmt->bindParam(':campus', $campus, PDO::PARAM_STR);
         $stmt->bindParam(':course', $course, PDO::PARAM_STR);
         $stmt->bindParam(':sex', $sex, PDO::PARAM_STR);

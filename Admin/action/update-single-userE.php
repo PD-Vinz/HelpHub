@@ -40,9 +40,16 @@ try {
             $imgContent = file_get_contents($image['tmp_name']);
         }
 
-        $name = $_POST['name'];
+        $Fname = $_POST['first_name'];
+        $Lname = $_POST['last_name'];
+        $Mname = $_POST['middle_name'];
+        $Minitial = $_POST['middle_initial'];
+        $Extname = $_POST['ext_name'];
+
         $department = $_POST['department'];
         $email_address = $_POST['email'];
+        $alt_email_address = $_POST['altemail'];
+        
         $campus = $_POST['campus'];    
         $sex = $_POST['sex'];
         $birthday = $_POST['birthday'];
@@ -60,9 +67,14 @@ try {
         
         // Prepare an update statement
         $stmt = $pdoConnect->prepare("UPDATE `employee_user` SET
-                                        `name` = :name,
+                                        `first_name` = :first_name,
+                                        `last_name` = :last_name, 
+                                        `middle_name` = :middle_name, 
+                                        `middle_initial` = :middle_initial, 
+                                        `ext_name` = :ext_name,
                                         `department` = :department,
                                         `email_address` = :email_address,
+                                        `alt_email_address` = :alt_email_address,
                                         `campus` = :campus,
                                         `sex` = :sex,
                                         `age` = :age,
@@ -72,9 +84,14 @@ try {
         
         // Bind the parameters
         $stmt->bindParam(':user_id', $user_id);
-        $stmt->bindParam(':name', $name);
+        $stmt->bindParam(':first_name', $Fname, PDO::PARAM_STR);
+        $stmt->bindParam(':last_name', $Lname, PDO::PARAM_STR);
+        $stmt->bindParam(':middle_name', $Mname, PDO::PARAM_STR);
+        $stmt->bindParam(':middle_initial', $Minitial, PDO::PARAM_STR);
+        $stmt->bindParam(':ext_name', $Extname, PDO::PARAM_STR);
         $stmt->bindParam(':department', $department);
         $stmt->bindParam(':email_address', $email_address);
+        $stmt->bindParam(':alt_email_address', $alt_email_address, PDO::PARAM_STR);
         $stmt->bindParam(':campus', $campus);
         $stmt->bindParam(':sex', $sex);
         $stmt->bindParam(':age', $age);

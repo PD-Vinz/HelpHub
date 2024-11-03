@@ -30,7 +30,30 @@ try {
     
         if ($Data) {
             $Email_Add = $Data['email_address'];
-            $Name = $Data['name'];
+            
+            $Name = $Data['first_name'];
+            $LastName = $Data['last_name'];
+            $MiddleName = $Data['middle_name'];
+            $MiddleInitial = $Data['middle_initial'];
+            $ExtensionName = $Data['ext_name'];
+
+// Check if there's a middle name or initial
+if (!empty($MiddleInitial)) {
+    $Name .= " " . $MiddleInitial . ".";
+} elseif (!empty($MiddleName)) {
+    $Name .= " " . $MiddleName;
+}
+
+// Add last name if it exists
+if (!empty($LastName)) {
+    $Name .= " " . $LastName;
+}
+
+// Add extension name if it exists (e.g., Jr., Sr., III)
+if (!empty($ExtensionName)) {
+    $Name .= " " . $ExtensionName . ".";
+}
+
             $Campus = $Data['campus'];
             $Department = $Data['department'];
             $Course = $Data['course'];
@@ -56,7 +79,29 @@ try {
     
         if ($Data) {
             $Email_Add = $Data['email_address'];
-            $Name = $Data['name'];
+            $Name = $Data['first_name'];
+            $LastName = $Data['last_name'];
+            $MiddleName = $Data['middle_name'];
+            $MiddleInitial = $Data['middle_initial'];
+            $ExtensionName = $Data['ext_name'];
+
+// Check if there's a middle name or initial
+if (!empty($MiddleInitial)) {
+    $Name .= " " . $MiddleInitial . ".";
+} elseif (!empty($MiddleName)) {
+    $Name .= " " . $MiddleName;
+}
+
+// Add last name if it exists
+if (!empty($LastName)) {
+    $Name .= " " . $LastName;
+}
+
+// Add extension name if it exists (e.g., Jr., Sr., III)
+if (!empty($ExtensionName)) {
+    $Name .= " " . $ExtensionName . ".";
+}
+
             $Campus = $Data['campus'];
             $Department = $Data['department'];
             $Course = $Data['course'];

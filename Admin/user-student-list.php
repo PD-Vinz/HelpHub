@@ -191,9 +191,32 @@ $pdoExec = $pdoResult->execute();
                     $date = new DateTime($birthday);
                     $formattedDate = $date->format('F j, Y');
 
-                    if ($name === 'Super Admin') {
-                        continue;
-                    }
+                    $Name = $row['first_name'];
+                    $LastName = $row['last_name'];
+                    $MiddleName = $row['middle_name'];
+                    $MiddleInitial = $row['middle_initial'];
+                    $ExtensionName = $row['ext_name'];
+        
+        // Check if there's a middle name or initial
+        if (!empty($MiddleInitial)) {
+            $Name .= " " . $MiddleInitial . ".";
+        } elseif (!empty($MiddleName)) {
+            $Name .= " " . $MiddleName;
+        }
+        
+        // Add last name if it exists
+        if (!empty($LastName)) {
+            $Name .= " " . $LastName;
+        }
+        
+        // Add extension name if it exists (e.g., Jr., Sr., III)
+        if (!empty($ExtensionName)) {
+            $Name .= " " . $ExtensionName . ".";
+        }
+        
+        if (strpos($Name, 'Super Admin') !== false) {
+            continue;
+        }
 
                     $statusClass = ($row['account_status'] === 'Enabled') ? 'success' :
                     (($row['account_status'] === 'Disabled') ? 'danger' :
@@ -202,7 +225,7 @@ $pdoExec = $pdoResult->execute();
                     <tr class='odd gradeX <?php echo $statusClass?>'>
                     <td><?php echo htmlspecialchars($user_id); ?></td>
                  
-                    <td><?php echo htmlspecialchars($name); ?></td>
+                    <td><?php echo htmlspecialchars($Name); ?></td>
                     <td><?php echo htmlspecialchars($campus); ?></td>
                     <td><?php echo htmlspecialchars($year_section); ?></td>
                     <td><?php echo htmlspecialchars($sex); ?></td>    
@@ -212,8 +235,8 @@ $pdoExec = $pdoResult->execute();
 	    Action
 	<span class="sr-only">Toggle Dropdown</span>
 				                  </button>
-				                  <div class="dropdown-menu" role="menu">
-				                    <a class="dropdown-item" data-toggle='modal' data-target='#myModal<?php echo $user_id; ?>' style="cursor:pointer"><span class="fa fa-edit text-primary"></span> View</a>
+				                  <div class="dropdown-menu dropdown-menu-right" role="menu">
+				                    <a class="dropdown-item" href="edit-user-student.php?id=<?php echo $user_id; ?>" style="cursor:pointer"><span class="fa fa-edit text-primary"></span> View</a>
 				                    <div class="dropdown-divider"></div>
 <?php if ($account_status === 'Enabled'): ?>
 
@@ -237,7 +260,9 @@ $pdoExec = $pdoResult->execute();
 				                  </div>
 								  </div>
 							</td>
-
+        <?php
+        }
+        ?>                            
 <div class="modal fade" id="myModal<?php echo $user_id; ?>" >
     <div class="modal-dialog">
         <div class="modal-content">
@@ -253,7 +278,7 @@ $pdoExec = $pdoResult->execute();
                                 <div class="col-md-3">
                                     <div class="text-center">
                                         <img src="data:image/jpeg;base64,<?php echo $P_PBase64?>" class="avatar img-circle img-thumbnail" alt="avatar">
-                                        <h3><?php echo $name?></h3>
+                                        <h3><?php echo $Name?></h3>
                                         <h5 style="text-transform: uppercase;"><?php echo $user_type?></h5>
                                     </div>
                                 </div>
@@ -328,9 +353,7 @@ $pdoExec = $pdoResult->execute();
 </div>
         
                           </div>
-        <?php
-        }
-        ?>
+        
                                         
 
                                         

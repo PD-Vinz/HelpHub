@@ -22,7 +22,13 @@ if (!isset($_SESSION["address"]) && !isset($_SESSION["user"]) && !isset($_SESSIO
     
         if ($Data) {
             $Email_Add = $Data['email_address'];
-            $Name = $Data['name'];
+
+            $FirstName = $Data['first_name'];
+            $LastName = $Data['last_name'];
+            $MiddleName = $Data['middle_name'];
+            $MiddleInitial = $Data['middle_initial'];
+            $ExtensionName = $Data['ext_name'];
+
             $Campus = $Data['campus'];
             $Department = $Data['department'];
             $Course = $Data['course'];
@@ -53,19 +59,22 @@ if (!isset($_SESSION["address"]) && !isset($_SESSION["user"]) && !isset($_SESSIO
     
         if ($Data) {
             $Email_Add = $Data['email_address'];
-            $Name = $Data['name'];
+
+            $FirstName = $Data['first_name'];
+            $LastName = $Data['last_name'];
+            $MiddleName = $Data['middle_name'];
+            $MiddleInitial = $Data['middle_initial'];
+            $ExtensionName = $Data['ext_name'];
+
             $Campus = $Data['campus'];
             $Department = $Data['department'];
-            $Course = $Data['course'];
-            $Y_S = $Data['year_section'];
+            //$Course = $Data['course'];
+            //$Y_S = $Data['year_section'];
             $P_P = $Data['profile_picture'];
             $Sex = $Data['sex'];
             $Age = $Data['age'];
             $Bday = $Data['birthday'];
             $UserType = $Data['user_type'];
-    
-            $nameParts = explode(' ', $Name);
-            $firstName = $nameParts[0];
     
             $P_PBase64 = base64_encode($P_P);
             $date = new DateTime($Bday);
@@ -80,12 +89,12 @@ if (!isset($_SESSION["address"]) && !isset($_SESSION["user"]) && !isset($_SESSIO
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (isset($_POST['information'])) {
-        // Get the submitted password values
-
-        // Your PHP logic goes here, for example, save the password to the database
-        if ($User == "Student"){
-            try{
-                $NewName = $_POST['name'];
+        // Get the submitted values
+                $NewFirstName = $_POST['FName'];
+                $NewLastName = $_POST['LName'];
+                $NewMiddleName = $_POST['MName'];
+                $NewMiddleInitial = $_POST['MInitial'];
+                $NewEXTName = $_POST['EXTName'];
                 $NewAltEmail = $_POST['altemail'];
                 $NewSex = $_POST['sex'];
                 $NewBday = $_POST['bday'];
@@ -99,18 +108,20 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     $NewAge = 0; // Set to 0 if no birthday is provided
                 }
 
-if (isset($_POST['altemail'])){
-                $pdoUserQuery = "UPDATE student_user SET name = :name, birthday = :birthday, alt_email_address = :altemail, age = :age, sex = :sex, account_status = :AccStat WHERE user_id = :number";
-} else {
-                $pdoUserQuery = "UPDATE student_user SET name = :name, birthday = :birthday, age = :age, sex = :sex, account_status = :AccStat WHERE user_id = :number";
-                }
+        // Your PHP logic goes here, for example, save the password to the database
+        if ($User == "Student"){
+            try{
+
+                $pdoUserQuery = "UPDATE student_user SET first_name = :fname, last_name = :lname, middle_name = :mname, middle_initial = :mi, ext_name = :extname, birthday = :birthday, alt_email_address = :altemail, age = :age, sex = :sex, account_status = :AccStat WHERE user_id = :number";
 
                 $pdoResult = $pdoConnect->prepare($pdoUserQuery);
                 $pdoResult->bindParam(':number', $id);
-                $pdoResult->bindParam(':name', $NewName);
-if (isset($_POST['altemail'])){
-                $pdoResult->bindParam(':altemail', $NewAltEmail);
-}                 
+                $pdoResult->bindParam(':fname', $NewFirstName);
+                $pdoResult->bindParam(':lname', $NewLastName);
+                $pdoResult->bindParam(':mname', $NewMiddleName);
+                $pdoResult->bindParam(':mi', $NewMiddleInitial);
+                $pdoResult->bindParam(':extname', $NewEXTName);
+                $pdoResult->bindParam(':altemail', $NewAltEmail);               
                 $pdoResult->bindParam(':birthday', $NewBday);
                 $pdoResult->bindParam(':age', $NewAge);
                 $pdoResult->bindParam(':sex', $NewSex);
@@ -138,31 +149,17 @@ if (isset($_POST['altemail'])){
             } elseif ($User == "Employee") {
                 
                 try{
-                    $NewName = $_POST['name'];
-                    $NewAltEmail = $_POST['altemail'];
-                    $NewSex = $_POST['sex'];
-                    $NewBday = $_POST['bday'];
-                    $AccStat = 'Enabled';
-        
-                    if ($NewBday) {
-                        $birthDate = new DateTime($NewBday);
-                        $currentDate = new DateTime();
-                        $NewAge = $currentDate->diff($birthDate)->y; // Calculate the age in years
-                    } else {
-                        $NewAge = 0; // Set to 0 if no birthday is provided
-                    }
-                if (isset($_POST['altemail'])){
-                    $pdoUserQuery = "UPDATE employee_user SET name = :name, birthday = :birthday, alt_email_address = :altemail, age = :age, sex = :sex, account_status = :AccStat WHERE user_id = :number";
-                } else {
-                    $pdoUserQuery = "UPDATE employee_user SET name = :name, birthday = :birthday, age = :age, sex = :sex, account_status = :AccStat WHERE user_id = :number";
-                }
+                    
+                    $pdoUserQuery = "UPDATE employee_user SET first_name = :fname, last_name = :lname, middle_name = :mname, middle_initial = :mi, ext_name = :extname, birthday = :birthday, alt_email_address = :altemail, age = :age, sex = :sex, account_status = :AccStat WHERE user_id = :number";
 
                     $pdoResult = $pdoConnect->prepare($pdoUserQuery);
                     $pdoResult->bindParam(':number', $id);
-                    $pdoResult->bindParam(':name', $NewName);
-if (isset($_POST['altemail'])){
-                $pdoResult->bindParam(':altemail', $NewAltEmail);
-}  
+                    $pdoResult->bindParam(':fname', $NewFirstName);
+                    $pdoResult->bindParam(':lname', $NewLastName);
+                    $pdoResult->bindParam(':mname', $NewMiddleName);
+                    $pdoResult->bindParam(':mi', $NewMiddleInitial);
+                    $pdoResult->bindParam(':extname', $NewEXTName);
+                    $pdoResult->bindParam(':altemail', $NewAltEmail);
                     $pdoResult->bindParam(':birthday', $NewBday);
                     $pdoResult->bindParam(':age', $NewAge);
                     $pdoResult->bindParam(':sex', $NewSex);
@@ -191,6 +188,22 @@ if (isset($_POST['altemail'])){
             }
 }
 
+// for displaying system details
+$query = $pdoConnect->prepare("SELECT system_name, short_name, system_logo, system_cover FROM settings WHERE id = :id");
+$query->execute(['id' => 1]);
+$Datas = $query->fetch(PDO::FETCH_ASSOC);
+$sysName = $Datas['system_name'] ?? '';
+$shortName = $Datas['short_name'] ?? '';
+ $systemCover = $Datas['system_cover'];
+ $S_L = $Datas['system_logo'];
+ $S_LBase64 = '';
+ if (!empty($S_L)) {
+     $base64Image = base64_encode($S_L);
+     $imageType = 'image/png'; // Default MIME type
+     $S_LBase64 = 'data:' . $imageType . ';base64,' . $base64Image;
+ }
+// for displaying system details //end
+
 ?>
 
 <!DOCTYPE html>
@@ -200,7 +213,7 @@ if (isset($_POST['altemail'])){
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>HelpHub</title>
     <link  rel="stylesheet" href="fill-up-info.css">
-    <link rel="icon" href="../img/logo.png" type="image/png">
+    <link rel="icon" href="<?php echo htmlspecialchars($S_LBase64, ENT_QUOTES, 'UTF-8'); ?>" type="image/*"> 
     <style>
         body {
             background-image: url(../img/background.png);
@@ -217,13 +230,42 @@ if (isset($_POST['altemail'])){
 
     <div class="form-row">
         <div class="form-group">
-            <label class="label">User ID</label>
+            <label class="label">USER ID</label>
             <input class="form-control" name="" type="text" value="<?php echo $id?>" readonly>
+        </div>
+    </div>
+
+    <div class="form-row">
+        <div class="form-group">
+            <label class="label">FIRST NAME</label>
+            <input class="form-control" name="FName" id="firstNameInput" type="text" value="<?php echo $FirstName?>" requiredautocomplete="off" maxlength="100">
+            <span id="firstNameError" style="color: red; font-size:smaller;"></span>
         </div>
     
         <div class="form-group">
-            <label class="label">NAME</label>
-            <input class="form-control" name="name" type="text" value="<?php echo $Name?>" required>
+            <label class="label">LAST NAME</label>
+            <input class="form-control" name="LName" id="lastNameInput" type="text" value="<?php echo $LastName?>" required autocomplete="off" maxlength="50">
+            <span id="lastNameError" style="color: red; font-size:smaller;"></span>
+        </div>
+    </div>
+
+    <div class="form-row">
+        <div class="form-group">
+            <label class="label">MIDDLE NAME</label>
+            <input class="form-control" name="MName" id="middleNameInput" type="text" value="<?php echo $MiddleName?>" autocomplete="off" maxlength="50">
+            <span id="middleNameError" style="color: red; font-size:smaller;"></span>
+        </div>
+    
+        <div class="form-group">
+            <label class="label">MIDDLE INITIAL</label>
+            <input class="form-control" name="MInitial" id="middleInitialInput" type="text" value="<?php echo $MiddleInitial?>" autocomplete="off" maxlength="1">
+            <span id="middleInitialError" style="color: red; font-size:smaller;"></span>
+        </div>
+
+        <div class="form-group">
+            <label class="label">EXT. NAME</label>
+            <input class="form-control" name="EXTName" id="extNameInput" type="text" value="<?php echo $ExtensionName?>" autocomplete="off" maxlength="2">
+            <span id="extNameError" style="color: red; font-size:smaller;"></span>
         </div>
     </div>
 
@@ -241,24 +283,32 @@ if (isset($_POST['altemail'])){
 
     <div class="form-row">
         <div class="form-group">
-            <label class="label">GENDER</label>
+            <label class="label">SEX ASSIGNED AT BIRTH</label>
             <select class="form-control" name="sex" id="genderDropdown" required>
                 <option value="Male" <?php echo ($Sex == 'Male') ? 'selected' : ''; ?>>Male</option>
                 <option value="Female" <?php echo ($Sex == 'Female') ? 'selected' : ''; ?>>Female</option>
             </select>
         </div>
 
-            <!--
-            <select class="form-control" name="id" type="text" value="<?php //echo $Sex?>" required>
-                <option value="Male" <?php //echo ($Sex == 'Male') ? 'selected' : ''; ?>>Male</option>
-                <option value="Female" <?php //echo ($Sex == 'Female') ? 'selected' : ''; ?>>Female</option>
-            -->
-
         <div class="form-group">
             <label class="label">BIRTHDAY</label>
-            <input class="form-control" name="bday" type="date" value="<?php echo $Bday?>" required>
+            <input class="form-control" name="bday" id="bdayInput" type="date" value="<?php echo $Bday?>" required>
         </div>
     </div>
+
+<script>
+    const bdayInput = document.getElementById("bdayInput");
+
+    // Calculate minimum date (100 years ago from today)
+    const minDate = new Date();
+    minDate.setFullYear(minDate.getFullYear() - 100);
+    bdayInput.min = minDate.toISOString().split("T")[0];
+
+    // Calculate maximum date (18 years ago from today)
+    const maxDate = new Date();
+    maxDate.setFullYear(maxDate.getFullYear() - 10);
+    bdayInput.max = maxDate.toISOString().split("T")[0];
+</script>
     
     <div class="form-row">
         <div class="form-group">

@@ -22,84 +22,39 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         // Your PHP logic goes here, for example, save the password to the database
         if ($newPassword === $reNewPassword) {
-
             $hashPassword = password_hash($newPassword, PASSWORD_ARGON2I);
-            // PHP code to run if passwords are valid (you can modify this part)
-
-            if ($User == "Student"){
-
-            $pdoUpdateQuery="UPDATE student_user 
-                        SET password = :pass
-                        WHERE user_id = :id";
+            
+            // Determine the correct table and ID for the user
+            if ($User == "Student") {
+                $pdoUpdateQuery = "UPDATE student_user SET password = :pass WHERE user_id = :id";
+            } elseif ($User == "Employee") {
+                $pdoUpdateQuery = "UPDATE employee_user SET password = :pass WHERE user_id = :id";
+            } elseif ($User == "MIS Employee") {
+                $pdoUpdateQuery = "UPDATE mis_employees SET password = :pass WHERE admin_number = :id";
+            }
+            
             $pdoResult = $pdoConnect->prepare($pdoUpdateQuery);
             $pdoResult->bindParam(':id', $id, PDO::PARAM_STR);
             $pdoResult->bindParam(':pass', $hashPassword, PDO::PARAM_STR);
+            
             if (!$pdoResult->execute()) {
-                throw new PDOException("Failed to execute the first query");
+                // Handle the error in case the update fails
+                throw new PDOException("Failed to execute the update query");
             } else {
                 $errorMessage = "Password Successfully Updated.";
                 echo "<script type='text/javascript'>
-                    window.onload = function() {
                         alert('$errorMessage');
                         window.location.href = 'fill-up-info.php';
-                    };
-                    </script>";
+                      </script>";
+                exit(); // Exit to prevent further execution
             }
-
-            } elseif ($User == "Employee"){
-            $pdoUpdateQuery="UPDATE employee_user 
-                        SET password = :pass
-                        WHERE user_id = :id";
-            $pdoResult = $pdoConnect->prepare($pdoUpdateQuery);
-            $pdoResult->bindParam(':id', $id, PDO::PARAM_STR);
-            $pdoResult->bindParam(':pass', $hashPassword, PDO::PARAM_STR);
-            if (!$pdoResult->execute()) {
-                throw new PDOException("Failed to execute the first query");
-            } else {
-                $errorMessage = "Password Successfully Updated.";
-                echo "<script type='text/javascript'>
-                    window.onload = function() {
-                        alert('$errorMessage');
-                        window.location.href = 'fill-up-info.php';
-                    };
-                    </script>";
-            }
-
-            } elseif ($User == "MIS Employee"){
-            $pdoUpdateQuery="UPDATE mis_employees 
-                        SET password = :pass
-                        WHERE admin_number = :id";
-            $pdoResult = $pdoConnect->prepare($pdoUpdateQuery);
-            $pdoResult->bindParam(':id', $id, PDO::PARAM_STR);
-            $pdoResult->bindParam(':pass', $hashPassword, PDO::PARAM_STR);
-            if (!$pdoResult->execute()) {
-                throw new PDOException("Failed to execute the first query");
-            } else {
-                $errorMessage = "Password Successfully Updated.";
-                echo "<script type='text/javascript'>
-                    window.onload = function() {
-                        alert('$errorMessage');
-                        window.location.href = '../index.php';
-                    };
-                    </script>";
-                    
-                    
-            }
-
-            }
-
-            // echo "<p>Password successfully updated!</p>";
-
-            // Example: Update password in the database
-            // $hashedPassword = password_hash($newPassword, PASSWORD_BCRYPT);
-            // Save $hashedPassword to the database
-
         } else {
-        $errorMessage = "Passwords do not match.";
-        echo "<script type='text/javascript'>
-                alert('$errorMessage');
-            </script>";
+            $errorMessage = "Passwords do not match.";
+            echo "<script type='text/javascript'>
+                    alert('$errorMessage');
+                  </script>";
         }
+        
     }
 }
 
@@ -135,7 +90,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         <div class="form-group">
             <button type="button" id="togglePassword" class="password-btn" 
-                onmousedown="showPassword()" onmouseup="hidePassword()">
+                onmousedown="showPassword()" onmouseup="hidePassword()" onmouseleave="hidePassword()">
                     Show Password
             </button>
 <style>

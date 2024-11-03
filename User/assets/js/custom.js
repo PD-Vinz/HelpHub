@@ -274,140 +274,81 @@ $(document).ready(function() {
 
 
 //change profile//
-var upload = document.getElementById("upload");
-var preview = document.getElementById("preview");
-var avatar = document.getElementById("avatar");
-var avatar_name = document.getElementById("name");
-var avatar_name_change_box = document.getElementById("change-name-box");
 
-var avatars = {
-  srcList: [
-    {
-      name: "picture",
-      src: encodeURIComponent("photos")
-    }
-  ],
-  activeKey: 1,
-  add: function(_name, _src) {
-    this.activeKey = this.srcList.length;
-    return (
-      this.srcList.push({ name: _name, src: encodeURIComponent(_src) }) - 1
-    );
-  },
-  changeName: function(key, _name) {
-    if (!Number.isInteger(key)) {
-      return false;
-    }
-    this.srcList[key].name = _name;
-    if (avatar_name.dataset.key == key) {
-      avatar_name.textContent = _name;
-    }
-    return _name;
-  },
-  showNext: function() {
-    var _next = this.activeKey + 1;
-    if (_next >= this.srcList.length) {
-      _next = 0;
-    }
-    this.showByKey(_next);
-  },
-  showLast: function() {
-    var _next = this.activeKey - 1;
-    if (_next < 0) {
-      _next = this.srcList.length - 1;
-    }
-    this.showByKey(_next);
-  },
-  showByKey: function(_next) {
-    var _on = this.srcList[_next];
-    if (!_on.name) return;
+// Get elements
+const upload = document.getElementById("upload");
+const preview = document.getElementById("preview");
+const avatar = document.getElementById("avatar");
+const maxSize = 6 * 1024 * 1024; // 6MB size limit
+const allowedTypes = ['image/png', 'image/jpeg', 'image/jpg']; // Allowed file types
 
+// Update image preview
+const updateImagePreview = (file) => {
+    // Clear previous image preview
     while (preview.firstChild) {
-      preview.removeChild(preview.firstChild);
+        preview.removeChild(preview.firstChild);
     }
 
-    var img = document.createElement("img");
-    img.src = decodeURIComponent(_on.src);
-    img.className = "avatar_img--loading";
-    img.onload = function() {
-      img.classList.add("avatar_img");
+    // Create a FileReader to read the file
+    const reader = new FileReader();
+    reader.onload = (e) => {
+        const img = document.createElement("img");
+        img.src = e.target.result;
+        img.className = "avatar_img"; // Apply class to the image
+        preview.appendChild(img);
     };
-    avatar_name.textContent = _on.name;
-    avatar_name.setAttribute("data-key", _next);
-    preview.appendChild(img);
-    this.activeKey = _next;
-  }
+
+    // Read the image file as a data URL
+    reader.readAsDataURL(file);
 };
 
-function showAvatar(key) {
-  if (!key) {
-    key = avatars.activeKey;
-  }
-}
+// Validate file size and type
+const validateFile = (file) => {
+    const sizeError = document.getElementById('sizeError');
+    const typeError = document.getElementById('typeError');
 
-
-/*
-/** Handle uploading of files */
-upload.addEventListener("change", handleFiles, false);
-function handleFiles() {
-  var files = this.files;
-  for (var i = 0; i < files.length; i++) {
-    var file = files[i];
-    var imageType = /^image\//;
-
-    if (!imageType.test(file.type)) {
-      avatar.classList.add("avatar--upload-error");
-      setTimeout(function() {
-        avatar.classList.remove("avatar--upload-error");
-      }, 1200);
-      continue;
+    if (file.size > maxSize) {
+        sizeError.textContent = 'File size exceeds 6MB limit.';
+        return false;
+    } else {
+        sizeError.textContent = '';
     }
 
-    avatar.classList.remove("avatar--upload-error");
+    if (!allowedTypes.includes(file.type)) {
+        typeError.textContent = 'Only PNG, JPG, and JPEG files are allowed.';
+        return false;
+    } else {
+        typeError.textContent = '';
+    }
 
+    return true;
+};
+
+// Handle file selection
+upload.addEventListener("change", (e) => {
+    const file = upload.files[0];
+    if (file && validateFile(file)) {
+        updateImagePreview(file);
+    } else {
+        // Reset file input if validation fails
+        upload.value = '';
+    }
+});
+
+// Reset event
+avatar.addEventListener("reset", () => {
+    // Clear preview and reset error messages
     while (preview.firstChild) {
-      preview.removeChild(preview.firstChild);
+        preview.removeChild(preview.firstChild);
     }
+    document.getElementById('sizeError').textContent = '';
+    document.getElementById('typeError').textContent = '';
+});
 
-    var img = document.createElement("img");
-    img.file = file;
-    img.src = window.URL.createObjectURL(file);
-    img.onload = function() {
-      // window.URL.revokeObjectURL(this.src);
-    };
-    img.className = "avatar_img";
+// Submit event
+avatar.addEventListener("submit", (e) => {
+    e.preventDefault();
+    const myFile = upload.files;
+    console.log(myFile); // You can handle file submission here
+});
 
-    /* Clear focus and any text editing mode */
-    document.activeElement.blur();
-    window.getSelection().removeAllRanges();
-
-    var _avatarKey = avatars.add(file.name, img.src);
-    avatar_name.textContent = file.name;
-    avatar_name.setAttribute("data-key", _avatarKey);
-    preview.appendChild(img);
-  }
-}
-
-/** Inline functions */
-window.changeAvatarName = function(event, key, name) {
-  if (event.keyCode != 13 && event != "blur") return;
-  key = parseInt(key);
-  if (!name) return;
-  var change = avatars.changeName(key, name);
-  document.activeElement.blur();
-  // remove selection abilities
-  window.getSelection().removeAllRanges();
-};
-
-window.changeAvatar = function(dir) {
-  if (dir === "next") {
-    avatars.showNext();
-  } else {
-    avatars.showLast();
-  }
-};
-window.handleAriaUpload = function(e, obj) {
-  if (e.keyCode == 13) {
-    obj.click();
-  }
-};

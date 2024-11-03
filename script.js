@@ -41,9 +41,6 @@ document.querySelectorAll('a').forEach(element => {
   });
 });
 
-window.onload = function() {
-  document.getElementById('user-login').reset(); // Clear the form fields
-};
 
 document.getElementById('login').addEventListener('click', function(event) {
   // Define the required fields to check

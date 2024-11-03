@@ -36,16 +36,23 @@ try {
 
 
             $user_id = $_POST['userid'];
-            $password = $_POST['password'];
-            $name = $_POST['name'];
+            //$password = $_POST['password'];
+
+            $Fname = $_POST['first_name'];
+            $Lname = $_POST['last_name'];
+            $Mname = $_POST['middle_name'];
+            $Minitial = $_POST['middle_initial'];
+            $Extname = $_POST['ext_name'];
+
             $department = $_POST['department'];
             $year_section = $_POST['year_section'];
             $email_address = $_POST['email'];
+            $alt_email_address = $_POST['altemail'];
             $campus = $_POST['campus'];
             $course = $_POST['course'];
             $sex = $_POST['sex'];
             $birthday = $_POST['birthday'];
-            $user_type = "student";
+            $user_type = "Student";
 
             if ($birthday) {
                 $birthDate = new DateTime($birthday);
@@ -59,16 +66,21 @@ try {
             $pdoConnect->beginTransaction();
             
             // Prepare an insert statement
-            $stmt = $pdoConnect->prepare("INSERT INTO `student_user`(`user_id`, `password`, `name`,`department`,`year_section`,`email_address` ,`campus` ,`course`,`sex` ,`age`,`birthday`,`profile_picture`, `user_type`) 
-                                        VALUES (:user_id,:password,:name,:department,:year_section,:email_address,:campus,:course,:sex,:age,:birthday,:profile_picture,:user_type)");
+            $stmt = $pdoConnect->prepare("INSERT INTO `student_user`(`user_id`, `password`, `first_name`, `last_name`, `middle_name`, `middle_initial`, `ext_name`, `department`,`year_section`,`email_address`,`alt_email_address` ,`campus` ,`course`,`sex` ,`age`,`birthday`,`profile_picture`, `user_type`) 
+                                                                    VALUES (:user_id, :password, :fname, :lname, :mname, :minitial, :extname, :department, :year_section, :email_address, :alt_email_address, :campus, :course, :sex, :age, :birthday, :profile_picture, :user_type)");
             // Bind the blob data
 
             $stmt->bindParam(':user_id', $user_id, PDO::PARAM_STR);
             $stmt->bindParam(':password', $user_id, PDO::PARAM_STR);
-            $stmt->bindParam(':name', $name, PDO::PARAM_STR);
+            $stmt->bindParam(':fname', $Fname, PDO::PARAM_STR);
+            $stmt->bindParam(':lname', $Lname, PDO::PARAM_STR);
+            $stmt->bindParam(':mname', $Mname, PDO::PARAM_STR);
+            $stmt->bindParam(':minitial', $Minitial, PDO::PARAM_STR);
+            $stmt->bindParam(':extname', $Extname, PDO::PARAM_STR);
             $stmt->bindParam(':department', $department, PDO::PARAM_STR);
             $stmt->bindParam(':year_section', $year_section, PDO::PARAM_STR);
             $stmt->bindParam(':email_address', $email_address, PDO::PARAM_STR);
+            $stmt->bindParam(':alt_email_address', $alt_email_address, PDO::PARAM_STR);
             $stmt->bindParam(':campus', $campus, PDO::PARAM_STR);
             $stmt->bindParam(':course', $course, PDO::PARAM_STR);
             $stmt->bindParam(':sex', $sex, PDO::PARAM_STR);
