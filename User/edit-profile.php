@@ -236,11 +236,10 @@ if (!isset($_SESSION["user_id"])) {
         <div id="page-wrapper">
             <div id="page-inner">
                 <div class="row">
-                    <div class="col-md-12"> <div class="col-md-12">
+                    <div class="col-md-12"> 
                     <div class="col-md-12">
-                        <h2>PROFILE</h2> <hr>
-                        <div class="container">
-                            <h1 class="text-primary"></h1>
+                        <h2>EDIT PROFILE</h2> <hr>
+                      
                            
                           
 <form class="form-horizontal" role="form" method="post" action="update_profile.php" enctype="multipart/form-data" onsubmit='return confirmSubmit();'>
@@ -282,7 +281,7 @@ if (!isset($_SESSION["user_id"])) {
                                             </div>
                                         </div>
                                         <div class="form-group">
-                                            <label for="category" class="col-lg-3 control-label">SEX ASSIGN AT BIRTH</label>
+                                            <label for="category" class="col-lg-2 control-label">SEX ASSIGN AT BIRTH</label>
                                             <div class="col-lg-8">
                                                 <select id="category" name="sex" class="form-control dropdown" required>
                                                     <option value="Male" <?php echo ($Sex == 'Male') ? 'selected' : ''; ?>>Male</option>
@@ -348,8 +347,7 @@ function confirmSubmit() {
 </script>                                    
                                 </div>
                             </div>
-                        </div>
-                    </div>
+  
                     <?php require_once ('../footer.php')?>  
                 </div>
             </div>

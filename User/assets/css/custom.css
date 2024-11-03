@@ -167,7 +167,10 @@ border-radius: 0px;
 -moz-border-radius: 50px;
 border-radius: 50px;
 
-}
+}      .bg-color-green {
+  background-color: #00CE6F;
+  color: #fff;
+  }
     .bg-color-black {
 background-color: #000000;
 color: #fff;

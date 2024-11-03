@@ -499,6 +499,8 @@ cite {
   text-align: justify;
 }
 .text-muted {
+  padding-top:5px;
+  font-size: 12px;
   color: #6d6767;
 }
 .text-primary {
