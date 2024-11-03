@@ -191,7 +191,8 @@ $pdoConnect = null;
 				</div>
                 <div class="form-group col-6">
 					<label for="password">Email Address</label>
-					<input type="email" name="email" id="emailadd" class="form-control" value="<?php echo $pdoResult[0]['email_address'];  ?>" autocomplete="off" required>
+                    <!--<input type="email" name="email" id="emailadd" class="form-control" value="<?php //echo $pdoResult[0]['email_address'];  ?>" autocomplete="off" required>-->
+                    <input type="email" name="email" class="form-control" value="<?php echo $pdoResult[0]['email_address'];  ?>" autocomplete="off" required>
                     <span id="emailError" style="color: red; font-size:smaller;"></span>
                 </div>
                 <div class="form-group col-6">

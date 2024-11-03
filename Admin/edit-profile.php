@@ -193,7 +193,8 @@ $Name .= " " . $ExtensionName . ".";
                                         <div class="form-group">
                                             <label class="col-lg-3 control-label">EMAIL ADDRESS</label>
                                             <div class="col-lg-7">
-                                                <input class="form-control" name="emailadd" id="emailadd" type="text" value="<?php echo $Email_Add?>" required placeholder="DHVSU Email" oninput="validateEmail()">
+                                                <!--<input class="form-control" name="emailadd" id="emailadd" type="text" value="<?php //echo $Email_Add?>" required placeholder="DHVSU Email" oninput="validateEmail()">-->
+                                                <input class="form-control" name="emailadd" type="text" value="<?php echo $Email_Add?>" required placeholder="DHVSU Email">
                                                 <span id="emailError" style="color: red; font-size:smaller;"></span>
                                             </div>
                                         </div>

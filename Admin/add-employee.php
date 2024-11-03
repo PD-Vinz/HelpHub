@@ -218,7 +218,8 @@ input[type="file"]::file-selector-button {
 				</div>
                 <div class="form-group col-6">
 					<label for="email">Email Address</label>
-                    <input class="form-control" name="email" id="emailadd" type="text" required placeholder="DHVSU Email" oninput="validateEmail()">
+                    <!--<input class="form-control" name="email" id="emailadd" type="text" required placeholder="DHVSU Email" oninput="validateEmail()">-->
+                    <input class="form-control" name="email" type="text" required placeholder="DHVSU Email">
                     <span id="emailError" style="color: red; font-size:smaller;"></span>
 				</div>
                 <div class="form-group col-6">
