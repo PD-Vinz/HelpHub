@@ -21,7 +21,28 @@ if (!isset($_SESSION["user_id"])) {
         $Data = $pdoResult->fetch(PDO::FETCH_ASSOC);
     
         if ($Data) {
-            $Name = $Data['name'];
+            $Name = $Data['first_name'];
+            $LastName = $Data['last_name'];
+            $MiddleName = $Data['middle_name'];
+            $MiddleInitial = $Data['middle_initial'];
+            $ExtensionName = $Data['ext_name'];
+
+// Check if there's a middle name or initial
+if (!empty($MiddleInitial)) {
+    $Name .= " " . $MiddleInitial  . ".";
+} elseif (!empty($MiddleName)) {
+    $Name .= " " . $MiddleName;
+}
+
+// Add last name if it exists
+if (!empty($LastName)) {
+    $Name .= " " . $LastName;
+}
+
+// Add extension name if it exists (e.g., Jr., Sr., III)
+if (!empty($ExtensionName)) {
+    $Name .= " " . $ExtensionName . ".";
+}
             $Department = $Data['department'];
             $Y_S = $Data['year_section'];
             $P_P = $Data['profile_picture'];
@@ -43,7 +64,28 @@ if (!isset($_SESSION["user_id"])) {
         $Data = $pdoResult->fetch(PDO::FETCH_ASSOC);
     
         if ($Data) {
-            $Name = $Data['name'];
+            $Name = $Data['first_name'];
+            $LastName = $Data['last_name'];
+            $MiddleName = $Data['middle_name'];
+            $MiddleInitial = $Data['middle_initial'];
+            $ExtensionName = $Data['ext_name'];
+
+// Check if there's a middle name or initial
+if (!empty($MiddleInitial)) {
+    $Name .= " " . $MiddleInitial . ".";
+} elseif (!empty($MiddleName)) {
+    $Name .= " " . $MiddleName;
+}
+
+// Add last name if it exists
+if (!empty($LastName)) {
+    $Name .= " " . $LastName;
+}
+
+// Add extension name if it exists (e.g., Jr., Sr., III)
+if (!empty($ExtensionName)) {
+    $Name .= " " . $ExtensionName . ".";
+}
             $Department = $Data['department'];
             $Y_S = $Data['year_section'];
             $P_P = $Data['profile_picture'];
