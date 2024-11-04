@@ -170,6 +170,10 @@ if ($pdoResult2->rowCount() > 0) {
         // Increment the failed login counter
         $_SESSION["failed-login"] = 0;
             exit;
+        //} elseif ($status == 'Not Activated'){
+        //    $_SESSION["first-time"] = $username;
+        //    header("Location: first-time/verify.php");
+        //    exit(); // Prevent further execution after redirection
         } else {
         // Password is correct, proceed with login
         $_SESSION["user_id"] = $username;
@@ -256,7 +260,7 @@ if ($pdoResult3->rowCount() > 0) {
 
     <div class="login">
 <?php if (!isset($formHidden)): // Check if the form should be displayed ?>
-    <form method="post" autocomplete="off">
+    <form method="post" id="user-login" autocomplete="off">
         <h3 style="text-shadow: 0.3px 0.3px #18181a;">Log In</h3>
         <hr>
         <!-- Error message display -->

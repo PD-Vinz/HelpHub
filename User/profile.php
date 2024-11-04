@@ -21,8 +21,32 @@ if (!isset($_SESSION["user_id"])) {
         $Data = $pdoResult->fetch(PDO::FETCH_ASSOC);
     
         if ($Data) {
+            $User_ID = $Data['user_id'];
             $Email_Add = $Data['email_address'];
-            $Name = $Data['name'];
+            $Alt_Email_Add = $Data['alt_email_address'];
+
+            $Name = $Data['first_name'];
+            $LastName = $Data['last_name'];
+            $MiddleName = $Data['middle_name'];
+            $MiddleInitial = $Data['middle_initial'];
+            $ExtensionName = $Data['ext_name'];
+
+// Check if there's a middle name or initial
+if (!empty($MiddleInitial)) {
+    $Name .= " " . $MiddleInitial . ".";
+} elseif (!empty($MiddleName)) {
+    $Name .= " " . $MiddleName;
+}
+
+// Add last name if it exists
+if (!empty($LastName)) {
+    $Name .= " " . $LastName;
+}
+
+// Add extension name if it exists (e.g., Jr., Sr., III)
+if (!empty($ExtensionName)) {
+    $Name .= " " . $ExtensionName . ".";
+}
             $Campus = $Data['campus'];
             $Department = $Data['department'];
             $Course = $Data['course'];
@@ -53,7 +77,31 @@ if (!isset($_SESSION["user_id"])) {
     
         if ($Data) {
             $Email_Add = $Data['email_address'];
-            $Name = $Data['name'];
+            $Alt_Email_Add = $Data['alt_email_address'];
+            
+            $Name = $Data['first_name'];
+            $LastName = $Data['last_name'];
+            $MiddleName = $Data['middle_name'];
+            $MiddleInitial = $Data['middle_initial'];
+            $ExtensionName = $Data['ext_name'];
+
+// Check if there's a middle name or initial
+if (!empty($MiddleInitial)) {
+    $Name .= " " . $MiddleInitial . ".";
+} elseif (!empty($MiddleName)) {
+    $Name .= " " . $MiddleName;
+}
+
+// Add last name if it exists
+if (!empty($LastName)) {
+    $Name .= " " . $LastName;
+}
+
+// Add extension name if it exists (e.g., Jr., Sr., III)
+if (!empty($ExtensionName)) {
+    $Name .= " " . $ExtensionName . ".";
+}
+
             $Campus = $Data['campus'];
             $Department = $Data['department'];
             $Course = $Data['course'];
@@ -116,73 +164,7 @@ if (!isset($_SESSION["user_id"])) {
 <?php include 'loading.php'; ?>
 <body>
     <div id="wrapper">
-        <nav class="navbar navbar-default navbar-cls-top " role="navigation" style="margin-bottom: 0">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse"
-                    data-target=".sidebar-collapse">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                <a class="navbar-brand" href="dashboard.php"><?php echo $shortName?></a>
-            </div>
-            <div style="color: white;
-            padding: 15px 50px 5px 50px;
-            float: right;
-            font-size: 16px;">
-            <div class="btn-group nav-link">
-              <button type="button" class="btn btn-rounded badge badge-light dropdown-toggle dropdown-icon" data-toggle="dropdown">
-                <span class="ml-3"><?php echo $Name?></span>
-            <span class="fa fa-caret-down">
-            <span class="sr-only">Toggle Dropdown</span>
-          </button>
-          <div class="dropdown-menu" role="menu">
-            <a class="dropdown-item" href="profile.php"><span class="fa fa-user"></span> MY ACCOUNT</a>
-            <hr style="margin-top: 5px; margin-bottom: 5px;">
-            <a class="dropdown-item" href="settings.php"><span class="fa fa-gear"></span> SETTINGS</a>
-            <hr style="margin-top: 5px; margin-bottom: 5px;">
-            <?php if (!isset($_SESSION["Super-Admin"])): ?>
-                <?php if ($identity == "Student"): ?>
-                <a class="dropdown-item" href="logout.php" onclick="window.open('https://forms.gle/Bf2yoFEiYE8k56Pb6', '_blank');"><span class="fa fa-sign-out"></span> LOG OUT </a>
-                <?php elseif ($identity == "Employee"): ?>
-                <a class="dropdown-item" href="logout.php" onclick="window.open('https://forms.gle/kUJQW5YTbBfKKMw37', '_blank');"><span class="fa fa-sign-out"></span> LOG OUT </a>
-                <?php endif; ?>
-            <?php elseif (isset($_SESSION["Super-Admin"]) && $_SESSION["Super-Admin"] === 'Log In Success'): ?>
-                <a class="dropdown-item" href="../index.php"><span class="fas fa-sign-out-alt"></span> Log Out</a>
-            <?php endif; ?>
-        </div>
-        </nav>
-        <!-- /. NAV TOP  -->
-        <nav class="navbar-default navbar-side" role="navigation">
-            <div class="sidebar-collapse">
-                <ul class="nav" id="main-menu">
-                    <li class="text-center">
-                        <img src="data:image/jpeg;base64,<?php echo $P_PBase64?>" class="user-image img-responsive" />
-                        <h3 style="color:white;"><?php echo $Name?></h3>
-                    </li>
-
-
-
-
-                    <li>
-                    <a href="dashboard.php"><i class="fa fa-dashboard fa-xl" style="font-size:24px;color:rgb(255, 255, 255)"></i>  DASHBOARD </a>
-                    </li>
-                    <li>
-                    <a class="active-menu" href="profile.php"><i class="fa fa-user fa-xl" style="font-size:24px;color:rgb(255, 255, 255)"></i> PROFILE </a>
-                        </li>
-
-                        <li>
-                            <a href="create-ticket.php"><i class="fa fa-plus fa-xl" style="font-size: 24px; color: rgb(255, 255, 255)"></i> CREATE TICKET </a>
-                            </li>
-                            <li>
-                        <a href="all-ticket.php"><i class="fa fa-ticket fa-xl" style="font-size: 24px; color: rgb(255, 255, 255)"></i> ALL TICKET </a>
-                    </li>
-
-                </ul>
-            </div>
-        </nav>
-        <!-- /. NAV SIDE -->
+    <?php include 'nav.php'; ?>
         <div id="page-wrapper">
             <div id="page-inner">
                 <div class="row">
@@ -225,8 +207,16 @@ if (!isset($_SESSION["user_id"])) {
                                                 <input class="form-control" type="text" value="<?php echo $Email_Add?>" disabled>
                                             </div>
                                         </div>
+                                        <?php if (!empty($Alt_Email_Add)): ?>
                                         <div class="form-group">
-                                            <label class="col-lg-3 control-label">GENDER</label>
+                                            <label class="col-lg-3 control-label">ALT. EMAIL ADDRESS</label>
+                                            <div class="col-lg-8">
+                                                <input class="form-control" name="altemailadd" type="text" value="<?php echo $Alt_Email_Add?>" readonly>
+                                            </div>
+                                        </div>
+                                        <?php endif; ?>
+                                        <div class="form-group">
+                                            <label class="col-lg-3 control-label">SEX ASSIGN AT BIRTH</label>
                                             <div class="col-lg-8">
                                                 <input class="form-control" type="text" value="<?php echo $Sex?>" disabled>
                                             </div>

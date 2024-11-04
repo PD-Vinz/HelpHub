@@ -21,7 +21,29 @@ if (!isset($_SESSION["user_id"])) {
         $Data = $pdoResult->fetch(PDO::FETCH_ASSOC);
     
         if ($Data) {
-            $Name = $Data['name'];
+            $Name = $Data['first_name'];
+            $LastName = $Data['last_name'];
+            $MiddleName = $Data['middle_name'];
+            $MiddleInitial = $Data['middle_initial'];
+            $ExtensionName = $Data['ext_name'];
+
+// Check if there's a middle name or initial
+if (!empty($MiddleInitial)) {
+    $Name .= " " . $MiddleInitial . ".";
+} elseif (!empty($MiddleName)) {
+    $Name .= " " . $MiddleName;
+}
+
+// Add last name if it exists
+if (!empty($LastName)) {
+    $Name .= " " . $LastName;
+}
+
+// Add extension name if it exists (e.g., Jr., Sr., III)
+if (!empty($ExtensionName)) {
+    $Name .= " " . $ExtensionName . ".";
+}
+
             $Department = $Data['department'];
             $Y_S = $Data['year_section'];
             $P_P = $Data['profile_picture'];
@@ -43,7 +65,29 @@ if (!isset($_SESSION["user_id"])) {
         $Data = $pdoResult->fetch(PDO::FETCH_ASSOC);
     
         if ($Data) {
-            $Name = $Data['name'];
+            $Name = $Data['first_name'];
+            $LastName = $Data['last_name'];
+            $MiddleName = $Data['middle_name'];
+            $MiddleInitial = $Data['middle_initial'];
+            $ExtensionName = $Data['ext_name'];
+
+// Check if there's a middle name or initial
+if (!empty($MiddleInitial)) {
+    $Name .= " " . $MiddleInitial . ".";
+} elseif (!empty($MiddleName)) {
+    $Name .= " " . $MiddleName;
+}
+
+// Add last name if it exists
+if (!empty($LastName)) {
+    $Name .= " " . $LastName;
+}
+
+// Add extension name if it exists (e.g., Jr., Sr., III)
+if (!empty($ExtensionName)) {
+    $Name .= " " . $ExtensionName . ".";
+}
+
             $Department = $Data['department'];
             $Y_S = $Data['year_section'];
             $P_P = $Data['profile_picture'];
@@ -139,68 +183,7 @@ if ($acceptTickets == "off") {
 <?php include 'loading.php'; ?>
 <body>
     <div id="wrapper">
-        <nav class="navbar navbar-default navbar-cls-top " role="navigation" style="margin-bottom: 0">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse"
-                    data-target=".sidebar-collapse">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                <a class="navbar-brand" href="dashboard.php"><?php echo $shortName?></a>
-            </div>
-            <div style="color: white;
-            padding: 15px 50px 5px 50px;
-            float: right;
-            font-size: 16px;">
-            <div class="btn-group nav-link">
-              <button type="button" class="btn btn-rounded badge badge-light dropdown-toggle dropdown-icon" data-toggle="dropdown">
-                <span class="ml-3"><?php echo $Name?></span>
-            <span class="fa fa-caret-down">
-            <span class="sr-only">Toggle Dropdown</span>
-          </button>
-          <div class="dropdown-menu" role="menu">
-            <a class="dropdown-item" href="profile.php"><span class="fa fa-user"></span> MY ACCOUNT</a>
-            <hr style="margin-top: 5px; margin-bottom: 5px;">
-            <a class="dropdown-item" href="settings.php"><span class="fa fa-gear"></span> SETTINGS</a>
-            <hr style="margin-top: 5px; margin-bottom: 5px;">
-            <?php if (!isset($_SESSION["Super-Admin"])): ?>
-                <?php if ($identity == "Student"): ?>
-                <a class="dropdown-item" href="logout.php" onclick="window.open('https://forms.gle/Bf2yoFEiYE8k56Pb6', '_blank');"><span class="fa fa-sign-out"></span> LOG OUT </a>
-                <?php elseif ($identity == "Employee"): ?>
-                <a class="dropdown-item" href="logout.php" onclick="window.open('https://forms.gle/kUJQW5YTbBfKKMw37', '_blank');"><span class="fa fa-sign-out"></span> LOG OUT </a>
-                <?php endif; ?>
-            <?php elseif (isset($_SESSION["Super-Admin"]) && $_SESSION["Super-Admin"] === 'Log In Success'): ?>
-                <a class="dropdown-item" href="../index.php"><span class="fas fa-sign-out-alt"></span> Log Out</a>
-            <?php endif; ?>          </div>
-        </nav>
-        <!-- /. NAV TOP  -->
-        <nav class="navbar-default navbar-side" role="navigation">
-            <div class="sidebar-collapse">
-                <ul class="nav" id="main-menu">
-                    <li class="text-center">
-                        <img src="data:image/jpeg;base64,<?php echo $P_PBase64?>" class="user-image img-responsive" />
-                        <h3 style="color:white;"><?php echo $Name?></h3>
-                    </li>
-                    <li>
-                        <a href="dashboard.php"><i class="fa fa-dashboard fa-xl" style="font-size:24px;color:rgb(255, 255, 255)"></i>  DASHBOARD </a>
-                    </li>
-                    <li>
-                        <a href="profile.php"><i class="fa fa-user fa-xl" style="font-size:24px;color:rgb(255, 255, 255)"></i> PROFILE </a>
-                        </li>
-
-                        <li>
-                            <a class="active-menu" href="create-ticket.php"><i class="fa fa-plus fa-xl" style="font-size: 24px; color: rgb(255, 255, 255)"></i> CREATE TICKET </a>
-                            </li>
-                            <li>
-                        <a href="all-ticket.php"><i class="fa fa-ticket fa-xl" style="font-size: 24px; color: rgb(255, 255, 255)"></i> ALL TICKET </a>
-                    </li>
-                </ul>
-               
-            </div>
-            
-        </nav>  
+    <?php include 'nav.php'; ?>
         <!-- /. NAV SIDE  -->
         <div id="page-wrapper" >
             <div id="page-inner">
@@ -293,13 +276,16 @@ if ($stmt->rowCount() > 5) {
                         </div>
 -->    
 
-    <label for="" class="control-label">Upload and attach files</label>
-    <div class="dropzone-area">
-        <div class="file-upload-icon"><!-- svg icon --></div> <p>Click to upload or drag and drop</p>
-            <input type="file" required id="upload-file" name="image"> <p class="message">No Files Selected</p>
-            <p id="sizeError" style="color:red;"></p>
-            <p id="typeError" style="color:red;"></p>
-        </div>
+                        <label for="" class="control-label">Upload and attach files</label>
+                        <div class="upload-area">
+                            <div class="upload-icon"><!-- SVG icon --></div>
+                                <p>Click to upload or drag and drop</p>
+                            <input type="file" required id="file-input" name="image">
+                                <p class="file-message">No Files Selected</p>
+                                    <p id="size-error" style="color:red;"></p>
+                                    <p id="type-error" style="color:red;"></p>
+                            </div>
+
           
 
                 <div class="modal-body"> 
@@ -445,117 +431,118 @@ if (identity === "Employee") {
 // Call the function to populate the dropdowns
 
     </script>
+
 <script>
 // Get elements
-const cropzoneBox = document.getElementsByClassName("dropzone-box")[0];
-const inputFiles = document.querySelector(".dropzone-area input[type='file']");
-const dropZoneElement = inputFiles.closest(".dropzone-area");
-const maxSize = 6 * 1024 * 1024; // 6MB size limit
-const allowedTypes = ['image/png', 'image/jpeg', 'image/jpg']; // Allowed file types
+const uploadForm = document.getElementsByClassName("upload-area")[0];
+const fileInput = document.querySelector(".upload-area input[type='file']");
+const uploadArea = fileInput.closest(".upload-area");
+const maxFileSize = 6 * 1024 * 1024; // 6MB size limit
+const allowedFileTypes = ['image/png', 'image/jpeg', 'image/jpg']; // Allowed file types
 
-// Update dropzone file list
-const updateDropzoneFileList = (dropzoneElement, file) => {
-    let dropzoneFileMessage = dropzoneElement.querySelector(".message");
-    dropzoneFileMessage.innerHTML = `${file.name}, ${file.size} bytes`;
+// Update file list with file info and preview
+const updateFileList = (uploadArea, file) => {
+    // Update file message with file name and size
+    const fileMessage = uploadArea.querySelector(".file-message");
+    fileMessage.innerHTML = `${file.name}, ${file.size} bytes`;
 
     // Create and display image preview
     if (file.type.startsWith('image/')) {
         const reader = new FileReader();
         reader.onload = (e) => {
-            let img = document.createElement('img');
-            img.src = e.target.result;
-
-            // Apply the CSS class to the image
-            img.classList.add('dropzone-image');
+            const imgPreview = document.createElement('img');
+            imgPreview.src = e.target.result;
+            imgPreview.classList.add('upload-image');
 
             // Remove existing preview if any
-            const existingImg = dropzoneElement.querySelector('img');
+            const existingImg = uploadArea.querySelector('img');
             if (existingImg) {
-                dropzoneElement.removeChild(existingImg);
+                uploadArea.removeChild(existingImg);
             }
 
-            dropZoneElement.appendChild(img);
+            // Append new image preview
+            uploadArea.appendChild(imgPreview);
         };
         reader.readAsDataURL(file);
     }
 };
 
 // Validate file size and type
-const validateFile = (file) => {
-    const sizeError = document.getElementById('sizeError');
-    const typeError = document.getElementById('typeError');
+const validateFileInput = (file) => {
+    const sizeError = document.getElementById('size-error');
+    const typeError = document.getElementById('type-error');
 
-    if (file.size > maxSize) {
+    let isValid = true;
+
+    if (file.size > maxFileSize) {
         sizeError.textContent = 'File size exceeds 6MB limit.';
-        return false;
+        isValid = false;
     } else {
         sizeError.textContent = '';
     }
 
-    if (!allowedTypes.includes(file.type)) {
+    if (!allowedFileTypes.includes(file.type)) {
         typeError.textContent = 'Only PNG, JPG, and JPEG files are allowed.';
-        return false;
+        isValid = false;
     } else {
         typeError.textContent = '';
     }
 
-    return true;
+    return isValid;
 };
 
-// Handle file selection
-inputFiles.addEventListener("change", (e) => {
-    const file = inputFiles.files[0];
-    if (file && validateFile(file)) {
-        updateDropzoneFileList(dropZoneElement, file);
+// Handle file selection from input
+fileInput.addEventListener("change", (e) => {
+    const file = fileInput.files[0];
+    if (file && validateFileInput(file)) {
+        updateFileList(uploadArea, file);
     } else {
         // Reset file input if validation fails
-        inputFiles.value = '';
+        fileInput.value = '';
     }
 });
 
 // Handle drag events
-["dragover", "dragleave", "dragend"].forEach((type) => {
-    dropZoneElement.addEventListener(type, (e) => {
-        if (type === "dragover") {
-            e.preventDefault();
-            dropZoneElement.classList.add("dropzone--over");
-        } else {
-            dropZoneElement.classList.remove("dropzone--over");
-        }
+["dragover", "dragleave", "dragend"].forEach((eventType) => {
+    uploadArea.addEventListener(eventType, (e) => {
+        e.preventDefault();
+        uploadArea.classList.toggle("upload-area--over", eventType === "dragover");
     });
 });
 
-// Handle drop event
-dropZoneElement.addEventListener("drop", (e) => {
+// Handle file drop event
+uploadArea.addEventListener("drop", (e) => {
     e.preventDefault();
     const file = e.dataTransfer.files[0];
-    if (file && validateFile(file)) {
-        inputFiles.files = e.dataTransfer.files; // Update the input file list
-        updateDropzoneFileList(dropZoneElement, file);
+    if (file && validateFileInput(file)) {
+        fileInput.files = e.dataTransfer.files; // Update the input file list
+        updateFileList(uploadArea, file);
     } else {
-        // Reset file input if validation fails
-        inputFiles.value = '';
+        fileInput.value = ''; // Reset file input if validation fails
     }
-    dropZoneElement.classList.remove("dropzone--over");
+    uploadArea.classList.remove("upload-area--over");
 });
 
-// Reset event
-cropzoneBox.addEventListener("reset", () => {
-    let dropzoneFileMessage = dropZoneElement.querySelector(".message");
-    dropzoneFileMessage.innerHTML = "No Files Selected";
+// Reset event handler
+uploadForm.addEventListener("reset", () => {
+    const fileMessage = uploadArea.querySelector(".file-message");
+    fileMessage.innerHTML = "No Files Selected";
 
     // Remove image preview
-    const existingImg = dropZoneElement.querySelector('img');
+    const existingImg = uploadArea.querySelector('img');
     if (existingImg) {
-        dropZoneElement.removeChild(existingImg);
+        uploadArea.removeChild(existingImg);
     }
+
+    // Clear error messages
+    document.getElementById('size-error').textContent = '';
+    document.getElementById('type-error').textContent = '';
 });
 
-// Submit event
-cropzoneBox.addEventListener("submit", (e) => {
+// Submit event handler (for demonstration, logs the file)
+uploadForm.addEventListener("submit", (e) => {
     e.preventDefault();
-    const myFile = document.getElementById("upload-file");
-    console.log(myFile.files);
+    console.log(fileInput.files); // Handle the submitted file(s) here
 });
 
 </script>

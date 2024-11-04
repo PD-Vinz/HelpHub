@@ -159,7 +159,30 @@ $pdoExec = $pdoResult->execute();
                     $date = new DateTime($birthday);
                     $formattedDate = $date->format('F j, Y');
 
-                    if ($name === 'Super Admin') {
+                    $Name = $row['first_name'];
+                    $LastName = $row['last_name'];
+                    $MiddleName = $row['middle_name'];
+                    $MiddleInitial = $row['middle_initial'];
+                    $ExtensionName = $row['ext_name'];
+        
+        // Check if there's a middle name or initial
+        if (!empty($MiddleInitial)) {
+            $Name .= " " . $MiddleInitial . ".";
+        } elseif (!empty($MiddleName)) {
+            $Name .= " " . $MiddleName;
+        }
+        
+        // Add last name if it exists
+        if (!empty($LastName)) {
+            $Name .= " " . $LastName;
+        }
+        
+        // Add extension name if it exists (e.g., Jr., Sr., III)
+        if (!empty($ExtensionName)) {
+            $Name .= " " . $ExtensionName . ".";
+        }
+
+                    if (strpos($Name, 'Super Admin') !== false) {
                         continue;
                     }
 
@@ -170,7 +193,7 @@ $pdoExec = $pdoResult->execute();
                     <tr class='odd gradeX <?php echo $statusClass?>'>
                     <td><?php echo htmlspecialchars($user_id); ?></td>
                   
-                    <td><?php echo htmlspecialchars($name); ?></td>
+                    <td><?php echo htmlspecialchars($Name); ?></td>
                     <td><?php echo htmlspecialchars($campus); ?></td>
                     <td><?php echo htmlspecialchars($department); ?></td>
                     
@@ -182,7 +205,7 @@ $pdoExec = $pdoResult->execute();
 	<span class="sr-only">Toggle Dropdown</span>
 				                  </button>
 				                  <div class="dropdown-menu" role="menu">
-				                    <a class="dropdown-item" data-toggle='modal' data-target='#myModal<?php echo $user_id; ?>' style="cursor:pointer"><span class="fa fa-edit text-primary"></span> Edit</a>
+				                    <a class="dropdown-item" href="edit-user-employee.php?id=<?php echo $user_id; ?>" style="cursor:pointer"><span class="fa fa-edit text-primary"></span> Edit</a>
 				                    <div class="dropdown-divider"></div>
 <?php if ($account_status === 'Enabled'): ?>
 
@@ -336,3 +359,4 @@ $pdoExec = $pdoResult->execute();
 </body>
 </html>
 
+<?php include_once("notification.php");?>

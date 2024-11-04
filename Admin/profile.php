@@ -21,8 +21,30 @@ if (!isset($_SESSION["admin_number"])) {
     if ($Data) {
         $user_ID = $Data['admin_number'];
         $Email_Add = $Data['email_address'];
-        $Name = $Data['f_name'];
-        $lname = $Data['l_name'];
+
+        $FirstName = $Data['f_name'];
+        $LastName = $Data['l_name'];
+        $MiddleName = $Data['m_name'];
+        $MiddleInitial = $Data['m_initial'];
+        $ExtensionName = $Data['ext_name'];
+
+$Name = $Data['f_name'];
+// Check if there's a middle name or initial
+if (!empty($MiddleInitial)) {
+$Name .= " " . $MiddleInitial . ".";
+} elseif (!empty($MiddleName)) {
+$Name .= " " . $MiddleName;
+}
+
+// Add last name if it exists
+if (!empty($LastName)) {
+$Name .= " " . $LastName;
+}
+
+// Add extension name if it exists (e.g., Jr., Sr., III)
+if (!empty($ExtensionName)) {
+$Name .= " " . $ExtensionName . ".";
+}
         $P_P = $Data['profile_picture'];
         $Sex = $Data['sex'];
         $Age = $Data['age'];
@@ -98,7 +120,7 @@ if (!isset($_SESSION["admin_number"])) {
                                 <div class="col-md-3">
                                     <div class="text-center">
                                         <img src="data:image/jpeg;base64,<?php echo $P_PBase64?>" class="avatar img-circle img-thumbnail" alt="avatar">
-                                        <h3><?php echo $Name,  " ", $lname?></h3>
+                                        <h3><?php echo $Name?></h3>
                                         <h5 style="text-transform: uppercase;"><?php echo $U_T?></h5>
                                     </div>
                                 </div>
@@ -205,13 +227,13 @@ if (!isset($_SESSION["admin_number"])) {
   </div>
                                         
                                        
-<!--
+
                                         <div class="modal-footer">	
                                         <a href="report.php" target="_blank">
                                             <button type="button" class="btn btn-primary">View Full Report</button>
                                         </a>
                                         </div>
-                                        --->
+                                        
 
                             </div>
                                                 </div>
@@ -274,17 +296,17 @@ if (!isset($_SESSION["admin_number"])) {
             });
         }
 
-        var jsVariable = "<?php echo $Name,  " ", $lname?>";
+        var jsVariable = "<?php echo $FirstName?>";
 
         // Example JavaScript condition to check the value of the PHP variable
         if (jsVariable === "Super Admin") {
-            createDonutChart('morris-donut-chart', 'action/data-report.php?chart=all&employee=<?php echo urlencode($Name . " " . $lname); ?>');
-            createDonutChart('morris-donut-chart2', 'action/data-report.php?chart=student&employee=<?php echo urlencode($Name . " " . $lname); ?>');
-            createDonutChart('morris-donut-chart3', 'action/data-report.php?chart=employee&employee=<?php echo urlencode($Name . " " . $lname); ?>');
+            createDonutChart('morris-donut-chart', 'action/data-report.php?chart=all&employee=<?php echo urlencode($FirstName); ?>');
+            createDonutChart('morris-donut-chart2', 'action/data-report.php?chart=student&employee=<?php echo urlencode($FirstName); ?>');
+            createDonutChart('morris-donut-chart3', 'action/data-report.php?chart=employee&employee=<?php echo urlencode($FirstName); ?>');
         } else {
-            createDonutChart('morris-donut-chart', 'action/data-report.php?chart=all&employee=<?php echo urlencode($Name); ?>');
-            createDonutChart('morris-donut-chart2', 'action/data-report.php?chart=student&employee=<?php echo urlencode($Name); ?>');
-            createDonutChart('morris-donut-chart3', 'action/data-report.php?chart=employee&employee=<?php echo urlencode($Name); ?>');
+            createDonutChart('morris-donut-chart', 'action/data-report.php?chart=all&employee=<?php echo urlencode($FirstName); ?>');
+            createDonutChart('morris-donut-chart2', 'action/data-report.php?chart=student&employee=<?php echo urlencode($FirstName); ?>');
+            createDonutChart('morris-donut-chart3', 'action/data-report.php?chart=employee&employee=<?php echo urlencode($FirstName); ?>');
         }
 
         // Create charts with dynamic data
@@ -313,3 +335,5 @@ if (!isset($_SESSION["admin_number"])) {
     
 </body>
 </html>
+
+<?php include_once("notification.php");?>

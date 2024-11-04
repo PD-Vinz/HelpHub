@@ -133,7 +133,7 @@ $profile_picture = $pdoResult[0]['profile_picture'];
 $P_PBase64 = base64_encode($profile_picture);
 $pdoConnect = null;
 ?>
-			<form method="post" action="action/mis-employee-update.php" id="manage-user" enctype="multipart/form-data">	
+<form method="post" action="action/mis-employee-update.php" id="manage-user" enctype="multipart/form-data" onsubmit='return validateForm();'>	
 				<!--<input type="hidden" name="userid" value="<?php //echo $pdoResult[0]['admin_number']; ?>">-->
                 <div class="col-md-6">
                 <div class="form-group col-6">
@@ -142,22 +142,48 @@ $pdoConnect = null;
 				</div>
 				<div class="form-group col-6">
 					<label for="name">First Name</label>
-					<input type="text" name="firstname" id="firstname" class="form-control" value="<?php echo $pdoResult[0]['f_name'];  ?>" required>
-				</div>
+                    <input class="form-control" name="firstname" id="firstNameInput" type="text" value="<?php echo $pdoResult[0]['f_name'];  ?>" required autocomplete="off" maxlength="100">
+                    <span id="firstNameError" style="color: red; font-size:smaller;"></span>
+                </div>
 				<div class="form-group col-6">
 					<label for="name">Last Name</label>
-					<input type="text" name="lastname" id="lastname" class="form-control" value="<?php echo $pdoResult[0]['l_name'];  ?>" required>
-				</div>
+                    <input class="form-control" name="lastname" id="lastNameInput" type="text" value="<?php echo $pdoResult[0]['l_name'];  ?>" required autocomplete="off" maxlength="50">
+                    <span id="lastNameError" style="color: red; font-size:smaller;"></span>
+                </div>
+                <div class="form-group col-6">
+					<label for="name">Middle Name</label>
+                    <input class="form-control" name="middlename" id="middleNameInput" type="text" value="<?php echo $pdoResult[0]['m_name'];  ?>" autocomplete="off" maxlength="50">
+                    <span id="middleNameError" style="color: red; font-size:smaller;"></span>
+                </div>
+                <div class="form-group col-6">
+					<label for="name">Middle Initial</label>
+                    <input class="form-control" name="middleinitial" id="middleInitialInput" type="text" value="<?php echo $pdoResult[0]['m_initial'];  ?>" autocomplete="off" maxlength="1">
+                    <span id="middleInitialError" style="color: red; font-size:smaller;"></span>
+                </div>
+                <div class="form-group col-6">
+					<label for="name">Ext. Name</label>
+                    <input class="form-control" name="extname" id="extNameInput" type="text" value="<?php echo $pdoResult[0]['ext_name'];  ?>" autocomplete="off" maxlength="2">
+                    <span id="extNameError" style="color: red; font-size:smaller;"></span>
+                </div>
                 <div class="form-group col-6">
 					<label for="name">Birthday</label>
-					<input type="date" name="birthday" id="birthday" class="form-control" value="<?php echo $pdoResult[0]['birthday'];?>">
+					<input type="date" name="birthday" id="bdayInput" class="form-control" value="<?php echo $pdoResult[0]['birthday'];?>">
 				</div>
+<script>
+    const bdayInput = document.getElementById("bdayInput");
+
+    // Calculate minimum date (100 years ago from today)
+    const minDate = new Date();
+    minDate.setFullYear(minDate.getFullYear() - 100);
+    bdayInput.min = minDate.toISOString().split("T")[0];
+
+    // Calculate maximum date (18 years ago from today)
+    const maxDate = new Date();
+    maxDate.setFullYear(maxDate.getFullYear() - 10);
+    bdayInput.max = maxDate.toISOString().split("T")[0];
+</script>  
                 <div class="form-group col-6">
-					<label for="name">Age</label>
-					<input type="text" name="age" id="age" class="form-control" value="<?php echo $pdoResult[0]['age'];  ?>" required autocomplete="off">
-				</div>
-                <div class="form-group col-6">
-					<label for="name">Sex</label>
+					<label for="name">Sex Assigned At Birth</label>
 					<select name="sex" id="sex" class="custom-select form-control" required>
 						<option value="Male" <?php echo ($pdoResult[0]['sex'] == 'Male') ? 'selected' : ''; ?>>Male</option>
 						<option value="Female" <?php echo ($pdoResult[0]['sex'] == 'Female') ? 'selected' : ''; ?>>Female</option>
@@ -165,7 +191,13 @@ $pdoConnect = null;
 				</div>
                 <div class="form-group col-6">
 					<label for="password">Email Address</label>
-					<input type="email" name="email" id="email" class="form-control" value="<?php echo $pdoResult[0]['email_address'];  ?>" autocomplete="off" >
+                    <!--<input type="email" name="email" id="emailadd" class="form-control" value="<?php //echo $pdoResult[0]['email_address'];  ?>" autocomplete="off" required>-->
+                    <input type="email" name="email" class="form-control" value="<?php echo $pdoResult[0]['email_address'];  ?>" autocomplete="off" required>
+                    <span id="emailError" style="color: red; font-size:smaller;"></span>
+                </div>
+                <div class="form-group col-6">
+					<label for="password">Alternative Email Address</label>
+					<input type="email" name="altemail" id="email" class="form-control" value="<?php echo $pdoResult[0]['alt_email_address'];  ?>" autocomplete="off" >
 				</div>
 				<div class="form-group col-6">
 					<label for="password">Password</label>
@@ -210,6 +242,99 @@ $pdoConnect = null;
 			</div>
 		</div>
     </form>
+<script>
+const inputs = {
+    firstName: {
+        input: document.getElementById('firstNameInput'),
+        error: document.getElementById('firstNameError'),
+        required: true
+    },
+    lastName: {
+        input: document.getElementById('lastNameInput'),
+        error: document.getElementById('lastNameError'),
+        required: true
+    },
+    middleName: {
+        input: document.getElementById('middleNameInput'),
+        error: document.getElementById('middleNameError'),
+        required: false
+    },
+    middleInitial: {
+        input: document.getElementById('middleInitialInput'),
+        error: document.getElementById('middleInitialError'),
+        required: false
+    },
+    extName: {
+        input: document.getElementById('extNameInput'),
+        error: document.getElementById('extNameError'),
+        required: false
+    },
+    email: {
+        input: document.getElementById('emailadd'), // Assuming email input has ID 'emailadd'
+        error: document.getElementById('emailError'), // Assuming error span has ID 'emailError'
+        required: true,
+        domain: "@dhvsu.edu.ph"
+    }
+};
+
+const nameRegex = /^[a-zA-ZÀ-ÿ\s'.-]+$/;
+const maxLength = 100;
+
+// Function to validate a single field
+function validateField(field) {
+    const value = field.input.value.trim();
+    
+    // Required field check
+    if (field.required && value === "") {
+        field.error.textContent = 'This field is required.';
+        return false;
+    }
+
+    // Email-specific validation
+    if (field.input === inputs.email.input) {
+        if (!value.endsWith(inputs.email.domain)) {
+            field.error.textContent = `Please enter a valid DHVSU email (example${inputs.email.domain}).`;
+            return false;
+        }
+    } else {
+        // Name validation
+        if (value && !nameRegex.test(value)) {
+            field.error.textContent = 'Please enter a valid value (letters, spaces, hyphens, apostrophes, and periods only).';
+            return false;
+        } else if (value.length > maxLength) {
+            field.error.textContent = `This field must be ${maxLength} characters or fewer.`;
+            return false;
+        }
+    }
+
+    field.error.textContent = ''; // Clear error if valid
+    return true;
+}
+
+// Main function to validate all fields before form submission
+function validateForm() {
+    let isValid = true;
+
+    for (const key in inputs) {
+        if (!validateField(inputs[key])) {
+            isValid = false;
+        }
+    }
+
+    return isValid ? confirmSubmit() : false; // Show confirmation dialog if all fields are valid
+}
+
+// Function to confirm submission
+function confirmSubmit() {
+    return confirm("Please make sure that the data you are submitting is true. Are you sure you want to proceed?");
+}
+
+// Attach live validation feedback to each input
+for (const key in inputs) {
+    inputs[key].input.addEventListener('input', () => validateField(inputs[key]));
+}
+
+</script>
 </div>
                  </div>
 <style>

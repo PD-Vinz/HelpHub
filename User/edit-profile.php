@@ -22,7 +22,32 @@ if (!isset($_SESSION["user_id"])) {
     
         if ($Data) {
             $Email_Add = $Data['email_address'];
-            $Name = $Data['name'];
+            $Alt_Email_Add = $Data['alt_email_address'];
+
+            $FirstName = $Data['first_name'];
+            $LastName = $Data['last_name'];
+            $MiddleName = $Data['middle_name'];
+            $MiddleInitial = $Data['middle_initial'];
+            $ExtensionName = $Data['ext_name'];
+
+$Name = $Data['first_name'];
+// Check if there's a middle name or initial
+if (!empty($MiddleInitial)) {
+    $Name .= " " . $MiddleInitial . ".";
+} elseif (!empty($MiddleName)) {
+    $Name .= " " . $MiddleName;
+}
+
+// Add last name if it exists
+if (!empty($LastName)) {
+    $Name .= " " . $LastName;
+}
+
+// Add extension name if it exists (e.g., Jr., Sr., III)
+if (!empty($ExtensionName)) {
+    $Name .= " " . $ExtensionName . ".";
+}
+
             $Campus = $Data['campus'];
             $Department = $Data['department'];
             $Course = $Data['course'];
@@ -53,7 +78,32 @@ if (!isset($_SESSION["user_id"])) {
     
         if ($Data) {
             $Email_Add = $Data['email_address'];
-            $Name = $Data['name'];
+            $Alt_Email_Add = $Data['alt_email_address'];
+            
+            $FirstName = $Data['first_name'];
+            $LastName = $Data['last_name'];
+            $MiddleName = $Data['middle_name'];
+            $MiddleInitial = $Data['middle_initial'];
+            $ExtensionName = $Data['ext_name'];
+
+$Name = $Data['first_name'];
+// Check if there's a middle name or initial
+if (!empty($MiddleInitial)) {
+    $Name .= " " . $MiddleInitial . ".";
+} elseif (!empty($MiddleName)) {
+    $Name .= " " . $MiddleName;
+}
+
+// Add last name if it exists
+if (!empty($LastName)) {
+    $Name .= " " . $LastName;
+}
+
+// Add extension name if it exists (e.g., Jr., Sr., III)
+if (!empty($ExtensionName)) {
+    $Name .= " " . $ExtensionName . ".";
+}
+
             $Campus = $Data['campus'];
             $Department = $Data['department'];
             $Course = $Data['course'];
@@ -111,7 +161,7 @@ if (!isset($_SESSION["user_id"])) {
     <!-- GOOGLE FONTS -->
     <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
     <!-- TABLE STYLES -->
-    <link href="assets/css/dataTables.bootstrap.css?v=<?php echo time(); ?>" rel="stylesheet">
+    <!--<link href="assets/css/dataTables.bootstrap.css?v=<?php //echo time(); ?>" rel="stylesheet">-->
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
 
     <style>
@@ -170,69 +220,7 @@ if (!isset($_SESSION["user_id"])) {
 <?php include 'loading.php'; ?>
 <body>
     <div id="wrapper">
-        <nav class="navbar navbar-default navbar-cls-top " role="navigation" style="margin-bottom: 0">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse"
-                    data-target=".sidebar-collapse">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                <a class="navbar-brand" href="dashboard.php"><?php echo $shortName?></a>
-            </div>
-            <div style="color: white;
-            padding: 15px 50px 5px 50px;
-            float: right;
-            font-size: 16px;">
-            <div class="btn-group nav-link">
-              <button type="button" class="btn btn-rounded badge badge-light dropdown-toggle dropdown-icon" data-toggle="dropdown">
-                <span class="ml-3"><?php echo $Name?></span>
-            <span class="fa fa-caret-down">
-            <span class="sr-only">Toggle Dropdown</span>
-          </button>
-          <div class="dropdown-menu" role="menu">
-            <a class="dropdown-item" href="profile.php"><span class="fa fa-user"></span> MY ACCOUNT</a>
-            <hr style="margin-top: 5px; margin-bottom: 5px;">
-            <a class="dropdown-item" href="settings.php"><span class="fa fa-gear"></span> SETTINGS</a>
-            <hr style="margin-top: 5px; margin-bottom: 5px;">
-            <?php if (!isset($_SESSION["Super-Admin"])): ?>
-                <?php if ($identity == "Student"): ?>
-                <a class="dropdown-item" href="logout.php" onclick="window.open('https://forms.gle/Bf2yoFEiYE8k56Pb6', '_blank');"><span class="fa fa-sign-out"></span> LOG OUT </a>
-                <?php elseif ($identity == "Employee"): ?>
-                <a class="dropdown-item" href="logout.php" onclick="window.open('https://forms.gle/kUJQW5YTbBfKKMw37', '_blank');"><span class="fa fa-sign-out"></span> LOG OUT </a>
-                <?php endif; ?>
-            <?php elseif (isset($_SESSION["Super-Admin"]) && $_SESSION["Super-Admin"] === 'Log In Success'): ?>
-                <a class="dropdown-item" href="../index.php"><span class="fas fa-sign-out-alt"></span> Log Out</a>
-            <?php endif; ?>
-          </div>
-        </nav>
-        <!-- /. NAV TOP  -->
-        <nav class="navbar-default navbar-side" role="navigation">
-            <div class="sidebar-collapse">
-                <ul class="nav" id="main-menu">
-                    <li class="text-center">
-                        <img src="data:image/jpeg;base64,<?php echo $P_PBase64?>" class="user-image img-responsive" />
-                        <h3 style="color:white;"><?php echo $Name?></h3>
-                    </li>
-
-                    <li>
-                    <a href="dashboard.php"><i class="fa fa-dashboard fa-xl" style="font-size:24px;color:rgb(255, 255, 255)"></i>  DASHBOARD </a>
-                    </li>
-                    <li>
-                    <a class="active-menu" href="profile.php"><i class="fa fa-user fa-xl" style="font-size:24px;color:rgb(255, 255, 255)"></i> PROFILE </a>
-                        </li>
-
-                        <li>
-                            <a href="create-ticket.php"><i class="fa fa-plus fa-xl" style="font-size: 24px; color: rgb(255, 255, 255)"></i> CREATE TICKET </a>
-                            </li>
-                            <li>
-                        <a href="all-ticket.php"><i class="fa fa-ticket fa-xl" style="font-size: 24px; color: rgb(255, 255, 255)"></i> ALL TICKET </a>
-                    </li>
-                </ul>
-            </div>
-        </nav>
-        <!-- /. NAV SIDE -->
+    <?php include 'nav.php'; ?>
         <div id="page-wrapper">
             <div id="page-inner">
                 <div class="row">
@@ -242,7 +230,7 @@ if (!isset($_SESSION["user_id"])) {
                       
                            
                           
-<form class="form-horizontal" role="form" method="post" action="update_profile.php" enctype="multipart/form-data" onsubmit='return confirmSubmit();'>
+<form class="form-horizontal" role="form" method="post" action="update_profile.php" enctype="multipart/form-data" onsubmit='return validateForm();'>
                                 <!-- left column -->
                                 <div class="avatar" id="avatar">
                                     <div id="preview">
@@ -254,6 +242,10 @@ if (!isset($_SESSION["user_id"])) {
                                         </label>
                                     </div>
                                   </div>
+
+                                    <div id="sizeError" style="color: red; text-align: center;"></div>  <!-- Ensure this exists -->
+                                    <div id="typeError" style="color: red; text-align: center;"></div>  <!-- Ensure this exists -->
+                                    
 <br>
                                   <div class="nickname">
                                     <span id="name" tabindex="4" data-key="1" contenteditable="true" onkeyup="changeAvatarName(event, this.dataset.key, this.textContent)" onblur="changeAvatarName('blur', this.dataset.key, this.textContent)" hidden></span>
@@ -262,12 +254,43 @@ if (!isset($_SESSION["user_id"])) {
                                 <div class="col-md-12 personal-info">
                                     <div> 
                                     </div>
-                                        <div class="form-group">
-                                            <label class="col-lg-2 control-label">NAME</label>
-                                            <div class="col-lg-8">
-                                                <input class="form-control" name="name" type="text" value="<?php echo $Name?>" required>
-                                            </div>
-                                        </div>
+
+<div class="form-group row">
+    <label class="col-lg-2 control-label">FIRST NAME</label>
+    <div class="col-lg-3">
+        <input class="form-control" name="first_name" id="firstNameInput" type="text" value="<?php echo $FirstName; ?>" required autocomplete="off" maxlength="100">
+        <span id="firstNameError" style="color: red; font-size:smaller;"></span>
+    </div>
+
+    <label class="col-lg-2 control-label">LAST NAME</label>
+    <div class="col-lg-3">
+        <input class="form-control" name="last_name" id="lastNameInput" type="text" value="<?php echo $LastName; ?>" required autocomplete="off" maxlength="50">
+        <span id="lastNameError" style="color: red; font-size:smaller;"></span>
+    </div>
+</div>
+
+<div class="form-group row">
+    <label class="col-lg-2 control-label">MIDDLE NAME</label>
+    <div class="col-lg-3">
+        <input class="form-control" name="middle_name" id="middleNameInput" type="text" value="<?php echo $MiddleName; ?>" autocomplete="off" maxlength="50">
+        <span id="middleNameError" style="color: red; font-size:smaller;"></span>
+    </div>
+
+    <label class="col-lg-2 control-label">MIDDLE INITIAL</label>
+    <div class="col-lg-3">
+        <input class="form-control" name="middle_initial" id="middleInitialInput" type="text" value="<?php echo $MiddleInitial; ?>" autocomplete="off" maxlength="1">
+        <span id="middleInitialError" style="color: red; font-size:smaller;"></span>
+    </div>
+</div>
+
+<div class="form-group row">
+    <label class="col-lg-2 control-label">EXT. NAME</label>
+    <div class="col-lg-3">
+        <input class="form-control" name="ext_name" id="extNameInput" type="text" value="<?php echo $ExtensionName; ?>" autocomplete="off" maxlength="2">
+        <span id="extNameError" style="color: red; font-size:smaller;"></span>
+    </div>
+</div>
+
                                         <div class="form-group">
                                             <label class="col-lg-2 control-label">USER ID</label>
                                             <div class="col-lg-8">
@@ -278,6 +301,12 @@ if (!isset($_SESSION["user_id"])) {
                                             <label class="col-lg-2 control-label">EMAIL ADDRESS</label>
                                             <div class="col-lg-8">
                                                 <input class="form-control" name="emailadd" type="text" value="<?php echo $Email_Add?>" readonly>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-lg-2 control-label">ALT. EMAIL ADDRESS</label>
+                                            <div class="col-lg-8">
+                                                <input class="form-control" name="altemailadd" type="text" value="<?php echo $Alt_Email_Add?>" placeholder="Personal Email">
                                             </div>
                                         </div>
                                         <div class="form-group">
@@ -292,9 +321,22 @@ if (!isset($_SESSION["user_id"])) {
                                         <div class="form-group">
                                             <label class="col-lg-2 control-label">BIRTHDAY</label>
                                             <div class="col-lg-8">
-                                                <input class="form-control" name="bday" type="date" value="<?php echo $Bday?>" required>
+                                                <input class="form-control" name="bday" type="date" value="<?php echo $Bday?>" required id="bdayInput">
                                             </div>
                                         </div>
+<script>
+    const bdayInput = document.getElementById("bdayInput");
+
+    // Calculate minimum date (100 years ago from today)
+    const minDate = new Date();
+    minDate.setFullYear(minDate.getFullYear() - 100);
+    bdayInput.min = minDate.toISOString().split("T")[0];
+
+    // Calculate maximum date (18 years ago from today)
+    const maxDate = new Date();
+    maxDate.setFullYear(maxDate.getFullYear() - 10);
+    bdayInput.max = maxDate.toISOString().split("T")[0];
+</script>
                                         <div class="form-group">
                                             <label class="col-lg-2 control-label">AGE</label>
                                             <div class="col-lg-8">
@@ -341,10 +383,85 @@ if (!isset($_SESSION["user_id"])) {
                                             </div>
                                         </div>
                                     </form>
-                                    <script>
+<script>
+const inputs = {
+    firstName: {
+        input: document.getElementById('firstNameInput'),
+        error: document.getElementById('firstNameError'),
+        required: true
+    },
+    lastName: {
+        input: document.getElementById('lastNameInput'),
+        error: document.getElementById('lastNameError'),
+        required: true
+    },
+    middleName: {
+        input: document.getElementById('middleNameInput'),
+        error: document.getElementById('middleNameError'),
+        required: false
+    },
+    middleInitial: {
+        input: document.getElementById('middleInitialInput'),
+        error: document.getElementById('middleInitialError'),
+        required: false
+    },
+    extName: {
+        input: document.getElementById('extNameInput'),
+        error: document.getElementById('extNameError'),
+        required: false
+    }
+};
+
+const nameRegex = /^[a-zA-ZÀ-ÿ\s'.-]+$/;
+const maxLength = 100;
+
+// Function to validate a single field
+function validateField(field) {
+    const value = field.input.value.trim();
+    
+    // Only check for required fields
+    if (field.required && value === "") {
+        field.error.textContent = 'This field is required.';
+        return false;
+    }
+
+    if (value && !nameRegex.test(value)) {
+        field.error.textContent = 'Please enter a valid value (letters, spaces, hyphens, apostrophes, and periods only).';
+        return false;
+    } else if (value.length > maxLength) {
+        field.error.textContent = `This field must be ${maxLength} characters or fewer.`;
+        return false;
+    } else {
+        field.error.textContent = ''; // Clear error if valid
+        return true;
+    }
+}
+
+// Main function to validate all fields before form submission
+function validateForm() {
+    let isValid = true;
+
+    for (const key in inputs) {
+        if (!validateField(inputs[key])) {
+            isValid = false;
+        }
+    }
+
+    return isValid ? confirmSubmit() : false; // Show confirmation dialog if all fields are valid
+}
+
+// Function to confirm submission
 function confirmSubmit() {
-    return confirm("Please make sure that the data you are submitting are true. Are you sure you want to proceed?");}
-</script>                                    
+    return confirm("Please make sure that the data you are submitting is true. Are you sure you want to proceed?");
+}
+
+// Attach live validation feedback to each input
+for (const key in inputs) {
+    inputs[key].input.addEventListener('input', () => validateField(inputs[key]));
+}
+
+</script>
+                    
                                 </div>
                             </div>
   
