@@ -224,11 +224,10 @@ if (!empty($ExtensionName)) {
         <div id="page-wrapper">
             <div id="page-inner">
                 <div class="row">
-                    <div class="col-md-12"> <div class="col-md-12">
+                    <div class="col-md-12"> 
                     <div class="col-md-12">
-                        <h2>PROFILE</h2> <hr>
-                        <div class="container">
-                            <h1 class="text-primary"></h1>
+                        <h2>EDIT PROFILE</h2> <hr>
+                      
                            
                           
 <form class="form-horizontal" role="form" method="post" action="update_profile.php" enctype="multipart/form-data" onsubmit='return validateForm();'>
@@ -465,8 +464,7 @@ for (const key in inputs) {
                     
                                 </div>
                             </div>
-                        </div>
-                    </div>
+  
                     <?php require_once ('../footer.php')?>  
                 </div>
             </div>

@@ -133,23 +133,29 @@ try {
     $pdoResult->execute();
     $pendingTickets = $pdoResult->rowCount();
 
-    $pdoCountQuery = "SELECT * FROM tb_tickets WHERE user_number = :number AND status = 'Returned'";
+    $pdoCountQuery = "SELECT * FROM tb_tickets WHERE user_number = :number AND status = 'Processing'";
     $pdoResult = $pdoConnect->prepare($pdoCountQuery);
     $pdoResult->bindParam(':number', $id);
     $pdoResult->execute();
     $returnedTickets = $pdoResult->rowCount();
 
-    $pdoCountQuery = "SELECT * FROM tb_tickets WHERE user_number = :number AND status = 'Resolved'";
+    $pdoCountQuery = "SELECT * FROM tb_tickets WHERE user_number = :number AND (status = 'Resolved' OR status = 'Returned')";
     $pdoResult = $pdoConnect->prepare($pdoCountQuery);
     $pdoResult->bindParam(':number', $id);
     $pdoResult->execute();
     $completedTickets = $pdoResult->rowCount();
 
-    $pdoCountQuery = "SELECT * FROM tb_tickets WHERE user_number = :number AND status = 'Due'";
+
+
+
+    $pdoCountQuery = "SELECT * FROM tb_tickets WHERE  user_number = :number AND priority = 'YES'  AND (status = 'Pending' OR status = 'Processing')";
     $pdoResult = $pdoConnect->prepare($pdoCountQuery);
     $pdoResult->bindParam(':number', $id);
     $pdoResult->execute();
     $dueTickets = $pdoResult->rowCount();
+
+
+    
 
 } catch (PDOException $e) {
     echo "Error: " . $e->getMessage();
@@ -236,22 +242,46 @@ try {
                             </span>
                             <div class="text-box">
                                 <p class="main-text"><?php echo $allTickets?></p>
-                                <div style="width:100%"><p class="text-muted">ALL TICKET</p></div>
+                                <div style="width:100%"><p class="text-muted">ALL TICKETS</p></div>
+                            </div>
+                        </div>
+                    </div>
+                  <div class="col-md-2 col-sm-6 col-xs-6">
+                        <div class="panel panel-back noti-box">
+                            <span class="icon-box bg-color-red set-icon">
+                                <i class="fa fa-check fa-xs"></i>
+                            </span>
+                            <div class="text-box">
+                                <p class="main-text"><?php echo $completedTickets?></p>
+                                <p class="text-muted">COMPLETE TICKETS</p>
                             </div>
                         </div>
                     </div>
                     <div class="col-md-2 col-sm-6 col-xs-6">
                         <div class="panel panel-back noti-box">
-                            <span class="icon-box bg-color-black set-icon">
-                                <i class="fa fa-reply fa-xs"></i>
+                            <span class="icon-box bg-color-green set-icon">
+                                <i class="fa fa-envelope-open fa-xs"></i>
                             </span>
                             <div class="text-box">
                                 <p class="main-text"><?php echo $returnedTickets?></p>
-                                <p class="text-muted">RETURNED TICKET</p>
+                                <p class="text-muted">PROCESSING TICKETS</p>
                             </div>
                         </div>
                     </div>
+                    
                     <div class="col-md-2 col-sm-6 col-xs-6">
+                        <div class="panel panel-back noti-box">
+                            <span class="icon-box bg-color-yellow set-icon">
+                                <i class="fa fa-hourglass-half fa-xs"></i>
+                            </span>
+                            <div class="text-box">
+                                <p class="main-text"><?php echo $pendingTickets?></p>
+                                <p class="text-muted">PENDING TICKETS</p>
+                            </div>
+                        </div>
+                    </div>
+                   
+                   <div class="col-md-2 col-sm-6 col-xs-6">
                         <div class="panel panel-back noti-box">
                             <span class="icon-box bg-color-violet set-icon">
                                 <i class="fa fa-bell fa-xs"></i>
@@ -262,29 +292,6 @@ try {
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-2 col-sm-6 col-xs-6">
-                        <div class="panel panel-back noti-box">
-                            <span class="icon-box bg-color-yellow set-icon">
-                                <i class="fa fa-hourglass-half fa-xs"></i>
-                            </span>
-                            <div class="text-box">
-                                <p class="main-text"><?php echo $pendingTickets?></p>
-                                <p class="text-muted">PENDING TICKET</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-2 col-sm-6 col-xs-6">
-                        <div class="panel panel-back noti-box">
-                            <span class="icon-box bg-color-red set-icon">
-                                <i class="fa fa-check fa-xs"></i>
-                            </span>
-                            <div class="text-box">
-                                <p class="main-text"><?php echo $completedTickets?></p>
-                                <p class="text-muted">COMPLETE TICKET</p>
-                            </div>
-                        </div>
-                    </div>
-                
                  
                 
                 </div>

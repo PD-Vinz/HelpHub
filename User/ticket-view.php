@@ -258,21 +258,23 @@ if(isset($_GET['error']) && $_GET['error'] == 1) {
         <!-- /. NAV SIDE  -->
         <div id="page-wrapper" >
             <div id="page-inner">
-                <div class="row">
-                    <div class="col-md-12">
-                     <button class="back-button" onclick="history.back()"><i class="fas fa-arrow-left"></i> BACK</button>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-12">
+                
+                  
+            
+                    <div class="col-md-9 col-sm-9">
                      <h2>TICKET #<?php echo $_GET["ticket_id"]?></h2>   
                     </div>
-                </div>
+                <div class="col-md-3 col-sm-3" >
+                     <button class="btn btn-flat btn-primary"  style="float: right; margin-top:10px;" onclick="history.back()"><i class="fas fa-arrow-left" ></i></button>
+                    </div>
                  <!-- /. ROW  -->
                 <div class="row">
-                    <div class="col-md-12">
-                    <!-- Advanced Tables -->
-                                       
+                    
+                <div class="col-md-12">
+                <div class="col-md-12"> 
+                   
+<hr>
+                <Div class="col-md-12">                
 <?php
 $pdoQuery = "SELECT * FROM tb_tickets WHERE ticket_id = :TID";
 $pdoResult = $pdoConnect->prepare($pdoQuery);
@@ -285,8 +287,8 @@ extract($row);
 $screenshotBase64 = base64_encode($screenshot);
 ?>
 
-                                    <h3>TICKET DETAILS</h3>
-                    <div class="col-md-6 col-sm-6 col-xs-6">               
+
+                    <div class="col-md-6">          <br>     
 
                                         <div class="form-group">
                                             <label>TICKET ID‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ </label>
@@ -315,7 +317,8 @@ $screenshotBase64 = base64_encode($screenshot);
                                         </div>
                     </div>
 
-                    <div class="col-md-6 col-sm-6 col-xs-6">
+                    <div class="col-md-6">
+                        <br>
                     <div class="form-group">
                                         <label>EMPLOYEE NAME </label>
                                             <input class="form-control" value="<?php echo !empty($employee) ? htmlspecialchars($employee) : 'No Data Available'; ?>" disabled/>
@@ -331,24 +334,27 @@ $screenshotBase64 = base64_encode($screenshot);
                                         <div class="form-group">
                                             <label>CLOSED ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ </label>
                                             <input class="form-control" value="<?php echo !empty($finished_date) ? htmlspecialchars($finished_date) : 'No Data Available'; ?>" disabled/>
-                                         <br>
+                                         
                                         </div>
                                        
                                         <div class="form-group">
                                             <label>DURATION ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ </label>
                                             
                                             <input class="form-control" value="<?php echo !empty($duration) ? htmlspecialchars($duration) : 'No Data Available'; ?>" disabled/>
-                                            <br>
+                                           
                                         </div>
                                         
                                         <div class="form-group">
                                             <label>RESOLUTION ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ </label>
                                             <textarea class="form-control" disabled style="height: 378px; resize:none; overflow:auto;"><?php echo !empty($resolution) ? htmlspecialchars($resolution) : 'No Data Available'; ?></textarea>
-                                            <br><br>
+                                            
                                         </div>
 
                                 
                     </div>
+</Div>
+
+
 <!--
                     <div class="col-12">
                                         <div class="form-group">
@@ -362,7 +368,8 @@ $screenshotBase64 = base64_encode($screenshot);
                 <div class="col-12"> 
                     <div class="panel panel-default">
                         <div class="panel-heading">
-                            TICKET PROGRESS
+                            <hr>
+                           <label> TICKET PROGRESS</label>
                         </div>
                         <div class="panel-body">
                                         <div class="table-responsive">

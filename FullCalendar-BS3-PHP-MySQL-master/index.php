@@ -314,7 +314,7 @@ if(jsVariable === "Administrator") {
                 right: 'today'
             },
             defaultDate: new Date(),
-            editable: true,
+            editable: false,
             eventLimit: true,
             selectable: false,
             events: eventsData, // Use the JSON data directly
@@ -335,13 +335,8 @@ if(jsVariable === "Administrator") {
                 });
             },
 
-            eventDrop: function(event) {
-                edit(event);
-            },
-
-            eventResize: function(event) {
-                edit(event);
-            }
+          
+           
         });
 
         function edit(event) {

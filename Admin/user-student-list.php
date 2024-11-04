@@ -268,7 +268,7 @@ $pdoExec = $pdoResult->execute();
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                	<h4 class="modal-title">User Information</h4>
+                	<h3 class="modal-title">User Information</h3>
 
             </div>
             <div class="container"></div>
@@ -283,8 +283,7 @@ $pdoExec = $pdoResult->execute();
                                     </div>
                                 </div>
                                 <div class="col-md-9 personal-info">
-                                    <div> <h3>PERSONAL INFORMATION</h3>
-                                    </div>
+                                   
                                     <form class="form-horizontal" role="form">
                                         <div class="form-group">
                                             <label class="col-lg-3 control-label">STUDENT ID</label>

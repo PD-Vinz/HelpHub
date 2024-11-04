@@ -198,7 +198,7 @@ if ($acceptTickets == "off") {
 
                 <div class="container-center">
                     <div class="modal-header">
-                        <img src="assets/pic/head.png" alt="Technical support for DHVSU students">  
+                        <img src="assets/pic/head.png" alt="Technical support for DHVSU students" style="height:auto;">  
 
 
         <?php
@@ -243,7 +243,7 @@ if ($stmt->rowCount() > 5) {
  
 
                         <div class="form-group">
-                            <label for="category">ISSUE</label>
+                            <label for="category">Issue</label>
                             <select id="category" name="category" class="form-control dropdown" required>
                                 <option value="">SELECT PROBLEM</option>
                                 <!--

@@ -176,9 +176,9 @@ if (!empty($ExtensionName)) {
             <div id="page-inner">
                 <div class="row">
                     <div class="col-md-12"> <div class="col-md-12">
-                    <div class="col-md-12">
+                  
 
-                        <h2>ALL TICKET</h2>
+                        <h2>ALL TICKET</h2> <hr>
                         <!-- /. ROW -->
                         <div id="content" class="row">
                             <div class="col-md-12">
@@ -187,9 +187,9 @@ if (!empty($ExtensionName)) {
                                     <div class="panel-heading">
                                         LAST ACTIVITY
                                     </div>
-                                    <div class="panel-body">
-                                        <div class="table-responsive">
-                                            <table class="table table-striped table-bordered table-hover" id="dataTables-example">
+                                    <div class="panel-body" style="overflow:hidden;">
+                                        <div class="table-responsive" >
+                                            <table class="table table-striped table-bordered table-hover" id="dataTables-example" >
                                                 <thead>
                                                     <tr class="btn-primary">
                                                         <th>TICKET NUMBER</th>
@@ -217,7 +217,7 @@ while ($row = $pdoResult->fetch(PDO::FETCH_ASSOC)) {
     // Determine the CSS class based on the ticket status
     $statusClass = ($row['status'] === 'Resolved') ? 'success' :
                   (($row['status'] === 'Pending') ? 'danger' :
-                  (($row['status'] === 'Returned') ? 'info' :
+                  (
                   (($row['status'] === 'Processing') ? 'warning' : '')));
 
     ?>
@@ -294,7 +294,7 @@ VIEW TICKET
                                     </div>
                                 </div>
                                 <!-- /. Advanced Tables -->
-                            </div>   
+                           
                         </div>
                         <!-- /. ROW -->
                     </div> 
