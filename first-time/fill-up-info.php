@@ -39,9 +39,6 @@ if (!isset($_SESSION["address"]) && !isset($_SESSION["user"]) && !isset($_SESSIO
             $Bday = $Data['birthday'];
             $UserType = $Data['user_type'];
     
-            $nameParts = explode(' ', $Name);
-            $firstName = $nameParts[0];
-    
             $P_PBase64 = base64_encode($P_P);
             $date = new DateTime($Bday);
             $formattedDate = $date->format('F j, Y'); // This will give "July 22, 1990"
@@ -111,8 +108,27 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         // Your PHP logic goes here, for example, save the password to the database
         if ($User == "Student"){
             try{
+                $NewCampus = $_POST['campus'];
+                $NewDepartment = $_POST['department'];
+                $NewCourse = $_POST['course'];
+                $NewYS = $_POST['yearsection'];
 
-                $pdoUserQuery = "UPDATE student_user SET first_name = :fname, last_name = :lname, middle_name = :mname, middle_initial = :mi, ext_name = :extname, birthday = :birthday, alt_email_address = :altemail, age = :age, sex = :sex, account_status = :AccStat WHERE user_id = :number";
+                $pdoUserQuery = "UPDATE student_user 
+                                SET first_name = :fname,
+                                    last_name = :lname,
+                                    middle_name = :mname,
+                                    middle_initial = :mi,
+                                    ext_name = :extname,
+                                    birthday = :birthday,
+                                    alt_email_address = :altemail,
+                                    age = :age,
+                                    sex = :sex,
+                                    campus = :campus,
+                                    department = :department,
+                                    course = :course,
+                                    year_section = :yearsection,
+                                    account_status = :AccStat 
+                                WHERE user_id = :number";
 
                 $pdoResult = $pdoConnect->prepare($pdoUserQuery);
                 $pdoResult->bindParam(':number', $id);
@@ -125,6 +141,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $pdoResult->bindParam(':birthday', $NewBday);
                 $pdoResult->bindParam(':age', $NewAge);
                 $pdoResult->bindParam(':sex', $NewSex);
+
+                $pdoResult->bindParam(':campus', $NewCampus);
+                $pdoResult->bindParam(':department', $NewDepartment);
+                $pdoResult->bindParam(':course', $NewCourse);
+                $pdoResult->bindParam(':yearsection', $NewYS);
+
                 $pdoResult->bindParam(':AccStat', $AccStat);
                 $pdoResult->execute();
             
@@ -149,8 +171,24 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             } elseif ($User == "Employee") {
                 
                 try{
+
+                    $NewCampus = $_POST['campus'];
+                    $NewDepartment = $_POST['department'];
                     
-                    $pdoUserQuery = "UPDATE employee_user SET first_name = :fname, last_name = :lname, middle_name = :mname, middle_initial = :mi, ext_name = :extname, birthday = :birthday, alt_email_address = :altemail, age = :age, sex = :sex, account_status = :AccStat WHERE user_id = :number";
+                    $pdoUserQuery = "UPDATE employee_user 
+                                    SET first_name = :fname, 
+                                        last_name = :lname, 
+                                        middle_name = :mname, 
+                                        middle_initial = :mi, 
+                                        ext_name = :extname, 
+                                        birthday = :birthday, 
+                                        alt_email_address = :altemail, 
+                                        age = :age, 
+                                        sex = :sex, 
+                                        campus = :campus,
+                                        department = :department,
+                                        account_status = :AccStat 
+                                    WHERE user_id = :number";
 
                     $pdoResult = $pdoConnect->prepare($pdoUserQuery);
                     $pdoResult->bindParam(':number', $id);
@@ -163,6 +201,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     $pdoResult->bindParam(':birthday', $NewBday);
                     $pdoResult->bindParam(':age', $NewAge);
                     $pdoResult->bindParam(':sex', $NewSex);
+
+                    $pdoResult->bindParam(':department', $NewDepartment);
+                    $pdoResult->bindParam(':course', $NewCourse);
+
                     $pdoResult->bindParam(':AccStat', $AccStat);
                     $pdoResult->execute();
                 
@@ -238,7 +280,7 @@ $shortName = $Datas['short_name'] ?? '';
     <div class="form-row">
         <div class="form-group">
             <label class="label">FIRST NAME</label>
-            <input class="form-control" name="FName" id="firstNameInput" type="text" value="<?php echo $FirstName?>" requiredautocomplete="off" maxlength="100">
+            <input class="form-control" name="FName" id="firstNameInput" type="text" value="<?php echo $FirstName?>" required autocomplete="off" maxlength="100">
             <span id="firstNameError" style="color: red; font-size:smaller;"></span>
         </div>
     
@@ -313,12 +355,28 @@ $shortName = $Datas['short_name'] ?? '';
     <div class="form-row">
         <div class="form-group">
             <label class="label">CAMPUS</label>
-            <input class="form-control" name="" type="text" value="<?php echo $Campus?>" readonly>
+            <?php if (!empty($Campus)): ?>
+                <input class="form-control" name="campus" type="text" value="<?php echo $Campus ?>" readonly>
+            <?php else: ?>
+                <select type="text" name="campus" id="campusDropdown" class="form-control" required>
+
+                </select>
+            <?php endif; ?>
         </div>
     
         <div class="form-group">
             <label class="label">DEPARTMENT</label>
-            <input class="form-control" name="" type="text" value="<?php echo $Department?>" readonly>
+            <?php if (!empty($Campus)): ?>
+                <input class="form-control" name="department" type="text" value="<?php echo $Department ?>" readonly>
+                <select type="text" name="" id="categoryDropdown" class="form-control" required hidden>
+
+                </select>
+            <?php else: ?>
+
+                <select type="text" name="department" id="categoryDropdown" class="form-control" required>
+
+                </select>
+            <?php endif; ?>
         </div>
     </div>
     
@@ -326,12 +384,22 @@ $shortName = $Datas['short_name'] ?? '';
     <div class="form-row">
         <div class="form-group">
             <label class="label">COURSE</label>
-            <input class="form-control" name="" type="text" value="<?php echo $Course?>" readonly>
+            <?php if (!empty($Course)): ?>
+                <input class="form-control" name="course" type="text" value="<?php echo $Course?>" readonly>
+            <?php else: ?>
+                <select type="text" name="course" id="itemDropdown" class="form-control" required>
+
+                </select>
+            <?php endif; ?>
         </div>
 
         <div class="form-group">
             <label class="label">YEAR AND SECTION</label>
-            <input class="form-control" name="" type="text" value="<?php echo $Y_S?>" readonly>
+            <?php if (!empty($Course)): ?>
+                <input class="form-control" name="" type="text" value="<?php echo $Y_S?>" readonly>
+            <?php else: ?>
+                <input class="form-control" name="yearsection" type="text" placeholder="ex. 1A" required>
+            <?php endif; ?>
         </div>  
     </div>
     <?php endif; ?>
@@ -347,5 +415,156 @@ $shortName = $Datas['short_name'] ?? '';
     </div>
 <script src="script.js"></script>
 
+
+<script>
+    function populateCampus(fileName, dropdownId, selectedCampus) {
+    // Add a random query parameter to the file name to prevent caching
+    const url = fileName + '?v=' + new Date().getTime();
+    
+    // Fetch the text file
+    fetch(url)
+        .then(response => response.text())
+        .then(data => {
+            // Split the text data by lines
+            const options = data.split('\n');
+
+            // Get the dropdown element
+            const dropdown = document.getElementById(dropdownId);
+
+            // Clear existing options in the dropdown
+            dropdown.innerHTML = '';
+
+            // Iterate over each line and create an option element
+            options.forEach(option => {
+                if (option.trim() !== '') {  // Ignore empty lines
+                    const opt = document.createElement('option');
+                    opt.value = option.trim();
+                    opt.textContent = option.trim();
+                    dropdown.appendChild(opt);
+                }
+            });
+
+            // Select the option based on selectedValue
+            if (selectedCampus) {
+                dropdown.value = selectedCampus; // Set the selected option
+            }
+        })
+        .catch(error => console.error(`Error fetching the text file (${fileName}):`, error));
+}
+
+// Assuming you have a PHP variable $FetchCampus, output it to JavaScript
+const fetchCampus = "<?php echo $Campus; ?>"; // Replace with your method to get the PHP variable
+
+// Call the function to populate the category dropdown
+populateCampus('../Admin/txt/campus.txt', 'campusDropdown', fetchCampus);
+
+
+
+    // Function to populate a dropdown from a specified text file
+    function populateDropdown(fileName, dropdownId, selectedDepartment) {
+        const url = fileName + '?v=' + new Date().getTime();
+        // Fetch the text file
+        fetch(url)
+            .then(response => response.text())
+            .then(data => {
+                const options = data.split('\n');
+                const dropdown = document.getElementById(dropdownId);
+
+                options.forEach(option => {
+                    if (option.trim() !== '') {  // Ignore empty lines
+                        const opt = document.createElement('option');
+                        opt.value = option.trim();
+                        opt.textContent = option.trim();
+                        dropdown.appendChild(opt);
+                    }
+                });
+
+                // Select the option based on selectedDepartment
+                if (selectedDepartment) {
+                    dropdown.value = selectedDepartment; // Set the selected option
+                }
+
+                // After populating, call handleCategoryChange to initialize the second dropdown
+                handleCategoryChange();
+            })
+            .catch(error => console.error(`Error fetching the text file (${fileName}):`, error));
+    }
+
+    // Function to populate a dropdown from a specific section of a text file
+    function populateDropdownFromSection(fileName, dropdownId, sectionMarker, selectedCourse) {
+        const url = fileName + '?v=' + new Date().getTime();
+        // Fetch the text file
+        fetch(url)
+            .then(response => response.text())
+            .then(data => {
+                const lines = data.split('\n');
+                let isInSection = false;
+                const options = [];
+
+                // Iterate over each line to find the desired section
+                lines.forEach(line => {
+                    const trimmedLine = line.trim();
+
+                    if (trimmedLine === sectionMarker) {
+                        isInSection = true; // Start capturing lines
+                    } else if (trimmedLine.startsWith('#')) {
+                        isInSection = false; // End capturing lines
+                    } else if (isInSection && trimmedLine !== '') {
+                        options.push(trimmedLine); // Capture lines within the section
+                    }
+                });
+
+                // Get the dropdown element
+                const dropdown = document.getElementById(dropdownId);
+                if (dropdown) {
+                    // Clear existing options in the dropdown
+                    dropdown.innerHTML = '';
+
+                    // Populate dropdown with options from the section
+                    options.forEach(option => {
+                        const opt = document.createElement('option');
+                        opt.value = option;
+                        opt.textContent = option;
+                        dropdown.appendChild(opt);
+                    });
+
+                    // Select the option based on selectedCourse
+                    if (selectedCourse) {
+                        dropdown.value = selectedCourse; // Set the selected option
+                    }
+                } else {
+                    console.warn(`Dropdown with ID ${dropdownId} not found.`);
+                }
+            })
+            .catch(error => console.error(`Error fetching the text file (${fileName}):`, error));
+    }
+
+    // Function to handle category change
+    function handleCategoryChange() {
+        const categoryDropdown = document.getElementById('categoryDropdown');
+        const selectedCategory = categoryDropdown.value;
+        const sectionMarker = `# ${selectedCategory}`;
+
+        // Assuming you have a PHP variable $FetchCourse, output it to JavaScript
+        const fetchCourse = "<?php echo $Course; ?>"; // Replace with your method to get the PHP variable
+
+        // Populate the second dropdown based on the selected category
+        console.log(`Populating itemDropdown for category: ${selectedCategory} with sectionMarker: ${sectionMarker}`);
+        populateDropdownFromSection('../Admin/txt/course.txt', 'itemDropdown', sectionMarker, fetchCourse);
+    }
+
+    // Assuming you have a PHP variable $FetchDepartment, output it to JavaScript
+    const fetchDepartment = "<?php echo $Department; ?>"; // Replace with your method to get the PHP variable
+
+    // Call the function to populate the category dropdown
+    populateDropdown('../Admin/txt/department.txt', 'categoryDropdown', fetchDepartment);
+
+    // Event listener for category dropdown change
+    document.getElementById('categoryDropdown').addEventListener('change', handleCategoryChange);
+
+    // Initial population based on the default selection
+    document.addEventListener('DOMContentLoaded', handleCategoryChange);
+
+</script>
 </body>
 </html>

@@ -295,12 +295,9 @@ if ($stmt->rowCount() > 5) {
                             <p>By completing this form, I allow Don Honorio Ventura State University, 
                             specifically the Management Information Systems Office, to gather, store, and handle the information 
                             I provide regarding my SMS/LMS/@dhvsu Google account concerns.</p>
-
+<br>
                     <label>
-                        <input type="radio" name="consent" value="yes" required> Yes, I consent
-                    </label>
-                    <label>
-                        <input type="radio" name="consent" value="no"> No, I do not consent
+                        <input type="checkbox" name="consent" value="yes" required> Yes, I consent
                     </label>
                         </main>
                     </div>

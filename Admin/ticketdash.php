@@ -324,8 +324,10 @@ $(document).ready(function() {
 
     <script>
         var ticket_user = "<?php echo $ticket_user; ?>";
+        var current_employee = "<?php echo $name; ?>";
 
         console.log(ticket_user);  // This should print the value of ticket_user
+        console.log(employee);  // This should print the value of ticket_user
     </script>
 
      <script>

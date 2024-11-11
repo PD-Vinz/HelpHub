@@ -4,6 +4,12 @@ $pdoConnect = connection();
 
 session_start(); // Start the session
 
+// Include PHPMailer files
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception;
+require '../../vendor/autoload.php'; // Path to your PHPMailer autoload file
+
+
 try {
     if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['image']) && $_FILES['image']['error'] === UPLOAD_ERR_OK) {
@@ -101,8 +107,59 @@ try {
             // Set a session variable to indicate a successful update
             $_SESSION['Employee_Add_Success'] = true;
 
-            header("Location:../user-employee-list.php");
-            exit();
+            
+            $template = file_get_contents(__DIR__ . '/email_template.html');
+
+            // Replace placeholders in the email template
+            $emailBody = str_replace(
+                ['{{USER_NAME}}', '{{USER_ID}}', '{{PASSWORD}}'],
+                [$Fname, $user_id, $user_id],
+                $template
+            );
+
+            // Initialize PHPMailer
+            $mail = new PHPMailer(true);
+
+            // Fetch mailer configuration from the database
+            $pdoQuery = "SELECT * FROM php_mailer_configuration WHERE email_purpose = 'Notification' AND status = 'Active'";
+            $pdoResult = $pdoConnect->prepare($pdoQuery);
+            if (!$pdoResult->execute()) {
+                die('Error fetching mailer configuration');
+            }
+            $Data = $pdoResult->fetch(PDO::FETCH_ASSOC);
+
+            if ($Data) {
+                $host = $Data['host'];
+                $username = $Data['username'];
+                $mailPassword = $Data['password'];
+                $port = $Data['port'];
+                $address = $Data['address'];
+                $name = $Data['name'];
+            }
+
+            try {
+                $mail->isSMTP();
+                $mail->Host = $host;
+                $mail->SMTPAuth = true;
+                $mail->Username = $username;
+                $mail->Password = $mailPassword;
+                $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
+                $mail->Port = $port;
+
+                $mail->setFrom($address, $name);
+                $mail->addAddress($email_address);
+
+                $mail->isHTML(true);
+                $mail->Subject = 'Your Account Information';
+                $mail->Body = $emailBody;
+
+                $mail->send();
+
+                header("Location:../user-employee-list.php");
+                exit();
+            } catch (Exception $e) {
+                echo "Email could not be sent. Mailer Error: {$mail->ErrorInfo}";
+            }
         } else {
             // Roll back the transaction on failure
             $pdoConnect->rollBack();
