@@ -71,7 +71,7 @@ border-radius: 0px;
 }
      .noti-box {
   
-  min-height: 75px;
+  min-height: 100px;
   height:auto;
   padding: 15px;
   line-height: 50px;
@@ -85,9 +85,9 @@ border-radius: 0px;
   margin: 0 10px 10px 0;
   margin-bottom: 40px;
   
-  width: 30px;
-  height: 30px;
-  line-height: 32px;
+  width: 40px;
+  height: 40px;
+  line-height: 42px;
   vertical-align: middle;
   text-align: center;
   font-size: 2.3rem;
@@ -1509,4 +1509,86 @@ border-radius: 0px;
 .wrapper {
   max-width: 1100px;
   margin: 15px auto;
+}
+
+
+/*progress tracker*/
+.timeline {
+  position: relative;
+  max-width: 600px;
+  margin: 20px auto;
+  padding: 20px;
+  text-align: left; /* Ensures the text is aligned to the left */
+}
+
+.timeline::before {
+  content: "";
+  position: absolute;
+  left: 0; /* Positions the timeline content to the left */
+  width: 2px;
+  background-color: #ddd;
+  top: 0;
+  bottom: 0;
+  margin-left: 10px;
+}
+
+
+.timeline-item {
+  display: flex;
+  margin-bottom: 25px;
+  position: relative;
+}
+
+.timeline-date {
+  min-width: 180px;
+  color: #666;
+  font-size: 14px;
+  padding-right: 20px;
+  text-align: right;
+  font-family: monospace;
+}
+
+.timeline-content {
+  position: relative;
+  padding-left: 30px;
+  padding-right: 50px;
+}
+
+.timeline-dot {
+  position: absolute;
+  left: 0;
+  width: 12px;
+  height: 12px;
+  background: #800000;
+  border-radius: 50%;
+  top: 5px;
+}
+
+.timeline-item:first-child .timeline-dot {
+  background: #FFD700; 
+}
+
+.timeline-description {
+  color: #333;
+  font-size: 14px;
+  margin: 0;
+}
+
+.timeline-status {
+  color: #4CAF50;
+  font-size: 12px;
+  margin-top: 4px;
+}
+
+.timeline-line {
+  position: absolute;
+  left: 5px;
+  top: 17px;
+  bottom: -30px;
+  width: 2px;
+  background: #e0e0e0;
+}
+
+.timeline-item:last-child .timeline-line {
+  display: none;
 }
