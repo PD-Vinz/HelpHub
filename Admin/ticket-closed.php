@@ -138,7 +138,13 @@ $pdoExec = $pdoResult->execute();
             ?>
                     <tr class='odd gradeX'>
                     <td><?php echo htmlspecialchars($employee); ?></td>
-                    <td><?php echo htmlspecialchars($status); ?></td>
+                    <td><?php 
+    if (is_array($status)) {
+        echo htmlspecialchars(implode(', ', $status));
+    } else {
+        echo htmlspecialchars($status);
+    }
+?></td>
                     <td><?php echo htmlspecialchars($finished_date); ?></td>
                     <td><?php echo htmlspecialchars($ticket_id); ?></td>
                     <td><?php echo htmlspecialchars($issue); ?></td>
