@@ -4911,7 +4911,13 @@ a.list-group-item-danger.active:focus {
 }
 .panel-body {
   padding: 15px;
+  overflow-y: scroll;
+  
 }
+.panel-body::-webkit-scrollbar {
+  display: none;
+}
+
 .panel-body-ticket {
   padding: 2px;
 }

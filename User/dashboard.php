@@ -238,7 +238,7 @@ try {
                     <div class="col-md-2 col-sm-6 col-xs-6">
                         <div class="panel panel-back noti-box">
                             <span class="icon-box bg-color-blue set-icon">
-                                <i class="fa fa-ticket fa-xs"></i>
+                                <i class="fa fa-ticket "></i>
                             </span>
                             <div class="text-box">
                                 <p class="main-text"><?php echo $allTickets?></p>
@@ -249,7 +249,7 @@ try {
                   <div class="col-md-2 col-sm-6 col-xs-6">
                         <div class="panel panel-back noti-box">
                             <span class="icon-box bg-color-red set-icon">
-                                <i class="fa fa-check fa-xs"></i>
+                                <i class="fa fa-check "></i>
                             </span>
                             <div class="text-box">
                                 <p class="main-text"><?php echo $completedTickets?></p>
@@ -260,7 +260,7 @@ try {
                     <div class="col-md-2 col-sm-6 col-xs-6">
                         <div class="panel panel-back noti-box">
                             <span class="icon-box bg-color-green set-icon">
-                                <i class="fa fa-envelope-open fa-xs"></i>
+                                <i class="fa fa-envelope-open "></i>
                             </span>
                             <div class="text-box">
                                 <p class="main-text"><?php echo $returnedTickets?></p>
@@ -272,7 +272,7 @@ try {
                     <div class="col-md-2 col-sm-6 col-xs-6">
                         <div class="panel panel-back noti-box">
                             <span class="icon-box bg-color-yellow set-icon">
-                                <i class="fa fa-hourglass-half fa-xs"></i>
+                                <i class="fa fa-hourglass-half "></i>
                             </span>
                             <div class="text-box">
                                 <p class="main-text"><?php echo $pendingTickets?></p>

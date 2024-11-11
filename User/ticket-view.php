@@ -244,7 +244,7 @@ if(isset($_GET['error']) && $_GET['error'] == 1) {
                         </li>
 
                         <li>
-                            <a class="active-menu" href="create-ticket.php"><i class="fa fa-plus fa-xl" style="font-size: 24px; color: rgb(255, 255, 255)"></i> CREATE TICKET </a>
+                            <a href="create-ticket.php"><i class="fa fa-plus fa-xl" style="font-size: 24px; color: rgb(255, 255, 255)"></i> CREATE TICKET </a>
                             </li>
                             <li>
                         <a href="all-ticket.php"><i class="fa fa-ticket fa-xl" style="font-size: 24px; color: rgb(255, 255, 255)"></i> ALL TICKET </a>
@@ -365,43 +365,46 @@ $screenshotBase64 = base64_encode($screenshot);
                     </div>
 -->
                     <?php } ?> 
-                <div class="col-12"> 
-                    <div class="panel panel-default">
-                        <div class="panel-heading">
-                            <hr>
-                           <label> TICKET PROGRESS</label>
-                        </div>
-                        <div class="panel-body">
-                                        <div class="table-responsive">
-                        <table class="table table-bordered table-striped table-hover" id="dataTables-example">
-                            <thead>
-                                <tr class="btn-primary">
-                                <th>DATE & TIME</th>
-                                <th>DESCRIPTION</th>
-                                <th>STATUS</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-<?php
-$pdoQuery = "SELECT * FROM ticket_logs WHERE ticket_id = :TID";
-$pdoResult = $pdoConnect->prepare($pdoQuery);
-$pdoResult->bindParam(':TID', $_GET["ticket_id"], PDO::PARAM_STR);
-$pdoExec = $pdoResult->execute();
+ 
 
-while ($row = $pdoResult->fetch(PDO::FETCH_ASSOC)) {
-extract($row);
-echo "<tr>";
-echo "<td>$date_time</td>";
-echo "<td>$description</td>";
-echo "<td>$status</td>";
-echo "</tr>";
-}
-?>
-                            </tbody>
-                            </table>
+<div class="col-md-12">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            
+            <label>TICKET PROGRESS</label>
+        </div>
+        <div class="panel-body" >
+          
+                <?php
+                $pdoQuery = "SELECT * FROM ticket_logs WHERE ticket_id = :TID ORDER BY date_time DESC";
+                $pdoResult = $pdoConnect->prepare($pdoQuery);
+                $pdoResult->bindParam(':TID', $_GET["ticket_id"], PDO::PARAM_STR);
+                $pdoExec = $pdoResult->execute();
+
+                while ($row = $pdoResult->fetch(PDO::FETCH_ASSOC)) {
+                    extract($row);
+                    ?>
+                    <div class="timeline-item">
+                        <div class="timeline-date">
+                            <?php 
+                            $date = new DateTime($date_time);
+                            echo $date->format('d/m/Y H:i');
+                            ?>
+                        </div>
+                        <div class="timeline-content">
+                            <div class="timeline-dot"></div>
+                            <div class="timeline-line"></div>
+                            <p class="timeline-description"><?php echo htmlspecialchars($description); ?></p>
+                            <p class="timeline-status"><?php echo htmlspecialchars($status); ?></p>
+                        </div>
                     </div>
-            </div>
-                    </div></div>
+                    <?php
+                }
+                ?>
+           
+        </div>
+    </div>
+</div>
         </div>
 </div>           
              <!-- /. PAGE INNER  -->
