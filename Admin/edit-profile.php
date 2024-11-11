@@ -1,4 +1,4 @@
-﻿<?php
+﻿﻿<?php
 include_once("../connection/conn.php");
 $pdoConnect = connection();
 
@@ -336,7 +336,7 @@ for (const key in inputs) {
     inputs[key].input.addEventListener('input', () => validateField(inputs[key]));
 }
 
-</script>                           
+</script>                                
                                 </div>
                            
                         </div></div></div>

@@ -15,6 +15,7 @@ $(document).ready(function() {
             data: { ticket_id: ticketId, status: status },
             dataType: 'json',
             success: function(response) {
+                console.log(response.employee); // Check if `employee` is passed and correct
                 if (response.success) {
                     // Create or update modal with fetched details
                     var modalId = 'ticketModal' + response.ticket_id;
@@ -32,7 +33,7 @@ $(document).ready(function() {
                                         '</div>' +
                                         '<div class="modal-body">' + response.html + '</div>' +
                                         '<div class="modal-footer">' +
-                                            getFooterButtons(response.status, response.ticket_id) +
+                                            getFooterButtons(response.status, response.ticket_id, response.employee, current_employee) +
                                         '</div>' +
                                     '</div>' +
                                 '</div>' +
@@ -43,7 +44,7 @@ $(document).ready(function() {
                         // Update existing modal content
                         $modal.find('.modal-title').text(response.status + ' Ticket');
                         $modal.find('.modal-body').html(response.html);
-                        $modal.find('.modal-footer').html(getFooterButtons(response.status, response.ticket_id));
+                        $modal.find('.modal-footer').html(getFooterButtons(response.status, response.ticket_id, response.employee, current_employee));
                     }
 
                     // Show the modal
@@ -64,23 +65,31 @@ $(document).ready(function() {
         });
     });
 
-    function getFooterButtons(status, ticketId) {
+    function getFooterButtons(status, ticketId, employee, current_employee) {
+        console.log("Status:", status);
+        console.log("Id:", ticketId);
+        console.log("Response Employee:", employee);
+        console.log("Current Employee:", current_employee);
         var buttons = '<a href="#" data-dismiss="modal" class="btn">Back</a>';
         
+        // Check if the current employee is the same as the ticket's assigned employee
+    if (status === 'Processing' && employee === current_employee) {
+        buttons += '<button class="btn btn-primary action-btn" data-action="Transfer" data-ticket-id="' + ticketId + '">Transfer</button>';
+        buttons += '<button class="btn btn-primary action-btn" data-action="Return" data-ticket-id="' + ticketId + '">Return</button>';
+        buttons += '<button class="btn btn-primary action-btn" data-action="Close" data-ticket-id="' + ticketId + '">Close</button>';
+    } else {
+        
+        // Other statuses
         switch (status) {
             case 'Pending':
                 buttons += '<button class="btn btn-primary action-btn" data-action="Open" data-ticket-id="' + ticketId + '">Open Ticket</button>';
-                break;
-            case 'Processing':
-                buttons += '<button class="btn btn-primary action-btn" data-action="Transfer" data-ticket-id="' + ticketId + '">Transfer</button>';
-                buttons += '<button class="btn btn-primary action-btn" data-action="Return" data-ticket-id="' + ticketId + '">Return</button>';
-                buttons += '<button class="btn btn-primary action-btn" data-action="Close" data-ticket-id="' + ticketId + '">Close</button>';
                 break;
             case 'Returned':
             case 'Resolved':
                 // Add buttons for these statuses if needed
                 break;
         }
+    }
         
         return buttons;
     }
