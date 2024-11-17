@@ -27,7 +27,7 @@ $(document).ready(function() {
                                 '<div class="modal-dialog2" role="document">' +
                                     '<div class="modal-content">' +
                                         '<div class="modal-header">' +
-                                            '<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>' +
+                                            '<button type="button" class="close" data-dismiss="modal" aria-label="close"><span aria-hidden="true">&times;</span></button>' +
                                             '<h4 class="modal-title">' + response.status + ' Ticket</h4>' +
                                         '</div>' +
                                         '<div class="modal-body">' + response.html + '</div>' +
@@ -74,7 +74,7 @@ $(document).ready(function() {
             case 'Processing':
                 buttons += '<button class="btn btn-primary action-btn" data-action="Transfer" data-ticket-id="' + ticketId + '">Transfer</button>';
                 buttons += '<button class="btn btn-primary action-btn" data-action="Return" data-ticket-id="' + ticketId + '">Return</button>';
-                buttons += '<button class="btn btn-primary action-btn" data-action="Close" data-ticket-id="' + ticketId + '">Close</button>';
+                buttons += '<button class="btn btn-primary action-btn" data-action="Resolve" data-ticket-id="' + ticketId + '">Resolve</button>';
                 break;
             case 'Returned':
             case 'Resolved':
@@ -92,37 +92,58 @@ $(document).ready(function() {
         createActionModal(action, ticketId);
     });
 
-    function createActionModal(action, ticketId) {
-        var modalId = 'myModal' + action + ticketId;
-        var modalTitle = action + ' Ticket';
-        var modalContent = `
-            <div class="modal fade" id="${modalId}">
-                <div class="modal-dialog3">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                            <h4 class="modal-title">${modalTitle}</h4>
-                        </div>
-                        <div class="modal-body">
-                            Confirm ${action.toLowerCase()}ing ticket
-                        </div>
-                        <div class="modal-footer">
-                            <a href="#" data-dismiss="modal" class="btn">Cancel</a>
-                            <a href="../Admin/${action.toLowerCase()}-form.php?id=${ticketId}&user=${ticket_user}" class="btn btn-primary">Confirm</a>
-                        </div>
+function createActionModal(action, ticketId) {
+    var modalId = 'myModal' + action + ticketId;
+    var modalTitle = action + ' Ticket';
+    
+  
+    var actionVerb = action.toLowerCase();
+    switch (actionVerb) {
+        case 'transfer':
+            actionVerb = 'transferring';
+            break;
+        case 'resolve':
+            actionVerb = 'resolving';
+            break;
+        case 'return':
+            actionVerb = 'returning';
+            break;
+        case 'open':
+            actionVerb = 'opening';
+            break;
+       
+        default:
+            actionVerb += 'ing'; 
+    }
+
+    var modalContent = `
+        <div class="modal fade" id="${modalId}">
+            <div class="modal-dialog3">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                        <h4 class="modal-title">${modalTitle}</h4>
+                    </div>
+                    <div class="modal-body">
+                        Confirm ${actionVerb} ticket
+                    </div>
+                    <div class="modal-footer">
+                        <a href="#" data-dismiss="modal" class="btn">Cancel</a>
+                        <a href="../Admin/${action.toLowerCase()}-form.php?id=${ticketId}&user=${ticket_user}" class="btn btn-primary">Confirm</a>
                     </div>
                 </div>
             </div>
-        `;
-    
-        // Remove existing modal if it exists
-        $('#' + modalId).remove();
-    
-        // Append the new modal to the body
-        $('body').append(modalContent);
-    
-        // Show the modal
-        $('#' + modalId).modal('show');
-    }
+        </div>
+    `;
+
+    // Remove existing modal if it exists
+    $('#' + modalId).remove();
+
+    // Append the new modal to the body
+    $('body').append(modalContent);
+
+    // Show the modal
+    $('#' + modalId).modal('show');
+}
     
 });

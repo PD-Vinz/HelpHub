@@ -75,7 +75,7 @@ function getFooterButtons(status, ticketId) {
         case 'Processing':
             buttons += '<button class="btn btn-primary action-btn" data-action="Transfer" data-ticket-id="' + ticketId + '">Transfer</button>';
             buttons += '<button class="btn btn-primary action-btn" data-action="Return" data-ticket-id="' + ticketId + '">Return</button>';
-            buttons += '<button class="btn btn-primary action-btn" data-action="Close" data-ticket-id="' + ticketId + '">Close</button>';
+            buttons += '<button class="btn btn-primary action-btn" data-action="Resolve" data-ticket-id="' + ticketId + '">Resolve</button>';
             break;
         case 'Returned':
         case 'Resolved':
@@ -95,6 +95,15 @@ $(document).on('click', '.action-btn', function() {
 function createActionModal(action, ticketId) {
     var modalId = 'myModal' + action + ticketId;
     var modalTitle = action + ' Ticket';
+    var actionVerb = action.toLowerCase();
+    
+    
+    if (action === 'Resolve') {
+        actionVerb = 'resolving';
+    } else {
+        actionVerb += 'ing';
+    }
+
     var modalContent = `
         <div class="modal fade" id="${modalId}">
             <div class="modal-dialog3">
@@ -104,7 +113,7 @@ function createActionModal(action, ticketId) {
                         <h4 class="modal-title">${modalTitle}</h4>
                     </div>
                     <div class="modal-body">
-                        Confirm ${action.toLowerCase()}ing ticket
+                        Confirm ${actionVerb} ticket
                     </div>
                     <div class="modal-footer">
                         <a href="#" data-dismiss="modal" class="btn">Cancel</a>
