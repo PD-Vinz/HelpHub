@@ -160,9 +160,9 @@ if (!isset($_SESSION["admin_number"])) {
                 <div class="col-md-12 row" id="ticket-stats">
 
                
-                    <hr>
+                    <hr>    
                 </div>
-
+               
                 <!-- /. ROW  -->
                 <div class="row">
                     <div class="col-md-12">
@@ -172,7 +172,12 @@ if (!isset($_SESSION["admin_number"])) {
 
                                 <div class="panel-body">
                                     <div class="table-responsive">
-                                        <table class="table table-striped table-bordered table-hover" id="ticketTable">
+                                        
+                                        <table class="table table-striped table-bordered table-hover" id="ticketTable"> <div class="card-tools col-md-12" style="z-index: 2; margin-top:10px;  margin-bottom:-30px;margin-left:-250px;">
+<a href="create-ticket.php" class="btn btn-flat btn-primary" style="float: right;">
+    <span class="fas fa-plus"></span> Create ticket
+</a>
+</div>
                                             <thead>
                                                 <tr>
                                                     <th>Priority</th>
@@ -234,7 +239,8 @@ if (!isset($_SESSION["admin_number"])) {
                     </div>
                 </div>
                 <!-- /. PAGE INNER  -->
-            </div><?php include '../footer.php' ?>
+            </div>
+            <?php include '../footer.php' ?>
             <!-- /. PAGE WRAPPER  -->
         </div>
 

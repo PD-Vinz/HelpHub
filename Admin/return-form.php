@@ -159,14 +159,17 @@ if ($row) {
                                     <br>
                                 </div>
                                 <div class="col-md-6">
-                                        <div class="form-group">
+                                <div class="form-group">
                                             <label>Remarks ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ </label>
-                                            <textarea name="remarks" id="remarksTextarea" class="form-control" rows="7" ></textarea>
+                                            <textarea class="form-control" rows="7" style="resize:none; overflow:auto;"><?php echo htmlspecialchars($remarks); ?></textarea>
+                                           
                                         </div>
                                         <div class="form-group">
                                             <label>Notes ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ </label>
-                                            <textarea name="notes" id="notesdetailsTextarea" class="form-control" rows="5" ></textarea>
+                                            <textarea class="form-control" rows="5" style="resize:none; overflow:auto;"><?php echo htmlspecialchars($notes); ?></textarea>
+                                           
                                         </div>
+                                    </div>
                                     </div>
         </div>
                             </div>

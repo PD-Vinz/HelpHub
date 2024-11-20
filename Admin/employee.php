@@ -136,7 +136,7 @@ try {
                       
                     </div>
                 
-<br>
+
 
                  <!-- /. ROW  -->
                 
@@ -225,15 +225,9 @@ while ($row = $pdoResult->fetch(PDO::FETCH_ASSOC)){
 			</table></div>
 		</div>
 		</div>
-	</div>
-</div><?php require_once ('../footer.php')?>   
-</div>
-            </div>
-
-
-
-               
-    </div>
+		</div><div class="row"></div>
+		</div>
+        <?php require_once ('../footer.php')?>  
              <!-- /. PAGE INNER  -->
             </div>
          <!-- /. PAGE WRAPPER  -->
