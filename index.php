@@ -377,8 +377,8 @@ if ($pdoResult3->rowCount() > 0) {
 <footer>
     <p>&copy; 2024 HelpHub. All rights reserved.</p>
     <p>
-        <button class="link-button" onclick="window.open('/terms-of-service.html', '_blank');">Terms of Service</button> | 
-        <button class="link-button" onclick="window.open('/privacy-policy.html', '_blank');">Privacy Policy</button>
+        <button class="link-button" onclick="window.open('terms-of-service.html', '_blank');">Terms of Service</button> | 
+        <button class="link-button" onclick="window.open('privacy-policy.html', '_blank');">Privacy Policy</button>
     </p>
 </footer>
 

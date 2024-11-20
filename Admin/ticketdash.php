@@ -23,8 +23,8 @@ if (!isset($_SESSION["admin_number"])) {
         $Position = $Data['position'];
         $U_T = $Data['user_type'];
 
-        $nameParts = explode(' ', $Name);
-        $firstName = $nameParts[0];
+        //$nameParts = explode(' ', $Name);
+        //$firstName = $nameParts[0];
     } else {
         // Handle the case where no results are found
         echo "No student found with the given student number.";

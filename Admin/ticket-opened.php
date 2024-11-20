@@ -19,12 +19,11 @@ if (!isset($_SESSION["admin_number"])) {
     $Data = $pdoResult->fetch(PDO::FETCH_ASSOC);
 
     if ($Data) {
-        $Name = $Data['f_name'];
+        $F_Name = $Data['f_name'];
         $Position = $Data['position'];
         $U_T = $Data['user_type'];
 
-        $nameParts = explode(' ', $Name);
-        $firstName = $nameParts[0];
+
     } else {
         // Handle the case where no results are found
         echo "No student found with the given student number.";
@@ -163,11 +162,13 @@ try {
             } else {
                 $status = "Processing";
 
+                echo $Name;
+
                 $pdoQuery = "SELECT * FROM tb_tickets WHERE status = :status && user_type = :user && employee = :employee";
                 $pdoResult = $pdoConnect->prepare($pdoQuery);
                 $pdoResult->bindParam(':status', $status);
                 $pdoResult->bindParam(':user', $ticket_user, PDO::PARAM_STR);
-                $pdoResult->bindParam(':employee', $Name, PDO::PARAM_STR);
+                $pdoResult->bindParam(':employee', $F_Name, PDO::PARAM_STR);
                 $pdoExec = $pdoResult->execute();
             }
             
@@ -177,7 +178,7 @@ try {
                                 <table class="table table-striped table-bordered table-hover" id="dataTables-example">
                                     <thead>
                                         <tr>
-                                        <th>Priority</th>
+                                            <th>Priority</th>
                                             <th style="width:10%">Ticket ID</th>
                                             <th style="width:15%">Time opened</th>
                                             <th>Name</th>
