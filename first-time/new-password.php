@@ -41,18 +41,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 // Handle the error in case the update fails
                 throw new PDOException("Failed to execute the update query");
             } else {
-                $errorMessage = "Password Successfully Updated.";
-                echo "<script type='text/javascript'>
-                        alert('$errorMessage');
-                        window.location.href = 'fill-up-info.php';
-                      </script>";
+                header("Location: fill-up-info.php");
                 exit(); // Exit to prevent further execution
             }
         } else {
             $errorMessage = "Passwords do not match.";
-            echo "<script type='text/javascript'>
-                    alert('$errorMessage');
-                  </script>";
+            exit(); // Exit to prevent further execution
         }
         
     }
@@ -74,7 +68,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <img class="logo" src="../img/MIS logo.png" alt="Image">
 
     <div class="login">
-    <form method="post" onsubmit="return validatePassword()">
+    <form method="post" name="password" id="passnew" onsubmit="return validatePassword(event)">
         <h3>Enter New Password</h3>
 
         <div class="form-group">
@@ -127,13 +121,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 </script>
         </div>
-
+        <input type="hidden" name="password">
         <input type="submit" name="password" value="Submit"  ><br>
         
     </form>
 
 <script>
-    function validatePassword() {
+    function validatePassword(event) {
         // Get the values of the passwords and the user ID
         var userId = document.getElementById("userId").innerText;
         var newPassword = document.getElementById("newpass").value;
@@ -141,33 +135,37 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         // Check if the new password is the same as the user ID
         if (newPassword === userId || reNewPassword === userId) {
-            alert("Your password cannot be the same as the User ID.");
+            var notificationMessage = "Your password cannot be the same as the User ID.";
+            showNotification(notificationMessage); // Show the notification
             return false; // Prevent form submission
         }
 
         // Check if the password length is at least 6 characters
         if (newPassword.length < 6) {
-            alert("Password must be at least 6 characters long.");
+            var notificationMessage = "Password must be at least 6 characters long.";
+            showNotification(notificationMessage); // Show the notification
             return false; // Prevent form submission
         }
 
         // Check if both password fields match
         if (newPassword !== reNewPassword) {
-            alert("The passwords do not match.");
+            var notificationMessage = "The passwords do not match.";
+            showNotification(notificationMessage); // Show the notification
             return false; // Prevent form submission
         }
 
-        // Confirmation before form submission
-        var confirmSubmission = confirm("Are you sure you want to submit the form?");
-        if (!confirmSubmission) {
-            return false; // Stop form submission if the user clicks 'Cancel'
-        }
+        event.preventDefault(); // Prevent form from submitting immediately
+        showConfirmNotification(); // Show custom confirmation dialog
 
         // If everything is okay, allow the form to submit
         return true;
     }
 </script>
-<script src="../script.js"></script>
+<script src="script.js"></script>
     </div> 
 </body>
 </html>
+<!-- Notification Code -->
+<?php include_once("notification.php");?>
+<!-- Confirm Notification Code -->
+<?php include_once("confirm-notification.php");?>

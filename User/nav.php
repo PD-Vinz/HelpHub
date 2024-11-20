@@ -71,9 +71,9 @@ echo "Error: " . $e->getMessage();
         
         <?php if (!isset($_SESSION["Super-Admin"])): ?>
             <?php if ($identity == "Student"): ?>
-                <li><a href="logout.php" onclick="window.open('https://forms.gle/Bf2yoFEiYE8k56Pb6', '_blank');"><i class="fa fa-sign-out"></i> LOG OUT</a></li>
+                <li><a href="logout.php" onclick="window.open('https://forms.gle/bw1DqnXjCsmgJZkSA', '_blank');"><i class="fa fa-sign-out"></i> LOG OUT</a></li>
             <?php elseif ($identity == "Employee"): ?>
-                <li><a href="logout.php" onclick="window.open('https://forms.gle/kUJQW5YTbBfKKMw37', '_blank');"><i class="fa fa-sign-out"></i> LOG OUT</a></li>
+                <li><a href="logout.php" onclick="window.open('https://forms.gle/wQimAsiWckZq7w6d8', '_blank');"><i class="fa fa-sign-out"></i> LOG OUT</a></li>
             <?php endif; ?>
         <?php elseif (isset($_SESSION["Super-Admin"]) && $_SESSION["Super-Admin"] === 'Log In Success'): ?>
             <li><a href="../index.php"><i class="fa fa-sign-out"></i> Log Out</a></li>

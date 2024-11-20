@@ -1,4 +1,4 @@
-﻿<?php
+﻿﻿<?php
 include_once("../connection/conn.php");
 $pdoConnect = connection();
 
@@ -285,12 +285,6 @@ const inputs = {
         input: document.getElementById('extNameInput'),
         error: document.getElementById('extNameError'),
         required: false
-    },
-    email: {
-        input: document.getElementById('emailadd'), // Assuming email input has ID 'emailadd'
-        error: document.getElementById('emailError'), // Assuming error span has ID 'emailError'
-        required: true,
-        domain: "@dhvsu.edu.ph"
     }
 };
 
@@ -301,31 +295,22 @@ const maxLength = 100;
 function validateField(field) {
     const value = field.input.value.trim();
     
-    // Required field check
+    // Only check for required fields
     if (field.required && value === "") {
         field.error.textContent = 'This field is required.';
         return false;
     }
 
-    // Email-specific validation
-    if (field.input === inputs.email.input) {
-        if (!value.endsWith(inputs.email.domain)) {
-            field.error.textContent = `Please enter a valid DHVSU email (example${inputs.email.domain}).`;
-            return false;
-        }
+    if (value && !nameRegex.test(value)) {
+        field.error.textContent = 'Please enter a valid value (letters, spaces, hyphens, apostrophes, and periods only).';
+        return false;
+    } else if (value.length > maxLength) {
+        field.error.textContent = `This field must be ${maxLength} characters or fewer.`;
+        return false;
     } else {
-        // Name validation
-        if (value && !nameRegex.test(value)) {
-            field.error.textContent = 'Please enter a valid value (letters, spaces, hyphens, apostrophes, and periods only).';
-            return false;
-        } else if (value.length > maxLength) {
-            field.error.textContent = `This field must be ${maxLength} characters or fewer.`;
-            return false;
-        }
+        field.error.textContent = ''; // Clear error if valid
+        return true;
     }
-
-    field.error.textContent = ''; // Clear error if valid
-    return true;
 }
 
 // Main function to validate all fields before form submission
@@ -351,7 +336,7 @@ for (const key in inputs) {
     inputs[key].input.addEventListener('input', () => validateField(inputs[key]));
 }
 
-</script>                              
+</script>                                
                                 </div>
                            
                         </div></div></div>

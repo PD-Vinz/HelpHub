@@ -158,16 +158,16 @@ if ($acceptTickets == "off") {
     <title><?php echo $sysName?></title>
     <link rel="icon" href="<?php echo htmlspecialchars($S_LBase64, ENT_QUOTES, 'UTF-8'); ?>" type="image/*"> 
 	<!-- BOOTSTRAP STYLES-->
-    <link href="assets/css/bootstrap.css?v=<?php echo time(); ?>" rel="stylesheet" />
+    <link href="assets/css/bootstrap.css" rel="stylesheet" />
   <!-- FONTAWESOME STYLES-->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
      <!-- MORRIS CHART STYLES-->
-    <link href="assets/js/morris/morris-0.4.3.min.css?v=<?php echo time(); ?>" rel="stylesheet" />
+    <link href="assets/js/morris/morris-0.4.3.min.css" rel="stylesheet" />
         <!-- CUSTOM STYLES-->
-    <link href="assets/css/custom.css?v=<?php echo time(); ?>" rel="stylesheet" />
+    <link href="assets/css/custom.css" rel="stylesheet" />
 
         <!-- UPLOAD STYLES-->
-    <link href="assets/css/upload.css?v=<?php echo time(); ?>" rel="stylesheet" />
+    <link href="assets/css/upload.css" rel="stylesheet" />
      <!-- GOOGLE FONTS-->
    <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css' />
    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
@@ -295,12 +295,9 @@ if ($stmt->rowCount() > 5) {
                             <p>By completing this form, I allow Don Honorio Ventura State University, 
                             specifically the Management Information Systems Office, to gather, store, and handle the information 
                             I provide regarding my SMS/LMS/@dhvsu Google account concerns.</p>
-
+<br>
                     <label>
-                        <input type="radio" name="consent" value="yes" required> Yes, I consent
-                    </label>
-                    <label>
-                        <input type="radio" name="consent" value="no"> No, I do not consent
+                        <input type="checkbox" name="consent" value="yes" required> Yes, I consent
                     </label>
                         </main>
                     </div>

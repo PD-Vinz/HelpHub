@@ -27,6 +27,9 @@ Bachelor of Science in Entrepreneurship
 Bachelor of Science in Accountancy
 Bachelor of Science in Accounting Information Systems
 Bachelor in Public Administration
+Bachelor of Science in Legal Management
+Bachelor of Science in Real Estate Management
+Bachelor of Science in Logistics and Supply Chain Management
 
 # College of Arts and Sciences
 Bachelor of Science in Environmental Science
@@ -47,6 +50,8 @@ Bachelor of Elementary Education - Major in General Education
 Bachelor of Secondary Education - Major in Mathematics
 Bachelor of Secondary Education - Major in Filipino
 Bachelor of Secondary Education - Major in English
+Bachelor of Secondary Education - Major in General Science
+Bachelor of Secondary Education - Major in Social Studies
 Bachelor in Physical Education
 Bachelor in Technical and Livelihood Education - Major in Home Economics
 Bachelor in Technical and Livelihood Education - Major in Industrial Arts
@@ -64,7 +69,14 @@ Bachelor of Science in Industrial Technology (Ladderized) - Major in Electrical 
 Bachelor of Science in Industrial Technology (Ladderized) - Major in Graphics Technology
 Bachelor of Science in Industrial Technology (Ladderized) - Major in Mechanical Technology
 Bachelor of Science in Industrial Technology (Ladderized) - Major in Beauty Care and Wellness
-Bachelor of Science in Industrial Technology (Ladderized) - Major in Electronics Techology
+Bachelor of Science in Industrial Technology (Ladderized) - Major in Electronics Technology
 Bachelor of Science in Industrial Technology (Ladderized) - Major in Food & Service Management
 Bachelor of Science in Industrial Technology (Ladderized) - Major in Garments and Fashion Design
 Bachelor of Science in Industrial Technology (Ladderized) - Major in Welding Technology
+
+# Senior High School
+Accountancy, Business and Management (ABM) Strand
+Humanities and Social Sciences (HUMSS) Strand
+Science, Technology, Engineering and Mathematics (STEM) Strand
+Home Economics Strand
+Industrial Arts Strand

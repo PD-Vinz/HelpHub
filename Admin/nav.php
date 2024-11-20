@@ -192,7 +192,7 @@ try {
 
                 <?php if (!isset($_SESSION["Super-Admin"])): ?>
                     <a class="dropdown-item d-flex align-items-center" href="logout.php"
-                        onclick="window.open('https://forms.gle/hzqZg1SSDB23vcGCA', '_blank');">
+                        onclick="window.open('https://forms.gle/FuwTsB3ha92cvJ9o6', '_blank');">
                         <i class="fas fa-sign-out-alt mr-2"></i> Logout
                     </a>
                 <?php elseif (isset($_SESSION["Super-Admin"]) && $_SESSION["Super-Admin"] === 'Log In Success'): ?>

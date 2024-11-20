@@ -19,12 +19,12 @@ if (!isset($_SESSION["admin_number"])) {
     $Data = $pdoResult->fetch(PDO::FETCH_ASSOC);
 
     if ($Data) {
-        $Name = $Data['f_name'];
+        $FirstName = $Data['f_name'];
         $Position = $Data['position'];
         $U_T = $Data['user_type'];
 
-        $nameParts = explode(' ', $Name);
-        $firstName = $nameParts[0];
+        //$nameParts = explode(' ', $Name);
+        //$firstName = $nameParts[0];
     } else {
         // Handle the case where no results are found
         echo "No student found with the given student number.";
@@ -329,9 +329,13 @@ $(document).ready(function() {
   
 
     <script>
+        
         var ticket_user = "<?php echo $ticket_user; ?>";
+        var current_employee = "<?php echo $FirstName; ?>";
 
         console.log(ticket_user);  // This should print the value of ticket_user
+        console.log(current_employee);  // This should print the value of ticket_user
+    
     </script>
 
      <script>

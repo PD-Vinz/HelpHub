@@ -20,6 +20,7 @@ if (isset($_GET['ticket_id']) && isset($_GET['status'])) {
         $ticket = $stmt->fetch(PDO::FETCH_ASSOC);
 
         if ($ticket) {
+            $employee = $ticket['employee'] ?? null; // Ensure `$employee` is defined, set to null if not available
             // Generate HTML based on the status
             $html = '';
             switch ($status) {
@@ -38,7 +39,7 @@ if (isset($_GET['ticket_id']) && isset($_GET['status'])) {
                 default:
                     $html = "<p>No details available for this status.</p>";
             }
-            echo json_encode(['success' => true, 'html' => $html, 'status' => $status, 'ticket_id' => $ticket_id]);
+            echo json_encode(['success' => true, 'html' => $html, 'status' => $status, 'ticket_id' => $ticket_id, 'employee' => $employee]);
         } else {
             echo json_encode(['success' => false, 'message' => 'Ticket not found.']);
         }
