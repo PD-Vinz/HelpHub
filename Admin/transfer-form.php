@@ -73,22 +73,24 @@ $screenshotBase64 = base64_encode($screenshot);
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-      <meta charset="utf-8" />
+    <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>DHVSU MIS - HelpHub</title>
-  
-	<!-- BOOTSTRAP STYLES-->
-    <link href="assets/css/bootstrap.css" rel="stylesheet" />
-     <!-- FONTAWESOME STYLES-->
-     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
-     <!-- MORRIS CHART STYLES-->
-    <link href="assets/js/morris/morris-0.4.3.min.css" rel="stylesheet" />
-        <!-- CUSTOM STYLES-->
-    <link href="assets/css/custom.css" rel="stylesheet" />
-     <!-- GOOGLE FONTS-->
-   <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css' />
 
-   <style>
+    <title><?php echo htmlspecialchars($sysName); ?></title>
+    <link rel="icon" href="<?php echo htmlspecialchars($S_LBase64, ENT_QUOTES, 'UTF-8'); ?>" type="image/*">
+
+    <!-- BOOTSTRAP STYLES-->
+    <link href="assets/css/bootstrap.css" rel="stylesheet" />
+    <!-- FONTAWESOME STYLES-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <!-- MORRIS CHART STYLES-->
+    <link href="assets/js/morris/morris-0.4.3.min.css" rel="stylesheet" />
+    <!-- CUSTOM STYLES-->
+    <link href="assets/css/custom.css" rel="stylesheet" />
+    <!-- GOOGLE FONTS-->
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css' />
+
+    <style>
         img {
             max-width: 100%;
             max-height: 300px;
@@ -105,55 +107,19 @@ $screenshotBase64 = base64_encode($screenshot);
         <!-- /. NAV SIDE  -->
         <div id="page-wrapper" >
             <div id="page-inner">
-                <div class="row">
+                <div class="row col-md-12">
                     <div class="col-md-12">
-                        <h2>Transfer Ticket</h2>   
+                        <h2>Transfer Ticket</h2>     <hr />
                     </div>
                 </div>              
                  <!-- /. ROW  -->
-                 <hr />
+               
                   <div class="row">
-                                <div class="col-md-12">
+                  <div class="col-md-12">
+                  <div class="col-md-12">
                                     
-<form role="form" method="post" action="ticket-resolution.php?id=<?php echo $_GET['id']?>&user=<?php echo $_GET['user']?>&form=transfer">
-                                       
-                                      
-<div class="form-group">
-    <div class="col-md-2">
-        <label>Transfer Ticket to:‎ ‎ ‎ ‎ ‎ </label>
-    </div>
-    <div class="col-md-10">
-        <div class="btn-toolbar">
-            <div class="btn-group" style="width: 70%;">
-                <select name="position" id="position" class="form-control" required onchange="fetchEmployees()">
-                    <option value="">Select</option>
-                    <!-- Options will be populated from the database -->
-                </select>
-            </div>
-        </div>
-    </div>
-</div>
-<br>
-<br>
-<div class="form-group">
-    <div class="col-md-2">
-        <label>Select Employee:‎ ‎ ‎ ‎ ‎ </label>
-    </div>
-    <div class="col-md-10">
-        <div class="btn-toolbar">
-            <div class="btn-group" style="width: 70%;">
-                <select name="employee" id="employee" class="form-control" required>
-                    <option value="">Select</option>
-                    <!-- Options will be populated based on position selection -->
-                </select>
-            </div>
-        </div>
-    </div>
-</div>
-<br />
-<br />
-<br />
-<div class="col-md-6 col-sm-6 col-xs-6">
+<h3>Ticket Details</h3>
+                                <div class="col-md-6">
                                         <div class="form-group">
                                             <label>User ID‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ </label>
                                             <input class="form-control" value="<?php echo htmlspecialchars($user_number); ?>" readonly/>
@@ -168,26 +134,81 @@ $screenshotBase64 = base64_encode($screenshot);
                                             <!--<input class="form-control" value="<?php // echo htmlspecialchars($description); ?>" disabled style=""/> -->
                                         </div>
                                     </div>
-                                    <div class="col-md-6 col-sm-6 col-xs-6">
+                                    <div class="col-md-6">
                                         <div class="form-group">
-                                            <label>SCREENSHOT ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ </label>
+                                            <label>SCREENSHOT ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ </label><br>
                                             <a href="view_image.php?id=<?php echo htmlspecialchars($ticket_id); ?>" target="_blank">
-                                                <img src="data:image/jpeg;base64,<?php echo $screenshotBase64; ?>" alt="Screenshot" class="img-fluid">
+                                                <img src="data:image/jpeg;base64,<?php echo $screenshotBase64; ?>" alt="Screenshot" class="img-fluid" style="width: 320px; height:auto;">
                                             </a>
                                         </div>
                                     </div>
+                                    </div>
+                                    
+
+                                    <div class="col-md-12">
+                                    <hr>                            
+<form role="form" method="post" action="ticket-resolution.php?id=<?php echo $_GET['id']?>&user=<?php echo $_GET['user']?>&form=transfer">
+                                       
+                                      
+<div class="form-group">
+    
+  
+    <div class="col-md-4"> 
+        <label>Transfer Ticket to:‎ ‎ ‎ ‎ ‎ </label>
+        <div class="btn-toolbar">
+            <div class="btn-group" style="width: 100%;">
+                <select name="position" id="position" class="form-control" required onchange="fetchEmployees()">
+                    <option value="">Select template</option>
+                    <!-- Options will be populated from the database -->
+                </select>
+            </div>
+        </div>
+  
+
+
+  
+    
+        <label>Select Employee:‎ ‎ ‎ ‎ ‎ </label>
+        <div class="btn-toolbar">
+            <div class="btn-group" style="width: 100%;">
+                <select name="employee" id="employee" class="form-control" required>
+                    <option value="">Select</option>
+                    <!-- Options will be populated based on position selection -->
+                </select>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-8">
+
+    <div class="form-group">
+                                            <label>Remarks ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ </label>
+                                            <textarea class="form-control" rows="7" style="resize:none; overflow:auto;"><?php echo htmlspecialchars($remarks); ?></textarea>
+                                           
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Notes ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ </label>
+                                            <textarea class="form-control" rows="5" style="resize:none; overflow:auto;"><?php echo htmlspecialchars($notes); ?></textarea>
+                                           
+                                        </div>
+                                    </div>
+
+
+</div>
+
+
+
                   </div>
                   <?php } ?>                                 
                                      
                                         
-                                        <div class="col-md-9">
-                                        </div>
+                                        <div class="col-md-12">
+                                       
 
-                                        <div class="form-group row">
-                                        <hr />
+                                        <div class="modal-footer">
+                                        
                 
                 <a href="#" data-dismiss="modal" class="btn" onclick="history.back()">Back</a>
-                <a data-toggle="modal" href="#myModalTransfer" class="btn btn-primary">Transfer</a>
+                <a data-toggle="modal" href="#myModalTransfer" class="btn btn-primary">Transfer</a></div>
                 
                 
                 <div class="modal fade" id="myModalTransfer">

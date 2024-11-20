@@ -362,8 +362,9 @@ $pdoExec = $pdoResult->execute();
                             
                         </div>
                     </div>
+                    </div><div class="row"></div>
                     </div>
-                    </div><?php require_once('../footer.php') ?> 
+                    <?php require_once('../footer.php') ?> 
                     </div>
                     
                     <!--End Advanced Tables -->

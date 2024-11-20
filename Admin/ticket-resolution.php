@@ -89,6 +89,8 @@ if (isset($_GET["form"]) && $_GET["form"] == 'close') {
         $FD = date('Y-m-d H:i:s');
         $_SESSION["dateResolved"] = $FD;
         $Resolution = $_POST['resolution'];
+        $Remarks = $_POST['remarks'];
+        $Notes = $_POST['notes'];
 
         $pdoUserQuery = "SELECT * FROM tb_tickets WHERE ticket_id = :id";
         $pdoResult = $pdoConnect->prepare($pdoUserQuery);
@@ -151,13 +153,15 @@ if ($interval->y == 0){
 
 
         $pdoUpdateQuery="UPDATE tb_tickets 
-                        SET   status = :status, finished_date = :FD, duration = :duration , resolution = :resolution
+                        SET   status = :status, finished_date = :FD, duration = :duration , resolution = :resolution , remarks = :remarks, notes = :notes
                         WHERE ticket_id = :id";
         $pdoResult = $pdoConnect->prepare($pdoUpdateQuery);
         $pdoResult->bindParam(':id', $update_id, PDO::PARAM_STR);
         $pdoResult->bindParam(':FD', $FD, PDO::PARAM_STR);
         $pdoResult->bindParam(':duration', $Duration, PDO::PARAM_STR);
         $pdoResult->bindParam(':resolution', $Resolution, PDO::PARAM_STR);
+        $pdoResult->bindParam(':remarks', $Remarks, PDO::PARAM_STR);
+        $pdoResult->bindParam(':notes', $Notes, PDO::PARAM_STR);
         $pdoResult->bindParam(':status', $status, PDO::PARAM_STR);
         if (!$pdoResult->execute()) {
             throw new PDOException("Failed to execute the first query");
@@ -226,6 +230,9 @@ if ($interval->y == 0){
         $FD = date('Y-m-d H:i:s');
         $_SESSION["dateResolved"] = $FD;
         $Resolution = $_POST['resolution'];
+        $Remarks = $_POST['remarks'];
+        $Notes = $_POST['notes'];
+
 
         $pdoUserQuery = "SELECT * FROM tb_tickets WHERE ticket_id = :id";
         $pdoResult = $pdoConnect->prepare($pdoUserQuery);
@@ -288,13 +295,15 @@ if ($interval->y == 0){
 
 
         $pdoUpdateQuery="UPDATE tb_tickets 
-                        SET   status = :status, finished_date = :FD, duration = :duration , resolution = :resolution
+                        SET   status = :status, finished_date = :FD, duration = :duration , resolution = :resolution , remarks = :remarks, notes = :notes
                         WHERE ticket_id = :id";
         $pdoResult = $pdoConnect->prepare($pdoUpdateQuery);
         $pdoResult->bindParam(':id', $update_id, PDO::PARAM_STR);
         $pdoResult->bindParam(':FD', $FD, PDO::PARAM_STR);
         $pdoResult->bindParam(':duration', $Duration, PDO::PARAM_STR);
         $pdoResult->bindParam(':resolution', $Resolution, PDO::PARAM_STR);
+        $pdoResult->bindParam(':remarks', $Remarks, PDO::PARAM_STR);
+        $pdoResult->bindParam(':notes', $Notes, PDO::PARAM_STR);
         $pdoResult->bindParam(':status', $status, PDO::PARAM_STR);
         if (!$pdoResult->execute()) {
             throw new PDOException("Failed to execute the first query");
@@ -362,14 +371,18 @@ if ($interval->y == 0){
         $status = "Transferred";
         $newemployee = $_POST['employee'];
         $FD = date('Y-m-d H:i:s');
+        $Remarks = $_POST['remarks'];
+        $Notes = $_POST['notes'];
+
 
         $pdoUpdateQuery="UPDATE tb_tickets 
-                        SET employee = :employee
+                        SET employee = :employee , remarks = :remarks, notes = :notes
                         WHERE ticket_id = :id";
         $pdoResult = $pdoConnect->prepare($pdoUpdateQuery);
         $pdoResult->bindParam(':id', $update_id, PDO::PARAM_STR);
         $pdoResult->bindParam(':employee', $newemployee, PDO::PARAM_STR);
-        
+        $pdoResult->bindParam(':remarks', $Remarks, PDO::PARAM_STR);
+        $pdoResult->bindParam(':notes', $Notes, PDO::PARAM_STR);
         if (!$pdoResult->execute()) {
             throw new PDOException("Failed to execute the first query");
         }

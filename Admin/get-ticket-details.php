@@ -85,7 +85,7 @@ function generatePendingHTML($ticket) {
             $html .= "<div class='col-md-6'>";
         // Screenshot
       if (isset( $screenshotBase64)) {
-          $html .= "<p><strong>Screenshot:</strong></p>";
+          $html .= "<p><strong>Screenshot</strong></p>";
           $html .= "<a href='view_image.php?id=" . htmlspecialchars($ticket['ticket_id']) . "' target='_blank'>";
           $html .= "<img src='data:image/jpeg;base64," .  $screenshotBase64. "' alt='Screenshot' class='img-fluid'>";
           $html .= "</a>";
@@ -206,7 +206,7 @@ function generateProcessingHTML($ticket) {
             $html .= "<div class='col-md-6'>";
         // Screenshot
       if (isset( $screenshotBase64)) {
-          $html .= "<p><strong>Screenshot:</strong></p>";
+          $html .= "<p><strong>Screenshot</strong></p>";
           $html .= "<a href='view_image.php?id=" . htmlspecialchars($ticket['ticket_id']) . "' target='_blank'>";
           $html .= "<img src='data:image/jpeg;base64," .  $screenshotBase64. "' alt='Screenshot' class='img-fluid'>";
           $html .= "</a>";
@@ -288,6 +288,40 @@ function generateProcessingHTML($ticket) {
 
   $html .= "</div>";
 
+    // User Information
+    $html .= "<div class='col-md-12'>";$html .= "<hr>";
+      
+       $html .= "<div class='col-md-6'>";
+
+    $html .= "<form role='form'>";  
+  $html .= "<div class='form-group'>";
+            $html .= "<label>Remarks ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ </label>";
+            $html .= "<textarea class='form-control' style='height:100px; resize:none; overflow:auto;' disabled>";
+            $html .= htmlspecialchars($ticket['remarks']);
+            $html .= "</textarea>";
+            $html .= "</div>";
+
+
+  $html .= "</form>";      
+  $html .= "</div>";
+  $html .= "<div class='col-md-6'>";
+
+  $html .= "<form role='form'>";  
+
+  $html .= "<div class='form-group'>";
+  $html .= "<label>Notes ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ </label>";
+  $html .= "<textarea class='form-control' style='height:100px; resize:none; overflow:auto;' disabled>";
+  $html .= htmlspecialchars($ticket['notes']);
+  $html .= "</textarea>";
+  $html .= "</div>";
+
+
+$html .= "</form>";      
+$html .= "</div>";
+
+  $html .= "</div>";
+
+
 
  
   $html .= "</div>";
@@ -358,7 +392,7 @@ function generateResolvedHTML($ticket) {
             $html .= "</div>";
         // Screenshot
       if (isset( $screenshotBase64)) {
-          $html .= "<p><strong>Screenshot:</strong></p>";
+          $html .= "<p><strong>Screenshot</strong></p>";
           $html .= "<a href='view_image.php?id=" . htmlspecialchars($ticket['ticket_id']) . "' target='_blank'>";
           $html .= "<img src='data:image/jpeg;base64," .  $screenshotBase64. "' alt='Screenshot' class='img-fluid'>";
           $html .= "</a>";
@@ -425,8 +459,42 @@ function generateResolvedHTML($ticket) {
       $html .= "</div>";
   $html .= "</form>";      
   $html .= "</div>";
+  $html .= "<div class='col-md-12'>";$html .= "<hr>";
+      
+  $html .= "<div class='col-md-6'>";
+
+$html .= "<form role='form'>";  
+$html .= "<div class='form-group'>";
+       $html .= "<label>Remarks ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ </label>";
+       $html .= "<textarea class='form-control' style='height:100px; resize:none; overflow:auto;' disabled>";
+       $html .= htmlspecialchars($ticket['remarks']);
+       $html .= "</textarea>";
+       $html .= "</div>";
+
+
+$html .= "</form>";      
+$html .= "</div>";
+$html .= "<div class='col-md-6'>";
+
+$html .= "<form role='form'>";  
+
+$html .= "<div class='form-group'>";
+$html .= "<label>Notes ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ </label>";
+$html .= "<textarea class='form-control' style='height:100px; resize:none; overflow:auto;' disabled>";
+$html .= htmlspecialchars($ticket['notes']);
+$html .= "</textarea>";
+$html .= "</div>";
+
+
+$html .= "</form>";      
+$html .= "</div>";
+
+$html .= "</div>";
+
 
   $html .= "</div>";
+
+  
     return $html;
 }
 
@@ -494,7 +562,7 @@ function generateReturnedHTML($ticket) {
             $html .= "</div>";
         // Screenshot
       if (isset( $screenshotBase64)) {
-          $html .= "<p><strong>Screenshot:</strong></p>";
+          $html .= "<p><strong>Screenshot</strong></p>";
           $html .= "<a href='view_image.php?id=" . htmlspecialchars($ticket['ticket_id']) . "' target='_blank'>";
           $html .= "<img src='data:image/jpeg;base64," .  $screenshotBase64. "' alt='Screenshot' class='img-fluid'>";
           $html .= "</a>";
@@ -561,7 +629,37 @@ function generateReturnedHTML($ticket) {
       $html .= "</div>";
   $html .= "</form>";      
   $html .= "</div>";
+  $html .= "<div class='col-md-12'>";$html .= "<hr>";
+      
+  $html .= "<div class='col-md-6'>";
 
+$html .= "<form role='form'>";  
+$html .= "<div class='form-group'>";
+       $html .= "<label>Remarks ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ </label>";
+       $html .= "<textarea class='form-control' style='height:100px; resize:none; overflow:auto;' disabled>";
+       $html .= htmlspecialchars($ticket['remarks']);
+       $html .= "</textarea>";
+       $html .= "</div>";
+
+
+$html .= "</form>";      
+$html .= "</div>";
+$html .= "<div class='col-md-6'>";
+
+$html .= "<form role='form'>";  
+
+$html .= "<div class='form-group'>";
+$html .= "<label>Notes ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ </label>";
+$html .= "<textarea class='form-control' style='height:100px; resize:none; overflow:auto;' disabled>";
+$html .= htmlspecialchars($ticket['notes']);
+$html .= "</textarea>";
+$html .= "</div>";
+
+
+$html .= "</form>";      
+$html .= "</div>";
+
+$html .= "</div>";
   $html .= "</div>";
     return $html;
 }
