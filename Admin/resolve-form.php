@@ -174,17 +174,18 @@ $screenshotBase64 = base64_encode($screenshot);
             <div class="col-md-6">
             <div class="form-group">
                                             <label>Remarks ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ </label>
-                                            <textarea class="form-control" rows="7" style="resize:none; overflow:auto;"><?php echo htmlspecialchars($remarks); ?></textarea>
+                                            <textarea class="form-control" rows="7" name="remarks" style="resize:none; overflow:auto;"><?php echo htmlspecialchars($remarks); ?></textarea>
                                            
                                         </div>
                                         <div class="form-group">
                                             <label>Notes ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ </label>
-                                            <textarea class="form-control" rows="5" style="resize:none; overflow:auto;"><?php echo htmlspecialchars($notes); ?></textarea>
+                                            <textarea class="form-control" rows="5" name="notes" style="resize:none; overflow:auto;"><?php echo htmlspecialchars($notes); ?></textarea>
                                            
                                         </div>
                                     </div>
                                     </div>
         </div>  <?php } ?> 
+        
         <div class="row">
 
                 <div class="modal-footer">	

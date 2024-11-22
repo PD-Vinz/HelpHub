@@ -182,12 +182,12 @@ $screenshotBase64 = base64_encode($screenshot);
 
     <div class="form-group">
                                             <label>Remarks ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ </label>
-                                            <textarea class="form-control" rows="7" style="resize:none; overflow:auto;"><?php echo htmlspecialchars($remarks); ?></textarea>
+                                            <textarea class="form-control" rows="7"  name="remarks" style="resize:none; overflow:auto;"><?php echo htmlspecialchars($remarks); ?></textarea>
                                            
                                         </div>
                                         <div class="form-group">
                                             <label>Notes ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ </label>
-                                            <textarea class="form-control" rows="5" style="resize:none; overflow:auto;"><?php echo htmlspecialchars($notes); ?></textarea>
+                                            <textarea class="form-control" rows="5" name="notes" style="resize:none; overflow:auto;"><?php echo htmlspecialchars($notes); ?></textarea>
                                            
                                         </div>
                                     </div>
@@ -216,10 +216,10 @@ $screenshotBase64 = base64_encode($screenshot);
                         <div class="modal-content">
                             <div class="modal-header">
                                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                                <h4 class="modal-title">Close Ticket</h4>
+                                <h4 class="modal-title">Transfer Ticket</h4>
                             </div>
                             <div class="modal-body">
-                                Confirm Closing ticket
+                                Confirm Transferring ticket
                             </div>
                             <div class="modal-footer">
                                 <button data-dismiss="modal" class="btn">Cancel</button>

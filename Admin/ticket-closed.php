@@ -173,8 +173,9 @@ $pdoExec = $pdoResult->execute();
                 
                              
                       
-
-    </div><?php include '../footer.php' ?>
+            <div class="row"></div>
+    </div>
+    <?php include '../footer.php' ?>
              <!-- /. PAGE INNER  -->
             </div>
          <!-- /. PAGE WRAPPER  -->

@@ -418,8 +418,8 @@ try {
                     </div>
                     <!--End Advanced Tables -->
                 </div>
+                <div class="row"></div>
             </div>
-                
             <?php include '../footer.php' ?>
     </div>
              <!-- /. PAGE INNER  -->
