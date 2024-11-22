@@ -158,7 +158,7 @@ $pdoExec = $pdoResult->execute();
                                         <tr>
                                             <th>Ticket ID</th>
                                             <th>Name</th>
-                                            <th>Issue(s)</th>
+                                            <th>Concern(s)</th>
                                             <th>Descriptions</th>
                                             <th>Details</th>
                                         </tr>
@@ -280,7 +280,7 @@ $pdoExec = $pdoResult->execute();
                                             <br><br>
                                         </div>
                                     <div class="form-group">
-                                            <label>Issue/Problem  ‎ ‎ ‎ ‎ ‎ ‎ ‎ </label>
+                                            <label>Concern‎ ‎ ‎ ‎ ‎ ‎ ‎ </label>
                                             <input class="form-control" value="<?php echo htmlspecialchars($issue); ?>" disabled/>
                                             <br><br>
                                         </div>

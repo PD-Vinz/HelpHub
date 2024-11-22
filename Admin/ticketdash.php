@@ -186,7 +186,7 @@ if (!isset($_SESSION["admin_number"])) {
                                                     <th>Employee</th>
                                                     <th>Date Submitted</th>
                                                     <th>Name</th>
-                                                    <th>Issue</th>
+                                                    <th>Concern</th>
                                                     <th>Details</th>
                                                 </tr>
                                             </thead>

@@ -124,7 +124,7 @@ $pdoExec = $pdoResult->execute();
                                             <th>Status</th>
                                             <th>Date Completed</th>
                                             <th>Ticket ID</th>
-                                            <th>Issue</th>
+                                            <th>Concern</th>
                                             
                                             <th>Duration</th>
                                             <th>Details</th>

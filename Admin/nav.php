@@ -102,7 +102,7 @@ try {
         right: 20px;
         width: 50px;
         height: 50px;
-        background-color: #007bff;
+        background-color: rgb(107, 2, 0);
         color: white;
         border-radius: 50%;
         text-align: center;
@@ -116,7 +116,7 @@ try {
     }
 
     #astroid-backtotop:hover {
-        background-color: #0056b3;
+        background-color: rgb(150, 30, 20);
         text-decoration: none;
     }
 
@@ -357,7 +357,7 @@ try {
                             <li>
                                 <a class="<?= ($currentFile == 'templates.php') ? 'active-menu' : '' ?>"
                                     href="templates.php">
-                                    &nbsp;&nbsp;<i class="fa fa-exclamation-triangle"></i> Issues Templates
+                                    &nbsp;&nbsp;<i class="fa fa-exclamation-triangle"></i> Concern Templates
                                 </a>
                             </li>
                             <li>

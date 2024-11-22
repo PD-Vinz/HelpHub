@@ -62,7 +62,7 @@ function sendTicketConfirmation($recipientEmail, $userName, $status, $issue, $de
         $mail->Subject = 'Your Ticket Has Been Received';
         $mail->Body    = $htmlContent;
 
-        $mail->AltBody = "Your ticket details:\nIssue: $issue\nDescription: $description\nDate Created: $dateCreated"; // Plain text version for non-HTML mail clients
+        $mail->AltBody = "Your ticket details:\nConcern: $issue\nDescription: $description\nDate Created: $dateCreated"; // Plain text version for non-HTML mail clients
 
         $mail->send();
         echo 'Ticket confirmation has been sent';
