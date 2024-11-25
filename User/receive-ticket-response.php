@@ -161,13 +161,13 @@ if (!empty($ExtensionName)) {
                     <!-- Make this message be editable by the admin-->
                     <div class="message">
                         <p>Hi, Good Day!</p>
-                        <p>We appreciate you addressing your problem with us. Please wait for a response from our MIS Employee.</p>
+                        <p>We appreciate you addressing your concern with us. Please wait for a response from our MIS Employee.</p>
                         <p>If you encounter any further issues, feel free to submit another ticket. We would be happy to assist you.</p>
-                        <p>Thank you & God bless</p>
-                        <p>DHVSU-MiS Technical Support<br>HeyJude</p>
+                        <p>Thank you & God bless</p><br>
+                        <p>DHVSU-MiS Technical Support<br></p>
                     </div>
                     <div class="modal-footer">	
-                        <a href="dashboard.php"> <button>Home</button></a>
+                        <a href="dashboard.php"> <button class="btn btn-primary">Home</button></a>
                         <!--<a href="survey.php?id=<?php echo $_GET['id']?>&taken=before"> <button>Take Survey</button></a>-->
                     </div>
                 </div>

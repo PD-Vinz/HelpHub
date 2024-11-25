@@ -178,7 +178,7 @@ $pdoExec = $pdoResult->execute();
                                             <th style="width:10%">Ticket ID</th>
                                             <th style="width:15%">Date Submitted</th>
                                             <th style="width:8%">Name</th>
-                                            <th style="width:8%">Issue(s)</th>
+                                            <th style="width:8%">Concern(s)</th>
                                             <th style="width:25%">Description</th>
                                             <th style="width:8%">Details</th>
                                         </tr>
@@ -243,7 +243,9 @@ $pdoExec = $pdoResult->execute();
                     </div>
                     <!--End Advanced Tables -->
                 </div>
-            </div><?php include '../footer.php' ?>
+                <div class="row"></div>
+            </div>
+            <?php include '../footer.php' ?>
                
     </div>
 

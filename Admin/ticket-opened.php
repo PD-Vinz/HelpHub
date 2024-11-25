@@ -182,7 +182,7 @@ try {
                                             <th style="width:10%">Ticket ID</th>
                                             <th style="width:15%">Time opened</th>
                                             <th>Name</th>
-                                            <th>Issue(s)</th>
+                                            <th>Concern(s)</th>
                                             <th style="width:25%">Descriptions</th>
                                             <th style="width:8%">Details</th>
                                         </tr>
@@ -250,7 +250,7 @@ try {
                                              
                                         </div>
                                         <div class="form-group">
-                                            <label>Issue/Problem  ‎ ‎ ‎ ‎ ‎ ‎ ‎ </label>
+                                            <label>Concern ‎ ‎ ‎ ‎ ‎ ‎ ‎ </label>
                                             <input class="form-control" value="<?php echo htmlspecialchars($issue); ?>" disabled/>
                                              
                                         </div>
@@ -418,8 +418,8 @@ try {
                     </div>
                     <!--End Advanced Tables -->
                 </div>
+                <div class="row"></div>
             </div>
-                
             <?php include '../footer.php' ?>
     </div>
              <!-- /. PAGE INNER  -->

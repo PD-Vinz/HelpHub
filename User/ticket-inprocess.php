@@ -228,7 +228,7 @@ if (!isset($_SESSION["user_id"])) {
                                                 <th>TICKET ID</th>
                                                 <th>DATE SUBMITTED</th>
                                                 <th>MIS STAFF</th>
-                                                <th>ISSUE</th>
+                                                <th>CONCERN</th>
                                                 <th>DESCRIPTION</th>
                                                 <th>STATUS</th>
                                                 <th>ACTION</th>

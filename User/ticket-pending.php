@@ -275,7 +275,7 @@ $pdoExec = $pdoResult->execute();
         <tr class="btn-primary">
             <th>TICKET ID</th>
             <th>DATE SUBMITTED</th>
-            <th>ISSUE</th>
+            <th>CONCERN</th>
             <th>DESCRIPTION</th>
             <th>STATUS</th>
             <th>ACTION</th>
@@ -329,7 +329,7 @@ VIEW TICKET
                     <div class='modal-body'>
                         <h3>Ticket ID: <?php echo htmlspecialchars($ticket_id); ?></h3>
                         <h3>Created Date: <?php echo htmlspecialchars($created_date); ?></h3>
-                        <h3>Issue: <?php echo htmlspecialchars($issue); ?></h3>
+                        <h3>Concern: <?php echo htmlspecialchars($issue); ?></h3>
                         <h3>Description: <?php echo htmlspecialchars($description); ?></h3>
                         <h3>Status: <?php echo htmlspecialchars($status); ?></h3>
                         <img src="data:image/jpeg;base64,<?php echo $screenshotBase64; ?>" alt="Screenshot" class="img-fluid">

@@ -130,19 +130,19 @@ try {
             <div id="page-inner">
 
                     <div class="col-md-12">
-                     <h2>Issue Template</h2>   
+                     <h2>Concern Template</h2>   
                    
                              
                  <!-- /. ROW  -->
                  <hr />
 
     <div class="textarea-container">
-        <h3>Employee Issues</h3>
+        <h3>Employee concerns</h3>
         <textarea id="fileContent1"></textarea>
     </div>
 
     <div class="textarea-container">
-        <h3>Student Issues</h3>
+        <h3>Student concerns</h3>
         <textarea id="fileContent2"></textarea>
     </div>
         

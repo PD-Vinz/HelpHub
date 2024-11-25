@@ -173,7 +173,7 @@ if (!isset($_SESSION["admin_number"])) {
                                 <div class="panel-body">
                                     <div class="table-responsive">
                                         
-                                        <table class="table table-striped table-bordered table-hover" id="ticketTable"> <div class="card-tools col-md-12" style="z-index: 2; margin-top:10px;  margin-bottom:-30px;margin-left:-250px;">
+                                        <table class="table table-striped table-bordered table-hover" id="ticketTable"> <div class="card-tools col-md-9"></div><div class="card-tools col-md-3" style="z-index: 2; margin-top:10px;  margin-bottom:-30px;margin-left:-250px;">
 <a href="create-ticket.php" class="btn btn-flat btn-primary" style="float: right;">
     <span class="fas fa-plus"></span> Create ticket
 </a>
@@ -186,7 +186,7 @@ if (!isset($_SESSION["admin_number"])) {
                                                     <th>Employee</th>
                                                     <th>Date Submitted</th>
                                                     <th>Name</th>
-                                                    <th>Issue</th>
+                                                    <th>Concern</th>
                                                     <th>Details</th>
                                                 </tr>
                                             </thead>
