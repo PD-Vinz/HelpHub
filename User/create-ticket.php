@@ -245,7 +245,8 @@ if ($stmt->rowCount() > 5) {
                         <div class="form-group">
                             <label for="category">Concern</label>
                             <select id="category" name="category" class="form-control dropdown" required>
-                                <option value="">SELECT PROBLEM</option>
+                                <option value="">Select a concern</option>
+                              
                                 <!--
                                 <option value="DHVSU EMAIL">DHVSU EMAIL</option>
                                 <option value="DHVSU PORTAL">DHVSU PORTAL</option>
