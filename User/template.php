@@ -65,7 +65,7 @@
             <dl>
                 <dt>Status:</dt>
                 <dd>{Status}</dd>
-                <dt>Issue:</dt>
+                <dt>Concern:</dt>
                 <dd>{Issue}</dd>
                 <dt>Description:</dt>
                 <dd>{Description}</dd>

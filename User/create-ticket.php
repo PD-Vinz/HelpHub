@@ -243,9 +243,10 @@ if ($stmt->rowCount() > 15) {
  
 
                         <div class="form-group">
-                            <label for="category">Issue</label>
+                            <label for="category">Concern</label>
                             <select id="category" name="category" class="form-control dropdown" required>
-                                <option value="">SELECT PROBLEM</option>
+                                <option value="">Select a concern</option>
+                              
                                 <!--
                                 <option value="DHVSU EMAIL">DHVSU EMAIL</option>
                                 <option value="DHVSU PORTAL">DHVSU PORTAL</option>
@@ -255,7 +256,7 @@ if ($stmt->rowCount() > 15) {
                         </div>
 
                         <div class="form-group">
-                                    <label for="issue-description">Issue Description</label>
+                                    <label for="issue-description">Concern Description</label>
                                     <textarea id="issue-description" name="issue-description" class="form-control" maxlength="255" oninput="updateRemainingCharacters()" required></textarea>
                                     <small id="remaining-characters" class="form-text text-muted">255 characters remaining</small>
                                 </div>
@@ -279,6 +280,9 @@ if ($stmt->rowCount() > 15) {
                         <label for="" class="control-label">Upload and attach files</label>
                         <div class="upload-area">
                             <div class="upload-icon"><!-- SVG icon --></div>
+                            <p>Click to upload or drag and drop</p>
+                            <p>JPEG and PNG. Max file size 6 MB</p>
+                            <input type="file" required id="file-input" name="image">
                                 <p>Click to upload or drag and drop</p>
                             <input type="file" id="file-input" name="image" <?php echo ($identity == 'Student') ? 'required' : ''; ?>>
                                 <p class="file-message">No Files Selected</p>

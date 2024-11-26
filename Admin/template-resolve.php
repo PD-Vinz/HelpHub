@@ -85,7 +85,7 @@
                 <dd><strong></strong>{Status}</strong></dd>
                 <dt>Employee:</dt>
                 <dd>{Employee}</dd>
-                <dt>Issue:</dt>
+                <dt>Concern:</dt>
                 <dd>{Issue}</dd>
                 <dt>Description:</dt>
                 <dd>{Description}</dd>

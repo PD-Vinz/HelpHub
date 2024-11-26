@@ -69,7 +69,7 @@ function generatePendingHTML($ticket) {
          
         $html .= "</div>";
     $html .= "<div class='form-group'>";
-            $html .= "<label>Issue/Problem  ‎ ‎ ‎ ‎ ‎ ‎ ‎ </label>";
+            $html .= "<label>Concern ‎ ‎ ‎ ‎ ‎ ‎ ‎ </label>";
             $html .= "<input class='form-control' value='" . htmlspecialchars($ticket['issue']) . "' disabled/>";
             $html .= "</div>";
 
@@ -190,7 +190,7 @@ function generateProcessingHTML($ticket) {
          
         $html .= "</div>";
     $html .= "<div class='form-group'>";
-            $html .= "<label>Issue/Problem  ‎ ‎ ‎ ‎ ‎ ‎ ‎ </label>";
+            $html .= "<label>Concern ‎ ‎ ‎ ‎ ‎ ‎ ‎ </label>";
             $html .= "<input class='form-control' value='" . htmlspecialchars($ticket['issue']) . "' disabled/>";
             $html .= "</div>";
   
@@ -381,7 +381,7 @@ function generateResolvedHTML($ticket) {
          
         $html .= "</div>";
     $html .= "<div class='form-group'>";
-            $html .= "<label>Issue/Problem  ‎ ‎ ‎ ‎ ‎ ‎ ‎ </label>";
+            $html .= "<label>Concern ‎ ‎ ‎ ‎ ‎ ‎ ‎ </label>";
             $html .= "<input class='form-control' value='" . htmlspecialchars($ticket['issue']) . "' disabled/>";
          
             $html .= "<div class='form-group'>";
@@ -551,7 +551,7 @@ function generateReturnedHTML($ticket) {
          
         $html .= "</div>";
     $html .= "<div class='form-group'>";
-            $html .= "<label>Issue/Problem  ‎ ‎ ‎ ‎ ‎ ‎ ‎ </label>";
+            $html .= "<label>Concern  ‎ ‎ ‎ ‎ ‎ ‎ ‎ </label>";
             $html .= "<input class='form-control' value='" . htmlspecialchars($ticket['issue']) . "' disabled/>";
          
             $html .= "<div class='form-group'>";

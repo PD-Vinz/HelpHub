@@ -357,7 +357,7 @@ try {
                             <li>
                                 <a class="<?= ($currentFile == 'templates.php') ? 'active-menu' : '' ?>"
                                     href="templates.php">
-                                    &nbsp;&nbsp;<i class="fa fa-exclamation-triangle"></i> Issues Templates
+                                    &nbsp;&nbsp;<i class="fa fa-exclamation-triangle"></i> Concern Templates
                                 </a>
                             </li>
                             <li>

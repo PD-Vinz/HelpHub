@@ -240,7 +240,7 @@ if (!isset($_SESSION["user_id"])) {
         <tr class="btn-primary">
             <th>TICKET ID</th>
             <th>DATE SUBMITTED</th>
-            <th>ISSUE</th>
+            <th>CONCERN</th>
             <th>DESCRIPTION</th>
             <th>STATUS</th>
             <th>ACTION</th>
