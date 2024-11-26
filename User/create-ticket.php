@@ -198,7 +198,7 @@ if ($acceptTickets == "off") {
 
                 <div class="container-center">
                     <div class="modal-header">
-                        <img src="assets/pic/head.png" alt="Technical support for DHVSU students" style="height:auto;">  
+                        <img src="assets/pic/head.jpg" alt="Technical support for DHVSU students" style="height:auto;">  
 
 
         <?php
@@ -219,7 +219,7 @@ if ($acceptTickets == "off") {
 
 
 
-if ($stmt->rowCount() > 5) {
+if ($stmt->rowCount() > 15) {
 
     echo '
       <div class="container-create">
@@ -280,7 +280,7 @@ if ($stmt->rowCount() > 5) {
                         <div class="upload-area">
                             <div class="upload-icon"><!-- SVG icon --></div>
                                 <p>Click to upload or drag and drop</p>
-                            <input type="file" required id="file-input" name="image">
+                            <input type="file" id="file-input" name="image" <?php echo ($identity == 'Student') ? 'required' : ''; ?>>
                                 <p class="file-message">No Files Selected</p>
                                     <p id="size-error" style="color:red;"></p>
                                     <p id="type-error" style="color:red;"></p>

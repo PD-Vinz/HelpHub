@@ -20,6 +20,7 @@ if (!isset($_SESSION["admin_number"])) {
 
     if ($Data) {
         $F_Name = $Data['f_name'];
+        $FirstName = $Data['f_name'];
         $Position = $Data['position'];
         $U_T = $Data['user_type'];
 
@@ -441,8 +442,10 @@ try {
 
     <script>
         var ticket_user = "<?php echo $ticket_user; ?>";
+        var current_employee = "<?php echo $FirstName; ?>";
 
         console.log(ticket_user);  // This should print the value of ticket_user
+        console.log(current_employee);  // This should print the value of ticket_user
     </script>
     <script src="fetch/specific-ticket-modal.js"></script>
 

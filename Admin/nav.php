@@ -102,7 +102,7 @@ try {
         right: 20px;
         width: 50px;
         height: 50px;
-        background-color: #007bff;
+        background-color: rgb(128, 0, 0);
         color: white;
         border-radius: 50%;
         text-align: center;
@@ -116,7 +116,7 @@ try {
     }
 
     #astroid-backtotop:hover {
-        background-color: #0056b3;
+        background-color: rgb(255, 180, 0);
         text-decoration: none;
     }
 

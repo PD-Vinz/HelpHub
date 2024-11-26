@@ -19,12 +19,12 @@ if (!isset($_SESSION["admin_number"])) {
     $Data = $pdoResult->fetch(PDO::FETCH_ASSOC);
 
     if ($Data) {
-        $Name = $Data['f_name'];
+        $FName = $Data['f_name'];
         $Position = $Data['position'];
         $U_T = $Data['user_type'];
 
-        $nameParts = explode(' ', $Name);
-        $firstName = $nameParts[0];
+        //$nameParts = explode(' ', $Name);
+        //$firstName = $nameParts[0];
     } else {
         // Handle the case where no results are found
         echo "No student found with the given student number.";
@@ -300,7 +300,9 @@ window.onload = function() {
 };
 
     </script>        
-    <script>
+<script>
+        var skipName = <?php echo json_encode($FName); ?>; // Pass PHP variable to JavaScript
+
 function fetchEmployees() {
     var positionId = document.getElementById('position').value;
     var employeeSelect = document.getElementById('employee');
@@ -312,25 +314,29 @@ function fetchEmployees() {
         var xhr = new XMLHttpRequest();
         xhr.open('GET', 'fetch/getEmployees.php?position_id=' + encodeURIComponent(positionId), true);
         xhr.onload = function () {
-    if (xhr.status >= 200 && xhr.status < 300) {
-        var data = JSON.parse(xhr.responseText);
-        console.log(data);  // Add this line to check the data returned by the server
-        if (Array.isArray(data) && data.length) {
-            data.forEach(function (employee) {
-                var option = document.createElement('option');
-                option.value = employee.f_name;
-                option.textContent = employee.f_name;
-                employeeSelect.appendChild(option);
-            });
-        }
-    } else {
-        console.error('Request failed with status: ' + xhr.status);
-    }
-};
+            if (xhr.status >= 200 && xhr.status < 300) {
+                var data = JSON.parse(xhr.responseText);
+                console.log(data); // Check the data returned by the server
+                if (Array.isArray(data) && data.length) {
+                    data.forEach(function (employee) {
+                        // Skip the employee if the name matches skipName
+                        if (employee.f_name !== skipName) {
+                            var option = document.createElement('option');
+                            option.value = employee.f_name;
+                            option.textContent = employee.f_name;
+                            employeeSelect.appendChild(option);
+                        }
+                    });
+                }
+            } else {
+                console.error('Request failed with status: ' + xhr.status);
+            }
+        };
         xhr.send();
     }
 }
-    </script>    
+</script>
+
          
                                 </div>
                                 

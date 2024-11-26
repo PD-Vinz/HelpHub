@@ -85,10 +85,6 @@ $(document).ready(function() {
                 buttons += '<button class="btn btn-primary action-btn" data-action="Open" data-ticket-id="' + ticketId + '">Open Ticket</button>';
                 break;
             case 'Processing':
-                buttons += '<button class="btn btn-primary action-btn" data-action="Transfer" data-ticket-id="' + ticketId + '">Transfer</button>';
-                buttons += '<button class="btn btn-primary action-btn" data-action="Return" data-ticket-id="' + ticketId + '">Return</button>';
-                buttons += '<button class="btn btn-primary action-btn" data-action="Resolve" data-ticket-id="' + ticketId + '">Resolve</button>';
-                break;
             case 'Returned':
             case 'Resolved':
                 // Add buttons for these statuses if needed

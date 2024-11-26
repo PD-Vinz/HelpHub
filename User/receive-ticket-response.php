@@ -156,7 +156,7 @@ if (!empty($ExtensionName)) {
 
                 <div class="container-center">
                     <div class="modal-header">
-                        <img src="assets/pic/head.png" alt="Technical support for DHVSU students">  
+                        <img src="assets/pic/head.jpg" alt="Technical support for DHVSU students">  
                     <div class="container-survey">
                     <!-- Make this message be editable by the admin-->
                     <div class="message">

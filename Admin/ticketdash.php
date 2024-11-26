@@ -174,9 +174,17 @@ if (!isset($_SESSION["admin_number"])) {
                                     <div class="table-responsive">
                                         
                                         <table class="table table-striped table-bordered table-hover" id="ticketTable"> <div class="card-tools col-md-12" style="z-index: 2; margin-top:10px;  margin-bottom:-30px;margin-left:-250px;">
-<a href="create-ticket.php" class="btn btn-flat btn-primary" style="float: right;">
+<button class="btn btn-flat btn-primary" style="float: right;" onclick="openCreateTicket()">
     <span class="fas fa-plus"></span> Create ticket
-</a>
+</button>
+
+<script>
+    function openCreateTicket() {
+        const newTab = window.open('create-ticket/create-ticket.php?id=<?php echo $_GET["id"] ?>', '_blank');
+        // Optionally pass a message or keep reference to the newTab for later actions
+    }
+</script>
+
 </div>
                                             <thead>
                                                 <tr>

@@ -1,11 +1,10 @@
 <?php
-include_once("../connection/conn.php");
+include_once("../../connection/conn.php");
 $pdoConnect = connection();
 
 session_start(); // Start the session
 
-// Check if the session variable is set
-if (!isset($_SESSION["user_id"])) {
+if (!isset($_SESSION["admin_number"])) {
     header("Location: ../index.php");
     exit(); // Prevent further execution after redirection
 } else {
@@ -13,8 +12,8 @@ if (!isset($_SESSION["user_id"])) {
 
 try {
 
-    $id = $_SESSION["user_id"];
-    $identity = $_SESSION["user_identity"];
+    $id = $_POST["userid"];
+    $identity = $_SESSION["WhatUser"];
     $status = 'Pending';
     $category = $_POST['category'];
     $issue_description = $_POST['issue-description'];
@@ -129,6 +128,7 @@ if (!empty($ExtensionName)) {
     }
 }
 
+
         // Handle image upload
         if (isset($_FILES['image']) && $_FILES['image']['error'] == 0) {
             $image = $_FILES['image'];
@@ -152,74 +152,73 @@ if (!empty($ExtensionName)) {
             $imgContent = file_get_contents($image['tmp_name']);
         } else {
             // If no image is uploaded, use the default "no-image.jpg"
-            $imgContent = file_get_contents('assets/pic/no-image.jpg'); // Provide the correct path to the default image
+            $imgContent = file_get_contents('no-image.jpg'); // Provide the correct path to the default image
         }
-            // Start a transaction
-            $pdoConnect->beginTransaction();
-            
-            // Prepare an insert statement
-            $stmt = $pdoConnect->prepare("INSERT INTO tb_tickets (created_date, full_name, user_number, email_address, campus, department, course, year_section, sex, age, user_type, issue, description, screenshot, consent, status) 
-                                        VALUES (:createddate, :fullname, :usernumber, :email_address, :campus, :department, :course, :year_section, :sex, :age, :usertype, :category, :issue_description, :image, :consent, :status)");
-            // Bind the blob data
-            $stmt->bindParam(':createddate', $datetime, PDO::PARAM_LOB);
-            $stmt->bindParam(':fullname', $Name, PDO::PARAM_LOB);
-            $stmt->bindParam(':usernumber', $id, PDO::PARAM_LOB);
-            $stmt->bindParam(':email_address', $Email_Add, PDO::PARAM_LOB);
-            $stmt->bindParam(':campus', $Campus, PDO::PARAM_LOB);
-            $stmt->bindParam(':department', $Department, PDO::PARAM_LOB);
-            $stmt->bindParam(':course', $Course, PDO::PARAM_LOB);
-            $stmt->bindParam(':year_section', $Y_S, PDO::PARAM_LOB);
-            $stmt->bindParam(':sex', $Sex, PDO::PARAM_LOB);
-            $stmt->bindParam(':age', $Age, PDO::PARAM_LOB);
-            $stmt->bindParam(':usertype', $UserType, PDO::PARAM_LOB);
-            $stmt->bindParam(':category', $category, PDO::PARAM_LOB);
-            $stmt->bindParam(':issue_description', $issue_description, PDO::PARAM_LOB);
-            $stmt->bindParam(':image', $imgContent, PDO::PARAM_LOB);
-            $stmt->bindParam(':consent', $consent, PDO::PARAM_LOB);
-            $stmt->bindParam(':status', $status, PDO::PARAM_LOB);
 
-            // Execute the statement
-            if ($stmt->execute()) {
-                    // Get the last inserted ID
-                    $lastInsertId = $pdoConnect->lastInsertId();
+        // Start a transaction
+        $pdoConnect->beginTransaction();
+        
+        // Prepare an insert statement
+        $stmt = $pdoConnect->prepare("INSERT INTO tb_tickets (created_date, full_name, user_number, email_address, campus, department, course, year_section, sex, age, user_type, issue, description, screenshot, consent, status) 
+                                    VALUES (:createddate, :fullname, :usernumber, :email_address, :campus, :department, :course, :year_section, :sex, :age, :usertype, :category, :issue_description, :image, :consent, :status)");
+        // Bind the blob data
+        $stmt->bindParam(':createddate', $datetime, PDO::PARAM_LOB);
+        $stmt->bindParam(':fullname', $Name, PDO::PARAM_LOB);
+        $stmt->bindParam(':usernumber', $id, PDO::PARAM_LOB);
+        $stmt->bindParam(':email_address', $Email_Add, PDO::PARAM_LOB);
+        $stmt->bindParam(':campus', $Campus, PDO::PARAM_LOB);
+        $stmt->bindParam(':department', $Department, PDO::PARAM_LOB);
+        $stmt->bindParam(':course', $Course, PDO::PARAM_LOB);
+        $stmt->bindParam(':year_section', $Y_S, PDO::PARAM_LOB);
+        $stmt->bindParam(':sex', $Sex, PDO::PARAM_LOB);
+        $stmt->bindParam(':age', $Age, PDO::PARAM_LOB);
+        $stmt->bindParam(':usertype', $UserType, PDO::PARAM_LOB);
+        $stmt->bindParam(':category', $category, PDO::PARAM_LOB);
+        $stmt->bindParam(':issue_description', $issue_description, PDO::PARAM_LOB);
+        $stmt->bindParam(':image', $imgContent, PDO::PARAM_LOB);
+        $stmt->bindParam(':consent', $consent, PDO::PARAM_LOB);
+        $stmt->bindParam(':status', $status, PDO::PARAM_LOB);
 
-                    // Commit the transaction
-                    $pdoConnect->commit();
+        // Execute the statement
+        if ($stmt->execute()) {
+            // Get the last inserted ID
+            $lastInsertId = $pdoConnect->lastInsertId();
 
-                    $ticket_desc = "Ticket Created";
+            // Commit the transaction
+            $pdoConnect->commit();
 
-                    $pdoUpdateQuery="INSERT ticket_logs 
-                                    SET ticket_id = :id, date_time = :OD, description = :desc, status = :status";
-                    $pdoResult = $pdoConnect->prepare($pdoUpdateQuery);
-                    $pdoResult->bindParam(':id', $lastInsertId, PDO::PARAM_STR);
-                    $pdoResult->bindParam(':OD', $datetime, PDO::PARAM_STR);
-                    $pdoResult->bindParam(':desc', $ticket_desc, PDO::PARAM_STR);
-                    $pdoResult->bindParam(':status', $status, PDO::PARAM_STR);
-                    if (!$pdoResult->execute()) {
-                        throw new PDOException("Failed to execute the second query");
-                    }
+            $ticket_desc = "Ticket Created";
 
-                $_SESSION["Address"] = $Email_Add;
-                $_SESSION["userName"] = $Name;
-                $_SESSION["issue"] = $category;
-                $_SESSION["description"] = $issue_description;
-                $_SESSION["dateCreated"] = $datetime;
-                $_SESSION["imageUrl"] = "https://dhvsuhelphub.com/User/view_image.php?id=" . $lastInsertId;
-                $_SESSION["websiteUrl"] = "https://dhvsuhelphub.com/";
-                $_SESSION["status"] = $status;
-                $_SESSION["ticketnumber"] = $lastInsertId;
-
-                header("Location: generate-email.php");
-                exit();
-            } else {
-                // Roll back the transaction on failure
-                $pdoConnect->rollBack();
-                header("Location: create-ticket.php?error='yes'");
-                exit();
+            $pdoUpdateQuery="INSERT ticket_logs 
+                            SET ticket_id = :id, date_time = :OD, description = :desc, status = :status";
+            $pdoResult = $pdoConnect->prepare($pdoUpdateQuery);
+            $pdoResult->bindParam(':id', $lastInsertId, PDO::PARAM_STR);
+            $pdoResult->bindParam(':OD', $datetime, PDO::PARAM_STR);
+            $pdoResult->bindParam(':desc', $ticket_desc, PDO::PARAM_STR);
+            $pdoResult->bindParam(':status', $status, PDO::PARAM_STR);
+            if (!$pdoResult->execute()) {
+                throw new PDOException("Failed to execute the second query");
             }
+
+            $_SESSION["Address"] = $Email_Add;
+            $_SESSION["userName"] = $Name;
+            $_SESSION["issue"] = $category;
+            $_SESSION["description"] = $issue_description;
+            $_SESSION["dateCreated"] = $datetime;
+            $_SESSION["imageUrl"] = "https://dhvsuhelphub.com/User/view_image.php?id=" . $lastInsertId;
+            $_SESSION["websiteUrl"] = "https://dhvsuhelphub.com/";
+            $_SESSION["status"] = $status;
+            $_SESSION["ticketnumber"] = $lastInsertId;
+
+            header("Location: generate-email.php");
+            exit();
+        } else {
+            // Roll back the transaction on failure
+            $pdoConnect->rollBack();
+            header("Location: create-ticket.php?error='yes'");
+            exit();
+        }
     }
-
-
 
 
 // Close the connection

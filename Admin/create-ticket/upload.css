@@ -1,0 +1,375 @@
+:root {
+    --primary: #800000; /* Maroon */
+    --accent: #FFD700; /* Gold */
+    --background: #FFF8E7; /* Light gold */
+    --white: #FFFFFF; /* White */
+    --gray: #D3D3D3; /* Light gray */
+    --shadow: rgba(0, 0, 0, 0.1);
+    --text: #333333; /* Dark text color */
+}
+
+body {
+    font-family: 'Open Sans', sans-serif;
+    background-color: var(--background);
+    margin: 0;
+    padding: 0;
+    color: var(--text);
+
+    background-attachment: fixed;
+    background-image: url(MIS.jpg);
+    background-size: 100% 100%;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+h2, h3 {
+    color: var(--primary);
+}
+
+.container-center {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+    background-color: var(--white);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    max-width: 800px;
+    margin: 20px auto;
+}
+
+.modal-header {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.modal-header img {
+    max-width: 100%; /* Ensures responsiveness */
+    height: auto; /* Maintains aspect ratio */
+    margin-bottom: 15px; /* Adds spacing below the image */
+    border-radius: 5px; /* Optional: rounds the edges slightly */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Adds depth */
+}
+
+.modal-header h2 {
+    font-size: 2.5rem;
+    font-weight: bold;
+    margin-bottom: 10px;
+    color: var(--primary);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+label {
+    font-size: 1rem;
+    font-weight: bold;
+    margin-bottom: 5px;
+    display: block;
+    color: var(--primary);
+}
+
+input[type="text"], input[type="file"], textarea, select {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid var(--gray);
+    border-radius: 5px;
+    box-sizing: border-box;
+    font-size: 1rem;
+    margin-top: 5px;
+    background-color: var(--white);
+    color: var(--text);
+}
+
+input:focus, textarea:focus, select:focus {
+    outline: none;
+    border: 2px solid var(--primary);
+    background-color: #FFFAF0; /* Subtle focus background */
+}
+
+.issue-form {
+    width: 100%;
+}
+
+.issue-form .form-group {
+    margin-bottom: 20px;
+}
+
+.issue-form label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+    color: var(--primary);
+}
+
+.issue-form .form-control {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid var(--gray);
+    border-radius: 5px;
+    font-size: 16px;
+    color: var(--text-dark);
+}
+
+.issue-form .form-control:focus {
+    border-color: var(--primary);
+    outline: none;
+    box-shadow: 0 0 4px var(--primary);
+}
+
+textarea {
+    resize: none;
+}
+
+#remaining-characters {
+    font-size: 0.85rem;
+    color: var(--text);
+}
+
+.upload-area, .paste-area {
+    padding: 1rem;
+    position: relative;
+    margin-top: 1rem;
+    min-height: 16rem;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border: 2px dashed var(--primary);
+    border-radius: 1rem;
+    cursor: pointer;
+    background-color: var(--background);
+    transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+.upload-area:hover {
+    background-color: #ffe5b4; /* Light gold for hover */
+    border-color: var(--accent);
+}
+
+.upload-icon {
+    margin-bottom: 1rem;
+}
+
+.upload-icon svg {
+    height: 5rem;
+    width: 5rem;
+    stroke: var(--primary);
+    fill: none;
+}
+
+.upload-area p {
+    margin: 0;
+    color: var(--primary);
+    font-size: 1rem;
+    font-weight: bold;
+    text-align: center;
+}
+
+input[type="file"] {
+    position: absolute;
+    opacity: 0;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    cursor: pointer;
+}
+
+p.file-message {
+    font-size: 0.9rem;
+    color: var(--text);
+    margin-top: 0.5rem;
+    font-style: italic;
+}
+
+#error-messages p {
+    margin: 5px 0;
+    font-size: 0.85rem;
+    color: red;
+}
+
+.close-btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background-color: transparent;
+    border: none;
+    font-size: 20px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.close-btn:hover {
+    color: red;
+}
+
+
+button {
+    display: inline-block;
+    padding: 10px 20px;
+    font-size: 1rem;
+    font-weight: bold;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+button[type="submit"] {
+    background-color: var(--primary);
+    color: var(--white);
+}
+
+button[type="submit"]:hover {
+    background-color: var(--accent);
+    color: var(--primary);
+}
+
+button[type="reset"] {
+    background-color: var(--gray);
+    color: var(--primary);
+}
+
+button[type="reset"]:hover {
+    background-color: var(--accent);
+    color: var(--white);
+}
+
+.modal-body {
+    background-color: #FFFAF0;
+    padding: 20px;
+    border-radius: 10px;
+    border: 1px solid var(--gray);
+    margin-bottom: 20px;
+    color: var(--text);
+}
+
+.letter main p {
+    margin-bottom: 10px;
+    line-height: 1.6;
+    color: var(--text);
+}
+
+input[type="checkbox"] {
+    margin-right: 10px;
+    accent-color: var(--primary);
+}
+
+footer {
+    text-align: center;
+    padding: 20px;
+    background-color: var(--primary);
+    color: var(--white);
+    margin-top: 20px;
+    border-radius: 0 0 10px 10px;
+}
+
+footer a {
+    color: var(--accent);
+    text-decoration: none;
+    font-weight: bold;
+}
+
+footer a:hover {
+    text-decoration: underline;
+}
+
+#dropdown {
+    position: absolute;
+    background: #fff;
+    border: 1px solid #ccc;
+    width: 300px;
+    max-height: 200px;
+    overflow-y: auto;
+    display: none;
+    z-index: 1000;
+}
+#dropdown div {
+    display: flex;
+    align-items: center;
+    padding: 8px;
+    cursor: pointer;
+    border-bottom: 1px solid #eee;
+}
+#dropdown div img {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    margin-right: 10px;
+}
+#dropdown div:hover {
+    background-color: #f0f0f0;
+}
+
+/*-----Search------*/
+.email-compose {
+    position: relative;
+    width: 400px;
+    margin: 50px auto;
+    font-family: Arial, sans-serif;
+}
+
+#userid, #email, #f_name, #l_name {
+    width: 100%;
+    padding: 8px;
+    box-sizing: border-box;
+    border: none;
+    border-bottom: 1px solid #ccc;
+    font-size: 16px;
+    margin-bottom: 10px;
+    text-align: center;
+}
+
+.suggestions {
+    display: none;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    border: 1px solid #ccc;
+    max-height: 250px;
+    overflow-y: auto;
+    position: absolute;
+    width: 100%;
+    background: white;
+    z-index: 1000;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.suggestions li {
+    padding: 10px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+}
+
+.suggestions li:hover {
+    background-color: #f0f0f0;
+}
+
+.suggestions img {
+    border-radius: 50%;
+    margin-right: 10px;
+    width: 40px;
+    height: 40px;
+    object-fit: cover;
+}
+
+.suggestions div {
+    display: flex;
+    flex-direction: column;
+}
+
+.suggestions div div:first-child {
+    font-weight: bold;
+}
+
+.suggestions div div:last-child {
+    font-size: 14px;
+    color: #666;
+}
+

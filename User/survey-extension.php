@@ -157,7 +157,7 @@ if (!empty($ExtensionName)) {
 
                 <div class="container-center">
                     <div class="modal-header">
-                        <img src="assets/pic/head.png" alt="Technical support for DHVSU students">  
+                        <img src="assets/pic/head.jpg" alt="Technical support for DHVSU students">  
                 <div class="container-survey">
                     <h1>Thank you for choosing our services. We highly value your feedback as it helps us improve and better serve you in the future. Please take a moment to share your thoughts with us.</h1>
                     <script>
