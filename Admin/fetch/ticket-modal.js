@@ -76,7 +76,7 @@ $(document).ready(function() {
     if (status === 'Processing' && employee === current_employee) {
         buttons += '<button class="btn btn-primary action-btn" data-action="Transfer" data-ticket-id="' + ticketId + '">Transfer</button>';
         buttons += '<button class="btn btn-primary action-btn" data-action="Return" data-ticket-id="' + ticketId + '">Return</button>';
-        buttons += '<button class="btn btn-primary action-btn" data-action="Close" data-ticket-id="' + ticketId + '">Close</button>';
+        buttons += '<button class="btn btn-primary action-btn" data-action="Resolve" data-ticket-id="' + ticketId + '">Resolve</button>';
     } else {
         
         // Other statuses
