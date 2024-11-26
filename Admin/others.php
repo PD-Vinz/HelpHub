@@ -111,11 +111,11 @@ try {
         
         <div id="page-wrapper" >
             <div id="page-inner">
-                <div class="row">
+                <div class="row col-md-12">
                     <div class="col-md-12">
                      <h2>Other Settings</h2>   
-                    </div>
-                </div>              
+                   
+                           
                  <!-- /. ROW  -->
                  <hr />
 
@@ -129,9 +129,10 @@ try {
         <textarea id="fileContent2"></textarea>
     </div>
         
-    <button id="saveButton">Save Changes</button>
-    <a href="index.php"><button>Home</button></a>
-
+    <button class="btn btn-flat btn-primary" id="saveButton">Save Changes</button>
+    <a href="index.php"><button class="btn btn-flat btn-primary">Home</button></a>
+    </div>  
+    </div>
     <script>
         // Function to load content from a text file into the corresponding textarea
         function loadFile(fileName, textareaId) {
