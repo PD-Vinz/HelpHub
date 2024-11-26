@@ -282,8 +282,6 @@ if ($stmt->rowCount() > 15) {
                             <div class="upload-icon"><!-- SVG icon --></div>
                             <p>Click to upload or drag and drop</p>
                             <p>JPEG and PNG. Max file size 6 MB</p>
-                            <input type="file" required id="file-input" name="image">
-                                <p>Click to upload or drag and drop</p>
                             <input type="file" id="file-input" name="image" <?php echo ($identity == 'Student') ? 'required' : ''; ?>>
                                 <p class="file-message">No Files Selected</p>
                                     <p id="size-error" style="color:red;"></p>
